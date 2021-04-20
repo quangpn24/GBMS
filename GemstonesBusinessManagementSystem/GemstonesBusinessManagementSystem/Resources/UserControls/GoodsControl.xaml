@@ -1,0 +1,136 @@
+﻿<UserControl 
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.GoodsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    mc:Ignorable="d" 
+    x:Name="ucDisplayGoods"
+    Width="1180" 
+    DataContext="{StaticResource GoodsVM}"
+    Height="40" 
+    Margin="0,0,0,2">
+    <Grid
+        x:Name="grdMain">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock 
+            x:Name="txbId"
+            Text="Mã SP"
+            Grid.Column="0"
+            HorizontalAlignment="Center" 
+            Margin="0" 
+            TextWrapping="Wrap" 
+            VerticalAlignment="Center" 
+            FontSize="18" 
+            FontWeight="SemiBold"/>
+        <TextBlock 
+            x:Name="txbName"
+            Text="Tên sản phẩm" 
+            Grid.Column="1"
+            HorizontalAlignment="Left" 
+            Margin="20,0,0,0" 
+            Padding="10,0,0,0"
+            TextWrapping="Wrap" 
+            VerticalAlignment="Center" 
+            FontSize="18" 
+            FontWeight="SemiBold" />
+        <TextBlock 
+            x:Name="txbGoodsType"
+            Text="Loại sản phẩm" 
+            Grid.Column="2"
+            HorizontalAlignment="Left" 
+            Margin="20,0,0,0" 
+            Padding="10,0,0,0"
+            TextWrapping="Wrap" 
+            VerticalAlignment="Center" 
+            FontSize="18" 
+            FontWeight="SemiBold" />
+        <TextBlock 
+            x:Name="txbQuantity"
+            Text="Số lượng" 
+            Grid.Column="3"
+            HorizontalAlignment="Center" 
+            Margin="0" 
+            TextWrapping="Wrap" 
+            VerticalAlignment="Center" 
+            FontSize="18" 
+            FontWeight="SemiBold" />
+        <TextBlock 
+            x:Name="txbUnit"
+            Text="Đơn vị tính" 
+            Grid.Column="4"
+            HorizontalAlignment="Center" 
+            Margin="0" 
+            TextWrapping="Wrap" 
+            VerticalAlignment="Center" 
+            FontSize="18" 
+            FontWeight="SemiBold"/>
+        <TextBlock 
+            x:Name="txbPrice"
+            Text="Đơn giá" 
+            Grid.Column="5"
+            HorizontalAlignment="Center" 
+            Margin="0" 
+            TextWrapping="Wrap" 
+            VerticalAlignment="Center" 
+            FontSize="18" 
+            FontWeight="SemiBold"/>
+        <Button 
+            Grid.Column="6"
+            x:Name="btnEditGoods"
+            ToolTip="Sửa thông tin"
+            Command="{Binding EditGoodsCommand}"
+            CommandParameter="{Binding ElementName=ucDisplayGoods}"
+            Height="30"
+            Margin="0,0,50,0" 
+            Background="{x:Null}" 
+            BorderBrush="{x:Null}" 
+            FontSize="16" 
+            VerticalAlignment="Center" 
+            FocusVisualStyle="{x:Null}"
+            Width="40"
+            HorizontalAlignment="Right" 
+            Padding="0"
+            FontWeight="SemiBold">
+            <materialDesign:PackIcon
+                Kind="SquareEditOutline" 
+                Width="24"
+                Height="24" 
+                HorizontalAlignment="Left" Foreground="{StaticResource Primary}" />
+        </Button>
+        <Button 
+            Grid.Column="6"
+            x:Name="btnDeleteGoods"
+            ToolTip="Xóa mặt hàng" 
+            Height="30"
+            Margin="0,0,10,0" 
+            Background="{x:Null}" 
+            BorderBrush="{x:Null}" 
+            FontSize="16" 
+            VerticalAlignment="Center" 
+            FocusVisualStyle="{x:Null}"
+            Width="40"
+            HorizontalAlignment="Right" 
+            FontWeight="SemiBold" 
+            Command="{Binding DeleteGoodsCommand}"
+            CommandParameter="{Binding ElementName=ucDisplayGoods}"
+            Padding="0" >
+            <materialDesign:PackIcon 
+                Kind="DeleteOutline" 
+                Height="24"
+                Width="24" Foreground="{StaticResource Error}"/>
+        </Button>
+    </Grid>
+</UserControl>
