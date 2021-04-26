@@ -43,7 +43,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             //UC Service  - AddService Window
             OpenUpdateWindowCommand = new RelayCommand<ServiceControl>((parameter) => true, (parameter) => OpenUpdateWindow(parameter));
-            DeleteServiceCommand = new RelayCommand<ServiceControl>((parameter) => true, (parameter) => DeleteService(parameter));          
+            DeleteServiceCommand = new RelayCommand<ServiceControl>((parameter) => true, (parameter) => DeleteService(parameter));
             AddServiceCommand = new RelayCommand<AddServiceWindow>((parameter) => true, (parameter) => AddService(parameter));
             ExitCommand = new RelayCommand<AddServiceWindow>((parameter) => true, (parameter) => parameter.Close());
             //Grid Service in MainWindow
@@ -55,27 +55,27 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             FindServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => FindService(parameter));
             RestoreServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => RestoreService(parameter));
             FilterServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => FilterService(parameter));
-            SortServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => SortService(parameter));         
+            SortServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => SortService(parameter));
         }
         //UC Service  - AddService Window
         public void OpenUpdateWindow(ServiceControl uCService)
         {
-            
+
             selectedUCService = uCService;
             AddServiceWindow addService = new AddServiceWindow();
             addService.txtIdService.Text = uCService.txbSerial.Text;
-            oldName=addService.txtNameOfService.Text = uCService.txbName.Text;
+            oldName = addService.txtNameOfService.Text = uCService.txbName.Text;
             addService.txtPriceOfService.Text = uCService.txbPrice.Text;
             addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 0 : 1;
             addService.ShowDialog();
         }
         public void AddService(AddServiceWindow addServiceWindow)
         {
-            
+
             if (CheckData(addServiceWindow))
             {
-                
-                if (int.Parse(addServiceWindow.txtIdService.Text) > ServiceDAL.Instance.FindMaxId())
+
+                if (int.Parse(addServiceWindow.txtIdService.Text) > ServiceDAL.Instance.FindMaxId()) // tao id moi 
                 {
                     if (!ServiceDAL.Instance.isExist(addServiceWindow.txtNameOfService.Text))
                     {
@@ -84,15 +84,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             MessageBox.Show("Thành công!");
                             addServiceWindow.Close();
-                            services.Add(service);
+
                             ServiceControl uCService = new ServiceControl();
                             uCService.txbSerial.Text = service.IdService.ToString();
                             uCService.txbName.Text = service.Name;
                             uCService.txbPrice.Text = service.Price.ToString();
-                            uCService.txbStatus.Text = service.IsActived == 0 ? "Đang hoạt động" : "Dừng hoạt động";
+                            uCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                             uCService.txbHiredNumber.Text = service.NumberOfHired.ToString();
-                            if (currentPage == (services.Count - 1) / 10)
-                                mainWindow.stkService.Children.Add(uCService);
+                            if (mainWindow.cboSelectFilter.SelectedIndex == service.IsActived || mainWindow.cboSelectFilter.SelectedIndex == -1)
+                            {
+                                services.Add(service);
+                                if (currentPage == (services.Count - 1) / 10)
+                                {
+                                    mainWindow.stkService.Children.Add(uCService);
+                                }
+                            }
+
                         }
                         else
                         {
@@ -102,11 +109,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     else
                     {
                         MessageBox.Show("Tên dịch vụ đã tồn tại!");
-                    }    
+                    }
                 }
                 else
                 {
-                    if(!(ServiceDAL.Instance.isExist(addServiceWindow.txtNameOfService.Text)&&oldName!= addServiceWindow.txtNameOfService.Text))
+                    if (!(ServiceDAL.Instance.isExist(addServiceWindow.txtNameOfService.Text) && oldName != addServiceWindow.txtNameOfService.Text))
                     {
                         Service service = new Service(int.Parse(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.UpdateService(service))
@@ -117,6 +124,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             selectedUCService.txbPrice.Text = service.Price.ToString();
                             selectedUCService.txbStatus.Text = service.IsActived == 0 ? "Đang hoạt động" : "Dừng hoạt động";
                             selectedUCService.txbHiredNumber.Text = service.NumberOfHired.ToString();
+                            services.RemoveAll(x => x.IdService == service.IdService);
+                            services.Add(service);
+                            services = services.OrderBy(x => x.IdService).ToList();
                         }
                         else
                         {
@@ -170,6 +180,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.mainWindow = mainWindow;
             mainWindow.stkService.Children.Clear();
             int start = 0, end = 0;
+            this.currentPage = currentPage;
             LoadInfoOfPage(ref start, ref end);
             for (int i = start; i < end; i++)
             {
@@ -177,7 +188,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 uCService.txbSerial.Text = services[i].IdService.ToString();
                 uCService.txbName.Text = services[i].Name;
                 uCService.txbPrice.Text = services[i].Price.ToString();
-                uCService.txbStatus.Text = services[i].IsActived == 0 ? "Đang hoạt động" : "Dừng hoạt động";
+                uCService.txbStatus.Text = services[i].IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                 uCService.txbHiredNumber.Text = services[i].NumberOfHired.ToString();
                 mainWindow.stkService.Children.Add(uCService);
             }
@@ -248,19 +259,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void FilterService(MainWindow mainWindow)
         {
-            List<Service> temp = new List<Service>(services);
-            switch (mainWindow.cboSelectFilter.SelectedIndex)
+            services = ServiceDAL.Instance.ConvertDBToList();
+            services.RemoveAll(x => x.IsActived == mainWindow.cboSelectFilter.SelectedIndex);
+            if (mainWindow.cboSelectSort.SelectedIndex >= 0)
             {
-                case 0:
-                    services.RemoveAll(x => x.IsActived == 1);
-                    break;
-                case 1:
-                    services.RemoveAll(x => x.IsActived == 0);
-                    break;
+                SortService(mainWindow);
             }
-
-            LoadServices(mainWindow, 0);
-            services = temp;
+            else
+                LoadServices(mainWindow, 0);
         }
         public void SortService(MainWindow mainWindow)
         {

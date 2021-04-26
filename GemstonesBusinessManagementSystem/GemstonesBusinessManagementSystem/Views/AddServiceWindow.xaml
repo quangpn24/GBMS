@@ -230,16 +230,10 @@
                           VerticalAlignment="Center"
                           Foreground="{DynamicResource Gray1}"
                           Background="{x:Null}">
-
+                    <ComboBoxItem Content="Dừng hoạt động" />
                     <ComboBoxItem IsSelected="True"
                                   Content="Đang hoạt động" />
-                    <ComboBoxItem Content="Dừng hoạt động" />
-                    <!--<ComboBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ComboBoxItem}">
-                            <Setter Property="Background"
-                                    Value="{StaticResource White}" />
-                        </Style>
-                    </ComboBox.ItemContainerStyle>-->
+                    
                 </ComboBox>
             </Grid>
         </Grid>

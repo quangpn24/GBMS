@@ -9,14 +9,13 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-             Width="1120"
              Height="40"
              DataContext="{StaticResource ServiceVM}"
              Margin="0,0,0,0">
     <Border BorderBrush="{StaticResource Light}"
             BorderThickness="1">
         <Grid x:Name="grdMain"
-              Width="1120"
+              Width="1180"
               Margin="0"
               Background="White">
             <Grid.ColumnDefinitions>
@@ -27,21 +26,11 @@
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <!--<TextBlock x:Name="txbId"
-                       Grid.Column="0"
-                       HorizontalAlignment="Center"
-                       Margin="0"
-                       TextWrapping="Wrap"
-                       Text="{Binding Id}"
-                       VerticalAlignment="Center"
-                       FontSize="18"
-                       Padding="0"
-                       FontWeight="Medium"
-                       Visibility="Hidden" />-->
             <TextBlock x:Name="txbSerial"
                        Grid.Column="0"
-                       HorizontalAlignment="Center"
+                       TextAlignment="Center"
                        Margin="0"
+                       Text="Mã dịch vụ"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
                        FontSize="18"
@@ -54,14 +43,14 @@
                        Width="2"
                        VerticalAlignment="Center" />
             <TextBlock x:Name="txbName"
+                       Text="Loại dịch vụ"
                        Grid.Column="1"
                        HorizontalAlignment="Left"
                        Margin="20,0,0,0"
+                       Padding="10,0,0,0"
                        TextWrapping="Wrap"
-                       Text="{Binding Name}"
                        VerticalAlignment="Center"
                        FontSize="18"
-                       Padding="0"
                        FontWeight="Medium" />
             <Rectangle Grid.Column="1"
                        HorizontalAlignment="Right"
@@ -71,7 +60,8 @@
                        VerticalAlignment="Center" />
             <TextBlock x:Name="txbPrice"
                        Grid.Column="2"
-                       HorizontalAlignment="Left"
+                       Text="Đơn giá"
+                       HorizontalAlignment="Center"
                        Margin="20,0,0,0"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
@@ -82,6 +72,7 @@
                        Grid.Column="3"
                        HorizontalAlignment="Center"
                        Margin="0"
+                       Text="Trạng thái"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
                        FontSize="18"
@@ -91,6 +82,7 @@
                        Grid.Column="4"
                        HorizontalAlignment="Center"
                        Margin="0"
+                       Text="Đã đặt"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
                        FontSize="18"

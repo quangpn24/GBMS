@@ -523,17 +523,15 @@
                                           Width="200"
                                           BorderThickness="0"
                                           Padding="10,0,0,0"
-                                          Margin="0"
-                                          ItemsSource="{Binding ItemSourceGoodsType_Filter}"
-                                          SelectedItem="{Binding SelectedGoodsType_Filter}"
-                                          DisplayMemberPath="Name"
+                                          Margin="5,0,5,3"
                                           VerticalContentAlignment="Center"
                                           HorizontalContentAlignment="Left"
                                           FontWeight="SemiBold"
                                           BorderBrush="{StaticResource Black2}"
-                                          Background="{StaticResource White}">
-                                    <ComboBoxItem Content="Đang hoạt động" />
+                                          Background="{StaticResource White}"
+                                          VerticalAlignment="Bottom">
                                     <ComboBoxItem Content="Dừng hoạt động" />
+                                    <ComboBoxItem Content="Đang hoạt động" />
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged">
                                             <i:InvokeCommandAction Command="{Binding FilterServiceCommand}"
@@ -561,12 +559,13 @@
                                           Width="200"
                                           BorderThickness="0"
                                           Padding="10,0,0,0"
-                                          Margin="0"
+                                          Margin="5,0,5,3"
                                           VerticalContentAlignment="Center"
                                           HorizontalContentAlignment="Left"
                                           FontWeight="SemiBold"
                                           BorderBrush="{StaticResource Black2}"
-                                          Background="{StaticResource White}">
+                                          Background="{StaticResource White}"
+                                          VerticalAlignment="Bottom">
                                     <ComboBoxItem Content="Sắp xếp theo tên" />
                                     <ComboBoxItem Content="Sắp xếp theo đơn giá" />
                                     <ComboBoxItem Content="Sắp xếp theo số lượng đặt" />
@@ -577,8 +576,6 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </ComboBox>
-
-
                             </Grid>
                         </StackPanel>
                     </Grid>

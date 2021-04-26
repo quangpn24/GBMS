@@ -130,7 +130,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 command.Parameters.AddWithValue("@price", service.Price.ToString());
                 command.Parameters.AddWithValue("@numberOfHired", service.NumberOfHired.ToString());
                 command.Parameters.AddWithValue("@isDeleted", "0");
-                command.Parameters.AddWithValue("@isActived", "0");
+                command.Parameters.AddWithValue("@isActived", service.IsActived.ToString());
                 command.ExecuteNonQuery();
                 return true;
             }
