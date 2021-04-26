@@ -5,6 +5,7 @@ using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
@@ -17,12 +18,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     class GoodsViewModel : BaseViewModel
     {
+        private List<GoodsControl> listGoodsControl = new List<GoodsControl>();
         private GoodsControl goodsControl;
         private bool isUpdate = false;
         private string imageFileName;
         private MainWindow mainWindow;
         private GoodsType selectedGoodsType = new GoodsType();
-        public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } } 
+        public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
         private GoodsType selectedGoodsType_Filter = new GoodsType();
         public GoodsType SelectedGoodsType_Filter { get => selectedGoodsType_Filter; set { selectedGoodsType_Filter = value; OnPropertyChanged("SelectedGoodsType"); } }
         private ObservableCollection<GoodsType> itemSourceGoodsType = new ObservableCollection<GoodsType>();
@@ -41,6 +43,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SelectImageCommand { get; set; }
         public ICommand SelectionChangedGoodsTypeCommand { get; set; }
         public ICommand SearchCommand { get; set; }
+        public ICommand SortListGoodsCommand { get; set; }
 
         public GoodsViewModel()
         {
@@ -56,28 +59,41 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SelectImageCommand = new RelayCommand<Grid>(p => true, p => SelectImage(p));
             SearchCommand = new RelayCommand<MainWindow>(p => true, p => SearchGoods(p));
             SelectionChangedGoodsTypeCommand = new RelayCommand<MainWindow>(p => true, p => SelectionChangedGoodsType(p));
+            SortListGoodsCommand = new RelayCommand<MainWindow>(p => true, p => SortListGoods(p));
+        }
+        void SortListGoods(MainWindow main)
+        {
+            List<GoodsControl> listTmp = new List<GoodsControl>();
+            int temp = main.stkGoods.Children.Count;
+            for (int i = 0; i < temp; i++)
+            {
+                listTmp.Add((GoodsControl)main.stkGoods.Children[temp - 1 - i]);
+                main.stkGoods.Children.RemoveAt(temp - 1 - i);
+                main.stkGoods.Children.Add(listTmp[i]);
+            }
         }
         public void SearchGoods(MainWindow main)
         {
             main.cboFilterType.SelectedIndex = 0;
-            main.cboFilter.SelectedIndex = 0;
+            main.cboFilterSort.SelectedIndex = 0;
             LoadGoodsToView(main);
         }
         public void SelectionChangedGoodsType(MainWindow main)
         {
-            LoadGoodsToView(main);
-            if (selectedGoodsType_Filter.Name == "Tất cả" && selectedGoodsType_Filter.IdGoodsType == 0)// tránh TH người dùng đặt tên loại SP là "Tất cả"
+            main.stkGoods.Children.Clear();
+            main.cboFilterSort.SelectedIndex = 0;
+            for (int i = 0; i < listGoodsControl.Count; i++)
             {
+                main.stkGoods.Children.Add(listGoodsControl[i]);
             }
-            else
+            if (selectedGoodsType_Filter.Name != "Tất cả" || selectedGoodsType_Filter.IdGoodsType != 0)// tránh TH người dùng đặt tên loại SP là "Tất cả"
             {
-                for (int i = 0; i < main.stkGoods.Children.Count; i++)
+                for (int i = 0; i < listGoodsControl.Count; i++)
                 {
-                    GoodsControl control = (GoodsControl)main.stkGoods.Children[i];
+                    GoodsControl control = listGoodsControl[i];
                     if (control.txbGoodsType.Text != selectedGoodsType_Filter.Name)
                     {
                         main.stkGoods.Children.Remove(control);
-                        i--;
                     }
                 }
             }
@@ -147,7 +163,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void DeleteGoods(GoodsControl control)
         {
-            if(GoodsDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
+            if (GoodsDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
             {
                 this.mainWindow.stkGoods.Children.Remove(control);
             }
@@ -163,9 +179,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 Filter = "Excel Workbook|*.xlsx"
             };
-            if(saveFileDialog.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() == true)
             {
-                using(XLWorkbook workbook = new XLWorkbook())
+                using (XLWorkbook workbook = new XLWorkbook())
                 {
                     DataTable dt = GoodsDAL.Instance.LoadData();
                     dt.Columns.Remove("imageFile");
@@ -174,7 +190,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 MessageBox.Show("Xuất dữ liệu thành công!!!", "Thông báo");
             }
-            
+
         }
         void AddOrUpdate(AddGoodsWindow addGoodsWd)
         {
@@ -191,38 +207,43 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             byte[] imgByteArr;
-            try
-            {
-                imgByteArr = Converter.Instance.ConvertImageToBytes(imageFileName);
-            }
-            catch
-            {
-                imgByteArr = GoodsDAL.Instance.GetGoods(addGoodsWd.txtIdGoods.Text).ImageFile;
-            }
+
+            ImageBrush imageBrush = (ImageBrush)addGoodsWd.grdSelectImg.Background;
+            imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
+            /*  try
+              {
+                   imgByteArr = Converter.Instance.ConvertImageToBytes(imageFileName);
+              }
+              catch
+              {
+                  imgByteArr = GoodsDAL.Instance.GetGoods(ConvertToID(addGoodsWd.txtIdGoods.Text).ToString()).ImageFile;
+              }*/
+
             Goods newGoods = new Goods(ConvertToID(addGoodsWd.txtIdGoods.Text), addGoodsWd.txtName.Text,
                              0, 0, selectedGoodsType.IdGoodsType, imgByteArr, false);
-            if(isUpdate)
+            if (isUpdate)
             {
                 newGoods.Price = long.Parse(goodsControl.txbPrice.Text);
                 newGoods.Quantity = int.Parse(goodsControl.txbQuantity.Text);
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
             GoodsControl control = new GoodsControl();
-            if(isUpdate)
+            if (isUpdate)
             {
                 control = goodsControl;
             }
-           
+
             control.txbId.Text = AddPrifix("SP", newGoods.IdGoods) + newGoods.IdGoods.ToString();
             control.txbName.Text = newGoods.Name;
             control.txbGoodsType.Text = GoodsTypeDAL.Instance.GetGoodsTypeWithId(newGoods.IdGoodsType).Name;
             control.txbUnit.Text = GoodsTypeDAL.Instance.GetGoodsTypeWithId(newGoods.IdGoodsType).Unit;
             control.txbPrice.Text = newGoods.Price.ToString();
             control.txbQuantity.Text = newGoods.Quantity.ToString();
-            if (!isUpdate)
+            if (!isUpdate && (addGoodsWd.cboGoodsType.Text == mainWindow.cboFilterType.Text || mainWindow.cboFilterType.Text == "Tất cả" || string.IsNullOrEmpty(mainWindow.cboFilterType.Text)))
             {
                 this.mainWindow.stkGoods.Children.Add(control);
             }
+            listGoodsControl.Add(control);
             addGoodsWd.Close();
         }
         void OpenAddGoodsWindow(MainWindow mainWd)
@@ -230,14 +251,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             isUpdate = false;
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             int idMax = GoodsDAL.Instance.GetMaxId();
-            if(idMax >= 0)
+            if (idMax >= 0)
             {
-                addGoodsWd.txtIdGoods.Text =AddPrifix("SP", idMax) + (idMax + 1).ToString();
+                addGoodsWd.txtIdGoods.Text = AddPrifix("SP", idMax + 1) + (idMax + 1).ToString();
+                addGoodsWd.cboGoodsType.Text = "";
                 addGoodsWd.ShowDialog();
             }
         }
         void LoadGoodsToView(MainWindow mainWd)
         {
+            listGoodsControl.Clear();
             this.mainWindow = mainWd;
             mainWd.stkGoods.Children.Clear();
             DataTable dt = GoodsDAL.Instance.LoadData();
@@ -247,13 +270,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (name.ToLower().Contains(mainWd.txtSearchGoods.Text.ToLower()))
                 {
                     GoodsControl control = new GoodsControl();
-                    control.txbId.Text = AddPrifix("SP",int.Parse(dt.Rows[i].ItemArray[0].ToString())) + dt.Rows[i].ItemArray[0].ToString();
+                    control.txbId.Text = AddPrifix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString())) + dt.Rows[i].ItemArray[0].ToString();
                     control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                     control.txbPrice.Text = dt.Rows[i].ItemArray[2].ToString();
                     control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
                     control.txbGoodsType.Text = GoodsTypeDAL.Instance.GetGoodsTypeWithId(int.Parse(dt.Rows[i].ItemArray[4].ToString())).Name;
                     control.txbUnit.Text = GoodsTypeDAL.Instance.GetGoodsTypeWithId(int.Parse(dt.Rows[i].ItemArray[4].ToString())).Unit;
                     mainWd.stkGoods.Children.Add(control);
+                    listGoodsControl.Add(control);
                 }
             }
         }

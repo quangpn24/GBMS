@@ -66,7 +66,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 }
                 else
                 {
-                     query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted" +
+                     query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
                   "where idGoods = @idGoods";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
@@ -102,7 +102,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 DataTable dt = new DataTable();
                 conn.Open();
-                string query = "select * from Goods where isDeleted = 0";
+                string query = "select * from Goods where isDeleted = 0 order by price ASC";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 adapter.Fill(dt);
@@ -189,6 +189,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 adapter.Fill(dataTable);
                 if (dataTable.Rows.Count == 1)
                 {
+                    if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[0].ToString()))
+                        return 0;
                     return int.Parse(dataTable.Rows[0].ItemArray[0].ToString());
                 }
                 else

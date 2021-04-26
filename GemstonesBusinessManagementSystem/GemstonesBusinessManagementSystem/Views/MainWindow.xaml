@@ -14,7 +14,7 @@
     Height="830" 
     Width="1447" 
     x:Name="mainWd"
-    ResizeMode="NoResize" 
+    ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen" 
     Background="#FFF7F8FC">
     <Grid>
@@ -285,7 +285,7 @@
                                     RadiusX="4"
                                     Panel.ZIndex="-1" />
                                 <ComboBox
-                                    x:Name="cboFilter"
+                                    x:Name="cboFilterSort"
                                     materialDesign:ComboBoxAssist.ClassicMode="True"
                                     materialDesign:HintAssist.Hint="Sắp xếp"
                                     Height="40"
@@ -298,7 +298,17 @@
                                     HorizontalContentAlignment="Left"
                                     FontWeight="SemiBold"
                                     BorderBrush="{StaticResource Black2}" 
-                                    Background="{StaticResource White}"/>
+                                    Background="{StaticResource White}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding SortListGoodsCommand}"
+                                                                   CommandParameter="{Binding ElementName=mainWd}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <ComboBoxItem IsSelected="True">Giá tăng dần</ComboBoxItem>
+                                    <ComboBoxItem>Giá giảm dần</ComboBoxItem>
+                                    <ComboBoxItem>Bán chạy</ComboBoxItem>
+                                </ComboBox>
                             </Grid>
                         </StackPanel>
                     </Grid>
