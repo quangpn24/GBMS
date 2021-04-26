@@ -134,9 +134,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter.cs" />
+    <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\Connection.cs" />
     <Compile Include="DAL\GoodsDAL.cs" />
     <Compile Include="DAL\GoodsTypeDAL.cs" />
+    <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Goods.cs" />
     <Compile Include="Models\GoodsType.cs" />
     <Compile Include="Resources\UserControls\GoodsControl.xaml.cs">
@@ -144,16 +146,27 @@
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GoodsViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\SignUpViewModel.cs" />
     <Compile Include="Views\AddGoodsWindow.xaml.cs">
       <DependentUpon>AddGoodsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ForgotPasswordWindow.xaml.cs">
+      <DependentUpon>ForgotPasswordWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SignUpWindow.xaml.cs">
+      <DependentUpon>SignUpWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\ButtonStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -183,7 +196,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\ForgotPasswordWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SignUpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -3,4 +3,6 @@
                     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources" 
                     xmlns:viewmodels="clr-namespace:GemstonesBusinessManagementSystem.ViewModels">
     <viewmodels:GoodsViewModel x:Key="GoodsVM"/>
+    <viewmodels:LoginViewModel x:Key="LoginVM"/>
+    <viewmodels:SignUpViewModel x:Key="SignUpVM"/>
 </ResourceDictionary>
