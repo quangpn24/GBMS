@@ -30,32 +30,6 @@
             VerticalAlignment="Top" 
             Background="{StaticResource White}" 
             Grid.RowSpan="2">
-            <TreeView>
-                <TreeViewItem MinWidth="200" >
-                    <TreeViewItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="HomeOutline" />
-                            <TextBlock Text="Home"/>
-                        </StackPanel>
-                    </TreeViewItem.Header>
-                </TreeViewItem>
-                <TreeViewItem MinWidth="200">
-                    <TreeViewItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="HomeOutline" />
-                            <TextBlock Text="Home"/>
-                        </StackPanel>
-                    </TreeViewItem.Header>
-                </TreeViewItem>
-                <TreeViewItem MinWidth="200">
-                    <TreeViewItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="HomeOutline" />
-                            <TextBlock Text="Home"/>
-                        </StackPanel>
-                    </TreeViewItem.Header>
-                </TreeViewItem>
-            </TreeView>
         </Grid>
         <Grid
             Grid.Column="2">
@@ -72,7 +46,8 @@
                     HorizontalAlignment="Left" 
                     TextWrapping="Wrap" 
                     Text="Nhân viên"
-                    VerticalAlignment="Center" Margin="0" />
+                    VerticalAlignment="Center" 
+                    Margin="0" />
                 <StackPanel 
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
@@ -84,7 +59,7 @@
                         VerticalAlignment="Center" 
                         Foreground="{StaticResource Dark}"
                         FontSize="22" 
-                        FontFamily="/GemstonesBusinessManagementSystem;component/Resources/Fonts/#Lato Heavy"
+                        FontWeight="Bold"
                         Width="200"
                         Margin="0,0,20,0" 
                         FlowDirection="RightToLeft"/>
@@ -101,10 +76,248 @@
                     </Ellipse>
                 </StackPanel>
             </Grid>
+            <Grid 
+                x:Name="grdBody_Employee" 
+                Margin="0"
+                Grid.Row="1" 
+                DataContext="{StaticResource EmployeeVM}"
+                Visibility="Visible">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <i:InvokeCommandAction Command="{Binding LoadEmployeeCommand}" 
+                                   CommandParameter="{Binding ElementName=wdMain}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    HorizontalAlignment="Right" 
+                    Margin="0,0,20,0" 
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center">
+                    <Button
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding }"
+                        Content="Cài đặt" 
+                        Margin="0,0,20,0"/>
+                    <Button
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding ExportExcelCommand}"
+                        Content="Xuất excel"
+                        Margin="0,0,20,0"/>
+                    <Button
+                        x:Name="btnAddEmployee"
+                        Style="{StaticResource GreenButton}"
+                        Command="{Binding OpenAddEmployeeWindowCommand}"
+                        Content="Thêm nhân viên" 
+                        Margin="0"/>
+                </StackPanel>
+                <Grid 
+                    Grid.Row="2"
+                    Margin="20,0,20,20"
+                    Style="{StaticResource DropShadow}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid 
+                        x:Name="grdFindEmployee" 
+                        Margin="20,20,0,0" 
+                        Height="46" 
+                        Width="320"
+                        Style="{StaticResource DropShadow}"
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Top">
+                        <TextBox 
+                            x:Name="txtSearch"
+                            materialDesign:HintAssist.Hint="Tìm nhân viên" 
+                            FontSize="18" 
+                            BorderThickness="0" 
+                            MaxLines="1"
+                            Margin="12,0" 
+                            FontWeight="Medium" 
+                            Height="40" 
+                            HorizontalContentAlignment="Left" 
+                            VerticalContentAlignment="Center"
+                            Foreground="{DynamicResource Black2}" 
+                            SelectionBrush="{DynamicResource Primary}"
+                            Padding="2,0,0,0"
+                            VerticalAlignment="Center" >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding SearchCommand}" 
+                                                   CommandParameter="{Binding ElementName=wdMain}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                        <materialDesign:PackIcon 
+                            Kind="Magnify" 
+                            Foreground="{StaticResource Black2}"
+                            Height="26"
+                            Width="26" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0"/>
+                        <Rectangle 
+                            Fill="{DynamicResource White}" 
+                            RadiusY="4" 
+                            RadiusX="4"
+                            Panel.ZIndex="-1" />
+                    </Grid>
+                    <Border
+                        CornerRadius="4,4,0,0"
+                        BorderThickness="1"
+                        Grid.Row="1" 
+                        Margin="20,0"
+                        Height="40" 
+                        VerticalAlignment="Top" 
+                        BorderBrush="{StaticResource Primary}" 
+                        Background="{StaticResource Primary}" >
+                        <Grid  Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2.5*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="Mã NV" 
+                                Grid.Column="0"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                            <TextBlock
+                                Text="Họ tên" 
+                                Grid.Column="1"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" 
+                                Margin="20,0,0,0"/>
+                            <TextBlock
+                                Text="Chức vụ" 
+                                Grid.Column="2"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                Text="SĐT" 
+                                Grid.Column="3"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" 
+                                Margin="0"/>
+                            <TextBlock
+                                Text="Địa chỉ" 
+                                Grid.Column="4"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" 
+                                Margin="0"/>
+                            <TextBlock
+                                Text="Lương" 
+                                Grid.Column="5"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <Grid
+                        Grid.Row="1"
+                        Margin="20,40" >
+                        <ScrollViewer 
+                            VerticalScrollBarVisibility="Auto" 
+                            HorizontalScrollBarVisibility="Disabled" >
+                            <StackPanel 
+                                x:Name="stkEmployeeList" 
+                                VerticalAlignment="Top" >
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                    <StackPanel
+                        Grid.Row="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Bottom" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,0,20,0"
+                        Visibility="Hidden">
+                        <Button 
+                            x:Name="btnFirstPage" 
+                            Margin="0" 
+                            ToolTip="Trang đầu"
+                            Command="{Binding FirstPageCommand}"
+                            CommandParameter="{Binding ElementName=wdHome}"
+                            Background="{DynamicResource White}" 
+                            BorderBrush="{StaticResource White}"
+                            Foreground="{StaticResource Dark}" 
+                            Height="36">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronDoubleLeft"/>
+                        </Button>
+                        <Button 
+                            x:Name="btnPreviousPage" 
+                            Margin="8,0"
+                            ToolTip="Trang trước"
+                            Command="{Binding PreviousPageCommand}" 
+                            CommandParameter="{Binding ElementName=wdHome}"
+                            Background="{DynamicResource White}" 
+                            BorderBrush="{StaticResource White}"
+                            Foreground="{StaticResource Dark}" 
+                            Height="36">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronLeft" />
+                        </Button>
+                        <Button 
+                            x:Name="btnNextPage" 
+                            Margin="8,0" 
+                            ToolTip="Trang tiếp theo"
+                            Command="{Binding NextPageCommand}"
+                            CommandParameter="{Binding ElementName=wdHome}"
+                            Background="{DynamicResource White}" 
+                            BorderBrush="{StaticResource White}"
+                            Foreground="{StaticResource Dark}" 
+                            Height="36">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronRight" />
+                        </Button>
+                        <Button 
+                            x:Name="btnLastPage" 
+                            Margin="0" 
+                            ToolTip="Trang cuối"
+                            Command="{Binding LastPageCommand}" 
+                            CommandParameter="{Binding ElementName=wdHome}"
+                            Background="{DynamicResource White}" 
+                            BorderBrush="{StaticResource White}"
+                            Foreground="{StaticResource Dark}" 
+                            Height="36">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronDoubleRight" />
+                        </Button>
+                    </StackPanel>
+                    <Rectangle 
+                        Fill="{DynamicResource White}" 
+                        RadiusY="4" 
+                        RadiusX="4"
+                        Grid.RowSpan="2"
+                        Panel.ZIndex="-1" />
+                </Grid>
+            </Grid>
             <Grid
                 x:Name="grdBody_Goods"
                 Grid.Row="1"
-                Visibility="Visible"
+                Visibility="Hidden"
                 DataContext="{StaticResource GoodsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
