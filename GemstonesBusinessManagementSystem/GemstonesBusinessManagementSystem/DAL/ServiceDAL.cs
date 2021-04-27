@@ -82,7 +82,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             return services;
         }
-        public List<Service> FindServiceByName(string name)
+        public List<Service> FindByName(string name)
         {
             DataTable dt = new DataTable();
             List<Service> services = new List<Service>();
@@ -117,7 +117,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             return services;
         }
-        public bool AddService(Service service)
+        public bool Add(Service service)
         {
             try
             {
@@ -189,12 +189,12 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Close();
             }
         }
-        public bool DeleteService(string idService)
+        public bool Delete(string idService)
         {
             try
             {
                 conn.Open();
-                string queryString = "UPDATE gemstonesbusinessmanagementsystem.service SET isDeleted = 1,isActived=1 WHERE idService = @idService; ";
+                string queryString = "UPDATE gemstonesbusinessmanagementsystem.service SET isDeleted = 1,isActived=0 WHERE idService = @idService; ";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idService", idService);
                 command.ExecuteNonQuery();
@@ -209,7 +209,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Close();
             }
         }
-        public bool UpdateService(Service service)
+        public bool Update(Service service)
         {
             try
             {
@@ -236,7 +236,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Close();
             }
         }
-        public bool isExist(string name)
+        public bool IsExisted(string name)
         {
             try
             {

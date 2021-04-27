@@ -51,7 +51,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             OpenAddServiceWinDowCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => OpenAddServiceWinDow(parameter));
             ExportExcelCommand = new RelayCommand<Window>((parameter) => true, (parameter) => ExportExcel());
             GoToNextPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => GoToNextPage(parameter, ++currentPage));
-            GoToPreviousPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => LoadServices(parameter, --currentPage));
+            GoToPreviousPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => GoToPreviousPage(parameter, --currentPage));
             FindServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => FindService(parameter));
             RestoreServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => RestoreService(parameter));
             FilterServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => FilterService(parameter));
@@ -65,7 +65,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addService.txtIdService.Text = uCService.txbSerial.Text;
             oldName = addService.txtNameOfService.Text = uCService.txbName.Text;
             addService.txtPriceOfService.Text = uCService.txbPrice.Text;
-            addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 1 : 0;
+            addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 1 : 0; // kiểm tra isActived
             addService.ShowDialog();
         }
         public void AddService(AddServiceWindow addServiceWindow)
@@ -75,10 +75,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 if (ConvertToID(addServiceWindow.txtIdService.Text) > ServiceDAL.Instance.FindMaxId()) // Tạo dịch vụ mới vì id mới
                 {
-                    if (!ServiceDAL.Instance.isExist(addServiceWindow.txtNameOfService.Text)) // kiểm tra tên dịch vụ mới
+                    if (!ServiceDAL.Instance.IsExisted(addServiceWindow.txtNameOfService.Text)) // kiểm tra tên dịch vụ mới
                     {
                         Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
-                        if (ServiceDAL.Instance.AddService(service))
+                        if (ServiceDAL.Instance.Add(service))
                         {
                             MessageBox.Show("Thành công!");
                             addServiceWindow.Close();
@@ -110,10 +110,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else // id đã xuất hiện thì cập nhật
                 {
-                    if (!(ServiceDAL.Instance.isExist(addServiceWindow.txtNameOfService.Text) && oldName != addServiceWindow.txtNameOfService.Text))
+                    if (!(ServiceDAL.Instance.IsExisted(addServiceWindow.txtNameOfService.Text) && oldName != addServiceWindow.txtNameOfService.Text))
                     {
                         Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
-                        if (ServiceDAL.Instance.UpdateService(service))
+                        if (ServiceDAL.Instance.Update(service))
                         {
                             addServiceWindow.Close();
                             selectedUCService.txbName.Text = service.Name;
@@ -154,7 +154,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (MessageBox.Show("Xác nhận xóa dịch vụ?", "Thông báo?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                if (ServiceDAL.Instance.DeleteService(uCService.txbSerial.Text))
+                if (ServiceDAL.Instance.Delete(uCService.txbSerial.Text))
                 {
                     mainWindow.stkService.Children.Remove(uCService);
                     services.RemoveAll(x => x.IdService == int.Parse(uCService.txbSerial.Text));
@@ -217,7 +217,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             mainWindow.cboSelectFilter.SelectedIndex = -1;
             mainWindow.cboSelectSort.SelectedIndex = -1;
-            services = ServiceDAL.Instance.FindServiceByName(mainWindow.txtSearchService.Text);
+            services = ServiceDAL.Instance.FindByName(mainWindow.txtSearchService.Text);
             currentPage = 0;
             LoadServices(mainWindow, currentPage);
         }
@@ -274,7 +274,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void FilterService(MainWindow mainWindow)
         {
-            services = ServiceDAL.Instance.FindServiceByName(mainWindow.txtSearchService.Text);
+            services = ServiceDAL.Instance.FindByName(mainWindow.txtSearchService.Text);
             services.RemoveAll(x => x.IsActived != mainWindow.cboSelectFilter.SelectedIndex);
             if (mainWindow.cboSelectSort.SelectedIndex >= 0)
             {
