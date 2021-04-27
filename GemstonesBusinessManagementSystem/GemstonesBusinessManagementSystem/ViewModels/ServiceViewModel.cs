@@ -73,18 +73,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (CheckData(addServiceWindow)) // kiểm tra dữ liệu đầu vào
             {
 
-                if (int.Parse(addServiceWindow.txtIdService.Text) > ServiceDAL.Instance.FindMaxId()) // Tạo dịch vụ mới vì id mới
+                if (ConvertToID(addServiceWindow.txtIdService.Text) > ServiceDAL.Instance.FindMaxId()) // Tạo dịch vụ mới vì id mới
                 {
                     if (!ServiceDAL.Instance.isExist(addServiceWindow.txtNameOfService.Text)) // kiểm tra tên dịch vụ mới
                     {
-                        Service service = new Service(int.Parse(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
+                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.AddService(service))
                         {
                             MessageBox.Show("Thành công!");
                             addServiceWindow.Close();
 
                             ServiceControl uCService = new ServiceControl();
-                            uCService.txbSerial.Text = service.IdService.ToString();
+                            uCService.txbSerial.Text = AddPrefix("DV", service.IdService);
                             uCService.txbName.Text = service.Name;
                             uCService.txbPrice.Text = service.Price.ToString();
                             uCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
@@ -97,7 +97,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                                     mainWindow.stkService.Children.Add(uCService);
                                 }
                             }
-
                         }
                         else
                         {
@@ -113,7 +112,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (!(ServiceDAL.Instance.isExist(addServiceWindow.txtNameOfService.Text) && oldName != addServiceWindow.txtNameOfService.Text))
                     {
-                        Service service = new Service(int.Parse(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
+                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.UpdateService(service))
                         {
                             addServiceWindow.Close();
@@ -121,7 +120,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             selectedUCService.txbPrice.Text = service.Price.ToString();
                             selectedUCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                             selectedUCService.txbHiredNumber.Text = service.NumberOfHired.ToString();
-                            if (service.IsActived != mainWindow.cboSelectFilter.SelectedIndex && mainWindow.cboSelectFilter.SelectedIndex!=-1) // kiểm tra trạng thái để remove uc ra khỏi stk 
+                            if (service.IsActived != mainWindow.cboSelectFilter.SelectedIndex && mainWindow.cboSelectFilter.SelectedIndex != -1) // kiểm tra trạng thái để remove uc ra khỏi stk 
                             {
                                 mainWindow.stkService.Children.Remove(selectedUCService);
                                 services.RemoveAll(x => x.IdService == service.IdService);
@@ -197,7 +196,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             for (int i = start; i < end; i++)
             {
                 ServiceControl uCService = new ServiceControl();
-                uCService.txbSerial.Text = services[i].IdService.ToString();
+                uCService.txbSerial.Text = AddPrefix("DV", services[i].IdService);
                 uCService.txbName.Text = services[i].Name;
                 uCService.txbPrice.Text = services[i].Price.ToString();
                 uCService.txbStatus.Text = services[i].IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
@@ -225,7 +224,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void OpenAddServiceWinDow(MainWindow mainWindow)
         {
             AddServiceWindow addServiceWindow = new AddServiceWindow();
-            addServiceWindow.txtIdService.Text = (ServiceDAL.Instance.FindMaxId() + 1).ToString();
+            addServiceWindow.txtIdService.Text = AddPrefix("DV", (ServiceDAL.Instance.FindMaxId() + 1));
             addServiceWindow.ShowDialog();
         }
         public void ExportExcel()
