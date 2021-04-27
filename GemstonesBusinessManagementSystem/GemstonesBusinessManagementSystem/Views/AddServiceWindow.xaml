@@ -12,53 +12,15 @@
         Title="Thêm dịch vụ"
         x:Name="wdAddService"
         Height="400"
-        Width="700"
+        Width="500"
         Background="{StaticResource White}"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
     <Grid Margin="0">
-        <Grid x:Name="grdSelectImg"
-              Margin="50,50,0,0"
-              VerticalAlignment="Top"
-              Width="150"
-              Height="150"
-              HorizontalAlignment="Left">
-            <Rectangle x:Name="recImage"
-                       StrokeDashArray="4 2"
-                       Stroke="{StaticResource Primary}"
-                       StrokeThickness="4"
-                       RadiusX="4"
-                       RadiusY="4"
-                       Width="150"
-                       Height="150"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top" />
-            <Button x:Name="btnSelectImage"
-                    Style="{StaticResource PrimaryButton}"
-                    Height="35"
-                    Width="100"
-                    Content="Chọn ảnh"
-                    FontSize="16"
-                    FontWeight="SemiBold"
-                    ToolTip="Chọn ảnh"
-                    Margin="0,0,0,12"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    FocusVisualStyle="{x:Null}"
-                    Padding="0" />
-            <materialDesign:PackIcon x:Name="iconImage"
-                                     Kind="FileImageOutline"
-                                     Foreground="{StaticResource Primary}"
-                                     Width="64"
-                                     Height="54"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Top"
-                                     Margin="0,25,0,0" />
-        </Grid>
         <Grid x:Name="grdInfo"
               HorizontalAlignment="Left"
               Height="240"
-              Margin="240,40,0,0"
+              Margin="40,40,0,0"
               VerticalAlignment="Top"
               Width="420">
             <Grid Margin="0"
@@ -207,13 +169,6 @@
                        Height="32"
                        Margin="0"
                        VerticalAlignment="Center" />
-                <!--<Rectangle HorizontalAlignment="Right"
-                           Height="40"
-                           Width="230"
-                           RadiusY="6"
-                           RadiusX="6"
-                           Stroke="{StaticResource Light}"
-                           Margin="0" />-->
                 <ComboBox x:Name="cboStatus"
                           Grid.Row="0"
                           FontSize="14"
@@ -233,7 +188,7 @@
                     <ComboBoxItem Content="Dừng hoạt động" />
                     <ComboBoxItem IsSelected="True"
                                   Content="Đang hoạt động" />
-                    
+
                 </ComboBox>
             </Grid>
         </Grid>

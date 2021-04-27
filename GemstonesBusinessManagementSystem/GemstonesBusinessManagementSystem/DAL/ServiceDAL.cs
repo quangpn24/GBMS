@@ -119,7 +119,6 @@ namespace GemstonesBusinessManagementSystem.DAL
         }
         public bool AddService(Service service)
         {
-
             try
             {
                 conn.Open();
