@@ -220,7 +220,12 @@
                     CaretBrush="{StaticResource Primary}" 
                     FontWeight="SemiBold" 
                     Padding="2,0,0,0" Foreground="{DynamicResource Gray1}">
-
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PasswordChanged">
+                            <i:InvokeCommandAction Command="{Binding KeyCommand}" 
+                                                   CommandParameter="{Binding ElementName=pwbKey}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </PasswordBox>
 
             </Grid>

@@ -52,6 +52,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PasswordChangedCommand = new RelayCommand<PasswordBox>((parameter) => true, (parameter) => EncodingPassword(parameter));
             PasswordConfirmChangedCommand = new RelayCommand<PasswordBox>((parameter) => true, (parameter) => EncodingConfirmPassword(parameter));
             ChangePasswordCommand = new RelayCommand<ForgotPasswordWindow>((parameter) => true, (parameter) => ChangePassword(parameter));
+            OpenLoginWinDowCommand = new RelayCommand<Window>(parameter => true, parameter => parameter.Close());
         }
 
         public void EncodingPassword(PasswordBox parameter)
@@ -83,15 +84,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //check password
             if (string.IsNullOrEmpty(parameter.pwbPassword.Password))
             {
-                MessageBox.Show("Vui lòng nhập mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                parameter.pwbKey.Focus();
+                MessageBox.Show("Vui lòng nhập mật khẩu mới!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                parameter.pwbPassword.Focus();
                 return;
             }
             //check password confirm
             if (string.IsNullOrEmpty(parameter.pwbPasswordConfirm.Password))
             {
                 MessageBox.Show("Vui lòng xác thực mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                parameter.pwbKey.Focus();
+                parameter.pwbPasswordConfirm.Focus();
                 return;
             }
             if (password != passwordConfirm)
@@ -149,11 +150,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 parameter.pwbKey.Focus();
                 return;
             }
-            
-            /*if(AccountDAL.Instance.isExistKey(parameter.pwbKey.Password) == false)
+
+            //kiem tra do chinh xac
+            /*MySqlConnection connection = new MySqlConnection();
+            try
             {
                 
             }*/
+
+
             if(password != passwordConfirm)
             {
                 MessageBox.Show("Mật khẩu không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);

@@ -155,7 +155,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 conn.Open();
-                string query = "select * from account where idAccount = " + username;
+                string query = "select * from account where username  = '" + username + "'";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -184,7 +184,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 conn.Open();
-                string query = "update account set password=@password where username=@username";
+                string query = "update Account set password=@password where username = @username";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@password", password);
