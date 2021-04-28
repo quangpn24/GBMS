@@ -68,14 +68,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         public void ChangePassword(ForgotPasswordWindow parameter)
         {
-            /*if (string.IsNullOrEmpty(parameter.pwbKey.Password))
+            if (string.IsNullOrEmpty(parameter.pwbKey.Password))
             {
                 MessageBox.Show("Vui lòng nhập mã xác thực!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 parameter.pwbKey.Focus();
                 return;
-            }*/
+            }
             //check username
-            if(string.IsNullOrEmpty(parameter.txtUsername.Text) || !AccountDAL.Instance.IsExistUsername(parameter.txtUsername.Text))
+            if (string.IsNullOrEmpty(parameter.txtUsername.Text) || !AccountDAL.Instance.IsExistUsername(parameter.txtUsername.Text))
             {
                 parameter.txtUsername.Focus();
                 parameter.txtUsername.Text = "";
@@ -94,6 +94,31 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng xác thực mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 parameter.pwbPasswordConfirm.Focus();
                 return;
+            }
+            //kiem tra do chinh xac
+            Connection connection = new Connection();
+            try
+            {
+                connection.conn.Open();
+                string query = "select * from authorizations where authkey = '" + parameter.pwbKey.Password + "'";
+                MySqlCommand cmd = new MySqlCommand(query, connection.conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                if (dt.Rows.Count < 1)
+                {
+                    MessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    parameter.pwbKey.Focus();
+                    return;
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                connection.conn.Close();
             }
             if (password != passwordConfirm)
             {
@@ -116,12 +141,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             //check ma xac thuc
-            /*if (string.IsNullOrEmpty(parameter.pwbKey.Password))
+            if (string.IsNullOrEmpty(parameter.pwbKey.Password))
             {
                 MessageBox.Show("Vui lòng nhập mã xác thực!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 parameter.pwbKey.Focus();
                 return;
-            }*/
+            }
             //check loai nhan vien
             /*if (string.IsNullOrEmpty(parameter.cboSelectEmployee.Text))
             {
@@ -152,14 +177,33 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
 
             //kiem tra do chinh xac
-            /*MySqlConnection connection = new MySqlConnection();
+            Connection connection = new Connection();
             try
             {
-                
-            }*/
+                connection.conn.Open();
+                string query = "select * from authorizations where authKey = '" + parameter.pwbKey.Password + "'";
+                MySqlCommand cmd = new MySqlCommand(query, connection.conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                if(dt.Rows.Count < 1)
+                {
+                    MessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    parameter.pwbKey.Focus();
+                    return;
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                connection.conn.Close();
+            }
 
 
-            if(password != passwordConfirm)
+            if (password != passwordConfirm)
             {
                 MessageBox.Show("Mật khẩu không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
