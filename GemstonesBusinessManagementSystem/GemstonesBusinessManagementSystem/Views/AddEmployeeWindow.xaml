@@ -79,7 +79,7 @@
                     Stroke="{StaticResource Gray2}" 
                     HorizontalAlignment="Right"/>
                 <TextBox 
-                    x:Name="txtIdEmployee"
+                    x:Name="txtId"
                     materialDesign:HintAssist.Hint="Mã tự động"
                     HorizontalAlignment="Right"  
                     Width="210" 
@@ -152,9 +152,12 @@
                     Stroke="{StaticResource Gray2}"  />
                 <ComboBox
                     x:Name="cboPosition"
+                    ItemsSource="{Binding ItemSourcePosition}"
+                    SelectedItem="{Binding SelectedPosition}"
+                    DisplayMemberPath="Position"
                     materialDesign:HintAssist.Hint="Chức vụ" 
-                    IsEditable="True" 
                     Height="40" 
+                    IsEditable="False"
                     FontSize="14" 
                     Width="210"
                     BorderThickness="0"
@@ -162,11 +165,7 @@
                     Margin="0,0,10,0" 
                     HorizontalAlignment="Right"
                     VerticalContentAlignment="Center" 
-                    HorizontalContentAlignment="Left">
-                    <ComboBoxItem x:Name="cboPositionManage" Content="Nhân viên quản lý"/>
-                    <ComboBoxItem x:Name="cboPositionCashier" Content="Nhân viên thu ngân"/>
-                    <ComboBoxItem x:Name="cboPositionGuard" Content="Bảo vệ"/>
-                </ComboBox>
+                    HorizontalContentAlignment="Left"/>
             </Grid>
             <Grid 
                 Margin="0,20,0,0"
@@ -347,7 +346,7 @@
                     RadiusX="6" 
                     Stroke="{StaticResource Gray2}" />
                 <TextBox 
-                    x:Name="txtTelephoneNumber"
+                    x:Name="txtPhoneNumber"
                     materialDesign:HintAssist.Hint="Số điện thoại" 
                     HorizontalAlignment="Right" 
                     MaxLength="11"

@@ -4,7 +4,7 @@
     <!-- Override material design color -->
     <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#FF00329E"/>
     <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FF1D1D1D"/>
-    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#FF0051FF"/>
+    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#FF00329E"/>
     <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFF9FEF9"/>
     <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#FFD1E6FA"/>
     <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFEFEFE"/>

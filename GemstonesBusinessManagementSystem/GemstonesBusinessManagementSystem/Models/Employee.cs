@@ -15,7 +15,7 @@ namespace GemstonesBusinessManagementSystem.Models
 		private string phoneNumber;
 		private string address;
 		private DateTime dateOfBirth;
-		private string position;
+		private int idPosition;
 		private DateTime startingDate;
 		private byte[] imageFile;
 		private bool isDeleted;
@@ -27,7 +27,7 @@ namespace GemstonesBusinessManagementSystem.Models
         public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
         public string Address { get => address; set => address = value; }
         public DateTime DateOfBirth { get => dateOfBirth; set => dateOfBirth = value; }
-        public string Position { get => position; set => position = value; }
+        public int IdPosition { get => idPosition; set => idPosition = value; }
         public DateTime StartingDate { get => startingDate; set => startingDate = value; }
         public byte[] ImageFile { get => imageFile; set => imageFile = value; }
         public bool IsDeleted { get => isDeleted; set => isDeleted = value; }
@@ -39,17 +39,17 @@ namespace GemstonesBusinessManagementSystem.Models
 
         public Employee(int idEmployee, string name, string gender, 
             string phonenumber, string address, DateTime dateOfBirth,
-            string position, DateTime startingdate, int idAccount,
+            int idposition, DateTime startingdate, int idAccount,
             byte[] image, bool isdeleted = false)
         {
             this.idAccount = idAccount;
-            this.IdEmployee = idEmployee;
+            this.idEmployee = idEmployee;
             this.name = name;
             this.gender = gender;
             this.phoneNumber = phonenumber;
             this.address = address;
             this.dateOfBirth = dateOfBirth;
-            this.position = position;
+            this.idPosition = idposition;
             this.startingDate = startingdate;
             this.imageFile = image;
             this.isDeleted = isdeleted;

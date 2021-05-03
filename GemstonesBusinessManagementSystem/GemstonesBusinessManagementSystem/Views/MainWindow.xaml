@@ -13,7 +13,7 @@
     Title="Phần mềm quản lý Tiệm vàng bạc đá quý"
     Height="830" 
     Width="1447" 
-    x:Name="mainWd"
+    x:Name="wdMain"
     ResizeMode="NoResize" 
     WindowStartupLocation="CenterScreen" 
     Background="#FFF7F8FC">
@@ -99,7 +99,8 @@
                     VerticalAlignment="Center">
                     <Button
                         Style="{StaticResource PrimaryButton}"
-                        Command="{Binding }"
+                        Command="{Binding OpenPositionWindowCommand}"
+                        CommandParameter="{Binding ElementName=wdMain}"
                         Content="Cài đặt" 
                         Margin="0,0,20,0"/>
                     <Button
@@ -110,7 +111,7 @@
                     <Button
                         x:Name="btnAddEmployee"
                         Style="{StaticResource GreenButton}"
-                        Command="{Binding OpenAddEmployeeWindowCommand}"
+                        Command="{Binding OpenAddWindowCommand}"
                         Content="Thêm nhân viên" 
                         Margin="0"/>
                 </StackPanel>
@@ -121,6 +122,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="80"/>
                         <RowDefinition/>
+                        <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
                     <Grid 
                         x:Name="grdFindEmployee" 
@@ -166,6 +168,73 @@
                             RadiusX="4"
                             Panel.ZIndex="-1" />
                     </Grid>
+                    <StackPanel
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,0,20,0">
+                        <Grid 
+                            Margin="0" 
+                            Height="45" 
+                            Width="210"
+                            Style="{StaticResource DropShadow}"
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center">
+                            <Rectangle 
+                                Fill="{DynamicResource White}" 
+                                RadiusY="4" 
+                                RadiusX="4"
+                                Panel.ZIndex="-1" />
+                            <ComboBox
+                                x:Name="cboFilterPosition"
+                                materialDesign:ComboBoxAssist.ClassicMode="True"
+                                materialDesign:HintAssist.Hint="Chức vụ"
+                                Height="40"
+                                FontSize="18"
+                                Width="200"
+                                BorderThickness="0"
+                                Padding="10,0,0,0"
+                                DisplayMemberPath="Name"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Left"
+                                FontWeight="SemiBold"
+                                BorderBrush="{StaticResource Black2}" 
+                                Background="{StaticResource White}">
+                                <!--<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding }"
+                                                                CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>-->
+                            </ComboBox>
+                        </Grid>
+                        <Grid 
+                            Margin="20,0,0,0" 
+                            Height="45" 
+                            Width="210"
+                            Style="{StaticResource DropShadow}"
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center">
+                            <Rectangle 
+                                Fill="{DynamicResource White}" 
+                                RadiusY="4" 
+                                RadiusX="4"
+                                Panel.ZIndex="-1" />
+                            <ComboBox
+                                x:Name="cboSortEmployee"
+                                materialDesign:ComboBoxAssist.ClassicMode="True"
+                                materialDesign:HintAssist.Hint="Sắp xếp"
+                                Height="40"
+                                FontSize="18"
+                                Width="200"
+                                BorderThickness="0"
+                                Padding="10,0,0,0"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Left"
+                                FontWeight="SemiBold"
+                                BorderBrush="{StaticResource Black2}" 
+                                Background="{StaticResource White}"/>
+                        </Grid>
+                    </StackPanel>
                     <Border
                         CornerRadius="4,4,0,0"
                         BorderThickness="1"
@@ -228,89 +297,64 @@
                     </Border>
                     <Grid
                         Grid.Row="1"
-                        Margin="20,40" >
+                        Margin="20,40,20,0" >
                         <ScrollViewer 
                             VerticalScrollBarVisibility="Auto" 
                             HorizontalScrollBarVisibility="Disabled" >
                             <StackPanel 
                                 x:Name="stkEmployeeList" 
-                                VerticalAlignment="Top" >
-                            </StackPanel>
+                                VerticalAlignment="Top" />
                         </ScrollViewer>
                     </Grid>
                     <StackPanel
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Orientation="Horizontal"
-                        VerticalAlignment="Bottom" 
+                        VerticalAlignment="Center" 
                         HorizontalAlignment="Right" 
-                        Margin="0,0,20,0"
-                        Visibility="Hidden">
-                        <Button 
-                            x:Name="btnFirstPage" 
-                            Margin="0" 
-                            ToolTip="Trang đầu"
-                            Command="{Binding FirstPageCommand}"
-                            CommandParameter="{Binding ElementName=wdHome}"
-                            Background="{DynamicResource White}" 
-                            BorderBrush="{StaticResource White}"
-                            Foreground="{StaticResource Dark}" 
-                            Height="36">
-                            <materialDesign:PackIcon 
-                                Width="26"
-                                Height="28"
-                                Kind="ChevronDoubleLeft"/>
-                        </Button>
+                        Margin="0,0,20,0">
+                        <TextBlock 
+                            x:Name="txtNumberOfItems"
+                            Text="1-10 of 100 items"
+                            Margin="0,0,40,0"
+                            FontSize="14"
+                            TextAlignment="Justify"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Foreground="{DynamicResource Black2}"/>
                         <Button 
                             x:Name="btnPreviousPage" 
                             Margin="8,0"
                             ToolTip="Trang trước"
-                            Command="{Binding PreviousPageCommand}" 
-                            CommandParameter="{Binding ElementName=wdHome}"
-                            Background="{DynamicResource White}" 
-                            BorderBrush="{StaticResource White}"
-                            Foreground="{StaticResource Dark}" 
-                            Height="36">
+                            Style="{StaticResource PaginationButton}"
+                            Command="{Binding PreviousPageCommand}"
+                            CommandParameter="{Binding ElementName=wdHome}">
                             <materialDesign:PackIcon 
                                 Width="26"
                                 Height="28"
-                                Kind="ChevronLeft" />
+                                Kind="ChevronLeft" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Center" />
                         </Button>
                         <Button 
                             x:Name="btnNextPage" 
-                            Margin="8,0" 
+                            Margin="8,0,0,0" 
                             ToolTip="Trang tiếp theo"
+                            Style="{StaticResource PaginationButton}"
                             Command="{Binding NextPageCommand}"
-                            CommandParameter="{Binding ElementName=wdHome}"
-                            Background="{DynamicResource White}" 
-                            BorderBrush="{StaticResource White}"
-                            Foreground="{StaticResource Dark}" 
-                            Height="36">
+                            CommandParameter="{Binding ElementName=wdHome}">
                             <materialDesign:PackIcon 
                                 Width="26"
                                 Height="28"
-                                Kind="ChevronRight" />
-                        </Button>
-                        <Button 
-                            x:Name="btnLastPage" 
-                            Margin="0" 
-                            ToolTip="Trang cuối"
-                            Command="{Binding LastPageCommand}" 
-                            CommandParameter="{Binding ElementName=wdHome}"
-                            Background="{DynamicResource White}" 
-                            BorderBrush="{StaticResource White}"
-                            Foreground="{StaticResource Dark}" 
-                            Height="36">
-                            <materialDesign:PackIcon 
-                                Width="26"
-                                Height="28"
-                                Kind="ChevronDoubleRight" />
+                                Kind="ChevronRight" 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
                         </Button>
                     </StackPanel>
                     <Rectangle 
                         Fill="{DynamicResource White}" 
                         RadiusY="4" 
                         RadiusX="4"
-                        Grid.RowSpan="2"
+                        Grid.RowSpan="3"
                         Panel.ZIndex="-1" />
                 </Grid>
             </Grid>
@@ -326,7 +370,7 @@
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadGoodsTypeCommand}"
-                                               CommandParameter="{Binding ElementName=mainWd}"/>
+                                               CommandParameter="{Binding ElementName=wdMain}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <Grid 
@@ -342,7 +386,7 @@
                             Height="45"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             Command="{Binding ExportExcelCommand}"
-                            CommandParameter="{Binding ElementName=mainWd}"
+                            CommandParameter="{Binding ElementName=wdMain}"
                             Background="{StaticResource Primary}"
                             Margin="0,0,20,0" 
                             FontSize="20"  
@@ -355,7 +399,7 @@
                             Height="45"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             Command="{Binding ImportGoodsCommand}"
-                            CommandParameter="{Binding ElementName=mainWd}"
+                            CommandParameter="{Binding ElementName=wdMain}"
                             Background="{StaticResource Primary}"
                             Margin="0,0,20,0" 
                             FontSize="20"  
@@ -368,7 +412,7 @@
                             Height="45"
                             Background="{StaticResource Success}"
                             Command="{Binding AddGoodsCommand}"
-                            CommandParameter="{Binding ElementName=mainWd}"
+                            CommandParameter="{Binding ElementName=wdMain}"
                             materialDesign:ButtonAssist.CornerRadius="4"
                             Margin="0" 
                             FontSize="20" 
@@ -420,7 +464,7 @@
                                 Grid.Column="6"
                                 IsDefault="True"
                                 Command="{Binding SearchCommand}"
-                                CommandParameter="{Binding ElementName=mainWd}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Height="30"
                                 Margin="0,0,10,0" 
                                 Background="{x:Null}" 
@@ -479,7 +523,7 @@
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged">
                                             <i:InvokeCommandAction Command="{Binding SelectionChangedGoodsTypeCommand}"
-                                                                   CommandParameter="{Binding ElementName=mainWd}"/>
+                                                                   CommandParameter="{Binding ElementName=wdMain}"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </ComboBox>
@@ -602,7 +646,7 @@
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Loaded">
                                 <i:InvokeCommandAction Command="{Binding LoadGoodsCommand}"
-                                           CommandParameter="{Binding ElementName=mainWd}"/>
+                                           CommandParameter="{Binding ElementName=wdMain}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ScrollViewer

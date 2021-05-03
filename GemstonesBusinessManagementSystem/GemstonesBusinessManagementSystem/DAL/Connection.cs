@@ -18,7 +18,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             //QuangPn
             //strCon = "server=localhost;user id=root;password=pnq0326089954;persistsecurityinfo=False;database=gemstonesbusinessmanagementsystem";
             //Trung Huỳnh
-            //strCon = "server=localhost;user id=root;password=trunghuynh;persistsecurityinfo=False;database=gemstonesbusinessmanagementsystem";
+            strCon = "server=localhost;user id=root;password=trunghuynh;persistsecurityinfo=False;database=gemstonesbusinessmanagementsystem";
             conn = new MySqlConnection(strCon);
         }
         public bool OpenConnection()
