@@ -20,7 +20,6 @@
     <Grid 
         Margin="0">
         <Grid 
-            x:Name="grdInfo"
             HorizontalAlignment="Left"
             Height="240"
             Margin="40,40,0,0"

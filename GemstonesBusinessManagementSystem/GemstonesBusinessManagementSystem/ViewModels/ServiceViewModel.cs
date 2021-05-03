@@ -154,10 +154,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (MessageBox.Show("Xác nhận xóa dịch vụ?", "Thông báo?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                if (ServiceDAL.Instance.Delete(uCService.txbSerial.Text))
+                if (ServiceDAL.Instance.Delete(ConvertToID(uCService.txbSerial.Text).ToString()))
                 {
                     mainWindow.stkService.Children.Remove(uCService);
-                    services.RemoveAll(x => x.IdService == int.Parse(uCService.txbSerial.Text));
+                    services.RemoveAll(x => x.IdService == ConvertToID(uCService.txbSerial.Text));
                     if (mainWindow.stkService.Children.Count == 0 && currentPage != 0) // kiểm tra có hết trang để chuyển qua trang trước
                         LoadServices(mainWindow, currentPage - 1);
                     else
