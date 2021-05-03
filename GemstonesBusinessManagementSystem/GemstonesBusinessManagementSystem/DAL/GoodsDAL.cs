@@ -184,6 +184,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Open();
                 string queryString = "select max(idGoods) from Goods";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);

@@ -1,9 +1,11 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GemstonesBusinessManagementSystem.DAL
 {
@@ -14,8 +16,36 @@ namespace GemstonesBusinessManagementSystem.DAL
 
         public Connection()
         {
-            strCon = "server=localhost;user id=root;password=pnq0326089954;persistsecurityinfo=False;database=gemstonesbusinessmanagementsystem";
+            try
+            {
+                strCon = ConfigurationManager.ConnectionStrings["DBMS"].ConnectionString;
+            }
+            catch
+            {
+                return;
+            }
             conn = new MySqlConnection(strCon);
+        }
+        public void OpenConnection()
+        {
+            try
+            {
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.ConnectionString = ConfigurationManager.ConnectionStrings["DBMS"].ConnectionString;
+                    conn.Open();
+                }
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                MessageBox.Show("Mất kết nối đến cơ sở dữ liệu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw ex;
+            }
+        }
+        public void CloseConnection()
+        {
+            conn.Close();
         }
     }
 }
