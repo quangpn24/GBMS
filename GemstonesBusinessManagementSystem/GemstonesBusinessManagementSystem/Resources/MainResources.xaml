@@ -4,4 +4,5 @@
                     xmlns:viewmodels="clr-namespace:GemstonesBusinessManagementSystem.ViewModels">
     <viewmodels:GoodsViewModel x:Key="GoodsVM"/>
     <viewmodels:EmployeeViewModel x:Key="EmployeeVM"/>
+    <viewmodels:HomeViewModel x:Key="HomeVM"/>
 </ResourceDictionary>

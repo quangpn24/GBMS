@@ -12,24 +12,361 @@
     mc:Ignorable="d"
     Title="Phần mềm quản lý Tiệm vàng bạc đá quý"
     Height="830" 
-    Width="1447" 
+    Width="1460" 
     x:Name="wdMain"
     ResizeMode="CanMinimize" 
     WindowStartupLocation="CenterScreen" 
-    Background="#FFF7F8FC">
+    Background="#FFF7F8FC"
+    DataContext="{StaticResource HomeVM}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="220" />
             <ColumnDefinition Width="10*" />
         </Grid.ColumnDefinitions>
         <Grid 
             x:Name="grdMenu" 
-            HorizontalAlignment="Left" 
-            Height="780" 
-            Margin="0" 
-            VerticalAlignment="Top" 
             Background="{StaticResource White}" 
             Grid.RowSpan="2">
+            <materialDesign:PackIcon
+                Kind="DiamondStone" 
+                HorizontalAlignment="Center"
+                Foreground="{StaticResource Primary}"
+                Margin="0,50,0,0" 
+                Width="50"
+                Height="50"/>
+            <TextBlock 
+                Style="{StaticResource HeadingText2}" 
+                Text="PNJ" 
+                HorizontalAlignment="Center" 
+                Margin="0,100,0,0" 
+                VerticalAlignment="Top"/>
+            <ScrollViewer 
+                Style="{StaticResource FavsScrollViewer}"
+                VerticalScrollBarVisibility="Auto" 
+                HorizontalScrollBarVisibility="Disabled" 
+                Margin="0,160,0,0" >
+                <StackPanel Margin="0,0,0,40">
+                    <Button
+                        x:Name="btnHome"
+                        Uid="0"
+                        Style="{StaticResource NavigationButton}"
+                        Padding="24,0,0,0"
+                        Margin="0,0,0,5" >
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Kind="HomeOutline"
+                                VerticalAlignment="Center" 
+                                Width="24"
+                                Height="24"/>
+                            <TextBlock 
+                                Text="Trang chủ"
+                                FontSize="18"
+                                Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseMove">
+                                <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnHome}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Expander 
+                        x:Name="expStore"
+                        Background="{StaticResource White}"
+                        VerticalAlignment="Top" 
+                        Margin="0,0,0,5"  >
+                        <Expander.Header>
+                            <StackPanel 
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Kind="StoreOutline"
+                                    Foreground="{StaticResource Black2}"
+                                    VerticalAlignment="Center" 
+                                    Width="24"
+                                    Height="24"/>
+                                <TextBlock
+                                    Style="{StaticResource NavText}"
+                                    Text="Cửa hàng"
+                                    Margin="10,0,0,0" />
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <Button
+                                x:Name="btnStore"
+                                Uid="10"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Bán hàng" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnStore}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button
+                                x:Name="btnService"
+                                Uid="11"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Dịch vụ">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnService}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+                    </Expander>
+                    <Expander 
+                        x:Name="expWarehouse"
+                        Background="{StaticResource White}"
+                        VerticalAlignment="Top" 
+                        Margin="0,0,0,5"  >
+                        <Expander.Header>
+                            <StackPanel 
+                                Orientation="Horizontal" >
+                                <materialDesign:PackIcon
+                                    Kind="Warehouse"
+                                    Foreground="{StaticResource Black2}"
+                                    VerticalAlignment="Center" 
+                                    Width="24"
+                                    Height="24"/>
+                                <TextBlock
+                                    Style="{StaticResource NavText}"
+                                    Text="Kho hàng"
+                                    Margin="10,0,0,0" />
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <Button
+                                x:Name="btnStock"
+                                Uid="20"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Tồn kho" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnStock}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button
+                                x:Name="btnImport"
+                                Uid="21"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Nhập kho">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnImport}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+                    </Expander>
+                    <Expander 
+                        x:Name="expPartner"
+                        Background="{StaticResource White}"
+                        VerticalAlignment="Top" 
+                        Margin="0,0,0,5"  >
+                        <Expander.Header>
+                            <StackPanel 
+                                Orientation="Horizontal" >
+                                <materialDesign:PackIcon
+                                    Kind="AccountGroupOutline"
+                                    Foreground="{StaticResource Black2}"
+                                    VerticalAlignment="Center" 
+                                    Width="24"
+                                    Height="24"/>
+                                <TextBlock
+                                    Style="{StaticResource NavText}"
+                                    Text="Đối tác"
+                                    Margin="10,0,0,0" />
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <Button
+                                x:Name="btnSupplier"
+                                Uid="30"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Nhà cung cấp" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnSupplier}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button
+                                x:Name="btnCustomer"
+                                Uid="31"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Khách hàng">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnCustomer}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+                    </Expander>
+                    <Expander 
+                        x:Name="expManage"
+                        Background="{StaticResource White}"
+                        VerticalAlignment="Top" 
+                        Margin="0,0,0,5" >
+                        <Expander.Header>
+                            <StackPanel 
+                                Orientation="Horizontal" >
+                                <materialDesign:PackIcon
+                                    Kind="Hubspot"
+                                    Foreground="{StaticResource Black2}"
+                                    VerticalAlignment="Center" 
+                                    Width="24"
+                                    Height="24"/>
+                                <TextBlock
+                                    Style="{StaticResource NavText}"
+                                    Text="Quản lý"
+                                    Margin="10,0,0,0" />
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <Button
+                                x:Name="btnEmployee"
+                                Uid="40"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Nhân viên" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnEmployee}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button
+                                x:Name="btnGoods"
+                                Uid="41"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Hàng hóa">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnGoods}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button
+                                x:Name="btnServiceM"
+                                Uid="42"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Dịch vụ">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnServiceM}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+                    </Expander>
+                    <Expander 
+                        x:Name="expReport"
+                        Background="{StaticResource White}"
+                        VerticalAlignment="Top" 
+                        Margin="0,0,0,5"  >
+                        <Expander.Header>
+                            <StackPanel 
+                                Orientation="Horizontal" >
+                                <materialDesign:PackIcon
+                                    Kind="FileChartOutline"
+                                    Foreground="{StaticResource Black2}"
+                                    VerticalAlignment="Center" 
+                                    Width="24"
+                                    Height="24"/>
+                                <TextBlock
+                                    Style="{StaticResource NavText}"
+                                    Text="Báo cáo"
+                                    Margin="10,0,0,0" />
+                            </StackPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <Button
+                                x:Name="btnNote"
+                                Uid="50"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Phiếu" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnNote}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button
+                                x:Name="btnRevenue"
+                                Uid="51"
+                                Style="{StaticResource NavigationButton}"
+                                Content="Doanh thu">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
+                                                       CommandParameter="{Binding ElementName=btnRevenue}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
         <Grid
             Grid.Column="2">
@@ -77,14 +414,14 @@
                 </StackPanel>
             </Grid>
             <Grid 
-                x:Name="grdBody_Employee" 
+                x:Name="grdEmployee" 
                 Margin="0"
                 Grid.Row="1" 
                 DataContext="{StaticResource EmployeeVM}"
                 Visibility="Visible">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
-                        <i:InvokeCommandAction Command="{Binding LoadEmployeeCommand}" 
+                        <i:InvokeCommandAction Command="{Binding LoadCommand}" 
                                    CommandParameter="{Binding ElementName=wdMain}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
@@ -379,7 +716,7 @@
                 </Grid>
             </Grid>
             <Grid
-                x:Name="grdBody_Goods"
+                x:Name="grdGoods"
                 Grid.Row="1"
                 Visibility="Hidden"
                 DataContext="{StaticResource GoodsVM}">

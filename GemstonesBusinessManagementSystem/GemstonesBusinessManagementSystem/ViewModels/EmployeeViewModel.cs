@@ -47,7 +47,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SearchCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
         public ICommand OpenAddWindowCommand { get; set; }
-        public ICommand LoadEmployeeCommand { get; set; }
+        public ICommand LoadCommand { get; set; }
 
         private int currentPage = 0;
 
@@ -77,33 +77,33 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public EmployeeViewModel()
         {
             //EmployeePositionControl
-            DeletePositionCommand = new RelayCommand<EmployeePositionControl>((parameter) => true, (parameter) => DeletePosition(parameter));
-            ViewPositionCommand = new RelayCommand<EmployeePositionControl>((parameter) => true, (parameter) => ViewPosition(parameter));
+            DeletePositionCommand = new RelayCommand<EmployeePositionControl>((p) => true, (p) => DeletePosition(p));
+            ViewPositionCommand = new RelayCommand<EmployeePositionControl>((p) => true, (p) => ViewPosition(p));
 
             //EmployeePositionWindow
-            ClearViewCommand = new RelayCommand<EmployeePositionWindow>((parameter) => true, (parameter) => ClearView(parameter));
-            LoadPositionCommand = new RelayCommand<EmployeePositionWindow>((parameter) => true, (parameter) => LoadPosition(parameter));
-            AddPositionCommand = new RelayCommand<EmployeePositionWindow>((parameter) => true, (parameter) => AddPosition(parameter));
-            OpenPositionWindowCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => OpenPositionWindow(parameter));
+            ClearViewCommand = new RelayCommand<EmployeePositionWindow>((p) => true, (p) => ClearView(p));
+            LoadPositionCommand = new RelayCommand<EmployeePositionWindow>((p) => true, (p) => LoadPosition(p));
+            AddPositionCommand = new RelayCommand<EmployeePositionWindow>((p) => true, (p) => AddPosition(p));
+            OpenPositionWindowCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenPositionWindow(p));
 
             //EmployeeControl
-            EditCommand = new RelayCommand<EmployeeControl>((parameter) => true, (parameter) => OpenEditWindow(parameter));
-            DeleteCommand = new RelayCommand<EmployeeControl>((parameter) => true, (parameter) => HandleDelete(parameter));
+            EditCommand = new RelayCommand<EmployeeControl>((p) => true, (p) => OpenEditWindow(p));
+            DeleteCommand = new RelayCommand<EmployeeControl>((p) => true, (p) => HandleDelete(p));
 
             //AddEmployeeWindow
-            SelectImageCommand = new RelayCommand<Grid>((parameter) => true, (parameter) => HandleSelectImage(parameter));
-            SaveCommand = new RelayCommand<AddEmployeeWindow>((parameter) => true, (parameter) => HandleAddOrUpdate(parameter));
-            ExitCommand = new RelayCommand<AddEmployeeWindow>((parameter) => true, (parameter) => parameter.Close());
+            SelectImageCommand = new RelayCommand<Grid>((p) => true, (p) => HandleSelectImage(p));
+            SaveCommand = new RelayCommand<AddEmployeeWindow>((p) => true, (p) => HandleAddOrUpdate(p));
+            ExitCommand = new RelayCommand<AddEmployeeWindow>((p) => true, (p) => p.Close());
 
             //MainWindow
-            FilterCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => Filter(parameter));
-            SortCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => Sort(parameter));
-            PreviousPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => GoToPreviousPage(parameter, --currentPage));
-            NextPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => GoToNextPage(parameter, ++currentPage));
-            SearchCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => Search(parameter));
-            ExportExcelCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => ExportExcel());
-            OpenAddWindowCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => OpenAddWindow(parameter));
-            LoadEmployeeCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => { LoadEmployeeList(parameter, 0); SetItemSource(); });
+            FilterCommand = new RelayCommand<MainWindow>((p) => true, (p) => Filter(p));
+            SortCommand = new RelayCommand<MainWindow>((p) => true, (p) => Sort(p));
+            PreviousPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToPreviousPage(p, --currentPage));
+            NextPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToNextPage(p, ++currentPage));
+            SearchCommand = new RelayCommand<MainWindow>((p) => true, (p) => Search(p));
+            ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel());
+            OpenAddWindowCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenAddWindow(p));
+            LoadCommand = new RelayCommand<MainWindow>((p) => true, (p) => { LoadEmployeeList(p, 0); SetItemSource(); });
         }
 
         //EmployeePositionControl
