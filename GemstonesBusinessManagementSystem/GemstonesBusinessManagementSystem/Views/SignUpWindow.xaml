@@ -14,6 +14,11 @@
         x:Name="wdSignUp"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=wdSignUp}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid
         Background="#FFFFFF">
         <Grid.Effect>
@@ -69,6 +74,7 @@
                     VerticalContentAlignment="Center" 
                     Padding="3,0,0,0"
                     TabIndex="1" Foreground="{DynamicResource Gray1}">
+
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Width="220">

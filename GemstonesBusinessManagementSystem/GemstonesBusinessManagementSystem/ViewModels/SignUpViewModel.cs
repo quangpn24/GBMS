@@ -21,6 +21,7 @@ using GemstonesBusinessManagementSystem.Views;
 using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.DAL;
 using MySql.Data.MySqlClient;
+using System.Collections.ObjectModel;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -33,13 +34,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand KeyCommand { get; set; }
         public ICommand OpenLoginWinDowCommand { get; set; }
         public ICommand ChangePasswordCommand { get; set; }
-
+        private ObservableCollection<Employee> itemSourceEmployee = new ObservableCollection<Employee>();
+        public ObservableCollection<Employee> ItemSourceEmployee { get => itemSourceEmployee; set => itemSourceEmployee = value; }
         private bool isSignUp;
         public string TypeEmployee { get; set; }
         public bool IsSignUp { get => isSignUp; set => isSignUp = value; }
         public string Password { get => password; set => password = value; }
         public string Username { get => username; set => username = value; }
         public string PasswordConfirm { get => passwordConfirm; set => passwordConfirm = value; }
+        public Employee SelectedEmployee { get => selectedEmployee; set => selectedEmployee = value; }
+
+        private Employee selectedEmployee = new Employee();
 
         private string password;
         private string username;
@@ -53,6 +58,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PasswordConfirmChangedCommand = new RelayCommand<PasswordBox>((parameter) => true, (parameter) => EncodingConfirmPassword(parameter));
             ChangePasswordCommand = new RelayCommand<ForgotPasswordWindow>((parameter) => true, (parameter) => ChangePassword(parameter));
             OpenLoginWinDowCommand = new RelayCommand<Window>(parameter => true, parameter => parameter.Close());
+            LoadCommand = new RelayCommand<Window>((parameter) => true, (parameter) => SetItemSourcEmployee());
         }
 
         public void EncodingPassword(PasswordBox parameter)
@@ -61,9 +67,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.password = MD5Hash(this.Password);
         }
         public void EncodingConfirmPassword(PasswordBox parameter)
-        {
+        {  
             this.passwordConfirm = parameter.Password;
             this.passwordConfirm = MD5Hash(this.passwordConfirm);
+        }
+
+        public void SetItemSourcEmployee()
+        {
+            itemSourceEmployee.Clear();     
+            List<Employee> employees = EmployeeDAL.Instance.SelectAll();
+            foreach(var employee in employees)
+            {
+                if(employee.Position == "nhân viên quản lý" || employee.Position == "nhân viên thu ngân" )
+                {
+                    itemSourceEmployee.Add(employee);
+                }
+            }
         }
 
         public void ChangePassword(ForgotPasswordWindow parameter)
@@ -148,12 +167,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             //check loai nhan vien
-            /*if (string.IsNullOrEmpty(parameter.cboSelectEmployee.Text))
+            if (string.IsNullOrEmpty(parameter.cboSelectEmployee.Text))
             {
                 parameter.pwbKey.Focus();
                 parameter.cboSelectEmployee.Text = "";
                 return;
-            }*/
+            }
             //check username
             if (string.IsNullOrEmpty(parameter.txtUsername.Text))
             {

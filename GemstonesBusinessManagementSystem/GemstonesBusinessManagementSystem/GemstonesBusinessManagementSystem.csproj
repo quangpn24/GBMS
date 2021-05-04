@@ -136,9 +136,11 @@
     <Compile Include="Converter.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\Connection.cs" />
+    <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="DAL\GoodsDAL.cs" />
     <Compile Include="DAL\GoodsTypeDAL.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Goods.cs" />
     <Compile Include="Models\GoodsType.cs" />
     <Compile Include="Resources\UserControls\GoodsControl.xaml.cs">
