@@ -5,4 +5,5 @@
     <viewmodels:GoodsViewModel x:Key="GoodsVM"/>
     <viewmodels:LoginViewModel x:Key="LoginVM"/>
     <viewmodels:SignUpViewModel x:Key="SignUpVM"/>
+    <viewmodels:ServiceViewModel x:Key="ServiceVM" />
 </ResourceDictionary>

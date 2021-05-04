@@ -1,0 +1,137 @@
+﻿<UserControl 
+    x:Name="ucService"
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.ServiceControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+    mc:Ignorable="d"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    Height="40"
+    DataContext="{StaticResource ServiceVM}"
+    Margin="0,0,0,0">
+    <Border 
+        BorderBrush="{StaticResource Light}"
+        BorderThickness="1">
+        <Grid 
+            x:Name="grdMain"
+            Width="1180"
+            Margin="0"
+            Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2.5*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock 
+                x:Name="txbSerial"
+                Grid.Column="0"
+                TextAlignment="Center"
+                Margin="0"
+                Text="Mã dịch vụ"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Padding="0"
+                FontWeight="Medium" />
+            <TextBlock 
+                x:Name="txbName"
+                Text="Loại dịch vụ"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Margin="20,0,0,0"
+                Padding="10,0,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                FontWeight="Medium" />
+            <TextBlock 
+                x:Name="txbPrice"
+                Grid.Column="2"
+                Text="Đơn giá"
+                HorizontalAlignment="Center"
+                Margin="20,0,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Padding="0"
+                FontWeight="Medium" />
+            <TextBlock
+                x:Name="txbStatus"
+                Grid.Column="3"
+                HorizontalAlignment="Center"
+                Margin="0"
+                Text="Trạng thái"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Padding="0"
+                FontWeight="Medium" />
+            <TextBlock 
+                x:Name="txbHiredNumber"
+                Grid.Column="4"
+                HorizontalAlignment="Center"
+                Margin="0"
+                Text="Đã đặt"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Padding="0"
+                FontWeight="Medium" />
+            <Button 
+                Grid.Column="5"
+                x:Name="btnEditEmployee"
+                Command="{Binding OpenUpdateWindowCommand}"
+                CommandParameter="{Binding ElementName=ucService}"
+                ToolTip="Sửa thông tin"
+                Height="30"
+                materialDesign:ButtonAssist.CornerRadius="6"
+                Margin="0,0,50,0"
+                Background="{x:Null}"
+                BorderBrush="{x:Null}"
+                FontSize="16"
+                VerticalAlignment="Center"
+                FocusVisualStyle="{x:Null}"
+                Width="40"
+                HorizontalAlignment="Right"
+                Padding="0"
+                FontWeight="SemiBold">
+                <materialDesign:PackIcon 
+                    Kind="SquareEditOutline"
+                    Width="24"
+                    Foreground="#00329E"
+                    Height="24" />
+            </Button>
+            <Button 
+                Grid.Column="5"
+                x:Name="btnDeleteEmployee"
+                Command="{Binding DeleteServiceCommand}"
+                CommandParameter="{Binding ElementName=ucService}"
+                ToolTip="Xóa nhân viên"
+                Height="30"
+                materialDesign:ButtonAssist.CornerRadius="6"
+                Margin="0,0,10,0"
+                Background="{x:Null}"
+                BorderBrush="{x:Null}"
+                FontSize="16"
+                VerticalAlignment="Center"
+                FocusVisualStyle="{x:Null}"
+                Width="40"
+                HorizontalAlignment="Right"
+                FontWeight="SemiBold"
+                Padding="0">
+                <materialDesign:PackIcon 
+                    Kind="DeleteOutline"
+                    Foreground="#F03738"
+                    Height="24"
+                    Width="24" />
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>
