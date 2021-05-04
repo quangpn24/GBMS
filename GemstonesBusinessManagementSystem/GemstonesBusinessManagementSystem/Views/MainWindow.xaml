@@ -14,7 +14,7 @@
     Height="830" 
     Width="1447" 
     x:Name="wdMain"
-    ResizeMode="NoResize" 
+    ResizeMode="CanMinimize" 
     WindowStartupLocation="CenterScreen" 
     Background="#FFF7F8FC">
     <Grid>
@@ -89,7 +89,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="90"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <StackPanel
@@ -101,18 +101,21 @@
                         Style="{StaticResource PrimaryButton}"
                         Command="{Binding OpenPositionWindowCommand}"
                         CommandParameter="{Binding ElementName=wdMain}"
-                        Content="Cài đặt" 
+                        Content="Chức vụ" 
+                        ToolTip="Quản lý chức vụ"
                         Margin="0,0,20,0"/>
                     <Button
                         Style="{StaticResource PrimaryButton}"
                         Command="{Binding ExportExcelCommand}"
                         Content="Xuất excel"
+                        ToolTip="Xuất danh sách nhân viên"
                         Margin="0,0,20,0"/>
                     <Button
                         x:Name="btnAddEmployee"
                         Style="{StaticResource GreenButton}"
                         Command="{Binding OpenAddWindowCommand}"
-                        Content="Thêm nhân viên" 
+                        Content="Thêm nhân viên"
+                        ToolTip="Thêm nhân viên"
                         Margin="0"/>
                 </StackPanel>
                 <Grid 
@@ -143,25 +146,31 @@
                             Height="40" 
                             HorizontalContentAlignment="Left" 
                             VerticalContentAlignment="Center"
-                            Foreground="{DynamicResource Black2}" 
+                            Foreground="{DynamicResource Black1}" 
                             SelectionBrush="{DynamicResource Primary}"
                             Padding="2,0,0,0"
-                            VerticalAlignment="Center" >
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="TextChanged">
-                                    <i:InvokeCommandAction Command="{Binding SearchCommand}" 
-                                                   CommandParameter="{Binding ElementName=wdMain}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
-                        <materialDesign:PackIcon 
-                            Kind="Magnify" 
-                            Foreground="{StaticResource Black2}"
-                            Height="26"
-                            Width="26" 
-                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center" />
+                        <Button 
+                            IsDefault="True"
+                            Command="{Binding SearchCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}"
+                            Height="30"
+                            Width="30"
+                            Margin="0,0,10,0"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
                             VerticalAlignment="Center"
-                            Margin="0,0,10,0"/>
+                            FocusVisualStyle="{x:Null}"
+                            HorizontalAlignment="Right"
+                            Padding="0">
+                            <materialDesign:PackIcon 
+                                Kind="Magnify" 
+                                Foreground="{StaticResource Black2}"
+                                Height="26"
+                                Width="26" 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Button>
                         <Rectangle 
                             Fill="{DynamicResource White}" 
                             RadiusY="4" 
@@ -193,18 +202,20 @@
                                 Width="200"
                                 BorderThickness="0"
                                 Padding="10,0,0,0"
-                                DisplayMemberPath="Name"
+                                ItemsSource="{Binding ItemSourcePosition}"
+                                SelectedItem="{Binding Path=FilterPosition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                DisplayMemberPath="Position"
                                 VerticalContentAlignment="Center"
                                 HorizontalContentAlignment="Left"
                                 FontWeight="SemiBold"
                                 BorderBrush="{StaticResource Black2}" 
                                 Background="{StaticResource White}">
-                                <!--<i:Interaction.Triggers>
+                                <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding }"
-                                                                CommandParameter="{Binding ElementName=wdMain}"/>
+                                        <i:InvokeCommandAction Command="{Binding FilterCommand}"
+                                                               CommandParameter="{Binding ElementName=wdMain}"/>
                                     </i:EventTrigger>
-                                </i:Interaction.Triggers>-->
+                                </i:Interaction.Triggers>
                             </ComboBox>
                         </Grid>
                         <Grid 
@@ -232,7 +243,16 @@
                                 HorizontalContentAlignment="Left"
                                 FontWeight="SemiBold"
                                 BorderBrush="{StaticResource Black2}" 
-                                Background="{StaticResource White}"/>
+                                Background="{StaticResource White}">
+                                <ComboBoxItem Content="Theo tên A-Z"/>
+                                <ComboBoxItem Content="Theo tên Z-A"/>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding SortCommand}"
+                                                                CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
                         </Grid>
                     </StackPanel>
                     <Border
@@ -313,7 +333,7 @@
                         HorizontalAlignment="Right" 
                         Margin="0,0,20,0">
                         <TextBlock 
-                            x:Name="txtNumberOfItems"
+                            x:Name="txtNumOfEmp"
                             Text="1-10 of 100 items"
                             Margin="0,0,40,0"
                             FontSize="14"
@@ -322,12 +342,12 @@
                             HorizontalAlignment="Right"
                             Foreground="{DynamicResource Black2}"/>
                         <Button 
-                            x:Name="btnPreviousPage" 
+                            x:Name="btnPrePageEmp" 
                             Margin="8,0"
                             ToolTip="Trang trước"
                             Style="{StaticResource PaginationButton}"
                             Command="{Binding PreviousPageCommand}"
-                            CommandParameter="{Binding ElementName=wdHome}">
+                            CommandParameter="{Binding ElementName=wdMain}">
                             <materialDesign:PackIcon 
                                 Width="26"
                                 Height="28"
@@ -336,12 +356,12 @@
                                 HorizontalAlignment="Center" />
                         </Button>
                         <Button 
-                            x:Name="btnNextPage" 
+                            x:Name="btnNextPageEmp" 
                             Margin="8,0,0,0" 
                             ToolTip="Trang tiếp theo"
                             Style="{StaticResource PaginationButton}"
                             Command="{Binding NextPageCommand}"
-                            CommandParameter="{Binding ElementName=wdHome}">
+                            CommandParameter="{Binding ElementName=wdMain}">
                             <materialDesign:PackIcon 
                                 Width="26"
                                 Height="28"

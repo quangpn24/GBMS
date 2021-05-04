@@ -18,7 +18,8 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="5"/>
         </Grid.ColumnDefinitions>
         <TextBlock 
             x:Name="txbShift"
@@ -64,8 +65,7 @@
             VerticalAlignment="Center" />
         <StackPanel
             Orientation="Horizontal"
-            Grid.Column="4" 
-            HorizontalAlignment="Center">
+            Grid.Column="4" >
             <Button 
                 x:Name="btnView"
                 Command="{Binding ViewPositionCommand}"
@@ -79,15 +79,34 @@
                 FocusVisualStyle="{x:Null}"
                 HorizontalAlignment="Right" 
                 Padding="0" 
-                Margin="0,0,10,0">
+                Margin="0,0,5,0">
                 <materialDesign:PackIcon 
                     Kind="EyeOutline" 
                     Width="22"
                     Height="22"/>
             </Button>
+            <Button 
+                x:Name="btnDelete"
+                Command="{Binding DeletePositionCommand}"
+                CommandParameter="{Binding ElementName=ucEmployeePosition}"
+                ToolTip="Xem thông tin"
+                Height="28"
+                Background="{x:Null}" 
+                BorderBrush="{x:Null}" 
+                Foreground="{DynamicResource Error}" 
+                VerticalAlignment="Center" 
+                FocusVisualStyle="{x:Null}"
+                HorizontalAlignment="Right" 
+                Padding="0" 
+                Margin="0,0,10,0">
+                <materialDesign:PackIcon 
+                    Kind="BinOutline" 
+                    Width="22"
+                    Height="22"/>
+            </Button>
         </StackPanel>
         <Rectangle 
-            Grid.ColumnSpan="5"           
+            Grid.ColumnSpan="6"           
             Fill="{StaticResource Light}" 
             Height="2"
             VerticalAlignment="Bottom"/>
@@ -96,7 +115,7 @@
             Width="2" 
             HorizontalAlignment="Left"/>
         <Rectangle 
-            Grid.Column="4"
+            Grid.Column="5"
             Fill="{StaticResource Light}"
             Width="2" 
             HorizontalAlignment="Right"/>

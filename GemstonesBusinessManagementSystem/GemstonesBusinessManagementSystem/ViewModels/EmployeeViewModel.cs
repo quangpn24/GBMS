@@ -21,6 +21,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     class EmployeeViewModel : BaseViewModel
     {
         //EmployeePositionControl
+        public ICommand DeletePositionCommand { get; set; }
         public ICommand ViewPositionCommand { get; set; }
 
         //EmployeePositionWindow
@@ -39,6 +40,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand ExitCommand { get; set; }
 
         //MainWindow
+        public ICommand FilterCommand { get; set; }
+        public ICommand SortCommand { get; set; }
         public ICommand PreviousPageCommand { get; set; }
         public ICommand NextPageCommand { get; set; }
         public ICommand SearchCommand { get; set; }
@@ -46,12 +49,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand OpenAddWindowCommand { get; set; }
         public ICommand LoadEmployeeCommand { get; set; }
 
+        private int currentPage = 0;
+
         //Mainwindow
         private MainWindow mainWindow;
         public MainWindow MainWindow { get => mainWindow; set => mainWindow = value; }
 
         private List<Employee> employeeList = EmployeeDAL.Instance.GetList();
-
         private EmployeeControl employeeControl;
 
         //PositionWindow
@@ -59,8 +63,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public bool isEditingPosition = false;
         private EmployeePositionControl empPosControl;
 
-        private EmployeePosition selectedPosition = new EmployeePosition();
-        public EmployeePosition SelectedPosition { get => selectedPosition; set { selectedPosition = value; OnPropertyChanged("SelectedEmployeePosition"); } }
+        private EmployeePosition selectedPosition;
+        public EmployeePosition SelectedPosition { get => selectedPosition; set { selectedPosition = value; OnPropertyChanged(); } }
+        private EmployeePosition filterPosition;
+        public EmployeePosition FilterPosition { get => filterPosition; set { filterPosition = value; OnPropertyChanged(); } }
 
         private ObservableCollection<EmployeePosition> itemSourcePosition = new ObservableCollection<EmployeePosition>();
         public ObservableCollection<EmployeePosition> ItemSourcePosition { get => itemSourcePosition; set { itemSourcePosition = value; OnPropertyChanged(); } }
@@ -71,30 +77,33 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public EmployeeViewModel()
         {
             //EmployeePositionControl
+            DeletePositionCommand = new RelayCommand<EmployeePositionControl>((parameter) => true, (parameter) => DeletePosition(parameter));
             ViewPositionCommand = new RelayCommand<EmployeePositionControl>((parameter) => true, (parameter) => ViewPosition(parameter));
 
             //EmployeePositionWindow
             ClearViewCommand = new RelayCommand<EmployeePositionWindow>((parameter) => true, (parameter) => ClearView(parameter));
             LoadPositionCommand = new RelayCommand<EmployeePositionWindow>((parameter) => true, (parameter) => LoadPosition(parameter));
             AddPositionCommand = new RelayCommand<EmployeePositionWindow>((parameter) => true, (parameter) => AddPosition(parameter));
-            OpenPositionWindowCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => OpenEmployeePositionWindow(parameter));
+            OpenPositionWindowCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => OpenPositionWindow(parameter));
 
             //EmployeeControl
-            EditCommand = new RelayCommand<EmployeeControl>((parameter) => true, (parameter) => OpenEditEmployeeWindow(parameter));
-            DeleteCommand = new RelayCommand<EmployeeControl>((parameter) => true, (parameter) => DeleteEmployee(parameter));
+            EditCommand = new RelayCommand<EmployeeControl>((parameter) => true, (parameter) => OpenEditWindow(parameter));
+            DeleteCommand = new RelayCommand<EmployeeControl>((parameter) => true, (parameter) => HandleDelete(parameter));
 
             //AddEmployeeWindow
             SelectImageCommand = new RelayCommand<Grid>((parameter) => true, (parameter) => HandleSelectImage(parameter));
-            SaveCommand = new RelayCommand<AddEmployeeWindow>((parameter) => true, (parameter) => HandleAddEmployee(parameter));
+            SaveCommand = new RelayCommand<AddEmployeeWindow>((parameter) => true, (parameter) => HandleAddOrUpdate(parameter));
             ExitCommand = new RelayCommand<AddEmployeeWindow>((parameter) => true, (parameter) => parameter.Close());
 
             //MainWindow
-            PreviousPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => Search(parameter));
-            NextPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => Search(parameter));
+            FilterCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => Filter(parameter));
+            SortCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => Sort(parameter));
+            PreviousPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => GoToPreviousPage(parameter, --currentPage));
+            NextPageCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => GoToNextPage(parameter, ++currentPage));
             SearchCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => Search(parameter));
             ExportExcelCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => ExportExcel());
-            OpenAddWindowCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => OpenAddEmployeeWindow(parameter));
-            LoadEmployeeCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => { LoadEmployeeList(parameter); SetItemSource(); });
+            OpenAddWindowCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => OpenAddWindow(parameter));
+            LoadEmployeeCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => { LoadEmployeeList(parameter, 0); SetItemSource(); });
         }
 
         //EmployeePositionControl
@@ -123,12 +132,36 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             employeePositionWindow.txtStandardWorkDays.Text = control.txbWorkdays.Text;
             employeePositionWindow.txtStandardWorkDays.SelectionLength = control.txbWorkdays.Text.Length;
-            
+
             employeePositionWindow.txtOvertime.Text = control.txbShift.Text;
             employeePositionWindow.txtOvertime.SelectionLength = control.txbShift.Text.Length;
-            
+
             employeePositionWindow.txtFault.Text = control.txbFault.Text;
             employeePositionWindow.txtFault.SelectionLength = control.txbFault.Text.Length;
+        }
+        void DeletePosition(EmployeePositionControl control)
+        {
+            if (EmployeeDAL.Instance.IsPosition(control.txbId.Text))
+            {
+                MessageBox.Show("Không thể xóa vì tồn tại nhân viên có chức vụ này");
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show("Xác nhận xóa chức vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool isSuccess = EmployeePositionDAL.Instance.Delete(control.txbId.Text);
+                    if (isSuccess)
+                    {
+                        employeePositionWindow.stkPosition.Children.Remove(control);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xoá thất bại");
+                    }
+                }
+            }
         }
 
         //EmployeePositionWindow
@@ -154,6 +187,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void AddPosition(EmployeePositionWindow window)
         {
+            #region
             if (string.IsNullOrEmpty(window.txtPosition.Text))
             {
                 MessageBox.Show("Vui lòng nhập chức vụ!");
@@ -184,6 +218,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.txtFault.Focus();
                 return;
             }
+            #endregion
+            if (EmployeePositionDAL.Instance.IsExisted(window.txtPosition.Text))
+            {
+                MessageBox.Show("Chức vụ đã tồn tại!");
+                window.txtPosition.Focus();
+                return;
+            }
             EmployeePosition position = new EmployeePosition(int.Parse(window.txtId.Text), window.txtPosition.Text,
                 long.Parse(window.txtSalaryBase.Text), long.Parse(window.txtOvertime.Text),
                 long.Parse(window.txtFault.Text), int.Parse(window.txtStandardWorkDays.Text));
@@ -211,11 +252,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.stkPosition.Children.Add(control);
             }
             SetItemSource();
-            LoadEmployeeList(mainWindow);
+            LoadEmployeeList(mainWindow, 0);
+            int start = 0, end = 0;
+            LoadInfoOfPage(ref start, ref end);
             isEditingPosition = false;
             ClearView(window);
         }
-        void OpenEmployeePositionWindow(MainWindow mainWindow)
+        void OpenPositionWindow(MainWindow mainWindow)
         {
             EmployeePositionWindow window = new EmployeePositionWindow();
             window.txtId.Text = (EmployeePositionDAL.Instance.GetMaxId() + 1).ToString();
@@ -223,7 +266,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
 
         //EmployeeControl
-        void OpenEditEmployeeWindow(EmployeeControl control)
+        void OpenEditWindow(EmployeeControl control)
         {
             isEditing = true;
             Employee employee = EmployeeDAL.Instance.GetById(control.txbId.Text);
@@ -268,7 +311,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.Title = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.ShowDialog();
         }
-        void DeleteEmployee(EmployeeControl employeeControl)
+        void HandleDelete(EmployeeControl employeeControl)
         {
             MessageBoxResult result = MessageBox.Show("Xác nhận xóa nhân viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -277,18 +320,28 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 bool isSuccess = EmployeeDAL.Instance.Delete(employeeControl.txbId.Text);
                 if (isSuccess)
                 {
-                    MessageBox.Show("Đã xóa thành công!");
+                    mainWindow.stkEmployeeList.Children.Remove(employeeControl);
+                    employeeList.RemoveAll(x => x.IdEmployee == int.Parse(employeeControl.txbId.Text));
+                    if (mainWindow.stkEmployeeList.Children.Count == 0 && currentPage != 0) // kiểm tra có hết trang để chuyển qua trang trước
+                    {
+                        LoadEmployeeList(mainWindow, currentPage - 1);
+                    }
+                    else
+                    {
+                        LoadEmployeeList(mainWindow, currentPage);
+                    }
                 }
                 else
                 {
                     MessageBox.Show("Xoá thất bại");
                 }
-                mainWindow.stkEmployeeList.Children.Remove(employeeControl);
             }
+            int start = 0, end = 0;
+            LoadInfoOfPage(ref start, ref end);
         }
 
         //AddEmployeeWindow
-        void HandleAddEmployee(AddEmployeeWindow window)
+        void HandleAddOrUpdate(AddEmployeeWindow window)
         {
             #region
             string gender = "";
@@ -378,10 +431,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int idEmployee = int.Parse(window.txtId.Text);
             Employee employee = new Employee(idEmployee, window.txtName.Text, gender,
                 window.txtPhoneNumber.Text, window.txtAddress.Text, DateTime.Parse(window.dpBirthDate.Text),
-                selectedPosition.IdEmployeePosition, DateTime.Parse(window.dpWorkDate.Text), 1, imgByteArr);
+                SelectedPosition.IdEmployeePosition, DateTime.Parse(window.dpWorkDate.Text), -1, imgByteArr);
 
             EmployeeDAL.Instance.InsertOrUpdate(employee, isEditing);
-
             window.Close();
 
             //Add usercontrol vào stackpanel
@@ -403,8 +455,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbAddress.Text = employee.Address.ToString();
 
                 employeeList.Add(employee);
-                mainWindow.stkEmployeeList.Children.Add(control);
+                if (currentPage == (employeeList.Count - 1) / 10)
+                {
+                    mainWindow.stkEmployeeList.Children.Add(control);
+                }
             }
+            int start = 0, end = 0;
+            LoadInfoOfPage(ref start, ref end);
         }
         public void SetPickedDay(object sender, RoutedEventArgs e)
         {
@@ -447,6 +504,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //MainWindow
         void SetItemSource()
         {
+            //position
             itemSourcePosition.Clear();
             List<EmployeePosition> positions = EmployeePositionDAL.Instance.GetList();
             foreach (var position in positions)
@@ -456,22 +514,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void Search(MainWindow mainWindow)
         {
-            mainWindow.stkEmployeeList.Children.Clear();
+            mainWindow.cboSortEmployee.SelectedIndex = -1;
+            mainWindow.cboFilterPosition.SelectedIndex = -1;
             string nameSearching = mainWindow.txtSearch.Text.ToLower();
-            foreach (var employee in employeeList)
-            {
-                if (employee.Name.ToLower().Contains(nameSearching))
-                {
-                    EmployeeControl employeeControl = new EmployeeControl();
-                    employeeControl.txbId.Text = employee.IdEmployee.ToString();
-                    employeeControl.txbName.Text = employee.Name.ToString();
-                    employeeControl.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employee.IdPosition).Position;
-                    employeeControl.txbPhoneNumber.Text = employee.PhoneNumber.ToString();
-                    employeeControl.txbAddress.Text = employee.Address.ToString();
-
-                    mainWindow.stkEmployeeList.Children.Add(employeeControl);
-                }
-            }
+            employeeList = EmployeeDAL.Instance.FindByName(nameSearching);
+            currentPage = 0;
+            LoadEmployeeList(mainWindow, currentPage);
         }
         void ExportExcel()
         {
@@ -489,28 +537,81 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Xuất  danh sách thành công!");
             }
         }
-        void OpenAddEmployeeWindow(MainWindow mainWindow)
+        void OpenAddWindow(MainWindow mainWindow)
         {
             isEditing = false;
             AddEmployeeWindow addEmployeeWindow = new AddEmployeeWindow();
             addEmployeeWindow.txtId.Text = (EmployeeDAL.Instance.GetMaxId() + 1).ToString();
             addEmployeeWindow.ShowDialog();
         }
-        void LoadEmployeeList(MainWindow main)
+        void LoadEmployeeList(MainWindow main, int curPage)
         {
             this.mainWindow = main;
             mainWindow.stkEmployeeList.Children.Clear();
 
-            foreach (var employee in employeeList)
+            int start = 0, end = 0;
+            this.currentPage = curPage;
+            LoadInfoOfPage(ref start, ref end);
+
+            for (int i = start; i < end; i++)
             {
                 EmployeeControl employeeControl = new EmployeeControl();
-                employeeControl.txbId.Text = employee.IdEmployee.ToString();
-                employeeControl.txbName.Text = employee.Name.ToString();
-                employeeControl.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employee.IdPosition).Position;
-                employeeControl.txbPhoneNumber.Text = employee.PhoneNumber.ToString();
-                employeeControl.txbAddress.Text = employee.Address.ToString();
+                employeeControl.txbId.Text = employeeList[i].IdEmployee.ToString();
+                employeeControl.txbName.Text = employeeList[i].Name.ToString();
+                employeeControl.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employeeList[i].IdPosition).Position;
+                employeeControl.txbPhoneNumber.Text = employeeList[i].PhoneNumber.ToString();
+                employeeControl.txbAddress.Text = employeeList[i].Address.ToString();
 
                 mainWindow.stkEmployeeList.Children.Add(employeeControl);
+            }
+        }
+        public void LoadInfoOfPage(ref int start, ref int end)
+        {
+            mainWindow.btnPrePageEmp.IsEnabled = currentPage == 0 ? false : true;
+            mainWindow.btnNextPageEmp.IsEnabled = currentPage == (employeeList.Count - 1) / 10 ? false : true;
+
+            start = currentPage * 10;
+            end = (currentPage + 1) * 10;
+            if (currentPage == employeeList.Count / 10)
+                end = employeeList.Count;
+
+            mainWindow.txtNumOfEmp.Text = String.Format("{0} - {1} of {2} items", start == end ? 0 : start + 1, end, employeeList.Count);
+        }
+        public void GoToNextPage(MainWindow mainWindow, int currentPage)
+        {
+            LoadEmployeeList(mainWindow, currentPage);
+        }
+        public void GoToPreviousPage(MainWindow mainWindow, int currentPage)
+        {
+            LoadEmployeeList(mainWindow, currentPage);
+        }
+        public void Sort(MainWindow mainWindow)
+        {
+            switch (mainWindow.cboSortEmployee.SelectedIndex)
+            {
+                case 0:
+                    employeeList = employeeList.OrderBy(x => x.Name).ToList();
+                    break;
+                case 1:
+                    employeeList = employeeList.OrderByDescending(x => x.Name).ToList();
+                    break;
+            }
+            LoadEmployeeList(mainWindow, 0);
+        }
+        public void Filter(MainWindow mainWindow)
+        {
+            if (mainWindow.cboFilterPosition.SelectedIndex == -1)
+                return;
+            string nameSearching = mainWindow.txtSearch.Text.ToLower();
+            employeeList = EmployeeDAL.Instance.FindByName(nameSearching);
+            employeeList.RemoveAll(x => x.IdPosition != FilterPosition.IdEmployeePosition);
+            if (mainWindow.cboSortEmployee.SelectedIndex != -1)
+            {
+                Sort(mainWindow);
+            }
+            else
+            {
+                LoadEmployeeList(mainWindow, 0);
             }
         }
     }

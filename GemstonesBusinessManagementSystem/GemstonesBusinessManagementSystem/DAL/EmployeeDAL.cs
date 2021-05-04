@@ -124,6 +124,10 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 return false;
             }
+            finally
+            {
+                CloseConnection();
+            }
         }
         public Employee GetById(string idEmployee)
         {
@@ -184,15 +188,49 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             return res;
         }
-        public bool IsExisted(string name)
+        public List<Employee> FindByName(string name)
+        {
+            DataTable dt = new DataTable();
+            List<Employee> employees = new List<Employee>();
+            try
+            {
+                OpenConnection();
+                string queryString = @"select * from Employee where name like  ""%" + name + "%\" and isDeleted = 0";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                adapter.Fill(dt);
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                        dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
+                        dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
+                        DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
+                        int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
+                        int.Parse(dt.Rows[i].ItemArray[8].ToString()), Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
+                    employees.Add(employee);
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            return employees;
+        }
+        public bool IsPosition(string idPosition)
         {
             try
             {
                 OpenConnection();
-                string queryString = "select * from Employee where name=@name";
+                string queryString = "select * from Employee where idPosition=@idPosition";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
-                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@idPosition", idPosition);
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
@@ -209,40 +247,6 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 CloseConnection();
             }
-        }
-        public List<Employee> FindByName(string name)
-        {
-            DataTable dt = new DataTable();
-            List<Employee> employees = new List<Employee>();
-            try
-            {
-                conn.Open();
-                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.Employee WHERE name LIKE  ""%" + name + "%\" and isDeleted=0;";
-                MySqlCommand command = new MySqlCommand(queryString, conn);
-                command.ExecuteNonQuery();
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-
-                adapter.Fill(dt);
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                conn.Close();
-            }
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
-                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
-                    dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
-                    DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
-                    int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
-                    1, Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
-                employees.Add(employee);
-            }
-            return employees;
         }
     }
 }

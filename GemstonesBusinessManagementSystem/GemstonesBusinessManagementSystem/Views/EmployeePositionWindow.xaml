@@ -268,6 +268,7 @@
                     CommandParameter="{Binding ElementName=wdPosition}"
                     Style="{StaticResource GreenButton}"
                     Margin="0,0,20,0" 
+                    IsDefault="True"
                     Height="40"
                     FontSize="18"
                     Width="100"/>
@@ -314,7 +315,7 @@
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="50"/>
                         <ColumnDefinition Width="5"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock

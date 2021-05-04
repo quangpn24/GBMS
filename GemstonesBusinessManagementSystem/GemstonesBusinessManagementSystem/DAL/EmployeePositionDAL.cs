@@ -93,6 +93,25 @@ namespace GemstonesBusinessManagementSystem.DAL
                 return;
             }
         }
+        public bool Delete(string id)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "update EmployeePosition set isDeleted = true where idEmployeePosition = " + id;
+                MySqlCommand command = new MySqlCommand(query, conn);
+
+                return (command.ExecuteNonQuery() > 0);
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
         public EmployeePosition GetById(int id)
         {
             EmployeePosition position = new EmployeePosition();
