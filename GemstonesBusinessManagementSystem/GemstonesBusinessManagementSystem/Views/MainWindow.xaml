@@ -44,11 +44,15 @@
                 Style="{StaticResource FavsScrollViewer}"
                 VerticalScrollBarVisibility="Auto" 
                 HorizontalScrollBarVisibility="Disabled" 
-                Margin="0,160,0,0" >
-                <StackPanel Margin="0,0,0,40">
+                Margin="0,160,0,0" 
+                VerticalAlignment="Top"
+                MaxHeight="560"  >
+                <StackPanel>
                     <Button
                         x:Name="btnHome"
                         Uid="0"
+                        Command="{Binding NavigateCommand}"
+                        CommandParameter="{Binding ElementName=wdMain}"
                         Style="{StaticResource NavigationButton}"
                         Padding="24,0,0,0"
                         Margin="0,0,0,5" >
@@ -64,10 +68,6 @@
                                 Margin="10,0,0,0"/>
                         </StackPanel>
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                            </i:EventTrigger>
                             <i:EventTrigger EventName="MouseMove">
                                 <i:InvokeCommandAction Command="{Binding GetUidCommand}"
                                                        CommandParameter="{Binding ElementName=btnHome}"/>
@@ -98,32 +98,28 @@
                             <Button
                                 x:Name="btnStore"
                                 Uid="10"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Bán hàng" >
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnStore}"/>
+                                                               CommandParameter="{Binding ElementName=btnStore}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
                             <Button
                                 x:Name="btnService"
                                 Uid="11"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Dịch vụ">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnService}"/>
+                                                               CommandParameter="{Binding ElementName=btnService}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
@@ -153,32 +149,28 @@
                             <Button
                                 x:Name="btnStock"
                                 Uid="20"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Tồn kho" >
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnStock}"/>
+                                                               CommandParameter="{Binding ElementName=btnStock}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
                             <Button
                                 x:Name="btnImport"
                                 Uid="21"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Nhập kho">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnImport}"/>
+                                                               CommandParameter="{Binding ElementName=btnImport}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
@@ -208,32 +200,28 @@
                             <Button
                                 x:Name="btnSupplier"
                                 Uid="30"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Nhà cung cấp" >
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnSupplier}"/>
+                                                               CommandParameter="{Binding ElementName=btnSupplier}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
                             <Button
                                 x:Name="btnCustomer"
                                 Uid="31"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Khách hàng">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnCustomer}"/>
+                                                               CommandParameter="{Binding ElementName=btnCustomer}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
@@ -263,48 +251,42 @@
                             <Button
                                 x:Name="btnEmployee"
                                 Uid="40"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Nhân viên" >
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnEmployee}"/>
+                                                               CommandParameter="{Binding ElementName=btnEmployee}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
                             <Button
                                 x:Name="btnGoods"
                                 Uid="41"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Hàng hóa">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
-                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnGoods}"/>
+                                        <i:InvokeCommandAction Command="{Binding GetUidCommand}" 
+                                                               CommandParameter="{Binding ElementName=btnGoods}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
                             <Button
                                 x:Name="btnServiceM"
                                 Uid="42"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Dịch vụ">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnServiceM}"/>
+                                                               CommandParameter="{Binding ElementName=btnServiceM}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
@@ -334,32 +316,28 @@
                             <Button
                                 x:Name="btnNote"
                                 Uid="50"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Phiếu" >
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnNote}"/>
+                                                               CommandParameter="{Binding ElementName=btnNote}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
                             <Button
                                 x:Name="btnRevenue"
                                 Uid="51"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
                                 Content="Doanh thu">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding NavigateCommand}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                    </i:EventTrigger>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
-                                                       CommandParameter="{Binding ElementName=btnRevenue}"/>
+                                                               CommandParameter="{Binding ElementName=btnRevenue}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
@@ -367,6 +345,29 @@
                     </Expander>
                 </StackPanel>
             </ScrollViewer>
+            <Button
+                x:Name="btnLogout"
+                Command="{Binding }"
+                CommandParameter="{Binding ElementName=wdMain}"
+                Style="{StaticResource NavigationButton}"
+                Foreground="{StaticResource Black1}"
+                Padding="0"
+                Margin="40,0,40,20" 
+                VerticalAlignment="Bottom" 
+                HorizontalContentAlignment="Center" >
+                <StackPanel 
+                    Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Kind="LogoutVariant"
+                        VerticalAlignment="Center" 
+                        Width="28"
+                        Height="28"/>
+                    <TextBlock 
+                        Text="Đăng xuất"
+                        FontSize="20"
+                        Margin="10,0,0,0"/>
+                </StackPanel>
+            </Button>
         </Grid>
         <Grid
             Grid.Column="2">
@@ -422,7 +423,7 @@
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}" 
-                                   CommandParameter="{Binding ElementName=wdMain}"/>
+                                               CommandParameter="{Binding ElementName=wdMain}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <Grid.RowDefinitions>
@@ -586,7 +587,7 @@
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
                                         <i:InvokeCommandAction Command="{Binding SortCommand}"
-                                                                CommandParameter="{Binding ElementName=wdMain}"/>
+                                                               CommandParameter="{Binding ElementName=wdMain}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>
@@ -601,7 +602,8 @@
                         VerticalAlignment="Top" 
                         BorderBrush="{StaticResource Primary}" 
                         Background="{StaticResource Primary}" >
-                        <Grid  Margin="0">
+                        <Grid  
+                            Margin="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2.5*"/>

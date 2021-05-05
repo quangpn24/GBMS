@@ -137,22 +137,18 @@
         <Setter Property="Height" Value="40"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="Padding" Value="58,0,0,0"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
         <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="0"/>
         <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0"/>
-        <!--<Setter Property="Effect" >
-            <Setter.Value>
-                <DropShadowEffect BlurRadius="4" Direction="90" Opacity="0.25" ShadowDepth="0"/>
-            </Setter.Value>
-        </Setter>-->
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource White}"/>
+                <Setter Property="Foreground" Value="{StaticResource Secondary}"/>
                 <Setter Property="Background" Value="{StaticResource Primary}"/>
             </Trigger>
-            <!--<Trigger Property="IsMouseOver" Value="False">
-                <Setter Property="Foreground" Value="{StaticResource Gray1}"/>
-                <Setter Property="Background" Value="{StaticResource White}"/>
-            </Trigger>-->
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Foreground" Value="#666666"/>
+                <Setter Property="Background" Value="{x:Null}"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
 </ResourceDictionary>
