@@ -721,7 +721,7 @@
             <Grid
                 x:Name="grdGoods"
                 Grid.Row="1"
-                Visibility="Hidden"
+                Visibility="Collapsed"
                 DataContext="{StaticResource GoodsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />
@@ -1010,7 +1010,7 @@
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Loaded">
                                 <i:InvokeCommandAction Command="{Binding LoadGoodsCommand}"
-                                                      CommandParameter="{Binding ElementName=wdMain}"/>
+                                                       CommandParameter="{Binding ElementName=wdMain}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ScrollViewer 
@@ -1035,9 +1035,9 @@
                 </Grid>
             </Grid>
             <Grid 
-                x:Name="grdBody_Service"
+                x:Name="grdService"
                 Grid.Row="1"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource ServiceVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />

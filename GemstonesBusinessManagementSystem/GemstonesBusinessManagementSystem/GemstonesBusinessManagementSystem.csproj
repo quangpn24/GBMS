@@ -150,8 +150,6 @@
       <DependentUpon>EmployeePositionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DAL\ServiceDAL.cs" />
-    <Compile Include="Models\Goods.cs" />
-    <Compile Include="Models\GoodsType.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Resources\UserControls\GoodsControl.xaml.cs">
       <DependentUpon>GoodsControl.xaml</DependentUpon>
@@ -178,9 +176,6 @@
       <DependentUpon>EmployeePositionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ServiceViewModel.cs" />
-    <Compile Include="Views\AddGoodsWindow.xaml.cs">
-      <DependentUpon>AddGoodsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AddServiceWindow.xaml.cs">
       <DependentUpon>AddServiceWindow.xaml</DependentUpon>
     </Compile>

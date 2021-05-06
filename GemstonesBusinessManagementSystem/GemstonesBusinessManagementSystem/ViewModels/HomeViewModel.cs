@@ -28,6 +28,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             window.grdEmployee.Visibility = Visibility.Collapsed;
             window.grdGoods.Visibility = Visibility.Collapsed;
+            window.grdService.Visibility = Visibility.Collapsed;
 
             string fore = "#666666";
             string back = "#FFFFFF";
@@ -116,12 +117,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //ql hàng hóa
                 case 41:
+                    window.grdGoods.Visibility = Visibility.Visible;
                     CloseExpander(window, 3);
                     window.btnGoods.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnGoods.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //ql dịch vụ
                 case 42:
+                    window.grdService.Visibility = Visibility.Visible;
                     CloseExpander(window, 3);
                     window.btnServiceM.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnServiceM.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
