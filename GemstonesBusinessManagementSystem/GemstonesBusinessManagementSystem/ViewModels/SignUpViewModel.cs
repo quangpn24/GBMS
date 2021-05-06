@@ -235,11 +235,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 isSignUp = AccountDAL.Instance.AddintoDB(newAccount);
                 if (isSignUp)
                 {
-                    MessageBox.Show("đăng ký thành công");
+                    MessageBox.Show("Đăng ký thành công");
                 }
                 else
                 {
-                    MessageBox.Show("đăng ký không thành công");
+                    MessageBox.Show("Đăng ký không thành công");
                 }
             }
 
