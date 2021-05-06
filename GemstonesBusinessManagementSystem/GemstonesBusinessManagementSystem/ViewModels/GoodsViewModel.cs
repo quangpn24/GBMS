@@ -213,7 +213,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control = goodsControl;
             }
            
-            control.txbId.Text = AddPrifix("SP", newGoods.IdGoods) + newGoods.IdGoods.ToString();
+            control.txbId.Text = AddPrefix("SP", newGoods.IdGoods) + newGoods.IdGoods.ToString();
             control.txbName.Text = newGoods.Name;
             control.txbGoodsType.Text = GoodsTypeDAL.Instance.GetGoodsTypeWithId(newGoods.IdGoodsType).Name;
             control.txbUnit.Text = GoodsTypeDAL.Instance.GetGoodsTypeWithId(newGoods.IdGoodsType).Unit;
@@ -232,7 +232,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int idMax = GoodsDAL.Instance.GetMaxId();
             if(idMax >= 0)
             {
-                addGoodsWd.txtIdGoods.Text =AddPrifix("SP", idMax) + (idMax + 1).ToString();
+                addGoodsWd.txtIdGoods.Text =AddPrefix("SP", idMax) + (idMax + 1).ToString();
                 addGoodsWd.ShowDialog();
             }
         }
@@ -247,7 +247,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (name.ToLower().Contains(mainWd.txtSearchGoods.Text.ToLower()))
                 {
                     GoodsControl control = new GoodsControl();
-                    control.txbId.Text = AddPrifix("SP",int.Parse(dt.Rows[i].ItemArray[0].ToString())) + dt.Rows[i].ItemArray[0].ToString();
+                    control.txbId.Text = AddPrefix("SP",int.Parse(dt.Rows[i].ItemArray[0].ToString())) + dt.Rows[i].ItemArray[0].ToString();
                     control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                     control.txbPrice.Text = dt.Rows[i].ItemArray[2].ToString();
                     control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
