@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,49 +16,42 @@ namespace GemstonesBusinessManagementSystem.DAL
 
         public Connection()
         {
-            //QuangPn
-            //strCon = "server=localhost;user id=root;password=pnq0326089954;persistsecurityinfo=False;database=gemstonesbusinessmanagementsystem";
-            //Trung Huỳnh
-            strCon = "server=localhost;user id=root;password=trunghuynh;persistsecurityinfo=False;database=gemstonesbusinessmanagementsystem";
-            conn = new MySqlConnection(strCon);
-        }
-        public bool OpenConnection()
-        {
-            if (conn.State == System.Data.ConnectionState.Open)
-            {
-                return true;
-            }
             try
             {
-                conn.Open();
-                return true;
+                strCon = ConfigurationManager.ConnectionStrings["DBMS"].ConnectionString;
             }
-            catch (MySqlException ex)
+            catch
             {
-                switch (ex.Number)
+                return;
+            }
+            conn = new MySqlConnection(strCon);
+        }
+        public void OpenConnection()
+        {
+            try
+            {
+                if (conn.State != System.Data.ConnectionState.Open)
                 {
-                    case 0:
-                        MessageBox.Show("Cannot connect to server.  Contact administrator");
-                        break;
-
-                    case 1045:
-                        MessageBox.Show("Invalid username/password, please try again");
-                        break;
+                    conn.ConnectionString = ConfigurationManager.ConnectionStrings["DBMS"].ConnectionString;
+                    conn.Open();
                 }
-                return false;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                MessageBox.Show("Mất kết nối đến cơ sở dữ liệu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw ex;
             }
         }
-        public bool CloseConnection()
+        public void CloseConnection()
         {
             try
             {
                 conn.Close();
-                return true;
             }
             catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message);
-                return false;
             }
         }
     }

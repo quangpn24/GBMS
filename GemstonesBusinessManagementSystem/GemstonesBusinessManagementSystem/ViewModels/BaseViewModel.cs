@@ -75,9 +75,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             return prefix;
         }
 
-        public int ConvertToID(string prifix)
+        public int ConvertToID(string prefix)
         {
-            return int.Parse(prifix.Remove(0, 2));
+            return int.Parse(prefix.Remove(0, 2));
         }
     }
 }

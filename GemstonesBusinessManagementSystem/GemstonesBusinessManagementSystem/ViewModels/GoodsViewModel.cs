@@ -22,7 +22,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private string imageFileName;
         private MainWindow mainWindow;
         private GoodsType selectedGoodsType = new GoodsType();
-        public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } } 
+        public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
         private GoodsType selectedGoodsType_Filter = new GoodsType();
         public GoodsType SelectedGoodsType_Filter { get => selectedGoodsType_Filter; set { selectedGoodsType_Filter = value; OnPropertyChanged("SelectedGoodsType"); } }
         private ObservableCollection<GoodsType> itemSourceGoodsType = new ObservableCollection<GoodsType>();
@@ -147,7 +147,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void DeleteGoods(GoodsControl control)
         {
-            if(GoodsDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
+            if (GoodsDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
             {
                 this.mainWindow.stkGoods.Children.Remove(control);
             }
@@ -163,9 +163,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 Filter = "Excel Workbook|*.xlsx"
             };
-            if(saveFileDialog.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() == true)
             {
-                using(XLWorkbook workbook = new XLWorkbook())
+                using (XLWorkbook workbook = new XLWorkbook())
                 {
                     DataTable dt = GoodsDAL.Instance.LoadData();
                     dt.Columns.Remove("imageFile");
@@ -174,7 +174,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 MessageBox.Show("Xuất dữ liệu thành công!!!", "Thông báo");
             }
-            
+
         }
         void AddOrUpdate(AddGoodsWindow addGoodsWd)
         {
@@ -201,14 +201,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             Goods newGoods = new Goods(ConvertToID(addGoodsWd.txtIdGoods.Text), addGoodsWd.txtName.Text,
                              0, 0, selectedGoodsType.IdGoodsType, imgByteArr, false);
-            if(isUpdate)
+            if (isUpdate)
             {
                 newGoods.Price = long.Parse(goodsControl.txbPrice.Text);
                 newGoods.Quantity = int.Parse(goodsControl.txbQuantity.Text);
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
             GoodsControl control = new GoodsControl();
-            if(isUpdate)
+            if (isUpdate)
             {
                 control = goodsControl;
             }
@@ -230,9 +230,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             isUpdate = false;
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             int idMax = GoodsDAL.Instance.GetMaxId();
-            if(idMax >= 0)
+            if (idMax >= 0)
             {
-                addGoodsWd.txtIdGoods.Text =AddPrefix("SP", idMax) + (idMax + 1).ToString();
+                addGoodsWd.txtIdGoods.Text = AddPrefix("SP", idMax) + (idMax + 1).ToString();
                 addGoodsWd.ShowDialog();
             }
         }
@@ -247,7 +247,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (name.ToLower().Contains(mainWd.txtSearchGoods.Text.ToLower()))
                 {
                     GoodsControl control = new GoodsControl();
-                    control.txbId.Text = AddPrefix("SP",int.Parse(dt.Rows[i].ItemArray[0].ToString())) + dt.Rows[i].ItemArray[0].ToString();
+                    control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString())) + dt.Rows[i].ItemArray[0].ToString();
                     control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                     control.txbPrice.Text = dt.Rows[i].ItemArray[2].ToString();
                     control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
