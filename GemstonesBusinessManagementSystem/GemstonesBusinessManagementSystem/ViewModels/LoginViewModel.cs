@@ -27,8 +27,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     {
         public ICommand LogInCommand { get; set; }
         public ICommand OpenSignUpWindowCommand { get; set; }
-        public ICommand PasswordChangedCommand { get; set; }
-        public ICommand TurnOnNotiCommand { get; set; }
         public ICommand ChangePasswordCommand { get; set; }
 
         private string password;
@@ -42,10 +40,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             LogInCommand = new RelayCommand<LoginWindow>(p => true, p => Login(p));
             OpenSignUpWindowCommand = new RelayCommand<Window>((p) => true, (p) => OpenSignUpWindow(p));
-            ChangePasswordCommand = new RelayCommand<LoginWindow>((p) => true, (p) => openForgotPasswordWindow(p));
+            ChangePasswordCommand = new RelayCommand<LoginWindow>((p) => true, (p) => OpenForgotPasswordWindow(p));
         }
 
-        public void openForgotPasswordWindow(LoginWindow loginWindow)
+        public void OpenForgotPasswordWindow(LoginWindow loginWindow)
         {
             ForgotPasswordWindow forgotPasswordWindow = new ForgotPasswordWindow();
             forgotPasswordWindow.txtUsername.Text = null;

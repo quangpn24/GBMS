@@ -1,4 +1,5 @@
-﻿<Window x:Class="GemstonesBusinessManagementSystem.Views.LoginWindow"
+﻿<Window 
+        x:Class="GemstonesBusinessManagementSystem.Views.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -48,7 +49,9 @@
                 FontSize="32" 
                 FontWeight="Bold" 
                 Margin="0,50,0,0" 
-                Foreground="{StaticResource Primary}" Height="85" Width="231"/>
+                Foreground="{StaticResource Primary}" 
+                Height="85" 
+                Width="231"/>
             <Grid
                 Width="270" 
                 Height="50"
