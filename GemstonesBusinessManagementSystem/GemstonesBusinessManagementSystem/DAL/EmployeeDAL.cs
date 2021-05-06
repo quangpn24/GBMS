@@ -27,7 +27,7 @@ namespace GemstonesBusinessManagementSystem.DAL
 
         public List<Employee> SelectAll()
         {
-            conn.Open();
+            OpenConnection();
 
             string queryStr = "select * from Employee where isDeleted = false";
             MySqlCommand cmd = new MySqlCommand(queryStr, conn);

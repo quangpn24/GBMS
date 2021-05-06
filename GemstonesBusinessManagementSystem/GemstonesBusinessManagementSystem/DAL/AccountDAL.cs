@@ -23,7 +23,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "select * from Account";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -37,7 +37,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         private AccountDAL()
@@ -77,7 +77,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "insert into account(idAccount, username, password, type) values(@idAccount, @username, @password, @type)";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idAccount", account.IdAccount.ToString());
@@ -93,14 +93,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public int SetNewID()
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "select max(idAccount) from Account";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -121,7 +121,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         //kiem tra ma xac thuc
@@ -129,7 +129,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "select * from Authorizations where authKey = " + key;
                 MySqlCommand cmd = new MySqlCommand(queryString, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -147,14 +147,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch { return false; }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public bool IsExistUsername(string username)
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "select * from account where username  = '" + username + "'";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -175,7 +175,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
 
@@ -183,7 +183,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "update Account set password=@password where username = @username";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@username", username);
@@ -197,7 +197,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
 
