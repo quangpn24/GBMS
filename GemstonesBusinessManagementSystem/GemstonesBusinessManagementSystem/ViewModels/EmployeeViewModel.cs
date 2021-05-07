@@ -124,7 +124,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             empPosControl = control;
             isEditingPosition = true;
             employeePositionWindow.txbTitle.Text = "Sửa chức vụ";
-            employeePositionWindow.txtId.Text = ConvertToID(control.txbId.Text).ToString();
+            employeePositionWindow.txtId.Text = ConvertToIDString(control.txbId.Text);
 
             employeePositionWindow.txtPosition.Text = control.txbPosition.Text;
             employeePositionWindow.txtPosition.SelectionStart = control.txbPosition.Text.Length;
@@ -143,7 +143,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void DeletePosition(EmployeePositionControl control)
         {
-            string idPosition = ConvertToID(control.txbId.Text).ToString();
+            string idPosition = ConvertToIDString(control.txbId.Text);
             if (EmployeeDAL.Instance.IsPosition(idPosition))
             {
                 MessageBox.Show("Không thể xóa vì tồn tại nhân viên có chức vụ này");
@@ -272,7 +272,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void OpenEditWindow(EmployeeControl control)
         {
             isEditing = true;
-            Employee employee = EmployeeDAL.Instance.GetById(control.txbId.Text);
+            Employee employee = EmployeeDAL.Instance.GetById(ConvertToIDString(control.txbId.Text));
             this.employeeControl = control;
 
             AddEmployeeWindow addEmployeeWindow = new AddEmployeeWindow();
@@ -309,7 +309,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void HandleDelete(EmployeeControl employeeControl)
         {
-            string idEmployee = ConvertToID(employeeControl.txbId.Text).ToString();
+            string idEmployee = ConvertToIDString(employeeControl.txbId.Text);
             MessageBoxResult result = MessageBox.Show("Xác nhận xóa nhân viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
@@ -414,7 +414,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
 
-            string idEmployee = ConvertToID(window.txtId.Text).ToString();
+            string idEmployee = ConvertToIDString(window.txtId.Text);
             byte[] imgByteArr;
             try
             {
@@ -442,7 +442,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.employeeControl.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employee.IdPosition).Position;
                 this.employeeControl.txbPhoneNumber.Text = employee.PhoneNumber.ToString();
                 this.employeeControl.txbAddress.Text = employee.Address.ToString();
-                if (FilterPosition.IdEmployeePosition != employee.IdPosition)
+                if (FilterPosition != null && FilterPosition.IdEmployeePosition != employee.IdPosition)
                 {
                     employeeList.RemoveAll(x => x.IdEmployee == employee.IdEmployee);
                     Sort(mainWindow);
