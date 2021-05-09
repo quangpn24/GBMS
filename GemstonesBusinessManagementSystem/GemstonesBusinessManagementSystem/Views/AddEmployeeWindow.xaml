@@ -155,7 +155,7 @@
                     Stroke="{StaticResource Gray2}"  />
                 <ComboBox
                     x:Name="cboPosition"
-                    ItemsSource="{Binding ItemSourcePosition}"
+                    ItemsSource="{Binding ItsAddEmpPosition}"
                     SelectedItem="{Binding Path=SelectedPosition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     DisplayMemberPath="Position"
                     materialDesign:HintAssist.Hint="Chức vụ" 
@@ -279,7 +279,6 @@
                     x:Name="dpWorkDate"
                     HorizontalAlignment="Right"
                     Margin="0,0,11,0" 
-                    Padding="5,0,0,0"
                     materialDesign:HintAssist.Hint="Ngày vào làm"  
                     Width="210" 
                     Height="40" 

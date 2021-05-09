@@ -70,6 +70,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         private ObservableCollection<EmployeePosition> itemSourcePosition = new ObservableCollection<EmployeePosition>();
         public ObservableCollection<EmployeePosition> ItemSourcePosition { get => itemSourcePosition; set { itemSourcePosition = value; OnPropertyChanged(); } }
+        private ObservableCollection<EmployeePosition> itsAddEmpPosition = new ObservableCollection<EmployeePosition>();
+        public ObservableCollection<EmployeePosition> ItsAddEmpPosition { get => itsAddEmpPosition; set { itsAddEmpPosition = value; OnPropertyChanged(); } }
 
         public string imageName;
         public bool isEditing = false;
@@ -437,16 +439,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //Add usercontrol vào stackpanel
             if (isEditing)
             {
-                this.employeeControl.txbId.Text = window.txtId.Text;
                 this.employeeControl.txbName.Text = employee.Name.ToString();
                 this.employeeControl.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employee.IdPosition).Position;
                 this.employeeControl.txbPhoneNumber.Text = employee.PhoneNumber.ToString();
                 this.employeeControl.txbAddress.Text = employee.Address.ToString();
                 if (FilterPosition != null && FilterPosition.IdEmployeePosition != employee.IdPosition)
                 {
+                    mainWindow.stkEmployeeList.Children.Remove(employeeControl);
                     employeeList.RemoveAll(x => x.IdEmployee == employee.IdEmployee);
-                    Sort(mainWindow);
                 }
+                else
+                {
+                    int i = employeeList.FindIndex(x => x.IdEmployee == employee.IdEmployee);
+                    employeeList[i] = employee;
+                }
+                Sort(mainWindow);
             }
             else
             {
@@ -456,8 +463,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employee.IdPosition).Position;
                 control.txbPhoneNumber.Text = employee.PhoneNumber.ToString();
                 control.txbAddress.Text = employee.Address.ToString();
-
-                if (FilterPosition != null && FilterPosition.IdEmployeePosition == employee.IdPosition)
+                
+                if (FilterPosition == null || FilterPosition != null && FilterPosition.IdEmployeePosition == employee.IdPosition)
                 {
                     employeeList.Add(employee);
                     if (currentPage == (employeeList.Count - 1) / 10)
@@ -465,10 +472,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         mainWindow.stkEmployeeList.Children.Add(control);
                     }
                     Sort(mainWindow);
-                }
-                else
-                {
-                    employeeList.Add(employee);
                 }
             }
             int start = 0, end = 0;
@@ -515,14 +518,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //MainWindow
         void SetItemSource()
         {
-            //position
             itemSourcePosition.Clear();
+            itsAddEmpPosition.Clear();
+            
             EmployeePosition positionAll = new EmployeePosition(0, "Tất cả", 1, 1, 1, 1);
             itemSourcePosition.Add(positionAll);
+            
             List<EmployeePosition> positions = EmployeePositionDAL.Instance.GetList();
             foreach (var position in positions)
             {
                 itemSourcePosition.Add(position);
+                itsAddEmpPosition.Add(position);
             }
         }
         void Search(MainWindow mainWindow)
