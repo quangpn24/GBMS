@@ -74,7 +74,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             prefix += saveId.ToString();
             return prefix;
         }
-
+        public string ConvertToIDString(string prefix)
+        {
+            return prefix.Remove(0, 2);
+        }
         public int ConvertToID(string prefix)
         {
             return int.Parse(prefix.Remove(0, 2));
