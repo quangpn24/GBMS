@@ -420,7 +420,7 @@
                 Margin="0"
                 Grid.Row="1" 
                 DataContext="{StaticResource EmployeeVM}"
-                Visibility="Visible">
+                Visibility="Hidden">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}" 
@@ -467,7 +467,6 @@
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
                     <Grid 
-                        x:Name="grdFindEmployee" 
                         Margin="20,20,0,0" 
                         Height="46" 
                         Width="320"
@@ -475,7 +474,7 @@
                         HorizontalAlignment="Left" 
                         VerticalAlignment="Top">
                         <TextBox 
-                            x:Name="txtSearch"
+                            x:Name="txtSearchEmployee"
                             materialDesign:HintAssist.Hint="Tìm nhân viên" 
                             FontSize="18" 
                             BorderThickness="0" 

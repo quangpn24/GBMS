@@ -355,7 +355,6 @@
                     <StackPanel 
                         x:Name="stkPosition" 
                         VerticalAlignment="Top" >
-                        <UserControls:EmployeePositionControl />
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
