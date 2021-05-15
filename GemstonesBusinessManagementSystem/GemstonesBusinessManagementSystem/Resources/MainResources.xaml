@@ -8,4 +8,6 @@
     <viewmodels:EmployeeViewModel x:Key="EmployeeVM"/>
     <viewmodels:HomeViewModel x:Key="HomeVM"/>
     <viewmodels:ServiceViewModel x:Key="ServiceVM" />
+    <viewmodels:CustomerViewModel x:Key="CustomerVM"/>
+
 </ResourceDictionary>

@@ -75,13 +75,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void SetItemSourcEmployee()
         {
             itemSourceEmployee.Clear();     
-            List<Employee> employees = EmployeeDAL.Instance.SelectAll();
+            List<Employee> employees = EmployeeDAL.Instance.GetList();
             foreach(var employee in employees)
             {
-                if(employee.Position == "nhân viên quản lý" || employee.Position == "nhân viên thu ngân" )
-                {
-                    itemSourceEmployee.Add(employee);
-                }
+                itemSourceEmployee.Add(employee);
             }
         }
 

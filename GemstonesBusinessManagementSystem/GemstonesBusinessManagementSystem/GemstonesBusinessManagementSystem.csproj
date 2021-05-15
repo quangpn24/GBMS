@@ -136,16 +136,20 @@
     <Compile Include="Converter.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\Connection.cs" />
+    <Compile Include="DAL\CustomerDAL.cs" />
     <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="Models\Account.cs" />
-    <Compile Include="DAL\ServiceDAL.cs" />
     <Compile Include="DAL\EmployeePositionDAL.cs" />
     <Compile Include="DAL\GoodsDAL.cs" />
     <Compile Include="DAL\GoodsTypeDAL.cs" />
+    <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeePosition.cs" />
     <Compile Include="Models\Goods.cs" />
     <Compile Include="Models\GoodsType.cs" />
+    <Compile Include="Resources\UserControls\CustomerControl.xaml.cs">
+      <DependentUpon>CustomerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\EmployeeControl.xaml.cs">
       <DependentUpon>EmployeeControl.xaml</DependentUpon>
     </Compile>
@@ -161,6 +165,7 @@
       <DependentUpon>ServiceControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
     <Compile Include="ViewModels\GoodsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -171,8 +176,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\SignUpViewModel.cs" />
+    <Compile Include="Views\AddCustomerWindow.xaml.cs">
+      <DependentUpon>AddCustomerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddGoodsWindow.xaml.cs">
       <DependentUpon>AddGoodsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddSupplierWindow.xaml.cs">
+      <DependentUpon>AddSupplierWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ForgotPasswordWindow.xaml.cs">
       <DependentUpon>ForgotPasswordWindow.xaml</DependentUpon>
@@ -180,12 +191,8 @@
     <Compile Include="Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ServiceViewModel.cs" />
     <Compile Include="Views\AddEmployeeWindow.xaml.cs">
       <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddGoodsWindow.xaml.cs">
-      <DependentUpon>AddGoodsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EmployeePositionWindow.xaml.cs">
       <DependentUpon>EmployeePositionWindow.xaml</DependentUpon>
@@ -224,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\UserControls\CustomerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\UserControls\EmployeeControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -235,6 +246,10 @@
     <Page Include="Resources\UserControls\GoodsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddCustomerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddEmployeeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -248,6 +263,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\AddSupplierWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ForgotPasswordWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -255,6 +274,7 @@
     <Page Include="Views\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\EmployeePositionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
