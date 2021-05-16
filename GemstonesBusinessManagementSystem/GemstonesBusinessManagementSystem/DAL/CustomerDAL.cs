@@ -47,19 +47,6 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
         }
 
-        public DataTable GetDatatable()
-        {
-            OpenConnection();
-
-            string queryStr = "Select * from Customer";
-            MySqlCommand cmd = new MySqlCommand(queryStr, conn);
-            MySqlDataReader dataReader = cmd.ExecuteReader();
-            DataTable dataTable = new DataTable();
-            dataTable.Load(dataReader);
-
-            return dataTable;
-            //try catch 
-        }
 
         public List<Customer> ConvertDBToList()
         {
@@ -87,7 +74,8 @@ namespace GemstonesBusinessManagementSystem.DAL
             for(int i = 0; i < dt.Rows.Count; i++)
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
-                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()));
+                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
+                    long.Parse(dt.Rows[i].ItemArray[4].ToString()));
                 customers.Add(customer);
             }
             return customers;
@@ -107,7 +95,8 @@ namespace GemstonesBusinessManagementSystem.DAL
             adapter.Fill(dataTable);
 
             Customer res = new Customer(int.Parse(idCustomers), dataTable.Rows[0].ItemArray[1].ToString(),
-                (dataTable.Rows[0].ItemArray[2].ToString()),int.Parse(dataTable.Rows[0].ItemArray[3].ToString()));
+                (dataTable.Rows[0].ItemArray[2].ToString()),int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
+                long.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
             return res;
             }
             catch
@@ -147,7 +136,8 @@ namespace GemstonesBusinessManagementSystem.DAL
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
-                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()));
+                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
+                    long.Parse(dt.Rows[i].ItemArray[4].ToString()));
                 customers.Add(customer);
             }
             return customers;
@@ -176,6 +166,106 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch
             {
                 return -1;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public bool IsExisted(string idNumber)  // kiểm tra thông tin số CMND
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "select * from customer where idNumber=@idNumber;";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@idNumber", idNumber);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                if (dataTable.Rows.Count >= 1)
+                    return true;
+                else
+                    return false;
+            }
+            catch
+            {
+                return true;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+}
+        public bool Add(Customer customer)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber, totalPrice)" +
+                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber, @totalPrice);";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer.ToString());
+                command.Parameters.AddWithValue("@customerName", customer.CustomerName.ToString());
+                command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber.ToString());
+                command.Parameters.AddWithValue("@idNumber", customer.IdCustomer.ToString());
+                command.Parameters.AddWithValue("@totalPrice", customer.TotalPrice.ToString());
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public bool Update(Customer customer)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "update customer set " +
+                    "customerName = @customerName, phoneNumber = @phoneNumber, idNumber = @idNumber where idCustomer = @idCustomer; ";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer.ToString());
+                command.Parameters.AddWithValue("@customerName", customer.CustomerName.ToString());
+                command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber.ToString());
+                command.Parameters.AddWithValue("@idNumber", customer.IdCustomer.ToString());
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public void Count()
+        {
+            DataTable dt = new DataTable();
+            List<Customer> customers = new List<Customer>();
+            try
+            {
+                OpenConnection();
+                string queryString = "select * from customer";
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                adapter.Fill(dt);
+            }
+            catch
+            {
+
             }
             finally
             {
