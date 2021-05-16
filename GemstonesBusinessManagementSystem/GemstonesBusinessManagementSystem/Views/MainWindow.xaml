@@ -352,9 +352,10 @@
                 Style="{StaticResource NavigationButton}"
                 Foreground="{StaticResource Black1}"
                 Padding="0"
-                Margin="40,0,40,20" 
+                Margin="0,0,0,20" 
                 VerticalAlignment="Bottom" 
-                HorizontalContentAlignment="Center" >
+                HorizontalContentAlignment="Center"
+                Width="140" >
                 <StackPanel 
                     Orientation="Horizontal">
                     <materialDesign:PackIcon
@@ -381,6 +382,7 @@
                 Height="50"
                 Margin="20,0">
                 <TextBlock 
+                    x:Name="txbTabName"
                     Style="{StaticResource HeadingText1}"
                     HorizontalAlignment="Left"
                     TextWrapping="Wrap"
@@ -415,12 +417,341 @@
                     </Ellipse>
                 </StackPanel>
             </Grid>
+            <Grid
+                x:Name="grdStock"
+                DataContext="{StaticResource StockVM}"
+                Margin="0"
+                Visibility="Visible"
+                Grid.Row="1" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <i:InvokeCommandAction Command="{Binding LoadStockCommand}" 
+                                               CommandParameter="{Binding ElementName=wdMain}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="90"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel 
+                    x:Name="stkStockDashboard"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center" 
+                    Visibility="Collapsed"
+                    Margin="20,0,0,0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Loaded">
+                            <i:InvokeCommandAction Command="{Binding LoadDashboardCommand}" 
+                                                   CommandParameter="{Binding ElementName=wdMain}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <UserControls:DashboardControl/>
+                    <UserControls:DashboardControl/>
+                    <UserControls:DashboardControl/>
+                </StackPanel>
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right" 
+                    Margin="0,0,20,0" 
+                    VerticalAlignment="Center">
+                    <Button
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding ExportExcelCommand}"
+                        Content="Xuất excel"
+                        ToolTip="Xuất danh sách nhân viên"
+                        Margin="0,0,20,0"
+                        Width="140"/>
+                    <Button
+                        x:Name="btnSwitchImportStock"
+                        Style="{StaticResource GreenButton}"
+                        Uid="21"
+                        Content="Nhập kho"
+                        ToolTip="Nhập kho"
+                        Margin="0"
+                        Width="140"/>
+                </StackPanel>
+                <Grid 
+                    Grid.Row="2"
+                    Margin="20,0,20,20"
+                    Style="{StaticResource DropShadow}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="74"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid 
+                        Margin="20,0,0,0" 
+                        Height="46" 
+                        Width="320"
+                        Style="{StaticResource DropShadow}"
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Center">
+                        <TextBox 
+                            x:Name="txtSearchStock"
+                            materialDesign:HintAssist.Hint="Tìm sản phẩm" 
+                            FontSize="18" 
+                            BorderThickness="0" 
+                            MaxLines="1"
+                            Margin="12,0" 
+                            FontWeight="Medium" 
+                            Height="40" 
+                            HorizontalContentAlignment="Left" 
+                            VerticalContentAlignment="Center"
+                            Foreground="{DynamicResource Black1}" 
+                            SelectionBrush="{DynamicResource Primary}"
+                            Padding="2,0,0,0"
+                            VerticalAlignment="Center" />
+                        <Button 
+                            IsDefault="True"
+                            Command="{Binding SearchCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}"
+                            Height="30"
+                            Width="30"
+                            Margin="0,0,10,0"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            VerticalAlignment="Center"
+                            FocusVisualStyle="{x:Null}"
+                            HorizontalAlignment="Right"
+                            Padding="0">
+                            <materialDesign:PackIcon 
+                                Kind="Magnify" 
+                                Foreground="{StaticResource Black2}"
+                                Height="26"
+                                Width="26" 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Button>
+                        <Rectangle 
+                            Fill="{DynamicResource White}" 
+                            RadiusY="4" 
+                            RadiusX="4"
+                            Panel.ZIndex="-1" />
+                    </Grid>
+                    <StackPanel
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,0,20,0" VerticalAlignment="Center">
+                        <Grid 
+                            Margin="0" 
+                            Height="45" 
+                            Width="160"
+                            Style="{StaticResource DropShadow}"
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center">
+                            <Rectangle 
+                                Fill="{DynamicResource White}" 
+                                RadiusY="4" 
+                                RadiusX="4"
+                                Panel.ZIndex="-1" />
+                            <ComboBox
+                                x:Name="cboMonthStock"
+                                materialDesign:ComboBoxAssist.ClassicMode="True"
+                                materialDesign:HintAssist.Hint="Chọn tháng"
+                                ItemsSource="{Binding ItemSourceMonth}"
+                                SelectedItem="{Binding SelectedMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Height="40"
+                                FontSize="18"
+                                BorderThickness="0"
+                                Padding="10,0,4,0"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Left"
+                                FontWeight="SemiBold"
+                                BorderBrush="{StaticResource Black2}" 
+                                Background="{StaticResource White}" 
+                                Margin="4,0">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding FilterCommand}"
+                                                               CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </Grid>
+                        <Grid 
+                            Margin="20,0,0,0" 
+                            Height="45" 
+                            Width="160"
+                            Style="{StaticResource DropShadow}"
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center">
+                            <Rectangle 
+                                Fill="{DynamicResource White}" 
+                                RadiusY="4" 
+                                RadiusX="4"
+                                Panel.ZIndex="-1" />
+                            <ComboBox
+                                x:Name="cboYearStock"
+                                materialDesign:ComboBoxAssist.ClassicMode="True"
+                                materialDesign:HintAssist.Hint="Chọn năm"
+                                ItemsSource="{Binding ItemSourceYear}"
+                                SelectedItem="{Binding SelectedYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Height="40"
+                                FontSize="18"
+                                BorderThickness="0"
+                                Padding="10,0,4,0"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Left"
+                                FontWeight="SemiBold"
+                                BorderBrush="{StaticResource Black2}" 
+                                Background="{StaticResource White}" 
+                                Margin="4,0">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding FilterCommand}"
+                                                               CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+                    <Border
+                        CornerRadius="4,4,0,0"
+                        BorderThickness="1"
+                        Grid.Row="1" 
+                        Margin="20,0"
+                        Height="40" 
+                        VerticalAlignment="Top" 
+                        BorderBrush="{StaticResource Primary}" 
+                        Background="{StaticResource Primary}" >
+                        <Grid  
+                            Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="0.5*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="Mã SP" 
+                                Grid.Column="0"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                            <TextBlock
+                                Text="Tên sản phẩm" 
+                                Grid.Column="1"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" 
+                                Margin="20,0,0,0"/>
+                            <TextBlock
+                                Text="Loại" 
+                                Grid.Column="2"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                Text="Tồn đầu" 
+                                Grid.Column="3"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" 
+                                Margin="0"/>
+                            <TextBlock
+                                Text="Mua vào" 
+                                Grid.Column="4"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                            <TextBlock
+                                Text="Bán ra" 
+                                Grid.Column="5"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" 
+                                Margin="0"/>
+                            <TextBlock
+                                Text="Tồn cuối" 
+                                Grid.Column="6"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" 
+                                Margin="0"/>
+                            <TextBlock
+                                Text="Đơn vị tính" 
+                                Grid.Column="7"
+                                Style="{StaticResource TextHeader}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" 
+                                Margin="0"/>
+                        </Grid>
+                    </Border>
+                    <Grid
+                        Grid.Row="1"
+                        Margin="20,40,20,0" >
+                        <ScrollViewer 
+                            VerticalScrollBarVisibility="Auto" 
+                            HorizontalScrollBarVisibility="Disabled" >
+                            <StackPanel 
+                                x:Name="stkStock" 
+                                VerticalAlignment="Top" />
+                        </ScrollViewer>
+                    </Grid>
+                    <StackPanel
+                        Grid.Row="2"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,0,20,0">
+                        <TextBlock 
+                            x:Name="txtNumOfStock"
+                            Text="0 trong 0 mặt hàng"
+                            Margin="0,0,40,0"
+                            FontSize="14"
+                            TextAlignment="Justify"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Foreground="{DynamicResource Black2}"/>
+                        <Button 
+                            x:Name="btnPrePageStock" 
+                            Margin="8,0"
+                            ToolTip="Trang trước"
+                            Style="{StaticResource PaginationButton}"
+                            Command="{Binding PreviousPageCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronLeft" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Center" />
+                        </Button>
+                        <Button 
+                            x:Name="btnNextPageStock" 
+                            Margin="8,0,0,0" 
+                            ToolTip="Trang tiếp theo"
+                            Style="{StaticResource PaginationButton}"
+                            Command="{Binding NextPageCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronRight" 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                        </Button>
+                    </StackPanel>
+                    <Rectangle 
+                        Fill="{DynamicResource White}" 
+                        RadiusY="4" 
+                        RadiusX="4"
+                        Grid.RowSpan="3"
+                        Panel.ZIndex="-1" />
+                </Grid>
+            </Grid>
             <Grid 
                 x:Name="grdEmployee" 
                 Margin="0"
                 Grid.Row="1" 
                 DataContext="{StaticResource EmployeeVM}"
-                Visibility="Hidden">
+                Visibility="Collapsed">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}" 

@@ -12,7 +12,7 @@ namespace GemstonesBusinessManagementSystem.DAL
     class GoodsDAL : Connection
     {
         private static GoodsDAL instance;
-        public static GoodsDAL Instance 
+        public static GoodsDAL Instance
         {
             get
             {
@@ -59,15 +59,15 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 conn.Open();
                 string query;
-                if(!isUpdate) // insert
+                if (!isUpdate) // insert
                 {
-                     query = "Insert into Goods(idGoods, name, price, quantity, idGoodsType, imageFile, isDeleted) " +
-                    "values(@idGoods, @name, @price, @quantity, @idGoodsType, @imageFile, @isDeleted)";
+                    query = "Insert into Goods(idGoods, name, price, quantity, idGoodsType, imageFile, isDeleted) " +
+                   "values(@idGoods, @name, @price, @quantity, @idGoodsType, @imageFile, @isDeleted)";
                 }
                 else
                 {
-                     query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted" +
-                  "where idGoods = @idGoods";
+                    query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted" +
+                 "where idGoods = @idGoods";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idGoods", goods.IdGoods);
@@ -75,10 +75,10 @@ namespace GemstonesBusinessManagementSystem.DAL
                 cmd.Parameters.AddWithValue("@price", goods.Price);
                 cmd.Parameters.AddWithValue("@quantity", goods.Quantity);
                 cmd.Parameters.AddWithValue("@idGoodsType", goods.IdGoodsType);
-                cmd.Parameters.AddWithValue("@imageFile",Convert.ToBase64String(goods.ImageFile));
+                cmd.Parameters.AddWithValue("@imageFile", Convert.ToBase64String(goods.ImageFile));
                 cmd.Parameters.AddWithValue("@isDeleted", goods.IsDeleted);
                 int rs = cmd.ExecuteNonQuery();
-                if(rs == 1)
+                if (rs == 1)
                 {
                     return true;
                 }
@@ -117,7 +117,33 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Close();
             }
         }
+        public List<Goods> GetList()
+        {
+            List<Goods> goodsList = new List<Goods>();
+            try
+            {
+                OpenConnection();
 
+                string queryStr = "select * from Goods where isDeleted = false";
+                MySqlCommand cmd = new MySqlCommand(queryStr, conn);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dataReader);
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Goods goods = new Goods(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                        dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()),
+                        int.Parse(dt.Rows[i].ItemArray[3].ToString()), int.Parse(dt.Rows[i].ItemArray[4].ToString()),
+                        Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString()), bool.Parse(dt.Rows[i].ItemArray[6].ToString()));
+                    goodsList.Add(goods);
+                }
+            }
+            catch
+            {
+            }
+            return goodsList;
+        }
         public Goods GetGoods(string idGoods) // lấy thông tin hàng hóa khi biết id 
         {
             try
@@ -133,7 +159,7 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 Goods res = new Goods(int.Parse(idGoods), dataTable.Rows[0].ItemArray[1].ToString(),
                     long.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
-                    int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), 
+                    int.Parse(dataTable.Rows[0].ItemArray[4].ToString()),
                     Convert.FromBase64String(dataTable.Rows[0].ItemArray[5].ToString()),
                     bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));
                 return res;
@@ -147,7 +173,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Close();
             }
         }
-
         public Goods GetByGoodsType(string idGoodsType)
         {
             try
@@ -176,7 +201,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Close();
             }
         }
-
         public int GetMaxId()
         {
             try
@@ -199,12 +223,44 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch
             {
-                return -1;
+                return 0;
             }
             finally
             {
                 conn.Close();
             }
+        }
+        public List<Goods> FindByName(string name)
+        {
+            DataTable dt = new DataTable();
+            List<Goods> goodsList = new List<Goods>();
+            try
+            {
+                OpenConnection();
+                string queryString = @"select * from Goods where name like  ""%" + name + "%\" and isDeleted = 0";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                adapter.Fill(dt);
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Goods goods = new Goods(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                        dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()),
+                        int.Parse(dt.Rows[i].ItemArray[3].ToString()), int.Parse(dt.Rows[i].ItemArray[4].ToString()),
+                        Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString()), bool.Parse(dt.Rows[i].ItemArray[6].ToString()));
+                    goodsList.Add(goods);
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            return goodsList;
         }
     }
 }

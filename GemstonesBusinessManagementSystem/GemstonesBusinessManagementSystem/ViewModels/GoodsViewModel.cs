@@ -232,7 +232,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int idMax = GoodsDAL.Instance.GetMaxId();
             if (idMax >= 0)
             {
-                addGoodsWd.txtIdGoods.Text = AddPrefix("SP", idMax) + (idMax + 1).ToString();
+                addGoodsWd.txtIdGoods.Text = AddPrefix("SP", idMax + 1);
                 addGoodsWd.ShowDialog();
             }
         }

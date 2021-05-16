@@ -53,7 +53,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         //Mainwindow
         private MainWindow mainWindow;
-        public MainWindow MainWindow { get => mainWindow; set => mainWindow = value; }
 
         private List<Employee> employeeList = EmployeeDAL.Instance.GetList();
         private EmployeeControl employeeControl;
@@ -106,7 +105,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SearchCommand = new RelayCommand<MainWindow>((p) => true, (p) => Search(p));
             ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel());
             OpenAddWindowCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenAddWindow(p));
-            LoadCommand = new RelayCommand<MainWindow>((p) => true, (p) => { LoadEmployeeList(p, 0); SetItemSource(); });
+            LoadCommand = new RelayCommand<MainWindow>((p) => true, (p) => {  LoadEmployeeList(p, 0); SetItemSource(); });
         }
 
         //EmployeePositionControl
@@ -523,13 +522,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void SetItemSource()
         {
             int i = mainWindow.cboFilterPosition.SelectedIndex;
-            
+
             itemSourcePosition.Clear();
             itsAddEmpPosition.Clear();
 
             EmployeePosition positionAll = new EmployeePosition(0, "Tất cả", 1, 1, 1, 1);
             itemSourcePosition.Add(positionAll);
-            
+
             List<EmployeePosition> positions = EmployeePositionDAL.Instance.GetList();
             foreach (var position in positions)
             {
@@ -560,7 +559,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     workbook.Worksheets.Add(EmployeeDAL.Instance.GetDatatable(), "Danh sách nhân viên");
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
-                MessageBox.Show("Xuất  danh sách thành công!");
+                MessageBox.Show("Xuất danh sách thành công!");
             }
         }
         void OpenAddWindow(MainWindow mainWindow)
@@ -601,7 +600,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (currentPage == employeeList.Count / 10)
                 end = employeeList.Count;
 
-            mainWindow.txtNumOfEmp.Text = String.Format("{0} - {1} of {2} items", start == end ? 0 : start + 1, end, employeeList.Count);
+            mainWindow.txtNumOfEmp.Text = String.Format("{0} of {1} items", mainWindow.stkEmployeeList.Children.Count, employeeList.Count);
         }
         public void GoToNextPage(MainWindow mainWindow, int currentPage)
         {
