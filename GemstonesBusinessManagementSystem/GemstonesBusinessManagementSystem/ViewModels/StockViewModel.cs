@@ -120,10 +120,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             string month = selectedMonth.Split(' ')[1];
             string year = selectedYear.Split(' ')[1];
-            SortedList<int, int> earlyImportList = StockReceiptDAL.Instance.GetImportData((int.Parse(month) - 1).ToString(), year);
-            SortedList<int, int> importList = StockReceiptDAL.Instance.GetImportData(month, year);
-            SortedList<int, int> earlySellList = BillDAL.Instance.GetImportData((int.Parse(month) - 1).ToString(), year);
-            SortedList<int, int> sellList = BillDAL.Instance.GetImportData(month, year);
+            SortedList<int, int> pastImportList = StockReceiptDAL.Instance.GetImportDataAgo(month, year);
+            SortedList<int, int> importList = StockReceiptDAL.Instance.GetImportDataByMonth(month, year);
+            SortedList<int, int> pastSoldList = BillDAL.Instance.GetSoldDataAgo(month, year);
+            SortedList<int, int> soldList = BillDAL.Instance.GetSoldDataByMonth(month, year);
 
             for (int i = start; i < end; i++)
             {
@@ -134,14 +134,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbType.Text = type.Name;
                 control.txbUnit.Text = type.Unit;
 
-                int earlyImportIndex = earlyImportList.IndexOfKey(list[i].IdGoods);
+                int earlyImportIndex = pastImportList.IndexOfKey(list[i].IdGoods);
                 int importIndex = importList.IndexOfKey(list[i].IdGoods);
-                int earlySellIndex = earlySellList.IndexOfKey(list[i].IdGoods);
-                int sellIndex = sellList.IndexOfKey(list[i].IdGoods);
+                int earlySellIndex = pastSoldList.IndexOfKey(list[i].IdGoods);
+                int sellIndex = soldList.IndexOfKey(list[i].IdGoods);
 
                 if (earlySellIndex != -1 || earlyImportIndex != -1)
                 {
-                    control.txbEarlyStock.Text = (earlyImportList.Values[earlyImportIndex] - earlySellList.Values[earlySellIndex]).ToString();
+                    control.txbEarlyStock.Text = (pastImportList.Values[earlyImportIndex] - pastSoldList.Values[earlySellIndex]).ToString();
                 }
                 if (importIndex != -1)
                 {
@@ -149,11 +149,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 if (sellIndex != -1)
                 {
-                    control.txbOutStock.Text = sellList.Values[sellIndex].ToString();
+                    control.txbOutStock.Text = soldList.Values[sellIndex].ToString();
                 }
                 if (importIndex != -1 && sellIndex != -1)
                 {
-                    control.txbEndStock.Text = (importList.Values[importIndex] - sellList.Values[sellIndex]).ToString();
+                    control.txbEndStock.Text = (importList.Values[importIndex] - soldList.Values[sellIndex]).ToString();
                 }
                 stackPanel.Children.Add(control);
             }
@@ -188,8 +188,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (mainWindow.cboMonthStock.SelectedIndex == -1 || mainWindow.cboYearStock.SelectedIndex == -1)
                 return;
-            //string nameSearching = mainWindow.txtSearchStock.Text.ToLower();
-            //goodsList = GoodsDAL.Instance.FindByName(nameSearching);
             LoadStockList(mainWindow, 0);
         }
         void GoToNextPage(MainWindow mainWindow, int currentPage)

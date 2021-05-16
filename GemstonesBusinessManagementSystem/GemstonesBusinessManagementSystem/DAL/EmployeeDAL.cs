@@ -209,7 +209,6 @@ namespace GemstonesBusinessManagementSystem.DAL
         }
         public List<Employee> FindByName(string name)
         {
-            
             try
             {
                 OpenConnection();
