@@ -371,7 +371,6 @@
             </Button>
         </Grid>
         <Grid 
-            Visibility="Visible"
             Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
@@ -421,7 +420,7 @@
                 x:Name="grdStock"
                 DataContext="{StaticResource StockVM}"
                 Margin="0"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 Grid.Row="1" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
@@ -599,7 +598,11 @@
                                 Margin="4,0">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding SetItemSourceCommand}"
+                                        <i:InvokeCommandAction Command="{Binding SetItsMonthCommand}"
+                                                               CommandParameter="{Binding ElementName=wdMain}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Loaded">
+                                        <i:InvokeCommandAction Command="{Binding SetItsYearCommand}"
                                                                CommandParameter="{Binding ElementName=wdMain}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>

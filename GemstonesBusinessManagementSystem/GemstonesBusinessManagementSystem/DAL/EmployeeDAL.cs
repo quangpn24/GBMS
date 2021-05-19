@@ -66,7 +66,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                     {
                         idAccount = int.Parse(dt.Rows[i].ItemArray[8].ToString());
                     }
-
                     Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                         dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
                         dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
@@ -102,8 +101,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 else
                 {
                     query = "insert into Employee " +
-                        "(idEmployee,name,gender,phonenumber,address,dateofBirth,idPosition,startingdate,idAccount,imageFile,isDeleted) " +
-                        "values(@idEmployee,@name,@gender,@phoneNumber,@address,@dateofBirth,@idPosition,@startingdate,@idAccount,@imageFile,@isDeleted)";
+                        "(idEmployee,name,gender,phonenumber,address,dateofBirth,idPosition,startingdate,imageFile,isDeleted) " +
+                        "values(@idEmployee,@name,@gender,@phoneNumber,@address,@dateofBirth,@idPosition,@startingdate,@imageFile,@isDeleted)";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -115,7 +114,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 cmd.Parameters.AddWithValue("@dateofBirth", employee.DateOfBirth);
                 cmd.Parameters.AddWithValue("@idPosition", employee.IdPosition.ToString());
                 cmd.Parameters.AddWithValue("@startingdate", employee.StartingDate);
-                cmd.Parameters.AddWithValue("@idAccount", employee.IdAccount);
                 cmd.Parameters.AddWithValue("@imageFile", Convert.ToBase64String(employee.ImageFile));
                 cmd.Parameters.AddWithValue("@isDeleted", employee.IsDeleted);
 

@@ -105,7 +105,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SearchCommand = new RelayCommand<MainWindow>((p) => true, (p) => Search(p));
             ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel());
             OpenAddWindowCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenAddWindow(p));
-            LoadCommand = new RelayCommand<MainWindow>((p) => true, (p) => {  LoadEmployeeList(p, 0); SetItemSource(); });
+            LoadCommand = new RelayCommand<MainWindow>((p) => true, (p) => { LoadEmployeeList(p, 0); SetItemSource(); });
         }
 
         //EmployeePositionControl
