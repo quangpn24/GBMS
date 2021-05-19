@@ -181,7 +181,8 @@
                     DisplayMemberPath="Name"
                     VerticalContentAlignment="Center" 
                     HorizontalContentAlignment="Left"
-                    FontWeight="SemiBold" TabIndex="1">
+                    FontWeight="SemiBold" 
+                    TabIndex="1">
                 </ComboBox>
             </Grid>
             <Grid 
@@ -203,7 +204,8 @@
                     Width="230" 
                     RadiusY="6" 
                     RadiusX="6"
-                    Margin="0" Stroke="{StaticResource Gray2}"/>
+                    Margin="0"
+                    Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtImportPrice"
                     Cursor="IBeam"

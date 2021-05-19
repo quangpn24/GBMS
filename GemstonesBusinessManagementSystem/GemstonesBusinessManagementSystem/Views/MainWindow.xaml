@@ -105,7 +105,7 @@
             <Grid
                 x:Name="grdGoods"
                 Grid.Row="1"
-                Visibility="Hidden"
+                Visibility="Visible"
                 DataContext="{StaticResource GoodsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
@@ -184,10 +184,9 @@
                 </Grid>
                 <Grid 
                     Grid.Row="1" 
-                    Width="1200" 
                     Background="{StaticResource White}"
                     Style="{StaticResource DropShadow}" 
-                    Margin="0,0,0,20">
+                    Margin="20,0,20,20">
                     <Grid.RowDefinitions >
                         <RowDefinition Height="80"/>
                         <RowDefinition Height="50"/>
@@ -197,7 +196,7 @@
                     <Grid Grid.Row="0">
                         <Grid 
                             x:Name="grdFindGoods" 
-                            Margin="10,0,0,0" 
+                            Margin="20,0,0,0" 
                             Height="46" 
                             Width="350"
                             Style="{StaticResource DropShadow}"
@@ -253,7 +252,7 @@
                             Orientation="Horizontal" 
                             HorizontalAlignment="Right" 
                             Height="45"
-                            Margin="0,0,10,0">
+                            Margin="0,0,20,0">
                             <Grid 
                                 x:Name="grdFilterType" 
                                 Margin="0" 
@@ -327,11 +326,11 @@
                                                                    CommandParameter="{Binding ElementName=wdMain}"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
-                                    <ComboBoxItem> Theo tên A->Z</ComboBoxItem>
-                                    <ComboBoxItem> Theo tên Z->A</ComboBoxItem>
-                                    <ComboBoxItem> Giá bán tăng</ComboBoxItem>
-                                    <ComboBoxItem> Giá bán giảm</ComboBoxItem>
-                                    <ComboBoxItem> Giá mua tăng</ComboBoxItem>
+                                    <ComboBoxItem>Theo tên A->Z</ComboBoxItem>
+                                    <ComboBoxItem>Theo tên Z->A</ComboBoxItem>
+                                    <ComboBoxItem>Giá bán tăng</ComboBoxItem>
+                                    <ComboBoxItem>Giá bán giảm</ComboBoxItem>
+                                    <ComboBoxItem>Giá mua tăng</ComboBoxItem>
                                     <ComboBoxItem>Giá mua giảm</ComboBoxItem>
                                     <ComboBoxItem></ComboBoxItem>
                                 </ComboBox>
@@ -343,15 +342,15 @@
                         Background="{StaticResource Primary}"
                         Height="50" 
                         VerticalAlignment="Top" 
-                        Margin="10,0">
+                        Margin="20,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition Width="250"/>
-                            <ColumnDefinition Width="160"/>
-                            <ColumnDefinition Width="160"/>
-                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="1.5*"/>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="10"/>
                         </Grid.ColumnDefinitions>
@@ -378,8 +377,8 @@
                             FontWeight="SemiBold"/>
                         <TextBlock
                             Grid.Column="2" 
-                            HorizontalAlignment="Center" 
-                            Margin="0" 
+                            HorizontalAlignment="Left" 
+                            Margin="10,0,0,0" 
                             Foreground="{StaticResource Secondary}"
                             TextWrapping="Wrap" 
                             Text="Loại sản phẩm" 
@@ -393,7 +392,7 @@
                             Margin="0" 
                             TextWrapping="Wrap" 
                             Foreground="{StaticResource Secondary}"
-                            Text="Đơn vị tính" 
+                            Text="Đơn vị" 
                             VerticalAlignment="Center" 
                             FontSize="18" 
                             FontWeight="SemiBold"/>
@@ -413,7 +412,7 @@
                             HorizontalAlignment="Center"
                             Margin="0" 
                             TextWrapping="Wrap" 
-                            Text="Giá mua vào" 
+                            Text="Giá mua" 
                             VerticalAlignment="Center" 
                             FontSize="18"
                             FontWeight="SemiBold"/>
@@ -423,16 +422,22 @@
                             HorizontalAlignment="Center"
                             Margin="0" 
                             TextWrapping="Wrap" 
-                            Text="Giá bán ra" 
+                            Text="Giá bán" 
                             VerticalAlignment="Center" 
                             FontSize="18"
                             FontWeight="SemiBold"/>
                     </Grid>
                     <Grid 
-                        Grid.Row="2" Margin="10,0">
+                        Grid.Row="2" 
+                        Margin="20,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="461*"/>
+                            <ColumnDefinition Width="700*"/>
+                        </Grid.ColumnDefinitions>
                         <StackPanel
-                            x:Name="stkGoods"
-                            HorizontalAlignment="Left"/>
+                            x:Name="stkGoods" 
+                            Grid.ColumnSpan="2" 
+                            Margin="0,0,-0.2,-0.2"/>
                     </Grid>
                     <StackPanel
                         Grid.Row="3"
@@ -487,7 +492,7 @@
             <Grid 
                 x:Name="grdImport"
                 Grid.Row="1"
-                Visibility="Visible"
+                Visibility="Hidden"
                 DataContext="{StaticResource ImportGoodsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="90"/>
@@ -661,7 +666,7 @@
                         VerticalAlignment="Center" 
                         HorizontalAlignment="Right" 
                         Margin="0,0,20,0">
-                            <TextBlock 
+                        <TextBlock 
                             Text="1-10 of 100 items"
                             Margin="0,0,40,0"
                             FontSize="14"
@@ -669,31 +674,31 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"
                             Foreground="{DynamicResource Black2}"/>
-                            <Button 
+                        <Button 
                             Margin="8,0"
                             ToolTip="Trang trước"
                             Command="{Binding PreviousPageCommand}"
                             CommandParameter="{Binding ElementName=wdMain}">
-                                <materialDesign:PackIcon 
+                            <materialDesign:PackIcon 
                                 Width="26"
                                 Height="28"
                                 Kind="ChevronLeft" 
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Center"/>
-                            </Button>
-                            <Button
+                        </Button>
+                        <Button
                             Margin="8,0,0,0" 
                             ToolTip="Trang tiếp theo"
                             Command="{Binding NextPageCommand}"
                             CommandParameter="{Binding ElementName=wdMain}">
-                                <materialDesign:PackIcon 
+                            <materialDesign:PackIcon 
                                 Width="26"
                                 Height="28"
                                 Kind="ChevronRight" 
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center" />
-                            </Button>
-                        </StackPanel>
+                        </Button>
+                    </StackPanel>
                     <Rectangle 
                         Fill="{DynamicResource White}" 
                         RadiusY="4" 

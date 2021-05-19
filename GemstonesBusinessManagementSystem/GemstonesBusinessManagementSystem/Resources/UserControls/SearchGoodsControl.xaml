@@ -17,7 +17,10 @@
             <ColumnDefinition Width="100"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="imgGoods" Grid.Column="0" Margin="10"/>
+        <Image 
+            x:Name="imgGoods"
+            Grid.Column="0" 
+            Margin="10"/>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -36,17 +39,26 @@
                 Orientation="Horizontal"
                 Margin="20,0"
                 VerticalAlignment="Center">
-                <TextBlock Text="SP00001" x:Name="txbId"/>
-                <TextBlock Text="Giá nhập: " Margin="30,0,0,0"/>
-                <TextBlock x:Name="txbImportPrice" Text="700000"/>
+                <TextBlock 
+                    Text="SP00001" 
+                    x:Name="txbId"/>
+                <TextBlock 
+                    Text="Giá nhập: " 
+                    Margin="30,0,0,0"/>
+                <TextBlock
+                    x:Name="txbImportPrice" 
+                    Text="700000"/>
             </StackPanel>
             <StackPanel 
                 Grid.Row="2" 
                 VerticalAlignment="Center"
                 Margin="20,0" 
                 Orientation="Horizontal">
-                <TextBlock Text="Tồn kho: "/>
-                <TextBlock x:Name="txbQuantity" Text="10 "/>
+                <TextBlock 
+                    Text="Tồn kho: "/>
+                <TextBlock
+                    x:Name="txbQuantity"
+                    Text="10 "/>
             </StackPanel>
         </Grid>
         <Button 

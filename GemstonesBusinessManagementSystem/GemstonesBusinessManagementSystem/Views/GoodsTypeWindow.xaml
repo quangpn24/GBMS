@@ -47,14 +47,17 @@
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="400"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0" 
-                          Background="{StaticResource White}"
-                          Style="{StaticResource DropShadow}">
+                    <Grid 
+                        Grid.Column="0" 
+                        Background="{StaticResource White}"
+                        Style="{StaticResource DropShadow}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Background="{StaticResource Primary}">
+                        <Grid 
+                            Grid.Row="0" 
+                            Background="{StaticResource Primary}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="2.5*"/>
@@ -112,7 +115,7 @@
                         </Grid>
                     </Grid>
                     <Grid
-                        Grid.Column="1" ></Grid>
+                        Grid.Column="1" />
                     <Grid 
                         Grid.Column="2"
                         Background="{StaticResource White}"
@@ -134,7 +137,9 @@
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Center" 
                             Margin="20,0,0,0"/>
-                        <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                        <StackPanel 
+                            Grid.Row="1"
+                            VerticalAlignment="Top">
                             <Grid 
                                 Margin="20,20,20,0"
                                 VerticalAlignment="Top"  >
@@ -332,7 +337,8 @@
                 Width="180" 
                 Height="40" 
                 Padding="0">
-                <Grid Margin="0,20,0,0">
+                <Grid 
+                    Margin="0,20,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="100"/>
@@ -354,7 +360,9 @@
                             Foreground="{StaticResource Primary}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"/>
-                        <Grid Grid.Row="1" Background="{StaticResource Primary}">
+                        <Grid 
+                            Grid.Row="1"
+                            Background="{StaticResource Primary}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="2.5*"/>
@@ -404,7 +412,8 @@
                                 FontSize="18" 
                                 FontWeight="SemiBold"/>
                         </Grid>
-                        <Grid Grid.Row="2">
+                        <Grid 
+                            Grid.Row="2">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel x:Name="stkActive_InactiveTab">
                                 </StackPanel>
@@ -438,7 +447,8 @@
                             Width="80"
                             Command="{Binding ActivateCommand}"
                             CommandParameter="{Binding ElementName=wdGoodsType}"
-                            Height="40" Margin="0,10,0,0">
+                            Height="40" 
+                            Margin="0,10,0,0">
                             <materialDesign:PackIcon 
                                 Kind="ArrowLeft"
                                 Foreground="{StaticResource Primary}"
@@ -464,7 +474,9 @@
                             Foreground="{StaticResource Primary}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"/>
-                        <Grid Grid.Row="1" Background="{StaticResource Primary}">
+                        <Grid 
+                            Grid.Row="1"
+                            Background="{StaticResource Primary}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="2.5*"/>
@@ -514,7 +526,8 @@
                                 FontSize="18" 
                                 FontWeight="SemiBold"/>
                         </Grid>
-                        <Grid Grid.Row="2">
+                        <Grid 
+                            Grid.Row="2">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel x:Name="stkInactive_InactiveTab">
                                 </StackPanel>
