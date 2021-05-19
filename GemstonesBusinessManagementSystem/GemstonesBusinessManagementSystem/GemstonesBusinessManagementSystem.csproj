@@ -135,6 +135,8 @@
     </ApplicationDefinition>
     <Compile Include="Converter.cs" />
     <Compile Include="DAL\Connection.cs" />
+    <Compile Include="DAL\BillDAL.cs" />
+    <Compile Include="DAL\StockReceiptDAL.cs" />
     <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="DAL\EmployeePositionDAL.cs" />
     <Compile Include="DAL\GoodsDAL.cs" />
@@ -143,6 +145,9 @@
     <Compile Include="Models\EmployeePosition.cs" />
     <Compile Include="Models\Goods.cs" />
     <Compile Include="Models\GoodsType.cs" />
+    <Compile Include="Resources\UserControls\DashboardControl.xaml.cs">
+      <DependentUpon>DashboardControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\EmployeeControl.xaml.cs">
       <DependentUpon>EmployeeControl.xaml</DependentUpon>
     </Compile>
@@ -157,6 +162,9 @@
     <Compile Include="Resources\UserControls\ServiceControl.xaml.cs">
       <DependentUpon>ServiceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\UserControls\StockControl.xaml.cs">
+      <DependentUpon>StockControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
     <Compile Include="ViewModels\GoodsViewModel.cs" />
@@ -166,6 +174,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\StockViewModel.cs" />
     <Compile Include="Views\AddEmployeeWindow.xaml.cs">
       <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
     </Compile>
@@ -206,6 +215,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\UserControls\DashboardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\UserControls\EmployeeControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -217,6 +230,10 @@
     <Page Include="Resources\UserControls\GoodsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UserControls\StockControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddEmployeeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

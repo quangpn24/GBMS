@@ -5,4 +5,5 @@
     <viewmodels:EmployeeViewModel x:Key="EmployeeVM"/>
     <viewmodels:HomeViewModel x:Key="HomeVM"/>
     <viewmodels:ServiceViewModel x:Key="ServiceVM" />
+    <viewmodels:StockViewModel x:Key="StockVM" />
 </ResourceDictionary>

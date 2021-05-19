@@ -26,6 +26,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             int index = int.Parse(uid);
 
+            window.grdStock.Visibility = Visibility.Collapsed;
             window.grdEmployee.Visibility = Visibility.Collapsed;
             window.grdGoods.Visibility = Visibility.Collapsed;
             window.grdService.Visibility = Visibility.Collapsed;
@@ -65,18 +66,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 //home
                 case 0:
+                    window.txbTabName.Text = "Trang chủ";
                     window.btnHome.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnHome.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
 
                 //bán hàng
                 case 10:
+                    window.txbTabName.Text = "Bán hàng";
                     CloseExpander(window, 0);
                     window.btnStore.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnStore.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //dịch vụ
                 case 11:
+                    window.txbTabName.Text = "Dịch vụ";
                     CloseExpander(window, 0);
                     window.btnService.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnService.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -84,12 +88,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //tồn kho
                 case 20:
+                    window.txbTabName.Text = "Tồn kho";
+                    window.grdStock.Visibility = Visibility.Visible;
                     CloseExpander(window, 1);
                     window.btnStock.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnStock.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //nhập hàng
                 case 21:
+                    window.txbTabName.Text = "Nhập hàng";
                     CloseExpander(window, 1);
                     window.btnImport.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnImport.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -97,12 +104,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //nhà cc
                 case 30:
+                    window.txbTabName.Text = "Danh sách nhà cung cấp";
                     CloseExpander(window, 2);
                     window.btnSupplier.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnSupplier.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //khách hàng
                 case 31:
+                    window.txbTabName.Text = "Danh sách khách hàng";
                     CloseExpander(window, 2);
                     window.btnCustomer.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnCustomer.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -110,6 +119,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //ql nhân viên
                 case 40:
+                    window.txbTabName.Text = "Quản lý nhân viên";
                     window.grdEmployee.Visibility = Visibility.Visible;
                     CloseExpander(window, 3);
                     window.btnEmployee.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -117,6 +127,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //ql hàng hóa
                 case 41:
+                    window.txbTabName.Text = "Quản lý hàng hóa";
                     window.grdGoods.Visibility = Visibility.Visible;
                     CloseExpander(window, 3);
                     window.btnGoods.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
@@ -124,6 +135,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //ql dịch vụ
                 case 42:
+                    window.txbTabName.Text = "Quản lý dịch vụ";
                     window.grdService.Visibility = Visibility.Visible;
                     CloseExpander(window, 3);
                     window.btnServiceM.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
@@ -132,12 +144,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //báo cáo phiếu
                 case 50:
+                    window.txbTabName.Text = "Báo cáo phiếu";
                     CloseExpander(window, 4);
                     window.btnNote.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnNote.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //báo cáo doanh thu
                 case 51:
+                    window.txbTabName.Text = "Báo cáo doanh thu";
                     CloseExpander(window, 4);
                     window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
