@@ -139,22 +139,30 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 int earlySellIndex = pastSoldList.IndexOfKey(list[i].IdGoods);
                 int sellIndex = soldList.IndexOfKey(list[i].IdGoods);
 
-                if (earlySellIndex != -1 || earlyImportIndex != -1)
+                int earlyStock = 0, inStock = 0, outStock = 0, endStock = 0;
+                if (earlyImportIndex != -1)
                 {
-                    control.txbEarlyStock.Text = (pastImportList.Values[earlyImportIndex] - pastSoldList.Values[earlySellIndex]).ToString();
+                    earlyStock = pastImportList.Values[earlyImportIndex];
+                }
+                if (earlyImportIndex != -1 && earlySellIndex != -1)
+                {
+                    earlyStock = pastImportList.Values[earlyImportIndex] - pastSoldList.Values[earlySellIndex];
                 }
                 if (importIndex != -1)
                 {
-                    control.txbInStock.Text = importList.Values[importIndex].ToString();
+                    inStock = importList.Values[importIndex];
                 }
                 if (sellIndex != -1)
                 {
-                    control.txbOutStock.Text = soldList.Values[sellIndex].ToString();
+                    outStock = soldList.Values[sellIndex];
                 }
-                if (importIndex != -1 && sellIndex != -1)
-                {
-                    control.txbEndStock.Text = (importList.Values[importIndex] - soldList.Values[sellIndex]).ToString();
-                }
+                endStock = earlyStock + inStock - outStock;
+
+                control.txbEarlyStock.Text = earlyStock.ToString();
+                control.txbInStock.Text = inStock.ToString();
+                control.txbOutStock.Text = outStock.ToString();
+                control.txbEndStock.Text = endStock.ToString();
+
                 stackPanel.Children.Add(control);
             }
         }
