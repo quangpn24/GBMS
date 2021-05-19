@@ -212,7 +212,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 control = goodsControl;
             }
-
+           
             control.txbId.Text = AddPrefix("SP", newGoods.IdGoods) + newGoods.IdGoods.ToString();
             control.txbName.Text = newGoods.Name;
             control.txbGoodsType.Text = GoodsTypeDAL.Instance.GetGoodsTypeWithId(newGoods.IdGoodsType).Name;

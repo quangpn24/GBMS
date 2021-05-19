@@ -56,15 +56,20 @@ namespace GemstonesBusinessManagementSystem.DAL
         }
         public List<Account> ConvertDBToList()
         {
-            DataTable dt;
+            DataTable dt = new DataTable();
             List<Account> accounts = new List<Account>();
             try
             {
+                OpenConnection();
                 dt = LoadData();
             }
             catch
             {
-                dt = new DataTable();
+                
+            }
+            finally
+            {
+                CloseConnection();
             }
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -96,7 +101,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
-        public int SetNewID()
+        public int GetNewID()
         {
             try
             {
@@ -144,7 +149,10 @@ namespace GemstonesBusinessManagementSystem.DAL
                     return false;
                 }
             }
-            catch { return false; }
+            catch 
+            { 
+                return false;
+            }
             finally
             {
                 CloseConnection();

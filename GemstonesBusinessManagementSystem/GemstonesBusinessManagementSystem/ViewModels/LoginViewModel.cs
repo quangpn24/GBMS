@@ -30,12 +30,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand ChangePasswordCommand { get; set; }
 
         private string password;
+        private string username;
+        private bool isLogin;
+
         public string Password { get => password; set => password = value; }
         public string Username { get => username; set => username = value; }
         public bool IsLogin { get => isLogin; set => isLogin = value; }
 
-        private string username;
-        private bool isLogin;
         public LoginViewModel()
         {
             LogInCommand = new RelayCommand<LoginWindow>(p => true, p => Login(p));

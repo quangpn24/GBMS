@@ -37,18 +37,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private ObservableCollection<Employee> itemSourceEmployee = new ObservableCollection<Employee>();
         public ObservableCollection<Employee> ItemSourceEmployee { get => itemSourceEmployee; set => itemSourceEmployee = value; }
         private bool isSignUp;
+        private string password;
+        private string username;
+        private string passwordConfirm;
+
         public string TypeEmployee { get; set; }
         public bool IsSignUp { get => isSignUp; set => isSignUp = value; }
         public string Password { get => password; set => password = value; }
         public string Username { get => username; set => username = value; }
         public string PasswordConfirm { get => passwordConfirm; set => passwordConfirm = value; }
-        public Employee SelectedEmployee { get => selectedEmployee; set => selectedEmployee = value; }
-
         private Employee selectedEmployee = new Employee();
 
-        private string password;
-        private string username;
-        private string passwordConfirm;
+        public Employee SelectedEmployee { get => selectedEmployee; set => selectedEmployee = value; }
 
         public SignUpViewModel()
         {
@@ -75,10 +75,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void SetItemSourcEmployee()
         {
             itemSourceEmployee.Clear();     
-            List<Employee> employees = EmployeeDAL.Instance.SelectAll();
+            List<Employee> employees = EmployeeDAL.Instance.GetList();
             foreach(var employee in employees)
             {
-                if(employee.Position == "nhân viên quản lý" || employee.Position == "nhân viên thu ngân" )
+                if(employee.IdPosition.ToString() == "1" || employee.IdPosition.ToString() == "2" )
                 {
                     itemSourceEmployee.Add(employee);
                 }
@@ -115,30 +115,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             //kiem tra do chinh xac
-            Connection connection = new Connection();
-            try
+            if (!AuthorizationsDAL.Instance.CheckData(parameter.pwbKey.Password))
             {
-                connection.conn.Open();
-                string query = "select * from authorizations where authkey = '" + parameter.pwbKey.Password + "'";
-                MySqlCommand cmd = new MySqlCommand(query, connection.conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                if (dt.Rows.Count < 1)
-                {
-                    MessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    parameter.pwbKey.Focus();
-                    return;
-                }
+                MessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                parameter.pwbKey.Focus();
+                return;
             }
-            catch
-            {
 
-            }
-            finally
-            {
-                connection.conn.Close();
-            }
             if (password != passwordConfirm)
             {
                 MessageBox.Show("Mật khẩu không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -195,32 +178,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
 
-            //kiem tra do chinh xac
-            Connection connection = new Connection();
-            try
+            if (!AuthorizationsDAL.Instance.CheckData(parameter.pwbKey.Password))
             {
-                connection.conn.Open();
-                string query = "select * from authorizations where authKey = '" + parameter.pwbKey.Password + "'";
-                MySqlCommand cmd = new MySqlCommand(query, connection.conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                if(dt.Rows.Count < 1)
-                {
-                    MessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    parameter.pwbKey.Focus();
-                    return;
-                }
+                MessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                parameter.pwbKey.Focus();
+                return;
             }
-            catch
-            {
-
-            }
-            finally
-            {
-                connection.conn.Close();
-            }
-
 
             if (password != passwordConfirm)
             {
@@ -228,7 +191,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             int type = 0;
-            int idAccount = AccountDAL.Instance.SetNewID();
+            int idAccount = AccountDAL.Instance.GetNewID();
             if(idAccount != -1)
             {
                 Account newAccount = new Account(idAccount, parameter.txtUsername.Text.ToString(), password,type);

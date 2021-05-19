@@ -36,16 +36,22 @@ namespace GemstonesBusinessManagementSystem.DAL
                     conn.Open();
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 conn.Close();
                 MessageBox.Show("Mất kết nối đến cơ sở dữ liệu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw ex;
             }
         }
         public void CloseConnection()
         {
-            conn.Close();
+            try
+            {
+                conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

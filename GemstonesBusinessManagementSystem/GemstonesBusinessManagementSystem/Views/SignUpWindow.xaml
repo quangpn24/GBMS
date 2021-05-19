@@ -240,6 +240,7 @@
             </Grid>
         </Grid>
         <Button
+            Background="{StaticResource Primary}"
             IsDefault="True"
             x:Name="btnSignUp"
             Command="{Binding SignUpCommand}"
