@@ -62,15 +62,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
 
         //Thêm tiền tố cho mã
-        public string AddPrifix(string namePrifix, int id)
+        public string AddPrefix(string namePrefix, int id)
         {
-            string prifix = namePrifix;
-            while (id < 1000)
+            int temp = id;
+            string prefix = namePrefix;
+            while (temp < 1000)
             {
-                id *= 10;
-                prifix += "0";
+                temp *= 10;
+                prefix += "0";
             }
-            return prifix;
+            return prefix + id.ToString();
         }
 
         public int ConvertToID(string prifix)

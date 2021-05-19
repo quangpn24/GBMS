@@ -1,5 +1,5 @@
 ﻿<UserControl 
-    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.GoodsControl"
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.ImportGoodsControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,23 +8,22 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d" 
-    x:Name="ucDisplayGoods"
-    Width="1180" 
-    DataContext="{StaticResource GoodsVM}"
+    x:Name="ucImportGoods"
+    DataContext="{StaticResource ImportGoodsVM}"
     Height="40" 
     Margin="0,0,0,2">
     <Grid
         x:Name="grdMain">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="160"/>
-            <ColumnDefinition Width="160"/>
-            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="3.5*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
             Grid.ColumnSpan="8"
@@ -32,8 +31,8 @@
             Height="1"
             VerticalAlignment="Bottom"/>
         <TextBlock 
-            x:Name="txbId"
-            Text="Mã SP"
+            x:Name="txbNumericalOder"
+            Text="1"
             Grid.Column="0"
             HorizontalAlignment="Center" 
             Margin="0" 
@@ -42,19 +41,18 @@
             FontSize="18" 
             FontWeight="SemiBold"/>
         <TextBlock 
-            x:Name="txbName"
-            Text="Tên sản phẩm" 
+            x:Name="txbId"
+            Text="SP0001"
             Grid.Column="1"
-            HorizontalAlignment="Left" 
-            Margin="20,0,0,0" 
-            Padding="10,0,0,0"
+            HorizontalAlignment="Center" 
+            Margin="0" 
             TextWrapping="Wrap" 
             VerticalAlignment="Center" 
             FontSize="18" 
-            FontWeight="SemiBold" />
+            FontWeight="SemiBold"/>
         <TextBlock 
-            x:Name="txbGoodsType"
-            Text="Loại sản phẩm" 
+            x:Name="txbName"
+            Text="Vàng ròng 9999" 
             Grid.Column="2"
             HorizontalAlignment="Left" 
             Margin="20,0,0,0" 
@@ -64,9 +62,20 @@
             FontSize="18" 
             FontWeight="SemiBold" />
         <TextBlock 
-            x:Name="txbUnit"
-            Text="Đơn vị tính" 
+            x:Name="txbGoodsType"
+            Text="Vàng" 
             Grid.Column="3"
+            HorizontalAlignment="Center" 
+            Margin="0" 
+            Padding="10,0,0,0"
+            TextWrapping="Wrap" 
+            VerticalAlignment="Center" 
+            FontSize="18" 
+            FontWeight="SemiBold" />
+        <TextBlock 
+            x:Name="txbUnit"
+            Text="Chỉ" 
+            Grid.Column="4"
             HorizontalAlignment="Center" 
             Margin="0" 
             TextWrapping="Wrap" 
@@ -74,18 +83,8 @@
             FontSize="18" 
             FontWeight="SemiBold"/>
         <TextBlock 
-            x:Name="txbQuantity"
-            Text="Số lượng" 
-            Grid.Column="4"
-            HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold" />
-        <TextBlock 
             x:Name="txbImportPrice"
-            Text="Giá nhập" 
+            Text="70000000" 
             Grid.Column="5"
             HorizontalAlignment="Center" 
             Margin="0" 
@@ -93,10 +92,26 @@
             VerticalAlignment="Center" 
             FontSize="18" 
             FontWeight="SemiBold"/>
-        <TextBlock 
-            x:Name="txbSalesPrice"
-            Text="Giá bán ra" 
+        <local:NumericSpinner
+            x:Name="nsQuantity"
             Grid.Column="6"
+            Text="1"
+            MaxValue="1000"
+            MinValue="1"
+            VerticalAlignment="Center"
+            Height="30" 
+            Margin="10,0" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="ValueChanged">
+                    <i:InvokeCommandAction Command="{Binding ChangeQuantityCommand}"
+                                           CommandParameter="{Binding ElementName=ucImportGoods}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </local:NumericSpinner>
+        <TextBlock 
+            x:Name="txbTotalPrice"
+            Text="10000000" 
+            Grid.Column="7"
             HorizontalAlignment="Center" 
             Margin="0" 
             TextWrapping="Wrap" 
@@ -104,31 +119,7 @@
             FontSize="18" 
             FontWeight="SemiBold"/>
         <Button 
-            Grid.Column="7"
-            x:Name="btnEditGoods"
-            ToolTip="Sửa thông tin"
-            Command="{Binding EditGoodsCommand}"
-            CommandParameter="{Binding ElementName=ucDisplayGoods}"
-            Height="30"
-            Margin="0,0,50,0" 
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            FontSize="16" 
-            VerticalAlignment="Center" 
-            FocusVisualStyle="{x:Null}"
-            Width="40"
-            HorizontalAlignment="Right" 
-            Padding="0"
-            FontWeight="SemiBold">
-            <materialDesign:PackIcon
-                Kind="SquareEditOutline" 
-                Width="24"
-                Height="24" 
-                HorizontalAlignment="Left"
-                Foreground="{StaticResource Primary}" />
-        </Button>
-        <Button 
-            Grid.Column="7"
+            Grid.Column="8"
             x:Name="btnDeleteGoods"
             ToolTip="Xóa mặt hàng" 
             Height="30"
@@ -141,8 +132,8 @@
             Width="40"
             HorizontalAlignment="Right" 
             FontWeight="SemiBold" 
-            Command="{Binding DeleteGoodsCommand}"
-            CommandParameter="{Binding ElementName=ucDisplayGoods}"
+            Command="{Binding DeleteCommand}"
+            CommandParameter="{Binding ElementName=ucImportGoods}"
             Padding="0" >
             <materialDesign:PackIcon 
                 Kind="DeleteOutline" 

@@ -10,14 +10,14 @@ namespace GemstonesBusinessManagementSystem.Models
     {
         private int idGoods;
         private string name;
-        private long price;
+        private long importPrice;
         private int quantity;
         private int idGoodsType;
         private byte[] imageFile;
         private bool isDeleted;
         public int IdGoods { get => idGoods; set => idGoods = value; }
         public string Name { get => name; set => name = value; }
-        public long Price { get => price; set => price = value; }
+        public long ImportPrice { get => importPrice; set => importPrice = value; }
         public int IdGoodsType { get => idGoodsType; set => idGoodsType = value; }
         public int Quantity { get => quantity; set => quantity = value; }
 
@@ -28,11 +28,11 @@ namespace GemstonesBusinessManagementSystem.Models
         {
 
         }
-        public Goods(int id, string name, long price, int quantity, int idGoodsType, byte[] imageFile, bool isDeleted)
+        public Goods(int id, string name, long importPrice, int quantity, int idGoodsType, byte[] imageFile, bool isDeleted)
         {
             this.idGoods = id;
             this.name = name;
-            this.price = price;
+            this.importPrice = importPrice;
             this.quantity = quantity;
             this.idGoodsType = idGoodsType;
             this.imageFile = imageFile;
