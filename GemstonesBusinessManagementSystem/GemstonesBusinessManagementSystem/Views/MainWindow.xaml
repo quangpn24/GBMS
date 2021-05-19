@@ -599,7 +599,7 @@
                                 Margin="4,0">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding FilterCommand}"
+                                        <i:InvokeCommandAction Command="{Binding SetItemSourceCommand}"
                                                                CommandParameter="{Binding ElementName=wdMain}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>

@@ -21,6 +21,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     {
         public ICommand LoadStockCommand { get; set; }
         public ICommand FilterCommand { get; set; }
+        public ICommand SetItemSourceCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand PreviousPageCommand { get; set; }
@@ -45,8 +46,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel());
             SearchCommand = new RelayCommand<MainWindow>((p) => true, (p) => Search(p));
-            LoadStockCommand = new RelayCommand<MainWindow>((p) => true, (p) => { LoadStockList(p, 0); SetItemSource(); });
+            LoadStockCommand = new RelayCommand<MainWindow>((p) => true, (p) => { LoadStockList(p, 0); SetItemSourceYear(); });
             FilterCommand = new RelayCommand<MainWindow>((p) => true, (p) => Filter(p));
+            SetItemSourceCommand = new RelayCommand<MainWindow>((p) => true, (p) => SetItemSourceMonth());
             PreviousPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToPreviousPage(p, --currentPage));
             NextPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToNextPage(p, ++currentPage));
         }
@@ -100,21 +102,29 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             goodsList = GoodsDAL.Instance.FindByName(nameSearching);
             Filter(mainWindow);
         }
-        void SetItemSource()
+        void SetItemSourceMonth()
+        {
+            itemSourceMonth.Clear();
+
+            int currentYear = DateTime.Now.Year;
+            int lastMonth = DateTime.Now.Month;
+            if (int.Parse(selectedYear.Split(' ')[1]) != currentYear)
+            {
+                lastMonth = 12;
+            }
+            for (int i = 1; i <= lastMonth; i++)
+            {
+                itemSourceMonth.Add(String.Format("Tháng {0}", i));
+            }
+        }
+        void SetItemSourceYear()
         {
             itemSourceYear.Clear();
-            itemSourceMonth.Clear();
 
             int currentYear = DateTime.Now.Year;
             itemSourceYear.Add(String.Format("Năm {0}", currentYear - 2));
             itemSourceYear.Add(String.Format("Năm {0}", currentYear - 1));
             itemSourceYear.Add(String.Format("Năm {0}", currentYear));
-
-            int currentMonth = DateTime.Now.Month;
-            for (int i = 1; i < currentMonth; i++)
-            {
-                itemSourceMonth.Add(String.Format("Tháng {0}", i));
-            }
         }
         void LoadStackPanel(int start, int end, List<Goods> list, ref StackPanel stackPanel)
         {
