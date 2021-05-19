@@ -33,9 +33,18 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string queryStr = String.Format("select idGoods, sum(quantity) " +
                     "from bill join billinfo " +
                     "on bill.idBill = billinfo.idBill " +
-                    "where year(invoiceDate) = {0} and month(invoiceDate) < {1} " +
+                    "where year(invoiceDate) < {0} or (year(invoiceDate) < {0} and month(invoiceDate) < {1}) " +
                     "and idGoods in (select idGoods from goods) " +
                     "group by idGoods", year, month);
+                if (month == "1")
+                {
+                    queryStr = String.Format("select idGoods, sum(quantity) " +
+                        "from bill join billinfo " +
+                        "on bill.idBill = billinfo.idBill " +
+                        "where year(invoiceDate) < {0} " +
+                        "and idGoods in (select idGoods from goods) " +
+                        "group by idGoods", year);
+                }
                 MySqlCommand cmd = new MySqlCommand(queryStr, conn);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 DataTable dt = new DataTable();
