@@ -139,10 +139,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 int earlySellIndex = pastSoldList.IndexOfKey(list[i].IdGoods);
                 int sellIndex = soldList.IndexOfKey(list[i].IdGoods);
 
-                int earlyStock = 0, inStock = 0, outStock = 0, endStock = 0;
+                int earlyStock = 0, inStock = 0, outStock = 0;
                 if (earlyImportIndex != -1)
                 {
                     earlyStock = pastImportList.Values[earlyImportIndex];
+                }
+                if (earlySellIndex != -1)
+                {
+                    earlyStock = pastSoldList.Values[earlySellIndex];
                 }
                 if (earlyImportIndex != -1 && earlySellIndex != -1)
                 {
@@ -156,7 +160,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     outStock = soldList.Values[sellIndex];
                 }
-                endStock = earlyStock + inStock - outStock;
+                int endStock = earlyStock + inStock - outStock;
 
                 control.txbEarlyStock.Text = earlyStock.ToString();
                 control.txbInStock.Text = inStock.ToString();
