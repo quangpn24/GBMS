@@ -105,7 +105,7 @@
             <Grid
                 x:Name="grdGoods"
                 Grid.Row="1"
-                Visibility="Visible"
+                Visibility="Hidden"
                 DataContext="{StaticResource GoodsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
@@ -492,7 +492,7 @@
             <Grid 
                 x:Name="grdImport"
                 Grid.Row="1"
-                Visibility="Hidden"
+                Visibility="Visible"
                 DataContext="{StaticResource ImportGoodsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="90"/>

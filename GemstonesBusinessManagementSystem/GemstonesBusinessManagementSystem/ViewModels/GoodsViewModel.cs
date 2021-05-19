@@ -222,7 +222,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 GoodsType type = new GoodsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), double.Parse(dt.Rows[0].ItemArray[2].ToString()),
-                    dt.Rows[0].ItemArray[3].ToString(), bool.Parse(dt.Rows[0].ItemArray[4].ToString()));
+                    dt.Rows[0].ItemArray[3].ToString(), true,false );
                 itemSourceGoodsType.Add(type);
                 itemSourceGoodsType_Filter.Add(type);
             }
@@ -265,10 +265,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void OpenImportGoodsWindow(MainWindow main)
         {
-            //ImportGoodsWindow wdImport = new ImportGoodsWindow();
-            main.Hide();
-            //wdImport.ShowDialog();
-            main.Show();
+            
         }
         void OpenAddGoodsWindow(MainWindow wdMain)
         {
@@ -280,6 +277,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 addGoodsWd.txtIdGoods.Text = AddPrefix("SP", idMax + 1);
                 addGoodsWd.cboGoodsType.Text = "";
                 addGoodsWd.ShowDialog();
+            }
+            else
+            {
+                return;
             }
         }
         void Delete(GoodsControl control)

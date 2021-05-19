@@ -33,11 +33,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 cmd.Parameters.AddWithValue("@idStockReceipt", info.IdStockReceipt.ToString());
                 cmd.Parameters.AddWithValue("@idGoods", info.IdGoods.ToString());
                 cmd.Parameters.AddWithValue("@quantity", info.Quantity.ToString());
-                if(cmd.ExecuteNonQuery() == 1)
-                {
-                    return true;
-                }
-                return false;
+                return cmd.ExecuteNonQuery() == 1;
 
             }
             catch

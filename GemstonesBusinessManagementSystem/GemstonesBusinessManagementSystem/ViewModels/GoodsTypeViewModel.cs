@@ -66,7 +66,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             GoodsType type = new GoodsType(ConvertToID(wdGoodsType.txtId.Text), wdGoodsType.txtName.Text,
-                int.Parse(wdGoodsType.txtProfitPercentage.Text) / 100.0, wdGoodsType.txtUnit.Text, true);
+                int.Parse(wdGoodsType.txtProfitPercentage.Text) / 100.0, wdGoodsType.txtUnit.Text, true, false);
             GoodsTypeDAL.Instance.InsertOrUpdate(type, isUpdate);
             GoodsTypeControl control = new GoodsTypeControl();
             if (isUpdate)
@@ -86,7 +86,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             this.wdGoodsType.txbTitle.Text = "Thêm loại sản phẩm";
             this.wdGoodsType.btnSave.Content = "Thêm";
-            this.wdGoodsType.txtId.Text = AddPrefix("LS", GoodsTypeDAL.Instance.GetMaxId() + 1);
+            int idMax = GoodsTypeDAL.Instance.GetMaxId();
+            if(idMax == -1)
+            {
+                MessageBox.Show("Lỗi hệ thống");
+                return;
+            }    
+            this.wdGoodsType.txtId.Text = AddPrefix("LS", idMax + 1);
             this.wdGoodsType.txtName.Text = "";
             this.wdGoodsType.txtProfitPercentage.Text = "";
             this.wdGoodsType.txtUnit.Text = "";
@@ -142,7 +148,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Thành công!!!");
+                        MessageBox.Show("Thất bại!!!");
                     }
                 }
             }
@@ -150,7 +156,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void Init(GoodsTypeWindow wdGoodsType)
         {
             this.wdGoodsType = wdGoodsType;
-            wdGoodsType.txtId.Text = AddPrefix("LS", GoodsTypeDAL.Instance.GetMaxId() + 1);
+            int idMax = GoodsTypeDAL.Instance.GetMaxId();
+            if (idMax == -1)
+            {
+                MessageBox.Show("Lỗi hệ thống");
+                return;
+            }
+            this.wdGoodsType.txtId.Text = AddPrefix("LS", idMax + 1);
             LoadActiveTab(wdGoodsType);
         }
         void SelectGoodsType(GoodsTypeControl contorl)

@@ -85,7 +85,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             TotalPrice = 0;
             MoneyToPay = 0;
             main.Hide();
-            newWindow.txbIdReceipt.Text = AddPrefix("PH", StockReceiptDAL.Instance.GetMaxId() + 1);
+            int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
+            if(idStockReceiptMax == -1)
+            {
+                MessageBox.Show("Lỗi hệ thống!");
+                return;
+            }    
+            newWindow.txbIdReceipt.Text = AddPrefix("PH", idStockReceiptMax + 1);
             newWindow.txbDate.Text = DateTime.Today.ToString("dd/MM/yyyy");
             newWindow.stkImportGoods.Children.Clear();
             this.wdImportGoods = newWindow;

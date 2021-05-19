@@ -36,14 +36,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idGoods", id.ToString());
                 int rs = cmd.ExecuteNonQuery();
-                if (rs == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return rs == 1;
             }
             catch
             {
@@ -138,14 +131,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     cmd.Parameters.AddWithValue("@isActive", "1");
                 }                
                 int rs = cmd.ExecuteNonQuery();
-                if (rs == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return rs == 1;
             }
             catch
             {
@@ -219,13 +205,11 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string queryString = "select max(idGoods) from Goods";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                if (dataTable.Rows.Count == 1)
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                if (string.IsNullOrEmpty(dt.Rows[0].ItemArray[0].ToString()))
                 {
-                    if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[0].ToString()))
-                        return 0;
-                    return int.Parse(dataTable.Rows[0].ItemArray[0].ToString());
+                    return int.Parse(dt.Rows[0].ItemArray[0].ToString());
                 }
                 else
                 {
@@ -242,37 +226,6 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
         }
 
-        public GoodsType GetGoodsTypeById(int id)
-        {
-            try
-            {
-                conn.Open();
-                string queryString = "select goodstype.idGoodsType, goodstype.name, goodstype.profitPercentage, goodstype.unit, goodstype.isActive "
-                    + "from goods"
-                    + " inner join goodstype"
-                    + " on goods.idGoodsType = goodstype.idGoodsType"
-                    + " where goods.idGoods = " + id.ToString();
-                MySqlCommand command = new MySqlCommand(queryString, conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                if (dt.Rows.Count == 1)
-                {
-                    GoodsType type = new GoodsType(int.Parse(dt.Rows[0].ItemArray[0].ToString()), dt.Rows[0].ItemArray[1].ToString(),
-                       double.Parse(dt.Rows[0].ItemArray[2].ToString()), dt.Rows[0].ItemArray[3].ToString(), bool.Parse(dt.Rows[0].ItemArray[4].ToString()));
-                    return type;
-
-                }
-            }
-            catch
-            {
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return new GoodsType();
-        }
 
         public DataTable SearchByName(string name)
         {
@@ -304,19 +257,13 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 conn.Open();
-                string queryString = "select count(*) from Goods where idGoodsType = " + idGoodsType.ToString();
+                string queryString = "select count(*) from Goods where isDeleted = 0 and idGoodsType = " + idGoodsType.ToString();
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
-                if(int.Parse(dataTable.Rows[0].ItemArray[0].ToString()) > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return int.Parse(dataTable.Rows[0].ItemArray[0].ToString()) > 0;
+                
             }
             catch
             {
