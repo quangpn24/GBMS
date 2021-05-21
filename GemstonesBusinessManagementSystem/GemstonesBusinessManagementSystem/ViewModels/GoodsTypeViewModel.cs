@@ -59,7 +59,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdGoodsType.txtProfitPercentage.Focus();
                 return;
             }
-            if(GoodsTypeDAL.Instance.IsExisted(wdGoodsType.txtName.Text) && wdGoodsType.txtName.Text != oldType)
+
+            if ((!isUpdate || wdGoodsType.txtName.Text != oldType) && GoodsTypeDAL.Instance.IsExisted(wdGoodsType.txtName.Text))
             {
                 MessageBox.Show("Loại sản phẩm đã tồn tại!");
                 wdGoodsType.txtName.Focus();
@@ -80,6 +81,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (!isUpdate)
             {
                 wdGoodsType.stkActive_ActiveTab.Children.Add(control);
+                Cancel(wdGoodsType);
             }
         }
         void Cancel(GoodsTypeWindow wdGoodsType)
@@ -87,11 +89,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.wdGoodsType.txbTitle.Text = "Thêm loại sản phẩm";
             this.wdGoodsType.btnSave.Content = "Thêm";
             int idMax = GoodsTypeDAL.Instance.GetMaxId();
-            if(idMax == -1)
+            if (idMax == -1)
             {
                 MessageBox.Show("Lỗi hệ thống");
                 return;
-            }    
+            }
             this.wdGoodsType.txtId.Text = AddPrefix("LS", idMax + 1);
             this.wdGoodsType.txtName.Text = "";
             this.wdGoodsType.txtProfitPercentage.Text = "";
@@ -100,9 +102,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void Inactivate(GoodsTypeWindow wdGoodsType)
         {
-            if(!GoodsTypeDAL.Instance.IsActive(ConvertToID(goodsTypeControl.txbId.Text)))
+            if (!GoodsTypeDAL.Instance.IsActive(ConvertToID(goodsTypeControl.txbId.Text)))
             {
-                MessageBox.Show("Loại sản phẩm này đã ngừng hoạt động!", "Thông báo",MessageBoxButton.OK ,MessageBoxImage.Error);
+                MessageBox.Show("Loại sản phẩm này đã ngừng hoạt động!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             var result = MessageBox.Show("Tất cả các sản phẩm có loại này sẽ ngừng hoạt động! Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Question);
@@ -110,7 +112,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 if (GoodsTypeDAL.Instance.InactivateOrReactivate(ConvertToID(goodsTypeControl.txbId.Text), false))
                 {
-                    GoodsDAL.Instance.InactivateOrReActivate(ConvertToID(goodsTypeControl.txbId.Text), false);
                     this.wdGoodsType.stkActive_InactiveTab.Children.Remove(goodsTypeControl);
                     this.wdGoodsType.stkInactive_InactiveTab.Children.Add(goodsTypeControl);
                 }
@@ -125,7 +126,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (GoodsTypeDAL.Instance.InactivateOrReactivate(ConvertToID(goodsTypeControl.txbId.Text), true))
             {
-                GoodsDAL.Instance.InactivateOrReActivate(ConvertToID(goodsTypeControl.txbId.Text), true);
                 this.wdGoodsType.stkInactive_InactiveTab.Children.Remove(goodsTypeControl);
                 this.wdGoodsType.stkActive_InactiveTab.Children.Add(goodsTypeControl);
             }
@@ -144,7 +144,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     if (GoodsTypeDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
                     {
                         MessageBox.Show("Thành công!!!");
-                        this.wdGoodsType.stkActive_ActiveTab.Children.Remove(control);
+                        if (isActiveTab)
+                        {
+                            this.wdGoodsType.stkActive_ActiveTab.Children.Remove(control);
+                        }
+                        else
+                        {
+                            this.wdGoodsType.stkInactive_InactiveTab.Children.Remove(control);
+                            this.wdGoodsType.stkActive_InactiveTab.Children.Remove(control);
+                        }
                     }
                     else
                     {
@@ -165,24 +173,24 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.wdGoodsType.txtId.Text = AddPrefix("LS", idMax + 1);
             LoadActiveTab(wdGoodsType);
         }
-        void SelectGoodsType(GoodsTypeControl contorl)
+        void SelectGoodsType(GoodsTypeControl control)
         {
             if (isActiveTab) //  to edit
             {
                 isUpdate = true;
-                this.goodsTypeControl = contorl;
+                this.goodsTypeControl = control;
                 oldType = goodsTypeControl.txbName.Text;
                 this.wdGoodsType.txbTitle.Text = "Sửa thông tin";
                 this.wdGoodsType.btnSave.Content = "Sửa";
-                this.wdGoodsType.txtId.Text = contorl.txbId.Text;
-                this.wdGoodsType.txtName.Text = contorl.txbName.Text;
-                this.wdGoodsType.txtProfitPercentage.Text = contorl.txbProfitPercentage.Text.Remove(2, 1);
-                this.wdGoodsType.txtUnit.Text = contorl.txbUnit.Text;
+                this.wdGoodsType.txtId.Text = control.txbId.Text;
+                this.wdGoodsType.txtName.Text = control.txbName.Text;
+                this.wdGoodsType.txtProfitPercentage.Text = control.txbProfitPercentage.Text.Remove(control.txbProfitPercentage.Text.Length - 1, 1);
+                this.wdGoodsType.txtUnit.Text = control.txbUnit.Text;
             }
             else // to inactivate or activate
             {
                 isUpdate = false;
-                this.goodsTypeControl = contorl;
+                this.goodsTypeControl = control;
             }
         }
         void SelectedTabItem(GoodsTypeWindow wdGoodsType)

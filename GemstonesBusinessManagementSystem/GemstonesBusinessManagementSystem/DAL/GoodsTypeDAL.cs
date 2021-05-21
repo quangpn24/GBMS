@@ -188,7 +188,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 DataTable dt = new DataTable();
                 conn.Open();
-                string query = "select * from GoodsType isDeleted = 0";
+                string query = "select * from GoodsType where isDeleted = 0";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 adapter.Fill(dt);
@@ -213,7 +213,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
-                if (string.IsNullOrEmpty(dt.Rows[0].ItemArray[0].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[0].ItemArray[0].ToString()))
                 {
                     return int.Parse(dt.Rows[0].ItemArray[0].ToString());
                 }
@@ -239,7 +239,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Open();
                 string query = "update GoodsType set isActive = @isActive  where idGoodsType =  @id";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@isActive", isActive.ToString());
+                cmd.Parameters.AddWithValue("@isActive", isActive);
                 cmd.Parameters.AddWithValue("@id", id.ToString());
                 int rs = cmd.ExecuteNonQuery();
                 return rs == 1;
@@ -287,7 +287,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 conn.Open();
-                string queryString = "select * from GoodsType where name = " + typeName;
+                string queryString = string.Format("select 8 from GoodsType where name = '{0}'", typeName);
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();

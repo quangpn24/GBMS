@@ -207,7 +207,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
-                if (string.IsNullOrEmpty(dt.Rows[0].ItemArray[0].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[0].ItemArray[0].ToString()))
                 {
                     return int.Parse(dt.Rows[0].ItemArray[0].ToString());
                 }
