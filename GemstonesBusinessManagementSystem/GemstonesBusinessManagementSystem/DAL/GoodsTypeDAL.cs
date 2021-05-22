@@ -31,7 +31,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                string query = "select isActive from GoodsType where isDeleted = false and idGoodsType = " + id.ToString();
+                string query = "select isActive from GoodsType where idGoodsType = " + id.ToString();
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -47,25 +47,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Clone();
             }
         }
-        public bool Delete(int id)
-        {
-            try
-            {
-                conn.Open();
-                string queryString = "update Goodstype set isDeleted = 1 where idGoodsType = " + id.ToString();
-                MySqlCommand command = new MySqlCommand(queryString, conn);
-                int rs = command.ExecuteNonQuery();
-                return rs == 1;
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
         public bool InsertOrUpdate(GoodsType goodsType, bool isUpdate)
         {
             try
@@ -74,8 +55,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string query;
                 if (!isUpdate) // insert
                 {
-                    query = "Insert into GoodsType(idGoodsType, name, profitPercentage, unit, isActive, isDeleted) " +
-                    "values(@idGoodsType, @name, @profitPercentage,@unit, @isActive, 0)";
+                    query = "Insert into GoodsType(idGoodsType, name, profitPercentage, unit, isActive) " +
+                    "values(@idGoodsType, @name, @profitPercentage,@unit, @isActive)";
                 }
                 else // update
                 {
@@ -123,7 +104,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     type = new GoodsType(id, dt.Rows[0].ItemArray[1].ToString(),
                         double.Parse(dt.Rows[0].ItemArray[2].ToString()),
-                        dt.Rows[0].ItemArray[3].ToString(), bool.Parse(dt.Rows[0].ItemArray[4].ToString()), false);
+                        dt.Rows[0].ItemArray[3].ToString(), bool.Parse(dt.Rows[0].ItemArray[4].ToString()));
                     return type;
                 }
                 else
@@ -146,28 +127,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 DataTable dt = new DataTable();
                 conn.Open();
-                string query = "select * from GoodsType where isActive = 1 and isDeleted = 0";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                adapter.Fill(dt);
-                return dt;
-            }
-            catch
-            {
-                return new DataTable();
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-        public DataTable GetInactive()
-        {
-            try
-            {
-                DataTable dt = new DataTable();
-                conn.Open();
-                string query = "select * from GoodsType where isActive = 0 and isDeleted = 0";
+                string query = "select * from GoodsType where isActive = 1 ";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 adapter.Fill(dt);
@@ -188,7 +148,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 DataTable dt = new DataTable();
                 conn.Open();
-                string query = "select * from GoodsType where isDeleted = 0";
+                string query = "select * from GoodsType";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 adapter.Fill(dt);
@@ -253,34 +213,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Close();
             }
         }
-        public double GetProfitPercentage(int id)
-        {
-            try
-            {
-                conn.Open();
-                string queryString = "select profitPercentage from GoodsType where idGoodsType = " + id.ToString();
-                MySqlCommand command = new MySqlCommand(queryString, conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                if (dataTable.Rows.Count == 1)
-                {
-                    return double.Parse(dataTable.Rows[0].ItemArray[0].ToString());
-                }
-                else
-                {
-                    return -1;
-                }
-            }
-            catch
-            {
-                return -1;
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
 
         public bool IsExisted(string typeName)
         {
@@ -316,7 +248,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Open();
                 string query = "Select GT.idGoodsType, GT.name, GT.profitPercentage, GT.unit from GoodsType as GT "
                                 + "inner join Goods on GT.idGoodsType = Goods.idGoodsType "
-                                + "where GT.isActive = 1 and GT.isDeleted = 0 and Goods.idGoods = " + idGoods.ToString();
+                                + "where GT.isActive = 1 and Goods.idGoods = " + idGoods.ToString();
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -325,7 +257,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     type = new GoodsType(int.Parse(dt.Rows[0].ItemArray[0].ToString()), dt.Rows[0].ItemArray[1].ToString(),
                         double.Parse(dt.Rows[0].ItemArray[2].ToString()),
-                        dt.Rows[0].ItemArray[3].ToString(), true, false);
+                        dt.Rows[0].ItemArray[3].ToString(), true);
                     return type;
                 }
                 else

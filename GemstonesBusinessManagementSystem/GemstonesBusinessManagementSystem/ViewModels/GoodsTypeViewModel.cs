@@ -22,7 +22,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand LoadCommand { get; set; }
         public ICommand SelectionChangedTabItemCommand { get; set; }
         public ICommand SelectedGoodsTypeCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
         public ICommand InactivateCommand { get; set; }
         public ICommand ActivateCommand { get; set; }
         public ICommand CancelCommand { get; set; }
@@ -33,7 +32,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadCommand = new RelayCommand<GoodsTypeWindow>(p => true, p => Init(p));
             SelectionChangedTabItemCommand = new RelayCommand<GoodsTypeWindow>(p => true, p => SelectedTabItem(p));
             SelectedGoodsTypeCommand = new RelayCommand<GoodsTypeControl>(p => true, p => SelectGoodsType(p));
-            DeleteCommand = new RelayCommand<GoodsTypeControl>(p => true, p => Delete(p));
             InactivateCommand = new RelayCommand<GoodsTypeWindow>(p => true, p => Inactivate(p));
             ActivateCommand = new RelayCommand<GoodsTypeWindow>(p => true, p => Activate(p));
             CancelCommand = new RelayCommand<GoodsTypeWindow>(p => true, p => Cancel(p));
@@ -67,7 +65,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             GoodsType type = new GoodsType(ConvertToID(wdGoodsType.txtId.Text), wdGoodsType.txtName.Text,
-                int.Parse(wdGoodsType.txtProfitPercentage.Text) / 100.0, wdGoodsType.txtUnit.Text, true, false);
+                int.Parse(wdGoodsType.txtProfitPercentage.Text) / 100.0, wdGoodsType.txtUnit.Text, true);
             GoodsTypeDAL.Instance.InsertOrUpdate(type, isUpdate);
             GoodsTypeControl control = new GoodsTypeControl();
             if (isUpdate)
@@ -128,37 +126,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 this.wdGoodsType.stkInactive_InactiveTab.Children.Remove(goodsTypeControl);
                 this.wdGoodsType.stkActive_InactiveTab.Children.Add(goodsTypeControl);
-            }
-        }
-        void Delete(GoodsTypeControl control)
-        {
-            var result = MessageBox.Show("Bạn có chắc muốn xóa!", "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Question);
-            if (result == MessageBoxResult.OK)
-            {
-                if (GoodsDAL.Instance.IsExistGoodsType(ConvertToID(control.txbId.Text)))
-                {
-                    MessageBox.Show("Không thể xóa vì vẫn còn sản phẩm có loại này!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                {
-                    if (GoodsTypeDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
-                    {
-                        MessageBox.Show("Thành công!!!");
-                        if (isActiveTab)
-                        {
-                            this.wdGoodsType.stkActive_ActiveTab.Children.Remove(control);
-                        }
-                        else
-                        {
-                            this.wdGoodsType.stkInactive_InactiveTab.Children.Remove(control);
-                            this.wdGoodsType.stkActive_InactiveTab.Children.Remove(control);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Thất bại!!!");
-                    }
-                }
             }
         }
         void Init(GoodsTypeWindow wdGoodsType)

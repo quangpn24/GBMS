@@ -274,5 +274,47 @@ namespace GemstonesBusinessManagementSystem.DAL
                 conn.Close();
             }
         }
+
+        public bool UpdateQuantity(int id, int quantity)
+        {
+            try
+            {
+                conn.Open();
+                string query = "Update Goods set quantity = @quantity where idGoods = @id";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@quantity", quantity);
+                return cmd.ExecuteNonQuery() == 1;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public int GetQuantityById(int id)
+        {
+            try
+            {
+                conn.Open();
+                string query = "select quantity from Goods where idGoods = @id";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return int.Parse(reader.GetString(0));
+            }
+            catch
+            {
+                return -1;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

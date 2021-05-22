@@ -27,6 +27,15 @@
             Fill="{StaticResource Light}"
             Height="1"
             VerticalAlignment="Bottom"/>
+        <Rectangle 
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Left"/>
+        <Rectangle 
+            Grid.Column="5"
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Right"/>
         <TextBlock 
             x:Name="txbNumericalOder"
             Text="1"

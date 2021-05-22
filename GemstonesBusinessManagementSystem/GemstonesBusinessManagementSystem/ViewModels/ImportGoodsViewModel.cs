@@ -79,7 +79,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             BackCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => p.Close());
             OpenImportGoodsWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenImportGoodsWindow(p));
         }
-        void OpenImportGoodsWindow(MainWindow main)
+        public void OpenImportGoodsWindow(MainWindow main)
         {
             ImportGoodsWindow newWindow = new ImportGoodsWindow();
             TotalPrice = 0;
@@ -97,6 +97,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.wdImportGoods = newWindow;
             SetItemSource();
             newWindow.ShowDialog();
+            newWindow.cboSupplier.SelectedIndex = -1;
             main.Show();
         }
         void LostFocusSearchBar(ImportGoodsWindow wdImportGoods)
@@ -179,6 +180,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 StockReceiptInfo info = new StockReceiptInfo(stockReceipt.Id, ConvertToID(control.txbId.Text),
                     int.Parse(control.nsQuantity.Value.ToString()));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
+                int quantity = GoodsDAL.Instance.GetQuantityById(ConvertToID(control.txbId.Text));
+                if(quantity !=-1)
+                {
+                    k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), quantity + info.Quantity);
+                }
             }
             if (k)
             {
@@ -243,7 +249,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (wdImportGoods.cboSelectFast.SelectedIndex == -1)
                 return;
             DataTable dt = GoodsDAL.Instance.GetByidGoodsType(selectedGoodsType.IdGoodsType);
-            bool isExist;
+            bool isExist;   
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 isExist = false;
@@ -272,6 +278,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     MoneyToPay = this.totalPrice - this.totalPrice * int.Parse(this.wdImportGoods.txtDiscount.Text) / 100;
                 }
             }
+            if (dt.Rows.Count == 0)
+            {
+                MessageBox.Show("Loại sản phẩm này vẫn chưa có sản phẩm!");
+            }
             wdImportGoods.cboSelectFast.SelectedIndex = -1;
         }
         void SetItemSource()
@@ -288,6 +298,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 itemSourceGoodsType.Add(type);
             }
             //Set item source supplier
+            itemSourceSupplier.Clear();
             DataTable dataSupllier = SupplierDAL.Instance.GetAll();
             for (int i = 0; i < dataSupllier.Rows.Count; i++)
             {
@@ -342,5 +353,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdImportGoods.txbNoResult.Visibility = Visibility.Visible;
             }
         }
+
     }
 }

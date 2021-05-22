@@ -17,6 +17,20 @@
             <ColumnDefinition Width="100"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="2"
+            Fill="{StaticResource Light}"
+            Height="1"
+            VerticalAlignment="Bottom"/>
+        <Rectangle 
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Left"/>
+        <Rectangle 
+            Grid.Column="1"
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Right"/>
         <Image 
             x:Name="imgGoods"
             Grid.Column="0" 

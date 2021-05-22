@@ -113,14 +113,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void LoadInfoOfPage(ref int start, ref int end)
         {
             mainWindow.btnPrePageGoods.IsEnabled = (currentPage == 1 ? false : true);
-            mainWindow.btnNextPageGoods.IsEnabled = (currentPage == ((listGoodsControl.Count) / 10 + 1) ? false : true);
+            mainWindow.btnNextPageGoods.IsEnabled = (currentPage > ((listGoodsControl.Count) / 11) ? false : true);
             start = (currentPage - 1) * 10;
             end = start + 10;
             if (currentPage - 1 == listGoodsControl.Count / 10)
             {
                 end = listGoodsControl.Count;
             }
-            mainWindow.txtNumOfGoods.Text = String.Format("{0} - {1} of {2} items", start == end ? 0 : start, end, listGoodsControl.Count);
+            mainWindow.txtNumOfGoods.Text = String.Format("{0} trong {1} mặt hàng", end - start, listGoodsControl.Count);
         }
         void Sort(MainWindow main)
         {
@@ -222,7 +222,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 GoodsType type = new GoodsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), double.Parse(dt.Rows[0].ItemArray[2].ToString()),
-                    dt.Rows[0].ItemArray[3].ToString(), true,false );
+                    dt.Rows[0].ItemArray[3].ToString(), true );
                 itemSourceGoodsType.Add(type);
                 itemSourceGoodsType_Filter.Add(type);
             }
@@ -292,7 +292,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     listSearch.Remove(control);
                     listGoodsControl.Remove(control);
-                    this.mainWindow.stkGoods.Children.Remove(control);
+                    if(listGoodsControl.Count <= (this.currentPage - 1) * 10)
+                        LoadListGoods(mainWindow, --currentPage);
+                    else
+                    {
+                        LoadListGoods(mainWindow, currentPage);
+                    }
                 }
                 else
                 {
@@ -375,26 +380,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 newGoods.Quantity = int.Parse(goodsControl.txbQuantity.Text);
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
-            GoodsControl control = new GoodsControl();
-            if (isUpdate)
-            {
-                control = goodsControl;
-                this.mainWindow.stkGoods.Children.Remove(control);
-            }
 
-            control.txbId.Text = AddPrefix("SP", newGoods.IdGoods);
-            control.txbName.Text = newGoods.Name;
-            control.txbGoodsType.Text = GoodsTypeDAL.Instance.GetById(newGoods.IdGoodsType).Name;
-            control.txbUnit.Text = GoodsTypeDAL.Instance.GetById(newGoods.IdGoodsType).Unit;
-            control.txbImportPrice.Text = newGoods.ImportPrice.ToString();
-            control.txbSalesPrice.Text = ((long)(newGoods.ImportPrice * (1 + GoodsTypeDAL.Instance.GetProfitPercentage(newGoods.IdGoodsType)))).ToString();
-            control.txbQuantity.Text = newGoods.Quantity.ToString();
+            int indexSort = mainWindow.cboSort.SelectedIndex;
+            int indexFilter = mainWindow.cboFilterType.SelectedIndex;
 
-            if (!isUpdate)
-            {
-                listSearch.Add(control);
-            }
-            Sort(mainWindow);
+            SearchGoods(mainWindow);
+            mainWindow.cboSort.SelectedIndex = indexSort;
+            mainWindow.cboFilterType.SelectedIndex = indexFilter;
             addGoodsWd.Close();
         }
     }

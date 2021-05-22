@@ -52,19 +52,19 @@
                         Background="{StaticResource White}"
                         Style="{StaticResource DropShadow}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="60"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid 
                             Grid.Row="0" 
-                            Background="{StaticResource Primary}">
+                            Background="{StaticResource Primary}" 
+                            Margin="10,10,10,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2.5*"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock 
                                 Grid.Column="0"
@@ -107,7 +107,9 @@
                                 FontSize="18" 
                                 FontWeight="SemiBold"/>
                         </Grid>
-                        <Grid Grid.Row="1">
+                        <Grid 
+                            Grid.Row="1"
+                            Margin="10,0">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel x:Name="stkActive_ActiveTab">
                                 </StackPanel>
@@ -362,14 +364,13 @@
                             VerticalAlignment="Center"/>
                         <Grid 
                             Grid.Row="1"
-                            Background="{StaticResource Primary}">
+                            Background="{StaticResource Primary}" Margin="10,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2.5*"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock 
                                 Grid.Column="0"
@@ -413,7 +414,8 @@
                                 FontWeight="SemiBold"/>
                         </Grid>
                         <Grid 
-                            Grid.Row="2">
+                            Grid.Row="2" 
+                            Margin="10,0">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel x:Name="stkActive_InactiveTab">
                                 </StackPanel>
@@ -476,14 +478,14 @@
                             VerticalAlignment="Center"/>
                         <Grid 
                             Grid.Row="1"
-                            Background="{StaticResource Primary}">
+                            Background="{StaticResource Primary}"
+                            Margin="10,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2.5*"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock 
                                 Grid.Column="0"
@@ -527,7 +529,8 @@
                                 FontWeight="SemiBold"/>
                         </Grid>
                         <Grid 
-                            Grid.Row="2">
+                            Grid.Row="2" 
+                            Margin="10,0">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <StackPanel x:Name="stkInactive_InactiveTab">
                                 </StackPanel>
