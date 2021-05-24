@@ -51,7 +51,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query;
                 if (!isUpdate) // insert
                 {
@@ -86,7 +86,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public GoodsType GetById(int id)
@@ -94,7 +94,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             GoodsType type;
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "Select * from GoodsType where idGoodsType = " + id.ToString();
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -118,7 +118,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public DataTable GetActive()
@@ -126,7 +126,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 DataTable dt = new DataTable();
-                conn.Open();
+                OpenConnection();
                 string query = "select * from GoodsType where isActive = 1 ";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -139,7 +139,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public DataTable GetAll()
@@ -147,7 +147,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 DataTable dt = new DataTable();
-                conn.Open();
+                OpenConnection();
                 string query = "select * from GoodsType";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -160,14 +160,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public int GetMaxId()
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "select max(idGoodsType) from GoodsType";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -188,7 +188,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
 
@@ -196,7 +196,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "update GoodsType set isActive = @isActive  where idGoodsType =  @id";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@isActive", isActive);
@@ -210,7 +210,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
 
@@ -218,7 +218,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = string.Format("select 8 from GoodsType where name = '{0}'", typeName);
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
@@ -236,7 +236,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
 
@@ -245,7 +245,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             GoodsType type;
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "Select GT.idGoodsType, GT.name, GT.profitPercentage, GT.unit from GoodsType as GT "
                                 + "inner join Goods on GT.idGoodsType = Goods.idGoodsType "
                                 + "where GT.isActive = 1 and Goods.idGoods = " + idGoods.ToString();
@@ -271,7 +271,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
     }

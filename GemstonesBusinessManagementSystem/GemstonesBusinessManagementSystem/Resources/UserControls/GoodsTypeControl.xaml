@@ -38,42 +38,36 @@
                 x:Name="txbId"
                 Text="Mã SP"
                 Grid.Column="0"
+                Style="{StaticResource Text}"
                 HorizontalAlignment="Center" 
-                Margin="0" 
-                TextWrapping="Wrap" 
-                VerticalAlignment="Center" 
-                FontSize="16" 
-                FontWeight="SemiBold"/>
+                Margin="0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"/>
             <TextBlock 
                 x:Name="txbName"
                 Text="Tên loại" 
                 Grid.Column="1"
+                Style="{StaticResource Text}"
                 HorizontalAlignment="Left" 
-                Margin="20,0,0,0" 
-                TextWrapping="Wrap" 
-                VerticalAlignment="Center" 
-                FontSize="16" 
-                FontWeight="SemiBold" />
+                Margin="20,0,0,0"
+                TextWrapping="Wrap"  
+                VerticalAlignment="Center"/>
             <TextBlock 
                 x:Name="txbUnit"
                 Text="Đơn vị" 
                 Grid.Column="2"
-                HorizontalAlignment="Center" 
-                Margin="0" 
+                Style="{StaticResource Text}"
+                HorizontalAlignment="Center"
                 TextWrapping="Wrap" 
-                VerticalAlignment="Center" 
-                FontSize="16" 
-                FontWeight="SemiBold"/>
+                VerticalAlignment="Center"/>
             <TextBlock 
                 x:Name="txbProfitPercentage"
                 Text="Lợi nhuận" 
                 Grid.Column="3"
+                 Style="{StaticResource Text}"
                 HorizontalAlignment="Center" 
-                Margin="0" 
                 TextWrapping="Wrap" 
-                VerticalAlignment="Center" 
-                FontSize="16" 
-                FontWeight="SemiBold"/>
+                VerticalAlignment="Center"/>
             <Button 
                 Grid.ColumnSpan="5"
                 Command="{Binding SelectedGoodsTypeCommand}"

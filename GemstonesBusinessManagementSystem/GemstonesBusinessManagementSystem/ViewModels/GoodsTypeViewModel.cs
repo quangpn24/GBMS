@@ -110,6 +110,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 if (GoodsTypeDAL.Instance.InactivateOrReactivate(ConvertToID(goodsTypeControl.txbId.Text), false))
                 {
+                    GoodsDAL.Instance.InactivateOrReActivate(ConvertToID(goodsTypeControl.txbId.Text), false);
                     this.wdGoodsType.stkActive_InactiveTab.Children.Remove(goodsTypeControl);
                     this.wdGoodsType.stkInactive_InactiveTab.Children.Add(goodsTypeControl);
                 }
@@ -124,6 +125,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (GoodsTypeDAL.Instance.InactivateOrReactivate(ConvertToID(goodsTypeControl.txbId.Text), true))
             {
+                GoodsDAL.Instance.InactivateOrReActivate(ConvertToID(goodsTypeControl.txbId.Text), true);
                 this.wdGoodsType.stkInactive_InactiveTab.Children.Remove(goodsTypeControl);
                 this.wdGoodsType.stkActive_InactiveTab.Children.Add(goodsTypeControl);
             }

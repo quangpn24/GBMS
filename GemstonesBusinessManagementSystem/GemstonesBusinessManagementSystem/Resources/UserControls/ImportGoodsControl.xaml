@@ -43,64 +43,51 @@
             x:Name="txbNumericalOder"
             Text="1"
             Grid.Column="0"
-            HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold"/>
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Center"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbId"
             Text="SP0001"
             Grid.Column="1"
-            HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold"/>
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Center"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbName"
             Text="Vàng ròng 9999" 
             Grid.Column="2"
-            HorizontalAlignment="Left" 
-            Margin="20,0,0,0" 
-            Padding="10,0,0,0"
-            TextWrapping="Wrap" 
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Left"
+            TextWrapping="Wrap"
             VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold" />
+            Margin="20,0,0,0"/>
         <TextBlock 
             x:Name="txbGoodsType"
             Text="Vàng" 
             Grid.Column="3"
-            HorizontalAlignment="Center" 
-            Margin="0" 
-            Padding="10,0,0,0"
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold" />
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Left"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center" Margin="10,0,0,0"/>
         <TextBlock 
             x:Name="txbUnit"
             Text="Chỉ" 
             Grid.Column="4"
-            HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold"/>
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Center"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbImportPrice"
             Text="70000000" 
             Grid.Column="5"
-            HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold"/>
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Center"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <local:NumericSpinner
             x:Name="nsQuantity"
             Grid.Column="6"
@@ -121,12 +108,10 @@
             x:Name="txbTotalPrice"
             Text="10000000" 
             Grid.Column="7"
-            HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold"/>
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Center"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <Button 
             Grid.Column="8"
             x:Name="btnDeleteGoods"

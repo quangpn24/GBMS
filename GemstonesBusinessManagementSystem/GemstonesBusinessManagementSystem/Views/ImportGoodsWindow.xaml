@@ -189,86 +189,54 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock 
                     Grid.Column="0"
-                    HorizontalAlignment="Center" 
-                    Margin="0" 
-                    TextWrapping="Wrap" 
-                    Foreground="{StaticResource Secondary}"
                     Text="STT" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    FontWeight="SemiBold"/>
+                    Style="{StaticResource TextHeader}" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
                 <TextBlock 
                     Grid.Column="1"
-                    HorizontalAlignment="Center" 
-                    Margin="0" 
-                    TextWrapping="Wrap" 
-                    Foreground="{StaticResource Secondary}"
                     Text="Mã SP" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    FontWeight="SemiBold"/>
+                    Style="{StaticResource TextHeader}" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
                 <TextBlock
                     Grid.Column="2" 
-                    HorizontalAlignment="Left" 
-                    Margin="20,0,0,0" 
-                    Foreground="{StaticResource Secondary}"
-                    TextWrapping="Wrap" 
                     Text="Tên mặt hàng" 
-                    Padding="10,0,0,0"
-                    VerticalAlignment="Center"
-                    FontSize="18" 
-                    FontWeight="SemiBold"/>
+                    Margin="20,0,0,0" 
+                    HorizontalAlignment="Left" 
+                    Style="{StaticResource TextHeader}"
+                    VerticalAlignment="Center"/>
                 <TextBlock
                     Grid.Column="3" 
-                    HorizontalAlignment="Center" 
-                    Margin="0" 
-                    Foreground="{StaticResource Secondary}"
-                    TextWrapping="Wrap" 
                     Text="Loại sản phẩm" 
-                    Padding="10,0,0,0"
-                    VerticalAlignment="Center"
-                    FontSize="18" 
-                    FontWeight="SemiBold"/>
+                    Style="{StaticResource TextHeader}" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center" 
+                    Margin="10,0,0,0"/>
                 <TextBlock 
                     Grid.Column="4" 
-                    HorizontalAlignment="Center"
-                    Margin="0" 
-                    TextWrapping="Wrap" 
-                    Foreground="{StaticResource Secondary}"
                     Text="Đơn vị" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    FontWeight="SemiBold"/>
+                    Style="{StaticResource TextHeader}" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
                 <TextBlock 
                     Grid.Column="5" 
-                    HorizontalAlignment="Center"
-                    Margin="0" 
-                    Foreground="{StaticResource Secondary}"
-                    TextWrapping="Wrap" 
                     Text="Đơn giá" 
-                    VerticalAlignment="Center" 
-                    FontSize="18"
-                    FontWeight="SemiBold"/>
+                    Style="{StaticResource TextHeader}" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
                 <TextBlock 
                     Grid.Column="6" 
-                    Foreground="{StaticResource Secondary}"
-                    HorizontalAlignment="Center"
-                    Margin="0" 
-                    TextWrapping="Wrap" 
                     Text="Số lượng" 
-                    VerticalAlignment="Center" 
-                    FontSize="18"
-                    FontWeight="SemiBold"/>
+                    Style="{StaticResource TextHeader}" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
                 <TextBlock 
                     Grid.Column="7" 
-                    Foreground="{StaticResource Secondary}"
-                    HorizontalAlignment="Center"
-                    Margin="0" 
-                    TextWrapping="Wrap" 
                     Text="Thành tiền" 
-                    VerticalAlignment="Center" 
-                    FontSize="18"
-                    FontWeight="SemiBold"/>
+                    Style="{StaticResource TextHeader}" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
             </Grid>
             <Grid
                 Grid.Row="2"

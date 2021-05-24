@@ -26,7 +26,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "insert into StockReceiptInfo(idStockReceipt, idGoods, quantity) "
                     + "values(@idStockReceipt,@idGoods, @quantity)";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
@@ -42,7 +42,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
     }

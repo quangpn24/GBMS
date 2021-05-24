@@ -30,7 +30,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "update Goods set isDeleted = 1 " +
                  "where idGoods = @idGoods";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
@@ -44,14 +44,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public bool InsertOrUpdate(Goods goods, bool isUpdate)
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query;
                 if (!isUpdate) // insert
                 {
@@ -61,6 +61,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 else
                 {
                     query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
+                 "where idGoods = @idGoods";
+                    query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted" +
                  "where idGoods = @idGoods";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
@@ -88,7 +90,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public DataTable GetActive()
@@ -96,7 +98,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 DataTable dt = new DataTable();
-                conn.Open();
+                OpenConnection();
                 string query = "select * from Goods where isDeleted = 0";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -109,7 +111,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
 
@@ -117,19 +119,19 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "update Goods set isDeleted = @isActive " +
                  "where idGoodsType = @idGoodsType";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idGoodsType", idGoodsType.ToString());
-                if(isActive)
+                if (isActive)
                 {
                     cmd.Parameters.AddWithValue("@isActive", "0");
-                }    
+                }
                 else
                 {
                     cmd.Parameters.AddWithValue("@isActive", "1");
-                }                
+                }
                 int rs = cmd.ExecuteNonQuery();
                 return rs == 1;
             }
@@ -139,15 +141,40 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
+        public List<Goods> GetList()
+        {
+            List<Goods> goodsList = new List<Goods>();
+            try
+            {
+                OpenConnection();
+                string queryStr = "select * from Goods where isDeleted = false";
+                MySqlCommand cmd = new MySqlCommand(queryStr, conn);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dataReader);
 
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Goods goods = new Goods(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                        dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()),
+                        int.Parse(dt.Rows[i].ItemArray[3].ToString()), int.Parse(dt.Rows[i].ItemArray[4].ToString()),
+                        Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString()), bool.Parse(dt.Rows[i].ItemArray[6].ToString()));
+                    goodsList.Add(goods);
+                }
+            }
+            catch
+            {
+            }
+            return goodsList;
+        }
         public Goods GetById(string idGoods) // lấy thông tin hàng hóa khi biết id 
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "select * from Goods where idGoods = " + idGoods;
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
@@ -169,7 +196,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
 
@@ -177,14 +204,14 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "select * from Goods where idGoodsType = " + idGoodsType.ToString();
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
-                
+
                 return dt;
             }
             catch
@@ -193,17 +220,17 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
-
         public int GetMaxId()
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "select max(idGoods) from Goods";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -222,7 +249,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
 
@@ -232,7 +259,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             DataTable dt = new DataTable();
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = @"select * from Goods where name like  ""%" + name + "%\" and isDeleted = 0";
                 MySqlCommand command = new MySqlCommand(query, conn);
                 command.ExecuteNonQuery();
@@ -247,39 +274,16 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
             return dt;
-        }
-
-        public bool IsExistGoodsType(int idGoodsType)
-        {
-            try
-            {
-                conn.Open();
-                string queryString = "select count(*) from Goods where isDeleted = 0 and idGoodsType = " + idGoodsType.ToString();
-                MySqlCommand command = new MySqlCommand(queryString, conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                return int.Parse(dataTable.Rows[0].ItemArray[0].ToString()) > 0;
-                
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                conn.Close();
-            }
         }
 
         public bool UpdateQuantity(int id, int quantity)
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "Update Goods set quantity = @quantity where idGoods = @id";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", id);
@@ -292,14 +296,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public int GetQuantityById(int id)
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string query = "select quantity from Goods where idGoods = @id";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", id);
@@ -309,12 +313,44 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch
             {
-                return -1;
+                return 0;
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
+        }
+        public List<Goods> FindByName(string name)
+        {
+            DataTable dt = new DataTable();
+            List<Goods> goodsList = new List<Goods>();
+            try
+            {
+                OpenConnection();
+                string queryString = @"select * from Goods where name like  ""%" + name + "%\" and isDeleted = 0";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                adapter.Fill(dt);
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Goods goods = new Goods(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                        dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()),
+                        int.Parse(dt.Rows[i].ItemArray[3].ToString()), int.Parse(dt.Rows[i].ItemArray[4].ToString()),
+                        Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString()), bool.Parse(dt.Rows[i].ItemArray[6].ToString()));
+                    goodsList.Add(goods);
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            return goodsList;
         }
     }
 }

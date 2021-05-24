@@ -54,13 +54,16 @@
                 Margin="20,0"
                 VerticalAlignment="Center">
                 <TextBlock 
+                    Style="{StaticResource Text}"
                     Text="SP00001" 
                     x:Name="txbId"/>
                 <TextBlock 
                     Text="Giá nhập: " 
+                    Style="{StaticResource Text}"
                     Margin="30,0,0,0"/>
                 <TextBlock
                     x:Name="txbImportPrice" 
+                    Style="{StaticResource Text}"
                     Text="700000"/>
             </StackPanel>
             <StackPanel 
@@ -69,8 +72,10 @@
                 Margin="20,0" 
                 Orientation="Horizontal">
                 <TextBlock 
+                    Style="{StaticResource Text}"
                     Text="Tồn kho: "/>
                 <TextBlock
+                    Style="{StaticResource Text}"
                     x:Name="txbQuantity"
                     Text="10 "/>
             </StackPanel>
