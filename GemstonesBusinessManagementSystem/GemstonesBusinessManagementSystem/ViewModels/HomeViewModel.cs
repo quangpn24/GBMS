@@ -29,6 +29,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdStock.Visibility = Visibility.Collapsed;
             window.grdEmployee.Visibility = Visibility.Collapsed;
             window.grdGoods.Visibility = Visibility.Collapsed;
+            window.grdImport.Visibility = Visibility.Collapsed;
             window.grdService.Visibility = Visibility.Collapsed;
 
             string fore = "#666666";
@@ -97,6 +98,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //nhập hàng
                 case 21:
                     window.txbTabName.Text = "Nhập hàng";
+                    window.grdImport.Visibility = Visibility.Visible;
                     CloseExpander(window, 1);
                     window.btnImport.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnImport.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);

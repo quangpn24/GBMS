@@ -148,7 +148,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             for (int i = start; i < end; i++)
             {
                 StockControl control = new StockControl();
-                GoodsType type = GoodsTypeDAL.Instance.GetGoodsTypeWithId(list[i].IdGoodsType);
+                GoodsType type = GoodsTypeDAL.Instance.GetById(list[i].IdGoodsType);
                 control.txbId.Text = AddPrefix("SP", list[i].IdGoods);
                 control.txbName.Text = list[i].Name;
                 control.txbType.Text = type.Name;
