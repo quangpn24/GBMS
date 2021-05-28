@@ -28,7 +28,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             DataTable dt = new DataTable();
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE isDeleted=0;";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
@@ -42,9 +42,81 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
             return dt;
+        }
+        public List<Service> GetActivedServices()
+        {
+            DataTable dt = new DataTable();
+            List<Service> services = new List<Service>();
+            try
+            {
+                OpenConnection();
+                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE isActived=1 ;";
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                adapter.Fill(dt);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Service service = new Service(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                    dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()), int.Parse(dt.Rows[i].ItemArray[3].ToString()), 0,
+                    0);
+                if (dt.Rows[i].ItemArray[4].ToString() == "True")
+                    service.IsActived = 1;
+                if (dt.Rows[i].ItemArray[5].ToString() == "True")
+                    service.IsDeleted = 1;
+                services.Add(service);
+            }
+            return services;
+        }
+        public List<Service> GetActivedServicesByName(string name)
+        {
+            DataTable dt = new DataTable();
+            List<Service> services = new List<Service>();
+            try
+            {
+                OpenConnection();
+                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE isActived=1 and name LIKE  ""%" + name + "%\";";
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                adapter.Fill(dt);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Service service = new Service(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                    dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()), int.Parse(dt.Rows[i].ItemArray[3].ToString()), 0,
+                    0);
+                if (dt.Rows[i].ItemArray[4].ToString() == "True")
+                    service.IsActived = 1;
+                if (dt.Rows[i].ItemArray[5].ToString() == "True")
+                    service.IsDeleted = 1;
+                services.Add(service);
+            }
+            return services;
         }
         public List<Service> ConvertDBToList()
         {
@@ -52,7 +124,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             List<Service> services = new List<Service>();
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE isDeleted=0 ;";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
@@ -67,7 +139,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -88,7 +160,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             List<Service> services = new List<Service>();
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE name LIKE  ""%" + name + "%\" and isDeleted=0;";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
@@ -102,7 +174,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -121,7 +193,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "insert into gemstonesbusinessmanagementsystem.service(idService, name, price,numberOfHired,isActived,isDeleted) values(@idService, @name, @price,@numberOfHired,@isActived,@isDeleted);";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idService", service.IdService.ToString());
@@ -139,7 +211,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public int FindMaxId()
@@ -147,7 +219,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             int res = 0;
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "SELECT MAX(idService) from gemstonesbusinessmanagementsystem.service ; ";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
@@ -164,7 +236,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
             return res;
         }
@@ -172,7 +244,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "UPDATE gemstonesbusinessmanagementsystem.service set isDeleted = 0; ";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
@@ -186,14 +258,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public bool Delete(string idService)
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "UPDATE gemstonesbusinessmanagementsystem.service SET isDeleted = 1,isActived=0 WHERE idService = @idService; ";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idService", idService);
@@ -206,14 +278,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public bool Update(Service service)
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "UPDATE gemstonesbusinessmanagementsystem.service " +
                                         "SET name = @name, price=@price,numberOfHired=@numberOfHired,isDeleted=@isDeleted, isActived=@isActived  where idService = @idService; ";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
@@ -233,14 +305,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
         public bool IsExisted(string name)
         {
             try
             {
-                conn.Open();
+                OpenConnection();
                 string queryString = "SELECT * from gemstonesbusinessmanagementsystem.service WHERE name=@name; ";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
@@ -261,7 +333,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             finally
             {
-                conn.Close();
+                CloseConnection();
             }
         }
     }

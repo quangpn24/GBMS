@@ -29,6 +29,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdEmployee.Visibility = Visibility.Collapsed;
             window.grdGoods.Visibility = Visibility.Collapsed;
             window.grdService.Visibility = Visibility.Collapsed;
+            window.grdPayService.Visibility = Visibility.Collapsed;
 
             string fore = "#666666";
             string back = "#FFFFFF";
@@ -45,7 +46,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnEmployee.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnGoods.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnServiceM.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
-            window.btnNote.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
+            window.btnBillService.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
 
             window.btnHome.Background = (Brush)new BrushConverter().ConvertFrom(back);
@@ -58,7 +59,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnEmployee.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnGoods.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnServiceM.Background = (Brush)new BrushConverter().ConvertFrom(back);
-            window.btnNote.Background = (Brush)new BrushConverter().ConvertFrom(back);
+            window.btnBillService.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(back);
 
             switch (index)
@@ -77,6 +78,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //dịch vụ
                 case 11:
+                    window.grdPayService.Visibility = Visibility.Visible;
                     CloseExpander(window, 0);
                     window.btnService.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnService.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -133,8 +135,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //báo cáo phiếu
                 case 50:
                     CloseExpander(window, 4);
-                    window.btnNote.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
-                    window.btnNote.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
+                    window.btnBillService.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
+                    window.btnBillService.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //báo cáo doanh thu
                 case 51:
