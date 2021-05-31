@@ -84,6 +84,50 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public List<BillService> GetByDate(DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                OpenConnection();
+                string start = startDate.ToString("yyyy-MM-dd");
+                string end = endDate.AddDays(1).ToString("yyyy-MM-dd");
+                string queryString = String.Format("SELECT * FROM BillService WHERE createdDate >= '{0}' and createdDate<='{1}';  ", start, end);
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                List<BillService> res = new List<BillService>();
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    BillService temp;
+                    if (string.IsNullOrEmpty(dataTable.Rows[i].ItemArray[1].ToString()))
+                    {
+                        temp = new BillService(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), 1, DateTime.Parse(dataTable.Rows[i].ItemArray[2].ToString()),
+                            float.Parse(dataTable.Rows[i].ItemArray[3].ToString()), float.Parse(dataTable.Rows[i].ItemArray[4].ToString()),
+                            int.Parse(dataTable.Rows[i].ItemArray[5].ToString()), int.Parse(dataTable.Rows[i].ItemArray[6].ToString()));
+                    }
+                    else
+                    {
+                        temp = new BillService(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), int.Parse(dataTable.Rows[i].ItemArray[1].ToString()),
+                            DateTime.Parse(dataTable.Rows[i].ItemArray[2].ToString()), float.Parse(dataTable.Rows[i].ItemArray[3].ToString()),
+                            float.Parse(dataTable.Rows[i].ItemArray[4].ToString()), int.Parse(dataTable.Rows[i].ItemArray[5].ToString()),
+                            int.Parse(dataTable.Rows[i].ItemArray[6].ToString()));
+                    }
+                    res.Add(temp);
+                }
+                return res;
+            }
+            catch
+            {
+                return new List<BillService>();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
         public bool Update(BillService billService)
         {
             try

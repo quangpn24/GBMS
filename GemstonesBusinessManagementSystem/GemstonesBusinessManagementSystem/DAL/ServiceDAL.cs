@@ -189,6 +189,36 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             return services;
         }
+        public Service FindById(string idService)
+        {
+
+            try
+            {
+                OpenConnection();
+                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE idService= " + idService;
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                Service service = new Service(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
+                    dt.Rows[0].ItemArray[1].ToString(), long.Parse(dt.Rows[0].ItemArray[2].ToString()), int.Parse(dt.Rows[0].ItemArray[3].ToString()),
+                    0, 0);
+                if (dt.Rows[0].ItemArray[4].ToString() == "True")
+                    service.IsActived = 1;
+                if (dt.Rows[0].ItemArray[5].ToString() == "True")
+                    service.IsDeleted = 1;
+                return service;
+            }
+            catch
+            {
+                return new Service();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
         public bool Add(Service service)
         {
             try

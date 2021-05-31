@@ -15,30 +15,26 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style 
-        x:Key="MyUCHoverStyle"
-        TargetType="{x:Type UserControl}">
+    <Style x:Key="MyUCHoverStyle"
+           TargetType="{x:Type UserControl}">
         <Style.Triggers>
             <Trigger Property="IsFocused"
                      Value="True">
                 <Setter Property="Foreground"
                         Value="{StaticResource Primary}" />
             </Trigger>
-            <Trigger
-                Property="IsMouseOver"
-                Value="True">
-                <Setter 
-                    Property="Foreground"
-                    Value="{StaticResource Primary}" />
-                <Setter 
-                    Property="Effect">
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Foreground"
+                        Value="{StaticResource Primary}" />
+                <Setter Property="Effect">
                     <Setter.Value>
-                        <DropShadowEffect 
-                            Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey} }" />
+                        <DropShadowEffect Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey} }" />
                     </Setter.Value>
                 </Setter>
             </Trigger>
         </Style.Triggers>
+    </Style>
     <Style x:Key="StackPanelDropShadow" TargetType="{x:Type StackPanel}">
         <Setter Property="Effect" >
             <Setter.Value>

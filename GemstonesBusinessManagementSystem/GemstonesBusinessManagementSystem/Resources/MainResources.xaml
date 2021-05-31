@@ -10,4 +10,5 @@
     <viewmodels:BusinessServiceViewModel x:Key="BusinessServiceVM"/>
     <viewmodels:CustomerViewModel x:Key="CustomerVM" />
     <viewmodels:StockViewModel x:Key="StockVM" />
+    <viewmodels:BillServiceViewModel x:Key="BillServiceVM" />
 </ResourceDictionary>

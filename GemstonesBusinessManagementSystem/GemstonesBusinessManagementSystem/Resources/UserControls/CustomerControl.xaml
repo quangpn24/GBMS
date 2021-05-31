@@ -12,7 +12,6 @@
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     DataContext="{StaticResource CustomerVM}"
     Height="40"
-    Width="806"
     Margin="0,4,0,0"
     Style="{StaticResource MyUCHoverStyle }"
     Cursor="Hand"
@@ -20,10 +19,6 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
             <i:InvokeCommandAction Command="{Binding PickCustomerCommand}"
-                                   CommandParameter="{Binding ElementName=ucCustomer}" />
-        </i:EventTrigger>
-        <i:EventTrigger EventName="LostFocus">
-            <i:InvokeCommandAction Command="{Binding LostFocusCommand}"
                                    CommandParameter="{Binding ElementName=ucCustomer}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -34,7 +29,7 @@
             x:Name="grdMain"
             Margin="0"
             Background="White"
-              Focusable="True">
+            Focusable="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="2.5*" />

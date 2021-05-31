@@ -111,7 +111,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (currentPage == customerList.Count / 10)
                 end = customerList.Count;
 
-            pickCustomerWindow.txtNumOfCus.Text = String.Format("{0} - {1} trong {2} khách hàng", start == end ? 0 : start + 1, end, customerList.Count);
+            pickCustomerWindow.txtNumOfCus.Text = String.Format("Trang {0} trên {1} trang", currentPage+1, (customerList.Count-1)/10+1);
         }
     }
 }

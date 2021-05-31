@@ -32,6 +32,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdImport.Visibility = Visibility.Collapsed;
             window.grdService.Visibility = Visibility.Collapsed;
             window.grdPayService.Visibility = Visibility.Collapsed;
+            window.grdBillService.Visibility = Visibility.Collapsed;
 
             string fore = "#666666";
             string back = "#FFFFFF";
@@ -149,6 +150,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //báo cáo phiếu
                 case 50:
                     window.txbTabName.Text = "Báo cáo phiếu";
+                    window.grdBillService.Visibility = Visibility.Visible;
                     CloseExpander(window, 4);
                     window.btnBillService.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnBillService.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);

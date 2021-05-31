@@ -201,9 +201,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
                             float paidMoney = 0;
+                            float tips = 0;
                             if (!String.IsNullOrEmpty(temp.txtPaidMoney.Text))
                                 paidMoney = float.Parse(temp.txtPaidMoney.Text);
-                            BillServiceInfo billServiceInfo = new BillServiceInfo(idBillService, ConvertToID(temp.txbSerial.Text), Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
+                            if (!String.IsNullOrEmpty(temp.txtTips.Text))
+                                tips = float.Parse(temp.txtTips.Text);
+                            BillServiceInfo billServiceInfo = new BillServiceInfo(idBillService, ConvertToID(temp.txbSerial.Text), float.Parse(temp.txbPrice.Text), tips, Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
                             BillServiceInfoDAL.Instance.Insert(billServiceInfo);
                         }
                         mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService);
@@ -260,6 +263,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceTemplateControl.txbRest.Text = (float.Parse(temp.txtTotal.Text) - float.Parse(temp.txtPaidMoney.Text)).ToString();
                 billServiceTemplateControl.txbDeliveryDate.Text = "";
                 billServiceTemplateControl.txbStatus.Text = "Chưa giao";
+                billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
                 billServiceTemplate.stkBillServiceInfo.Children.Add(billServiceTemplateControl);
             }
             billServiceTemplate.ShowDialog();

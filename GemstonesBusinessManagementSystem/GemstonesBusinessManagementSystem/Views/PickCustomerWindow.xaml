@@ -330,11 +330,11 @@
                         HorizontalAlignment="Center" />
                 </Grid>
             </Border>
-            <Grid Grid.Row="1"
-                  Margin="20,40,10,0">
+            <Grid 
+                Grid.Row="1"
+                Margin="20,40,10,0">
                 <StackPanel 
-                    x:Name="stkCustomer"
-                    VerticalAlignment="Top" />
+                        x:Name="stkCustomer" />
             </Grid>
             <StackPanel 
                 Grid.Row="2"
@@ -344,7 +344,7 @@
                 Margin="0,0,20,0">
                 <TextBlock 
                     x:Name="txtNumOfCus"
-                    Text="1-10 of 100 items"
+                    Text="Trang 1 trên 1 trang"
                     Margin="0,0,20,0"
                     FontSize="14"
                     TextAlignment="Justify"

@@ -10,6 +10,8 @@ namespace GemstonesBusinessManagementSystem.Models
     {
         private int idBillService;
         private int idService;
+        private float price;
+        private float tips;
         private int quantity;
         private float paidMoney;
         private int status;
@@ -17,6 +19,8 @@ namespace GemstonesBusinessManagementSystem.Models
 
         public int IdBillService { get => idBillService; set => idBillService = value; }
         public int IdService { get => idService; set => idService = value; }
+        public float Price { get => price; set => price = value; }
+        public float Tips { get => tips; set => tips = value; }
         public int Quantity { get => quantity; set => quantity = value; }
         public float PaidMoney { get => paidMoney; set => paidMoney = value; }
         public int Status { get => status; set => status = value; }
@@ -26,10 +30,12 @@ namespace GemstonesBusinessManagementSystem.Models
         {
 
         }
-        public BillServiceInfo(int idBillService, int idService, int quantity, float paidMoney, int status, DateTime deliveryDate)
+        public BillServiceInfo(int idBillService, int idService, float price, float tips, int quantity, float paidMoney, int status, DateTime deliveryDate)
         {
             this.idBillService = idBillService;
             this.idService = idService;
+            this.price = price;
+            this.tips = tips;
             this.quantity = quantity;
             this.paidMoney = paidMoney;
             this.status = status;
