@@ -63,6 +63,7 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
                 else
                 {
                     this.brdBrush.BorderBrush = Brushes.Gray;
+
                 }
                 if (value > MaxValue)
                 {
@@ -76,6 +77,7 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
                 SetValue(ValueProperty, value);
                 ValueChanged(this, new EventArgs());
                 tb_main.Text = Value.ToString();
+
             }
         }
 
@@ -147,6 +149,7 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
             {
                 if (value < MinValue)
                     value = MinValue;
+
                 SetValue(MinValueProperty, value);
             }
         }
@@ -201,12 +204,13 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
         {
             try
             {
-                
                 Text = decimal.Parse(this.tb_main.Text);
+                tb_main.SelectionStart = tb_main.Text.Length;
+                tb_main.SelectionLength = 0;
             }
             catch
             {
-                
+
             }
         }
         private void tb_main_PreviewTextInput(object sender, TextCompositionEventArgs e)

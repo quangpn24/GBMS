@@ -2,9 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewmodels="clr-namespace:GemstonesBusinessManagementSystem.ViewModels">
     <viewmodels:GoodsViewModel x:Key="GoodsVM"/>
+    <viewmodels:GoodsTypeViewModel x:Key="GoodsTypeVM"/>
+    <viewmodels:ImportGoodsViewModel x:Key="ImportGoodsVM"/>
     <viewmodels:EmployeeViewModel x:Key="EmployeeVM"/>
     <viewmodels:HomeViewModel x:Key="HomeVM"/>
     <viewmodels:ServiceViewModel x:Key="ServiceVM" />
     <viewmodels:BusinessServiceViewModel x:Key="BusinessServiceVM"/>
     <viewmodels:CustomerViewModel x:Key="CustomerVM" />
+    <viewmodels:StockViewModel x:Key="StockVM" />
 </ResourceDictionary>

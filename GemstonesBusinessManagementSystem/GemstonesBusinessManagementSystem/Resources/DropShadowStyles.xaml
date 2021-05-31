@@ -39,5 +39,18 @@
                 </Setter>
             </Trigger>
         </Style.Triggers>
+    <Style x:Key="StackPanelDropShadow" TargetType="{x:Type StackPanel}">
+        <Setter Property="Effect" >
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="4" Direction="90" Opacity="0.25" ShadowDepth="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DropShadowSearchBar" TargetType="{x:Type Grid}">
+        <Setter Property="Effect" >
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="20" Direction="270" Opacity="0.4" ShadowDepth="5"/>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

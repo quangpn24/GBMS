@@ -16,7 +16,7 @@
     <SolidColorBrush x:Key="Secondary" Color="#FFF5D577" />
     <SolidColorBrush x:Key="Success" Color="#FF01B500" />
     <SolidColorBrush x:Key="Warning" Color="#FFFFC700" />
-    <SolidColorBrush x:Key="Error" Color="#FFF03738" />
+    <SolidColorBrush x:Key="Error" Color="#d14040" />
     <SolidColorBrush x:Key="Black1" Color="#FF263238" />
     <SolidColorBrush x:Key="Black2" Color="#FF4F4F4F" />
     <SolidColorBrush x:Key="White" Color="#FFFFFFFF" />
