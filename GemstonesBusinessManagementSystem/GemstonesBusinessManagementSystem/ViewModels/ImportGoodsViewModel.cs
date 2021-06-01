@@ -15,6 +15,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
+using Microsoft.Win32;
+using ClosedXML.Excel;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -26,6 +28,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public long MoneyToPay { get => moneyToPay; set { moneyToPay = value; OnPropertyChanged(); } }
 
         private ImportGoodsWindow wdImportGoods;
+        //Main window (manager receipt)
+        private List<ReceiptControl> listReceiptControl = new List<ReceiptControl>();// luu tất cả các receipt ban đầu
+        private List<ReceiptControl> listReceiptToView = new List<ReceiptControl>();
+        private MainWindow mainWindow;
+        private int currentPage = 1;
 
         //cbo goodsType
         private GoodsType selectedGoodsType = new GoodsType();
@@ -38,7 +45,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public Supplier SelectedSupplier { get => selectedSupplier; set { selectedSupplier = value; OnPropertyChanged("SelectedSupplier"); } }
         private ObservableCollection<Supplier> itemSourceSupplier = new ObservableCollection<Supplier>();
         public ObservableCollection<Supplier> ItemSourceSupplier { get => itemSourceSupplier; set { itemSourceSupplier = value; OnPropertyChanged(); } }
-
+        private ObservableCollection<Supplier> itemSourceFilter = new ObservableCollection<Supplier>();
+        public ObservableCollection<Supplier> ItemSourceFilter { get => itemSourceFilter; set { itemSourceFilter = value; OnPropertyChanged(); } }
 
         //import goods control and search goods control
         public ICommand SelectGoodsCommand { get; set; } // search goods control
@@ -56,10 +64,20 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand LostFocusDiscountCommand { get; set; }
         public ICommand ChangeDiscountCommand { get; set; }
 
+        // maneger list receipt(in main window)
+        public ICommand OpenImportGoodsWindowCommand { get; set; }
+        public ICommand PreviousPageCommand { get; set; }
+        public ICommand NextPageCommand { get; set; }
+        public ICommand LoadReceiptCommand { get; set; }
+        public ICommand ApproveCommand { get; set; }
+        public ICommand ExportExcelCommand { get; set; }
+        public ICommand SelectReceiptCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
+
+
         //other
         public ICommand BackCommand { get; set; }
         public ICommand SelectionChangedGoodsTypeCommand { get; set; } // cboGoodsType
-        public ICommand OpenImportGoodsWindowCommand { get; set; }
         public ImportGoodsViewModel()
         {
             SelectGoodsCommand = new RelayCommand<SearchGoodsControl>(p => true, p => SelectGoodsResult(p));
@@ -77,29 +95,178 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             SelectionChangedGoodsTypeCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => SelectGoodsType(p));
             BackCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => p.Close());
+
+
+            LoadReceiptCommand = new RelayCommand<MainWindow>(p => true, p => Init(p));
             OpenImportGoodsWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenImportGoodsWindow(p));
+            PreviousPageCommand = new RelayCommand<MainWindow>(p => true, p => GoToPreviousPage(p));
+            NextPageCommand = new RelayCommand<MainWindow>(p => true, p => GoToNextPage(p));
+            ApproveCommand = new RelayCommand<MainWindow>(p => true, p => ApproveRequest(p));
+            ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
+            SelectReceiptCommand = new RelayCommand<ReceiptControl>(p => true, p => SelectReceipt(p));
+            CancelCommand = new RelayCommand<MainWindow>(p => true, p => Cancel(p));
+        }
+        public void Init(MainWindow main)
+        {
+            this.mainWindow = main;
+            SetItemSource();
+            currentPage = 1;
+            DataTable dt = StockReceiptDAL.Instance.GetAll();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ReceiptControl control = new ReceiptControl();
+                control.txbId.Text = AddPrefix("PN", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
+                //control.txbImporter.Text = EmployeeDAL.Instance.GetNameByIdAccount(dt.Rows[i].ItemArray[1].ToString());
+                //Chua lam current account nen tam de id nha
+                control.txbImporter.Text = dt.Rows[i].ItemArray[1].ToString();
+                control.txbDateReceipt.Text = DateTime.Parse(dt.Rows[i].ItemArray[2].ToString()).ToString("dd/MM/yyyy");
+                control.txbMoneyToPay.Text = dt.Rows[i].ItemArray[3].ToString();
+                control.txbSupplier.Text = SupplierDAL.Instance.GetNameById(dt.Rows[i].ItemArray[4].ToString());
+                listReceiptControl.Add(control);
+                listReceiptToView.Add(control);
+            }
+            if(listReceiptToView.Count > 0)
+            {
+                SelectReceipt(listReceiptToView[0]);
+            }
+            LoadReceiptToView(main);
+        }
+
+        public void Cancel(MainWindow main)
+        {
+            main.cboSupplier.SelectedIndex = -1;
+            main.dpkStartDate.Text = null;
+            main.dpkEndDate.Text = null;
+        }
+        public void SelectReceipt(ReceiptControl control)
+        {
+            mainWindow.stkReceiptDetail.Children.Clear();
+            DataTable dt = StockReceiptInfoDAL.Instance.GetByIdReceipt(ConvertToID(control.txbId.Text));
+            long Total = 0;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ReceiptDetailControl receiptDetailControl = new ReceiptDetailControl();
+                Goods temp = GoodsDAL.Instance.GetById(dt.Rows[i].ItemArray[1].ToString());
+                receiptDetailControl.txbId.Text = AddPrefix("SP", temp.IdGoods);
+                receiptDetailControl.txbName.Text = temp.Name;
+                receiptDetailControl.txbImportPrice.Text = temp.ImportPrice.ToString();
+                receiptDetailControl.txbQuantity.Text = dt.Rows[i].ItemArray[2].ToString();
+                receiptDetailControl.txbTotalPrice.Text = (temp.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString())).ToString();
+                mainWindow.stkReceiptDetail.Children.Add(receiptDetailControl);
+                Total += temp.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString());
+            }
+            mainWindow.txbIdReceipt.Text = control.txbId.Text;
+            mainWindow.txbDateReceipt.Text = control.txbDateReceipt.Text;
+            mainWindow.txbImporter.Text = control.txbImporter.Text;
+            mainWindow.txbSupplier.Text = control.txbSupplier.Text;
+            mainWindow.txbMoneyToPay.Text = control.txbMoneyToPay.Text;
+            mainWindow.txbDiscount.Text = (((Total - long.Parse(control.txbMoneyToPay.Text)) * 100) / Total).ToString() + "%";
+        }
+        public void LoadReceiptToView(MainWindow main)
+        {
+            main.stkReceipt.Children.Clear();
+
+            int start = 0;
+            int end = 0;
+            LoadInfoOfPage(ref start, ref end);
+            for (int i = start; i < end; i++)
+            {
+                main.stkReceipt.Children.Add(listReceiptToView[i]);
+            }
+        }
+
+        public void GoToPreviousPage(MainWindow main)
+        {
+            currentPage--;
+            LoadReceiptToView(main);
+        }
+        public void GoToNextPage(MainWindow main)
+        {
+            currentPage++;
+            LoadReceiptToView(main);
+        }
+        public void ApproveRequest(MainWindow main)
+        {
+            //Gan lai list ban dau
+            listReceiptToView.Clear();
+            for (int i = 0; i < listReceiptControl.Count; i++)
+            {
+                listReceiptToView.Add(listReceiptControl[i]);
+            }
+
+            if (!string.IsNullOrEmpty(main.cboSupplier.Text) && main.cboSupplier.SelectedIndex != 0)
+            {
+                listReceiptToView = listReceiptToView.FindAll(x => x.txbSupplier.Text == main.cboSupplier.Text);
+                currentPage = 1;
+            }
+            bool cs = main.dpkStartDate.SelectedDate != null; // kiem tra ngay bat dau co null hay khong
+            bool ce = main.dpkEndDate.SelectedDate != null; //kiem tra ngay ket thuc co null hay khong
+            if (cs && ce)
+            {
+                DateTime startDate = DateTime.Parse(main.dpkStartDate.Text);
+                DateTime endDate = DateTime.Parse(main.dpkEndDate.Text);
+                listReceiptToView = listReceiptToView.FindAll(x => DateTime.Parse(x.txbDateReceipt.Text) >= startDate && DateTime.Parse(x.txbDateReceipt.Text) <= endDate);
+            }
+            else if ((cs && !ce) || (!cs && ce))
+            {
+                MessageBox.Show("Để trống cả hai hoặc nhập đầy đủ khoảng thời gian");
+                return;
+            }
+            LoadReceiptToView(main);
+        }
+        public void LoadInfoOfPage(ref int start, ref int end)
+        {
+            mainWindow.btnPrePageReceipt.IsEnabled = (currentPage == 1 ? false : true);
+            mainWindow.btnNextPageReceipt.IsEnabled = (currentPage > ((listReceiptToView.Count) / 11) ? false : true);
+            start = (currentPage - 1) * 10;
+            end = start + 10;
+            if (currentPage - 1 == listReceiptToView.Count / 10)
+            {
+                end = listReceiptToView.Count;
+            }
+            mainWindow.txtNumOfReceipt.Text = String.Format("{0} trong {1} mặt hàng", end - start, listReceiptToView.Count);
+        }
+        public void ExportExcel(MainWindow main) // cần custom lại
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Excel Workbook|*.xlsx"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                using (XLWorkbook workbook = new XLWorkbook())
+                {
+                    DataTable dt = StockReceiptDAL.Instance.GetAll();
+                    dt.Columns.Remove("imageFile");
+                    workbook.Worksheets.Add(dt, "Goods");
+                    workbook.SaveAs(saveFileDialog.FileName);
+                }
+                MessageBox.Show("Xuất dữ liệu thành công!!!", "Thông báo");
+            }
+
         }
         public void OpenImportGoodsWindow(MainWindow main)
         {
+            SelectedSupplier = null;
             ImportGoodsWindow newWindow = new ImportGoodsWindow();
             TotalPrice = 0;
             MoneyToPay = 0;
             main.Hide();
             int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
-            if(idStockReceiptMax == -1)
+            if (idStockReceiptMax == -1)
             {
                 MessageBox.Show("Lỗi hệ thống!");
                 return;
-            }    
-            newWindow.txbIdReceipt.Text = AddPrefix("PH", idStockReceiptMax + 1);
+            }
+            newWindow.txbIdReceipt.Text = AddPrefix("PN", idStockReceiptMax + 1);
             newWindow.txbDate.Text = DateTime.Today.ToString("dd/MM/yyyy");
             newWindow.stkImportGoods.Children.Clear();
             this.wdImportGoods = newWindow;
-            SetItemSource();
             newWindow.ShowDialog();
-            newWindow.cboSupplier.SelectedIndex = -1;
+            SelectedSupplier = null;
             main.Show();
         }
+
         void LostFocusSearchBar(ImportGoodsWindow wdImportGoods)
         {
             if (!wdImportGoods.grdSearchResult.IsMouseOver)
@@ -139,7 +306,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 StockReceiptInfoControl infoReceiptControl = new StockReceiptInfoControl();
                 infoReceiptControl.txbNumericalOder.Text = (i + 1).ToString();
                 infoReceiptControl.txbName.Text = importControl.txbName.Text;
-                infoReceiptControl.txbGoodsType.Text = importControl.txbGoodsType.Text;
+                infoReceiptControl.txbUnit.Text = importControl.txbUnit.Text;
                 infoReceiptControl.txbQuantity.Text = importControl.nsQuantity.Value.ToString();
                 infoReceiptControl.txbImportPrice.Text = importControl.txbImportPrice.Text;
                 infoReceiptControl.txbTotalPrice.Text = importControl.txbTotalPrice.Text;
@@ -162,6 +329,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void PayBill(ImportGoodsWindow wdImportGoods)
         {
             bool k;
+            if(wdImportGoods.stkImportGoods.Children.Count == 0)
+            {
+                MessageBox.Show("Hiện tại chưa có sản phẩm nào được nhập!");
+                return;
+            }
             if (string.IsNullOrEmpty(wdImportGoods.cboSupplier.Text))
             {
                 MessageBox.Show("Vui lòng chọn nhà cung cấp!");
@@ -181,7 +353,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     int.Parse(control.nsQuantity.Value.ToString()));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
                 int quantity = GoodsDAL.Instance.GetQuantityById(ConvertToID(control.txbId.Text));
-                if(quantity !=-1)
+                if (quantity != -1)
                 {
                     k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), quantity + info.Quantity);
                 }
@@ -193,6 +365,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     PrintReceipt(wdImportGoods);
                 }
+
+                //Add vao danh sach phieu nhap
+                ReceiptControl receiptControl = new ReceiptControl();
+                receiptControl.txbId.Text = wdImportGoods.txbIdReceipt.Text;
+                receiptControl.txbDateReceipt.Text = wdImportGoods.txbDate.Text;
+                //receiptControl.txbImporter.Text = cureent account
+                receiptControl.txbSupplier.Text = SelectedSupplier.Name;
+                receiptControl.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
+                this.listReceiptToView.Add(receiptControl);
+                this.listReceiptControl.Add(receiptControl);
+                this.currentPage = 1;
+                LoadReceiptToView(mainWindow);
+
                 wdImportGoods.Close();
             }
             else
@@ -249,7 +434,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (wdImportGoods.cboSelectFast.SelectedIndex == -1)
                 return;
             DataTable dt = GoodsDAL.Instance.GetByidGoodsType(selectedGoodsType.IdGoodsType);
-            bool isExist;   
+            bool isExist;
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 isExist = false;
@@ -297,8 +482,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 type.Unit = dataGoodsType.Rows[i].ItemArray[3].ToString();
                 itemSourceGoodsType.Add(type);
             }
-            //Set item source supplier
+            //Set item source supplier // item source filter
             itemSourceSupplier.Clear();
+            itemSourceFilter.Clear();
+            Supplier temp = new Supplier();
+            temp.Name = "Tất cả";
+            itemSourceFilter.Add(temp);
             DataTable dataSupllier = SupplierDAL.Instance.GetAll();
             for (int i = 0; i < dataSupllier.Rows.Count; i++)
             {
@@ -306,6 +495,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     dataSupllier.Rows[i].ItemArray[1].ToString(), dataSupllier.Rows[i].ItemArray[2].ToString(),
                     dataSupllier.Rows[i].ItemArray[3].ToString());
                 itemSourceSupplier.Add(supplier);
+                itemSourceFilter.Add(supplier);
             }
         }
         void Search(ImportGoodsWindow wdImportGoods)

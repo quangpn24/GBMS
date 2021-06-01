@@ -189,7 +189,7 @@
             Grid.Row="2">
             <Grid 
                 VerticalAlignment="Top" 
-                Height="25"
+                Height="30"
                 Margin="30,0" 
                 Background="{DynamicResource Primary}">
                 <Grid.ColumnDefinitions>
@@ -203,67 +203,27 @@
                 <TextBlock 
                     Text="STT"
                     HorizontalAlignment="Center" 
-                    Margin="0" 
-                    TextWrapping="Wrap" 
-                    VerticalAlignment="Center" 
-                    FontWeight="SemiBold" 
-                    Foreground="{DynamicResource White}" 
-                    TextAlignment="Center"
-                    FontSize="13"/>
+                    Style="{StaticResource TextHeader}" VerticalAlignment="Center"/>
                 <TextBlock 
                     Grid.Column="1"
                     Text="Tên hàng hóa"
-                    HorizontalAlignment="Left" 
-                    Margin="10,0,0,0" 
-                    TextWrapping="Wrap" 
-                    VerticalAlignment="Center" 
-                    FontWeight="SemiBold" 
-                    Foreground="{DynamicResource White}" 
-                    FontSize="13"/>
+                    Style="{StaticResource TextHeader}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center"/>
                 <TextBlock 
                     Grid.Column="2" 
-                    Text="Loại sản phẩm"
-                    HorizontalAlignment="Center" 
-                    Margin="0" 
-                    TextWrapping="Wrap" 
-                    VerticalAlignment="Center" 
-                    FontWeight="SemiBold" 
-                    Foreground="{DynamicResource White}" 
-                    TextAlignment="Center" 
-                    FontSize="13"/>
+                    Text="Đơn vị"
+                    Style="{StaticResource TextHeader}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock 
                     Text="Giá nhập"
                     Grid.Column="3"
-                    HorizontalAlignment="Center" 
-                    Margin="0" 
-                    TextWrapping="Wrap" 
-                    VerticalAlignment="Center" 
-                    FontWeight="SemiBold" 
-                    Foreground="{DynamicResource White}" 
-                    TextAlignment="Center" 
-                    FontSize="13"/>
+                    Style="{StaticResource TextHeader}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock 
                     Grid.Column="4" 
                     Text="Số lượng"
-                    HorizontalAlignment="Center" 
-                    Margin="0" 
-                    TextWrapping="Wrap" 
-                    VerticalAlignment="Center" 
-                    FontWeight="SemiBold" 
-                    Foreground="{DynamicResource White}" 
-                    TextAlignment="Center"
-                    FontSize="13"/>
+                    Style="{StaticResource TextHeader}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock 
                     Text="Thành tiền"
                     Grid.Column="5"
-                    HorizontalAlignment="Center" 
-                    Margin="0" 
-                    TextWrapping="Wrap" 
-                    VerticalAlignment="Center" 
-                    FontWeight="SemiBold" 
-                    Foreground="{DynamicResource White}" 
-                    TextAlignment="Center"
-                    FontSize="13"/>
+                    Style="{StaticResource TextHeader}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
             <StackPanel 
                 Margin="30,26,30,3"
@@ -286,7 +246,7 @@
                     Text="Tổng giá trị" 
                     FontWeight="SemiBold"
                     Margin="0" 
-                    Foreground="{DynamicResource Gray2}"
+                    Foreground="{DynamicResource Gray1}"
                     FontSize="16" 
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"/>

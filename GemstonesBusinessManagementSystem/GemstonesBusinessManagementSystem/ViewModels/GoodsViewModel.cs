@@ -125,7 +125,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void Sort(MainWindow main)
         {
             List<GoodsControl> listTemp;
-            switch (main.cboSort.SelectedIndex)
+            switch (main.cboSortGoods.SelectedIndex)
             {
                 case 0:
                     listTemp = listSearch.OrderBy(x => x.txbName.Text).ToList();
@@ -155,7 +155,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void SearchGoods(MainWindow main)
         {
             main.cboFilterType.SelectedIndex = 0;
-            main.cboSort.SelectedIndex = -1;
+            main.cboSortGoods.SelectedIndex = -1;
             this.currentPage = 1;
             listGoodsControl.Clear();
             listSearch.Clear();
@@ -232,9 +232,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             GoodsTypeWindow newWindow = new GoodsTypeWindow();
             newWindow.ShowDialog();
             SetItemSourceGoodsType(main);
-            int indexSort = main.cboSort.SelectedIndex;
+            int indexSort = main.cboSortGoods.SelectedIndex;
             SearchGoods(main);
-            main.cboSort.SelectedIndex = indexSort;
+            main.cboSortGoods.SelectedIndex = indexSort;
         }
         void OpenEditGoodsWindow(GoodsControl control)
         {
@@ -381,11 +381,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
 
-            int indexSort = mainWindow.cboSort.SelectedIndex;
+            int indexSort = mainWindow.cboSortGoods.SelectedIndex;
             int indexFilter = mainWindow.cboFilterType.SelectedIndex;
 
             SearchGoods(mainWindow);
-            mainWindow.cboSort.SelectedIndex = indexSort;
+            mainWindow.cboSortGoods.SelectedIndex = indexSort;
             mainWindow.cboFilterType.SelectedIndex = indexFilter;
             addGoodsWd.Close();
         }

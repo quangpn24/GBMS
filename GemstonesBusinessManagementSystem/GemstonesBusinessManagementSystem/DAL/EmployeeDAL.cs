@@ -265,5 +265,26 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+
+        public string GetNameByIdAccount(string idAccount)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "select name from Employee where idAccount = " + idAccount;
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return reader.GetString(0);
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }

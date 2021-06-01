@@ -136,7 +136,6 @@
     <Compile Include="Converter.cs" />
     <Compile Include="DAL\Connection.cs" />
     <Compile Include="DAL\BillDAL.cs" />
-    <Compile Include="DAL\StockReceiptDAL.cs" />
     <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="DAL\EmployeePositionDAL.cs" />
     <Compile Include="DAL\GoodsDAL.cs" />
@@ -151,6 +150,12 @@
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Resources\Template\StockReceiptTemplate.xaml.cs">
       <DependentUpon>StockReceiptTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\ReceiptControl.xaml.cs">
+      <DependentUpon>ReceiptControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\ReceiptDetailControl.xaml.cs">
+      <DependentUpon>ReceiptDetailControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\GoodsControl.xaml.cs">
       <DependentUpon>GoodsControl.xaml</DependentUpon>
@@ -169,6 +174,9 @@
     </Compile>
     <Compile Include="Resources\UserControls\StockReceiptInfoControl.xaml.cs">
       <DependentUpon>StockReceiptInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\SupplierControl.xaml.cs">
+      <DependentUpon>SupplierControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GoodsTypeViewModel.cs" />
@@ -202,12 +210,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\StockViewModel.cs"/>
+    <Compile Include="ViewModels\StockViewModel.cs" />
+    <Compile Include="ViewModels\SupplierViewModel.cs" />
     <Compile Include="Views\AddEmployeeWindow.xaml.cs">
       <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddGoodsWindow.xaml.cs">
       <DependentUpon>AddGoodsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddSupplierWindow.xaml.cs">
+      <DependentUpon>AddSupplierWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GoodsTypeWindow.xaml.cs">
       <DependentUpon>GoodsTypeWindow.xaml</DependentUpon>
@@ -242,7 +254,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Template\StockReceiptTemplate.xaml">
-     <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\ScrollbarStyles.xaml">
@@ -254,6 +266,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\UserControls\DashboardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\ReceiptControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\ReceiptDetailControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -286,10 +306,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\StockReceiptInfoControl.xaml">
-    <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\StockControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\SupplierControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -304,6 +328,10 @@
     <Page Include="Views\AddGoodsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddSupplierWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GoodsTypeWindow.xaml">
       <SubType>Designer</SubType>

@@ -8,4 +8,5 @@
     <viewmodels:HomeViewModel x:Key="HomeVM"/>
     <viewmodels:ServiceViewModel x:Key="ServiceVM" />
     <viewmodels:StockViewModel x:Key="StockVM" />
+    <viewmodels:SupplierViewModel x:Key="SupplierVM" />
 </ResourceDictionary>

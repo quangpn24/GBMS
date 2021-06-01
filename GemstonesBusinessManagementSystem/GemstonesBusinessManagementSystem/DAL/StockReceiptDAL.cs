@@ -48,7 +48,69 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
         }
 
+        public int NumOfReceiptsBySupplier(string idSupplier)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "select count(*) from StockReceipt where idSupplier = " + idSupplier;
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return int.Parse(reader.GetString(0));
+            }
+            catch
+            {
+                return -1;
+            }
+            finally
+            {
+                CloseConnection();
+            }
 
+        }
+        public long SumMoneyBySupplier(string idSupplier)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "select sum(total) from StockReceipt where idSupplier = " + idSupplier;
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return int.Parse(reader.GetString(0));
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public DataTable GetAll()
+        {
+            try
+            {
+                OpenConnection();
+                string query = "Select * from StockReceipt";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                return dt;
+            }
+            catch
+            {
+                return new DataTable();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
         public int GetMaxId()
         {
             try
@@ -93,12 +155,12 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 if (month == "1")
                 {
-                     queryStr = String.Format("select idGoods, sum(quantity) " +
-                         "from stockreceipt join stockreceiptinfo " +
-                         "on stockreceipt.idStockReceipt = stockreceiptinfo.idStockReceipt " +
-                         "where year(dateTimeStockReceipt) < {0} " +
-                         "and idGoods in (select idGoods from goods) " +
-                         "group by idGoods", year);
+                    queryStr = String.Format("select idGoods, sum(quantity) " +
+                        "from stockreceipt join stockreceiptinfo " +
+                        "on stockreceipt.idStockReceipt = stockreceiptinfo.idStockReceipt " +
+                        "where year(dateTimeStockReceipt) < {0} " +
+                        "and idGoods in (select idGoods from goods) " +
+                        "group by idGoods", year);
                 }
                 MySqlCommand cmd = new MySqlCommand(queryStr, conn);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
