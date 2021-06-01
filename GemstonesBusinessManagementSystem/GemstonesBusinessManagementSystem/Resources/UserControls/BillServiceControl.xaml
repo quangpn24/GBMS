@@ -19,6 +19,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid 
+        x:Name="grdMain"
         Grid.Row="1"
         Height="50"
         VerticalAlignment="Top"

@@ -19,6 +19,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     {
         private MainWindow main;
         private BillServiceControl checkedItem;
+        int count = 0;
         public ICommand LoadBillServicesCommand { get; set; }
         public ICommand PickBillServiceCommand { get; set; }
         public ICommand ConfirmDeliveriedCommand { get; set; }
@@ -70,7 +71,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             BillService billService = BillServiceDAL.Instance.GetBillService(ConvertToIDString(billServiceControl.txbId.Text));
             Customer customer = CustomerDAL.Instance.FindById(billService.IdCustomer.ToString());
             List<BillServiceInfo> billServiceInfos = BillServiceInfoDAL.Instance.GetBillServiceInfos(billService.IdBillService.ToString());
-            if (checkedItem != null)
+            if (checkedItem != null) // Đưa lại màu xám
             {
                 checkedItem.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
                 checkedItem.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
@@ -86,6 +87,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
 
             }
+            //Chuyển sang màu đang được chọn
             billServiceControl.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             billServiceControl.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             billServiceControl.txbTotal.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
@@ -95,6 +97,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             }
             checkedItem = billServiceControl;
+            //Hiển thị thông tin
             main.txbIdBillServiceBS.Text = billServiceControl.txbId.Text;
             main.txbCreateDateBS.Text = billService.CreatedDate.ToShortDateString();
             main.txbNameCustomerBS.Text = customer.CustomerName;
@@ -103,7 +106,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             main.txbTotalPaidBS.Text = billService.TotalPaidMoney.ToString();
             main.txbRestBS.Text = (billService.Total - billService.TotalPaidMoney).ToString();
             main.stkBillServiceInfo.Children.Clear();
-            for (int i = 0; i < billServiceInfos.Count; i++)
+            for (int i = 0; i < billServiceInfos.Count; i++)   //Hiển thị list BillServiceInfo
             {
                 Service service = ServiceDAL.Instance.FindById(billServiceInfos[i].IdService.ToString());
                 BillServiceTemplateControl billServiceTemplateControl = new BillServiceTemplateControl();
@@ -117,10 +120,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceTemplateControl.txbTotal.Text = (float.Parse(billServiceTemplateControl.txbCalculateMoney.Text) * billServiceInfos[i].Quantity).ToString();
                 billServiceTemplateControl.txbRest.Text = (float.Parse(billServiceTemplateControl.txbTotal.Text) - billServiceInfos[i].PaidMoney).ToString();
                 billServiceTemplateControl.txbDeliveryDate.Text = billServiceInfos[i].DeliveryDate.ToShortDateString();
-                if (billServiceInfos[i].Status == 1)
+                if (billServiceInfos[i].Status == 1)  // Đã giao thì bỏ button swap và chuyển màu sang success
                 {
+                    if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
+                        billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
                     billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
                     billServiceTemplateControl.txbStatus.Text = "Đã giao";
+                    billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
                     billServiceTemplateControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
                 }
                 else
@@ -139,14 +145,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //billServiceInfo.PaidMoney = (billServiceInfo.Price + billServiceInfo.Tips) * billServiceInfo.Quantity;
             if (BillServiceInfoDAL.Instance.Update(billServiceInfo))
             {
-                if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Visible)
-                    billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
+                if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
+                {
+                    billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
+                }
+                billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
                 billServiceTemplateControl.txbStatus.Text = "Đã giao";
                 billServiceTemplateControl.txbDeliveryDate.Text = DateTime.Now.ToShortDateString();
                 billServiceTemplateControl.btnSwapStatus.IsHitTestVisible = false;
                 billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
                 billServiceTemplateControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
-                if (BillServiceInfoDAL.Instance.IsFullDeliveried(checkedItem.txbId.Text))
+                if (BillServiceInfoDAL.Instance.IsFullDeliveried(ConvertToIDString(checkedItem.txbId.Text)))
                 {
                     BillService billService = BillServiceDAL.Instance.GetBillService(ConvertToIDString(checkedItem.txbId.Text));
                     billService.Status = 1;
