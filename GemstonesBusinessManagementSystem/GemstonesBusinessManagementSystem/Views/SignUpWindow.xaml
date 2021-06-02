@@ -74,11 +74,14 @@
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center" 
                     Padding="3,0,0,0"
-                    TabIndex="1" Foreground="{DynamicResource Gray1}">
+                    TabIndex="1"
+                    Foreground="{DynamicResource Gray1}">
 
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Width="220">
+                            <StackPanel 
+                                Orientation="Horizontal"
+                                Width="220">
                                 <TextBlock 
                                     Text="{Binding Name}"
                                     Width="170"

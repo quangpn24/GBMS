@@ -31,6 +31,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdService.Visibility = Visibility.Collapsed;
             window.grdCustomer.Visibility = Visibility.Collapsed;
             window.grdSupplier.Visibility = Visibility.Collapsed;
+            window.grdInvoice.Visibility = Visibility.Collapsed;
 
             string fore = "#666666";
             string back = "#FFFFFF";
@@ -136,6 +137,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //báo cáo phiếu
                 case 50:
+                    window.grdInvoice.Visibility = Visibility.Visible;
                     CloseExpander(window, 4);
                     window.btnNote.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnNote.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);

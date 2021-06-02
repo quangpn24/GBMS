@@ -189,7 +189,46 @@
                 Width="420" 
                 Height="40">
                 <Label 
-                    Content="Tổng tiền mua" 
+                    Content="Hạng thành viên" 
+                    HorizontalAlignment="Left"
+                    FontSize="18" 
+                    FontWeight="SemiBold"
+                    Foreground="{StaticResource Black2}" 
+                    Height="32" 
+                    VerticalAlignment="Center"/>
+                <Rectangle 
+                    HorizontalAlignment="Right" 
+                    Height="40" 
+                    Width="230" 
+                    RadiusY="6"
+                    RadiusX="6" 
+                    Stroke="{StaticResource Gray2}" />
+                <ComboBox
+                    x:Name="cbMembership"
+                    ItemsSource="{Binding ItsAddCustomerMembership}"
+                    SelectedItem="{Binding Path=SelectedMembership,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                    materialDesign:HintAssist.Hint="Hạng thành viên" 
+                    DisplayMemberPath="Membership"
+                    HorizontalAlignment="Right" 
+                    Width="210"
+                    Height="40"
+                    FontSize="14" 
+                    TabIndex="6"
+                    Foreground="{StaticResource Gray1}"
+                    Padding="0"  
+                    Margin="0,0,10,0" 
+                    Cursor="IBeam"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Left" 
+                    VerticalContentAlignment="Center">
+                </ComboBox>
+            </Grid>
+            <Grid 
+                Margin="0,20,0,0"
+                VerticalAlignment="Top"  
+                Height="40">
+                <Label 
+                    Content="Địa chỉ" 
                     HorizontalAlignment="Left"
                     FontSize="18" 
                     FontWeight="SemiBold"
@@ -204,8 +243,8 @@
                     RadiusX="6" 
                     Stroke="{StaticResource Gray2}" />
                 <TextBox
-                    x:Name="txbTotalPrice"
-                    materialDesign:HintAssist.Hint="Tổng tiền mua" 
+                    x:Name="txtAddress"
+                    materialDesign:HintAssist.Hint="Địa chỉ" 
                     HorizontalAlignment="Right" 
                     Width="210"
                     Height="40"
@@ -219,12 +258,7 @@
                     Cursor="IBeam"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Left" 
-                    VerticalContentAlignment="Center"/>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding }" MethodName="NumberValidationTextBox" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                    VerticalContentAlignment="Center" />
             </Grid>
             <StackPanel 
                 Margin="0,30,0,0" 

@@ -75,13 +75,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void SetItemSourcEmployee()
         {
             itemSourceEmployee.Clear();     
-            List<Employee> employees = EmployeeDAL.Instance.GetList();
+            List<Employee> employees = EmployeeDAL.Instance.GetEmployeeNonAccount();
             foreach(var employee in employees)
             {
-                if(employee.IdPosition.ToString() == "1" || employee.IdPosition.ToString() == "2" )
-                {
-                    itemSourceEmployee.Add(employee);
-                }
+                itemSourceEmployee.Add(employee);
             }
         }
 
@@ -157,7 +154,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             //check username
-            if (string.IsNullOrEmpty(parameter.txtUsername.Text))
+            if (string.IsNullOrEmpty(parameter.txtUsername.Text) || AccountDAL.Instance.IsExistUsername(parameter.txtUsername.Text))
             {
                 parameter.pwbKey.Focus();
                 parameter.txtUsername.Text = "";
@@ -196,13 +193,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 Account newAccount = new Account(idAccount, parameter.txtUsername.Text.ToString(), password,type);
                 isSignUp = AccountDAL.Instance.AddintoDB(newAccount);
-                if (isSignUp)
+                if (isSignUp && EmployeeDAL.Instance.UpdateIdAccount(idAccount, selectedEmployee.IdEmployee))
                 {
-                    MessageBox.Show("Đăng ký thành công");
+                    MessageBox.Show("Đăng ký thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    isSignUp = true;
                 }
                 else
                 {
-                    MessageBox.Show("Đăng ký không thành công");
+                    MessageBox.Show("Đăng ký không thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
 

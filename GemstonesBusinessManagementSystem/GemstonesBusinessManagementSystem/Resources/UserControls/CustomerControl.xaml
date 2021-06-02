@@ -24,8 +24,8 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="2.5*"/>
                 <ColumnDefinition Width="1.5*"/>
-                <ColumnDefinition Width="1.5*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <TextBlock 
@@ -51,7 +51,7 @@
             <TextBlock
                 x:Name="txbPhone"
                 Grid.Column="2"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Center"
                 Margin="0"
                 Text="SĐT"
                 TextWrapping="Wrap"
@@ -60,20 +60,20 @@
                 Padding="0"
                 FontWeight="Medium" />
             <TextBlock 
-                x:Name="txbCMND"
+                x:Name="txbAddress"
                 Grid.Column="3"
-                Text="CMND"
-                HorizontalAlignment="Left"
+                Text="Địa chỉ"
+                HorizontalAlignment="Center"
                 Margin="0"
                 TextWrapping="Wrap"
                 VerticalAlignment="Center"
                 FontSize="18"
                 Padding="0"
-                FontWeight="Medium" Grid.ColumnSpan="2" />
+                FontWeight="Medium" />
             <TextBlock 
                 x:Name="txbAllPrice"
                 Grid.Column="4"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Center"
                 Margin="0"
                 Text="Tổng tiền mua"
                 TextWrapping="Wrap"
@@ -84,7 +84,7 @@
             <TextBlock 
                 x:Name="txbLevelCus"
                 Grid.Column="5"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Center"
                 Margin="0"
                 Text="Hạng KH"
                 TextWrapping="Wrap"

@@ -44,12 +44,13 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
 
         }
-        public bool LoginAdmin(string idAccount, string userName, string passWord, int type)
+        public bool LoginAdmin()
         {
             //passWord = Encryptor.Instance.Encrypt(passWord);
-
-            string query = "SELECT * FROM Account WHERE idAccount = '" + idAccount + "' AND username = '" + userName + "' AND password = '" + passWord + "' and type " + type ;
-
+            Account account = new Account();          
+            string query = string.Format("select * from Account where idAccount = '{0}', username = '{1}', password = '{2}', type = '{3}'",
+                account.IdAccount, account.Username, account.Password, account.Type);
+            
             DataTable result = new DataTable();
             
             return result.Rows.Count > 0;
@@ -89,8 +90,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 cmd.Parameters.AddWithValue("@username", account.Username);
                 cmd.Parameters.AddWithValue("@password", account.Password);
                 cmd.Parameters.AddWithValue("@type", account.Type.ToString());
-                cmd.ExecuteNonQuery();
-                return true;
+                int rs = cmd.ExecuteNonQuery();
+                return rs == 1;
             }
             catch
             {

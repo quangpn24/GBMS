@@ -75,39 +75,43 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
-                    long.Parse(dt.Rows[i].ItemArray[4].ToString()));
+                    long.Parse(dt.Rows[i].ItemArray[4].ToString()), int.Parse(dt.Rows[i].ItemArray[5].ToString()), dt.Rows[i].ItemArray[6].ToString());
                 customers.Add(customer);
             }
             return customers;
-        }
+        }   
 
-        public Customer GetList(string idCustomers)   // lấy thông tin khách hàng khi biết id
+        public List<Customer>GetListByIdMembership(int id)
         {
+            DataTable dt = new DataTable();
+            List<Customer> customers = new List<Customer>();
             try
             {
-            OpenConnection();
+                OpenConnection();
+                string queryString = "select * from customer where idMembership = " + id;
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
-                string queryStr = "select * from Customer where idCustomer " + idCustomers ;
-            MySqlCommand cmd = new MySqlCommand(queryStr, conn);
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dt);
 
-            DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
-
-            Customer res = new Customer(int.Parse(idCustomers), dataTable.Rows[0].ItemArray[1].ToString(),
-                (dataTable.Rows[0].ItemArray[2].ToString()),int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
-                long.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
-            return res;
             }
             catch
             {
-                return new Customer();
+
             }
             finally
             {
                 CloseConnection();
             }
-            
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
+                    long.Parse(dt.Rows[i].ItemArray[4].ToString()), int.Parse(dt.Rows[i].ItemArray[5].ToString()), dt.Rows[i].ItemArray[6].ToString());
+                customers.Add(customer);
+            }
+            return customers;
         }
 
         public List<Customer> FindByName(string name)
@@ -137,7 +141,9 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
-                    long.Parse(dt.Rows[i].ItemArray[4].ToString()));
+                    long.Parse(dt.Rows[i].ItemArray[4].ToString()), 0, dt.Rows[i].ItemArray[6].ToString());
+                if (dt.Rows[i].ItemArray[5].ToString() == "True")
+                    customer.IdMembership = 1;
                 customers.Add(customer);
             }
             return customers;
@@ -150,22 +156,14 @@ namespace GemstonesBusinessManagementSystem.DAL
                 OpenConnection();
                 string queryString = "select max(idCustomer) from Customer";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
-                command.ExecuteNonQuery();
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                if (dataTable.Rows.Count == 1)
-                {
-                    return int.Parse(dataTable.Rows[0].ItemArray[0].ToString());
-                }
-                else
-                {
-                    return 0;
-                }
+                MySqlDataReader rd = command.ExecuteReader();
+                rd.Read();
+                int maxId = int.Parse(rd.GetString(0));
+                return maxId;
             }
             catch
             {
-                return -1;
+                return 0;
             }
             finally
             {
@@ -199,21 +197,30 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
 }
-        public bool Add(Customer customer)
+        public bool Add(Customer customer, bool isUpdating = false)
         {
             try
             {
                 OpenConnection();
-                string queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber, totalPrice)" +
-                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber, @totalPrice);";
+                string queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber,totalPrice, idMembership, address)" +
+                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalPrice, @idMembership, @address);";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer.ToString());
                 command.Parameters.AddWithValue("@customerName", customer.CustomerName.ToString());
                 command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber.ToString());
                 command.Parameters.AddWithValue("@idNumber", customer.IdCustomer.ToString());
                 command.Parameters.AddWithValue("@totalPrice", customer.TotalPrice.ToString());
-                command.ExecuteNonQuery();
-                return true;
+                command.Parameters.AddWithValue("@idMembership", customer.IdMembership.ToString());
+                command.Parameters.AddWithValue("@address", customer.Address.ToString());
+                int rs = command.ExecuteNonQuery();
+                if(rs == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch
             {
@@ -272,5 +279,34 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public int CountPrice()  // tinh tong doanh thu cua tat ca khach hang
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "select SUM(totalPrice) from gemstonesbusinessmanagementsystem.customer";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                if (dataTable.Rows.Count == 1)
+                {
+                    return int.Parse(dataTable.Rows[0].ItemArray[0].ToString());
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch
+            {
+                return -1;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        } 
     }
 }
