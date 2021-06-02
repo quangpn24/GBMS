@@ -226,5 +226,35 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public string CalculateRestMoney(string idBillService)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "SELECT sum((price+tips)*quantity-paidmoney) FROM BillServiceInfo WHERE idBillService=@idBillService AND status=0 ;";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@idBillService", idBillService);
+                int rs = command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                if (dataTable.Rows[0].ItemArray[0].ToString() != "")
+                {
+                    return dataTable.Rows[0].ItemArray[0].ToString();
+                }
+                else
+                {
+                    return "0";
+                }
+            }
+            catch
+            {
+                return "0";
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }

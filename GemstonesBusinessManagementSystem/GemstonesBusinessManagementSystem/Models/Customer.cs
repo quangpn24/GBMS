@@ -11,15 +11,17 @@ namespace GemstonesBusinessManagementSystem.Models
         private int idCustomer;
         private string customerName;
         private string phoneNumber;
-        private int idNumber;
-        //private long totalPrice;
+        private string idNumber;
+        private double totalPrice;
         private string address;
+        private int idMembership;
         public int IdCustomer { get => idCustomer; set => idCustomer = value; }
         public string CustomerName { get => customerName; set => customerName = value; }
         public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
-        public int IdNumber { get => idNumber; set => idNumber = value; }
-        //public long TotalPrice { get => totalPrice; set => totalPrice = value; }
+        public string IdNumber { get => idNumber; set => idNumber = value; }
+        public double TotalPrice { get => totalPrice; set => totalPrice = value; }
         public string Address { get => address; set => address = value; }
+        public int IdMembership { get => idMembership; set => idMembership = value; }
 
         public Customer()
         {
@@ -27,14 +29,15 @@ namespace GemstonesBusinessManagementSystem.Models
         }
 
         public Customer(int idCustomer, string customerName,
-            string phoneNumber, int idNumber, string address)
+            string phoneNumber, string address, string idNumber, double totalPrice, int idMembership)
         {
             this.idCustomer = idCustomer;
             this.customerName = customerName;
             this.phoneNumber = phoneNumber;
             this.idNumber = idNumber;
-            //this.totalPrice = totalPrice;
+            this.totalPrice = totalPrice;
             this.address = address;
+            this.idMembership = idMembership;
         }
     }
 }

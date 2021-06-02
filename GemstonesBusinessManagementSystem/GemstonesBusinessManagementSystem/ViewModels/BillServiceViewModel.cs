@@ -19,7 +19,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     {
         private MainWindow main;
         private BillServiceControl checkedItem;
-        int count = 0;
         public ICommand LoadBillServicesCommand { get; set; }
         public ICommand PickBillServiceCommand { get; set; }
         public ICommand ConfirmDeliveriedCommand { get; set; }
@@ -52,7 +51,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceControl.txbId.Text = AddPrefix("PD", billServices[i].IdBillService);
                 billServiceControl.txbNameCustomer.Text = customer.CustomerName;
                 billServiceControl.txbTotal.Text = billServices[i].Total.ToString();
-                billServiceControl.txbRest.Text = (billServices[i].Total - billServices[i].TotalPaidMoney).ToString();
+                billServiceControl.txbRest.Text = BillServiceInfoDAL.Instance.CalculateRestMoney(billServices[i].IdBillService.ToString());
                 if (billServices[i].Status == 1)
                 {
                     billServiceControl.txbStatus.Text = "Đã giao";
@@ -104,7 +103,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             main.txbPhoneCustomerBS.Text = customer.PhoneNumber;
             main.txbTotalBS.Text = billService.Total.ToString();
             main.txbTotalPaidBS.Text = billService.TotalPaidMoney.ToString();
-            main.txbRestBS.Text = (billService.Total - billService.TotalPaidMoney).ToString();
+            main.txbRestBS.Text = billServiceControl.txbRest.Text;
             main.stkBillServiceInfo.Children.Clear();
             for (int i = 0; i < billServiceInfos.Count; i++)   //Hiển thị list BillServiceInfo
             {
@@ -149,6 +148,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
                 }
+                checkedItem.txbRest.Text = main.txbRestBS.Text = (double.Parse(main.txbRestBS.Text) - double.Parse(billServiceTemplateControl.txbRest.Text)).ToString();
+                billServiceTemplateControl.txbRest.Text = "0";
                 billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
                 billServiceTemplateControl.txbStatus.Text = "Đã giao";
                 billServiceTemplateControl.txbDeliveryDate.Text = DateTime.Now.ToShortDateString();
@@ -161,6 +162,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     billService.Status = 1;
                     if (BillServiceDAL.Instance.Update(billService))
                     {
+
                         checkedItem.txbStatus.Text = "Đã giao";
                         checkedItem.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
                     }

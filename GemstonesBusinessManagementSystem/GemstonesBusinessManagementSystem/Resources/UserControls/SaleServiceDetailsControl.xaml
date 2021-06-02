@@ -18,7 +18,6 @@
         BorderThickness="1">
         <Grid 
             x:Name="grdMain"
-            Width="900"
             Margin="0"
             Background="White">
             <Grid.ColumnDefinitions>
@@ -158,10 +157,6 @@
                     </i:EventTrigger>
                     <i:EventTrigger EventName="TextChanged">
                         <i:InvokeCommandAction Command="{Binding PickServiceInfoChangedCommand}"
-                                               CommandParameter="{Binding ElementName=ucSaleServiceDetails}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="LostFocus">
-                        <i:InvokeCommandAction Command="{Binding CheckPaidMoneyCommand}"
                                                CommandParameter="{Binding ElementName=ucSaleServiceDetails}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>

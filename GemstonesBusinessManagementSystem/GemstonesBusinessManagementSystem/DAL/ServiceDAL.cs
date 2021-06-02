@@ -29,7 +29,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE isDeleted=0;";
+                string queryString = @"SELECT * FROM Service WHERE isDeleted=0;";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -53,7 +53,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE isActived=1 ;";
+                string queryString = @"SELECT * FROM Service WHERE isActived=1 ;";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
@@ -89,7 +89,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE isActived=1 and name LIKE  ""%" + name + "%\";";
+                string queryString = @"SELECT * FROM Service WHERE isActived=1 and name LIKE  ""%" + name + "%\";";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
@@ -125,7 +125,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE isDeleted=0 ;";
+                string queryString = @"SELECT * FROM Service WHERE isDeleted=0 ;";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
@@ -161,7 +161,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE name LIKE  ""%" + name + "%\" and isDeleted=0;";
+                string queryString = @"SELECT * FROM Service WHERE name LIKE  ""%" + name + "%\" and isDeleted=0;";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -195,7 +195,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT * FROM gemstonesbusinessmanagementsystem.service WHERE idService= " + idService;
+                string queryString = @"SELECT * FROM service WHERE idService= " + idService;
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -224,7 +224,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "insert into gemstonesbusinessmanagementsystem.service(idService, name, price,numberOfHired,isActived,isDeleted) values(@idService, @name, @price,@numberOfHired,@isActived,@isDeleted);";
+                string queryString = "insert into Service(idService, name, price,numberOfHired,isActived,isDeleted) values(@idService, @name, @price,@numberOfHired,@isActived,@isDeleted);";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idService", service.IdService.ToString());
                 command.Parameters.AddWithValue("@name", service.Name.ToString());
@@ -250,7 +250,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "SELECT MAX(idService) from gemstonesbusinessmanagementsystem.service ; ";
+                string queryString = "SELECT MAX(idService) from Service ; ";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
@@ -275,7 +275,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "UPDATE gemstonesbusinessmanagementsystem.service set isDeleted = 0; ";
+                string queryString = "UPDATE Service set isDeleted = 0; ";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
 
@@ -296,7 +296,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "UPDATE gemstonesbusinessmanagementsystem.service SET isDeleted = 1,isActived=0 WHERE idService = @idService; ";
+                string queryString = "UPDATE Service SET isDeleted = 1,isActived=0 WHERE idService = @idService; ";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idService", idService);
                 command.ExecuteNonQuery();
@@ -316,7 +316,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "UPDATE gemstonesbusinessmanagementsystem.service " +
+                string queryString = "UPDATE Service " +
                                         "SET name = @name, price=@price,numberOfHired=@numberOfHired,isDeleted=@isDeleted, isActived=@isActived  where idService = @idService; ";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
 
@@ -343,7 +343,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "SELECT * from gemstonesbusinessmanagementsystem.service WHERE name=@name; ";
+                string queryString = "SELECT * from Service WHERE name=@name; ";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@name", name);

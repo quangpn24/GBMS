@@ -421,7 +421,7 @@
                 Margin="0"
                 Grid.Row="1"
                 DataContext="{StaticResource BusinessServiceVM}"
-                Visibility="Collapsed">
+                Visibility="Visible">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}"
@@ -511,6 +511,7 @@
                                     <ColumnDefinition Width="1.5*" />
                                     <ColumnDefinition Width="1.5*" />
                                     <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="10" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     Grid.Column="0"
@@ -574,6 +575,7 @@
                             <ScrollViewer 
                                 VerticalScrollBarVisibility="Auto"
                                 HorizontalScrollBarVisibility="Disabled"
+                                Style="{StaticResource FavsScrollViewer}"
                                 Margin="0">
                                 <StackPanel 
                                     x:Name="stkPickedService"
@@ -625,6 +627,7 @@
                             Height="260">
                             <ScrollViewer 
                                 VerticalScrollBarVisibility="Auto"
+                                Style="{StaticResource FavsScrollViewer}"
                                 HorizontalScrollBarVisibility="Disabled"/>
                             <WrapPanel 
                                 Name="wrpSaleService"
@@ -2492,7 +2495,7 @@
                     Style="{StaticResource DropShadow}"
                     Margin="0,0,0,20">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="80" />
+                        <RowDefinition Height="60" />
                         <RowDefinition Height="50" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
@@ -2840,7 +2843,7 @@
                                 Margin="10,0,0,0"
                                 TextWrapping="Wrap"
                                 Foreground="{StaticResource Primary}"
-                                Text="Tổng tiền "
+                                Text="Tổng tiền:"
                                 VerticalAlignment="Center"
                                 FontSize="18"
                                 FontWeight="SemiBold" />
@@ -2933,19 +2936,21 @@
                                 FontWeight="SemiBold" />
                         </Grid>
                     </Grid>
-                    <Border CornerRadius="4,4,0,0"
-                            BorderThickness="1"
-                            Margin="10,0"
-                            Height="50"
+                    <Border 
+                        CornerRadius="4,4,0,0"
+                        BorderThickness="1"
+                        Margin="10,0"
+                        Height="50"
+                        VerticalAlignment="Top"
+                        BorderBrush="{StaticResource Primary}"
+                        Background="{StaticResource Primary}"
+                        Grid.Row="2">
+                        <Grid 
+                            Grid.Row="2"
                             VerticalAlignment="Top"
-                            BorderBrush="{StaticResource Primary}"
-                            Background="{StaticResource Primary}"
-                            Grid.Row="2">
-                        <Grid Grid.Row="2"
-                              VerticalAlignment="Top"
-                              Height="50"
-                              Margin="0"
-                              Background="{DynamicResource Primary}">
+                            Height="50"
+                            Margin="0"
+                            Background="{DynamicResource Primary}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.6*" />
                                 <ColumnDefinition Width="2*" />
@@ -2958,104 +2963,114 @@
                                 <ColumnDefinition Width="1.5*" />
                                 <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="STT"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
-                            <TextBlock Grid.Column="1"
-                                       Text="Loại dịch vụ"
-                                       HorizontalAlignment="Left"
-                                       Margin="10,0,0,0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       FontSize="13" />
-                            <TextBlock Grid.Column="2"
-                                       Text="Đơn giá dịch vụ"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
-                            <TextBlock Text="Đơn giá được tính"
-                                       Grid.Column="3"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
-                            <TextBlock Grid.Column="4"
-                                       Text="Số lượng"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
-                            <TextBlock Text="Thành tiền"
-                                       Grid.Column="5"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
-                            <TextBlock Text="Trả trước"
-                                       Grid.Column="6"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
-                            <TextBlock Text="Còn lại"
-                                       Grid.Column="7"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
-                            <TextBlock Text="Ngày giao"
-                                       Grid.Column="8"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
-                            <TextBlock Text="Tình trạng"
-                                       Grid.Column="9"
-                                       HorizontalAlignment="Center"
-                                       Margin="0"
-                                       TextWrapping="Wrap"
-                                       VerticalAlignment="Center"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource Secondary}"
-                                       TextAlignment="Center"
-                                       FontSize="13" />
+                            <TextBlock 
+                                Text="STT"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
+                            <TextBlock 
+                                Grid.Column="1"
+                                Text="Loại dịch vụ"
+                                HorizontalAlignment="Left"
+                                Margin="10,0,0,0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                FontSize="13" />
+                            <TextBlock 
+                                Grid.Column="2"
+                                Text="Đơn giá dịch vụ"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
+                            <TextBlock 
+                                Text="Đơn giá được tính"
+                                Grid.Column="3"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
+                            <TextBlock 
+                                Grid.Column="4"
+                                Text="Số lượng"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
+                            <TextBlock 
+                                Text="Thành tiền"
+                                Grid.Column="5"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
+                            <TextBlock 
+                                Text="Trả trước"
+                                Grid.Column="6"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
+                            <TextBlock
+                                Text="Còn lại"
+                                Grid.Column="7"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
+                            <TextBlock 
+                                Text="Ngày giao"
+                                Grid.Column="8"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
+                            <TextBlock
+                                Text="Tình trạng"
+                                Grid.Column="9"
+                                HorizontalAlignment="Center"
+                                Margin="0"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Foreground="{DynamicResource Secondary}"
+                                TextAlignment="Center"
+                                FontSize="13" />
                         </Grid>
                     </Border>
                     <Grid

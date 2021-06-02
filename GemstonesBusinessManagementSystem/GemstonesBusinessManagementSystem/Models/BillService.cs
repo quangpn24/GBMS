@@ -11,16 +11,16 @@ namespace GemstonesBusinessManagementSystem.Models
         private int idBillService;
         private int idAccount;
         private DateTime createdDate;
-        private float total;
-        private float totalPaidMoney;
+        private double total;
+        private double totalPaidMoney;
         private int idCustomer;
         private int status;
 
         public int IdBillService { get => idBillService; set => idBillService = value; }
         public int IdAccount { get => idAccount; set => idAccount = value; }
         public DateTime CreatedDate { get => createdDate; set => createdDate = value; }
-        public float Total { get => total; set => total = value; }
-        public float TotalPaidMoney { get => totalPaidMoney; set => totalPaidMoney = value; }
+        public double Total { get => total; set => total = value; }
+        public double TotalPaidMoney { get => totalPaidMoney; set => totalPaidMoney = value; }
         public int IdCustomer { get => idCustomer; set => idCustomer = value; }
         public int Status { get => status; set => status = value; }
         public BillService()
@@ -28,7 +28,7 @@ namespace GemstonesBusinessManagementSystem.Models
 
         }
 
-        public BillService(int idBillService, int idAccount, DateTime createdDate, float total, float totalPaidMoney, int idCustomer, int status)
+        public BillService(int idBillService, int idAccount, DateTime createdDate, double total, double totalPaidMoney, int idCustomer, int status)
         {
             this.idBillService = idBillService;
             this.idAccount = idAccount;

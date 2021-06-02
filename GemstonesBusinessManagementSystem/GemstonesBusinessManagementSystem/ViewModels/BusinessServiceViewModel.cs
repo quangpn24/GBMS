@@ -20,13 +20,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     {
         private MainWindow mainWindow;
         private int totalServices = 0;
-        private float totalMoney = 0;
-        private float totalPaidMoney = 0;
+        private double totalMoney = 0;
+        private double totalPaidMoney = 0;
         private bool isPaidMoney = false;
+        private bool isOver = false;
 
         public int TotalServices { get => totalServices; set { totalServices = value; OnPropertyChanged(); } }
-        public float TotalMoney { get => totalMoney; set { totalMoney = value; OnPropertyChanged(); } }
-        public float TotalPaidMoney { get => totalPaidMoney; set { totalPaidMoney = value; OnPropertyChanged(); } }
+        public double TotalMoney { get => totalMoney; set { totalMoney = value; OnPropertyChanged(); } }
+        public double TotalPaidMoney { get => totalPaidMoney; set { totalPaidMoney = value; OnPropertyChanged(); } }
 
         public ICommand LoadSaleServicesCommand { get; set; }
         public ICommand PickServiceCommand { get; set; }
@@ -34,7 +35,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand DeleteBillServiceInfoDetailsCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand PayBillServiceCommand { get; set; }
-        public ICommand CheckPaidMoneyCommand { get; set; }
+        //public ICommand CheckPaidMoneyCommand { get; set; }
         public ICommand PickCustomerCommand { get; set; }
         //billservicetemplate
         public ICommand PrintBillServiceCommand { get; set; }
@@ -48,7 +49,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SearchCommand = new RelayCommand<MainWindow>((p) => true, (p) => SearchService(p));
             PickCustomerCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenPickCustomerWd(p));
             PayBillServiceCommand = new RelayCommand<MainWindow>((p) => true, (p) => PayBillService(p));
-            CheckPaidMoneyCommand = new RelayCommand<SaleServiceDetailsControl>((p) => true, (p) => CheckPaidMoney(p));
+            //CheckPaidMoneyCommand = new RelayCommand<SaleServiceDetailsControl>((p) => true, (p) => CheckPaidMoney(p));
             PrintBillServiceCommand = new RelayCommand<BillServiceTemplate>((p) => true, (p) => PrintBillService(p));
         }
         public void PrintBillService(BillServiceTemplate billServiceTemplate)
@@ -120,31 +121,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SeparateThousands(saleServiceDetailsControl.txtTips);
             SeparateThousands(saleServiceDetailsControl.txtPaidMoney);
             int quantity = int.Parse(saleServiceDetailsControl.nmsQuantity.Text.ToString());
-            float price = float.Parse(saleServiceDetailsControl.txbPrice.Text);
-            float tips = 0;
+            double price = double.Parse(saleServiceDetailsControl.txbPrice.Text);
+            double tips = 0;
             if (!String.IsNullOrEmpty(saleServiceDetailsControl.txtTips.Text))
-                tips = float.Parse(saleServiceDetailsControl.txtTips.Text);
+                tips = double.Parse(saleServiceDetailsControl.txtTips.Text);
             saleServiceDetailsControl.txtTotal.Text = string.Format("{0:N0}", quantity * (price + tips));
             CalculateMoney();
 
 
-        }
-        public void CheckPaidMoney(SaleServiceDetailsControl saleServiceDetailsControl)
-        {
-            if (!String.IsNullOrEmpty(saleServiceDetailsControl.txtPaidMoney.Text))
-            {
-                float paidMoney = float.Parse(saleServiceDetailsControl.txtPaidMoney.Text);
-                float total = float.Parse(saleServiceDetailsControl.txtTotal.Text);
-                if (paidMoney / total < 0.5)
-                {
-                    isPaidMoney = false;
-                    MessageBox.Show("Số tiền đặt cọc >= 50%");
-                }
-                else
-                {
-                    isPaidMoney = true;
-                }
-            }
         }
         public void DeteleBillServiceInfo(SaleServiceDetailsControl saleServiceDetailsControl)
         {
@@ -163,10 +147,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             for (int i = 0; i < this.mainWindow.stkPickedService.Children.Count; i++)
             {
                 SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
-                TotalMoney += float.Parse(temp.txtTotal.Text);
+                TotalMoney += double.Parse(temp.txtTotal.Text);
                 if (!String.IsNullOrEmpty(temp.txtPaidMoney.Text))
                 {
-                    TotalPaidMoney += float.Parse(temp.txtPaidMoney.Text);
+                    TotalPaidMoney += double.Parse(temp.txtPaidMoney.Text);
                 }
             }
         }
@@ -189,6 +173,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng chọn khách hàng!");
                 return;
             }
+            isPaidMoney = CheckPaidMoney(mainWindow);
+            isOver = IsOverMoney(mainWindow);
+            if (isOver)
+            {
+                MessageBox.Show("Vui lòng nhập tiền cọc <= thành tiền trong từng dịch vụ!");
+                return;
+            }
             if (isPaidMoney)
             {
                 int idBillService = BillServiceDAL.Instance.GetMaxId() + 1;
@@ -200,13 +191,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         for (int i = 0; i < mainWindow.stkPickedService.Children.Count; i++) // Duyệt các chi tiết hóa đơn dịch vụ đã chọn
                         {
                             SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
-                            float paidMoney = 0;
-                            float tips = 0;
+                            double paidMoney = 0;
+                            double tips = 0;
                             if (!String.IsNullOrEmpty(temp.txtPaidMoney.Text))
-                                paidMoney = float.Parse(temp.txtPaidMoney.Text);
+                                paidMoney = double.Parse(temp.txtPaidMoney.Text);
                             if (!String.IsNullOrEmpty(temp.txtTips.Text))
-                                tips = float.Parse(temp.txtTips.Text);
-                            BillServiceInfo billServiceInfo = new BillServiceInfo(idBillService, ConvertToID(temp.txbSerial.Text), float.Parse(temp.txbPrice.Text), tips, Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
+                                tips = double.Parse(temp.txtTips.Text);
+                            BillServiceInfo billServiceInfo = new BillServiceInfo(idBillService, ConvertToID(temp.txbSerial.Text), double.Parse(temp.txbPrice.Text), tips, Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
                             BillServiceInfoDAL.Instance.Insert(billServiceInfo);
                         }
                         mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService);
@@ -230,8 +221,43 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                MessageBox.Show("Vui lòng nhập tiền đặt cọc >= 50% tiền thanh toán!");
+                MessageBox.Show("Vui lòng nhập tiền đặt cọc >= 50% tiền thanh toán trong từng dịch vụ!");
             }
+        }
+        public bool CheckPaidMoney(MainWindow mainWindow)
+        {
+            for (int i = 0; i < mainWindow.stkPickedService.Children.Count; i++)
+            {
+                SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
+                if (!String.IsNullOrEmpty(temp.txtPaidMoney.Text))
+                {
+                    if (double.Parse(temp.txtPaidMoney.Text) / double.Parse(temp.txtTotal.Text) < 0.5)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            return true;
+        }
+        public bool IsOverMoney(MainWindow mainWindow)
+        {
+            for (int i = 0; i < mainWindow.stkPickedService.Children.Count; i++)
+            {
+                SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
+                if (!String.IsNullOrEmpty(temp.txtPaidMoney.Text))
+                {
+                    if (double.Parse(temp.txtPaidMoney.Text) / double.Parse(temp.txtTotal.Text) > 1)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         public void PrintBill(MainWindow mainWindow)
         {
@@ -243,7 +269,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billServiceTemplate.txbDate.Text = DateTime.Now.ToShortDateString();
             billServiceTemplate.txbTotal.Text = mainWindow.txbTotalBillService.Text;
             billServiceTemplate.txbTotalPaid.Text = mainWindow.txbTotalPaidBillService.Text;
-            billServiceTemplate.txbRest.Text = (float.Parse(mainWindow.txbTotalBillService.Text) - float.Parse(mainWindow.txbTotalPaidBillService.Text)).ToString();
+            billServiceTemplate.txbRest.Text = (double.Parse(mainWindow.txbTotalBillService.Text) - double.Parse(mainWindow.txbTotalPaidBillService.Text)).ToString();
             for (int i = 0; i < mainWindow.stkPickedService.Children.Count; i++) // Duyệt các chi tiết hóa đơn dịch vụ đã chọn
             {
                 SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
@@ -251,16 +277,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceTemplateControl.txbNumber.Text = (i + 1).ToString();
                 billServiceTemplateControl.txbName.Text = temp.txbName.Text;
                 billServiceTemplateControl.txbPrice.Text = temp.txbPrice.Text;
-                float tips = 0;
+                double tips = 0;
                 if (!String.IsNullOrEmpty(temp.txtTips.Text))
                 {
-                    tips = float.Parse(temp.txtTips.Text);
+                    tips = double.Parse(temp.txtTips.Text);
                 }
-                billServiceTemplateControl.txbCalculateMoney.Text = (float.Parse(temp.txbPrice.Text) + tips).ToString();
+                billServiceTemplateControl.txbCalculateMoney.Text = (double.Parse(temp.txbPrice.Text) + tips).ToString();
                 billServiceTemplateControl.txbQuantity.Text = temp.nmsQuantity.Text.ToString();
                 billServiceTemplateControl.txbTotal.Text = temp.txtTotal.Text;
                 billServiceTemplateControl.txbPaidMoney.Text = temp.txtPaidMoney.Text;
-                billServiceTemplateControl.txbRest.Text = (float.Parse(temp.txtTotal.Text) - float.Parse(temp.txtPaidMoney.Text)).ToString();
+                billServiceTemplateControl.txbRest.Text = (double.Parse(temp.txtTotal.Text) - double.Parse(temp.txtPaidMoney.Text)).ToString();
                 billServiceTemplateControl.txbDeliveryDate.Text = "";
                 billServiceTemplateControl.txbStatus.Text = "Chưa giao";
                 billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;

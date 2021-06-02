@@ -85,6 +85,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case 11:
                     window.grdPayService.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Dịch vụ";
+                    BusinessServiceViewModel businessServiceViewModel = new BusinessServiceViewModel();
+                    businessServiceViewModel.LoadSaleServices(window);
                     CloseExpander(window, 0);
                     window.btnService.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnService.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
