@@ -421,7 +421,7 @@
                 Margin="0"
                 Grid.Row="1"
                 DataContext="{StaticResource BusinessServiceVM}"
-                Visibility="Visible">
+                Visibility="Collapsed">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}"
@@ -2073,7 +2073,7 @@
             <Grid 
                 x:Name="grdService"
                 Grid.Row="1"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource ServiceVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />
@@ -2284,7 +2284,6 @@
                                     VerticalAlignment="Bottom">
                                     <ComboBoxItem Content="Sắp xếp theo tên" />
                                     <ComboBoxItem Content="Sắp xếp theo đơn giá" />
-                                    <ComboBoxItem Content="Sắp xếp theo số lượng đặt" />
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger 
                                             EventName="SelectionChanged">
@@ -2310,7 +2309,6 @@
                             <ColumnDefinition Width="2.5*" />
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="10" />
                         </Grid.ColumnDefinitions>
@@ -2356,7 +2354,7 @@
                             VerticalAlignment="Center"
                             FontSize="18"
                             FontWeight="SemiBold" />
-                        <TextBlock 
+                        <!--<TextBlock 
                             Grid.Column="4"
                             HorizontalAlignment="Center"
                             Margin="0"
@@ -2365,7 +2363,7 @@
                             Text="Đã đặt"
                             VerticalAlignment="Center"
                             FontSize="18"
-                            FontWeight="SemiBold" />
+                            FontWeight="SemiBold" />-->
                     </Grid>
                     <Grid 
                         Grid.Row="2">
@@ -2380,8 +2378,8 @@
                         <ScrollViewer 
                             Grid.Row="3"
                             HorizontalScrollBarVisibility="Disabled"
-                            Margin="0"
-                            VerticalScrollBarVisibility="Auto">
+                                      Margin="10,0"
+                                      VerticalScrollBarVisibility="Auto">
                             <StackPanel 
                                 x:Name="stkService" />
                         </ScrollViewer>
@@ -2476,7 +2474,7 @@
             <Grid 
                 x:Name="grdBillService"
                 Grid.Row="1"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource BillServiceVM}"
                 Margin="10,0,0,0">
                 <Grid.ColumnDefinitions>

@@ -144,6 +144,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case 42:
                     window.txbTabName.Text = "Quản lý dịch vụ";
                     window.grdService.Visibility = Visibility.Visible;
+                    ServiceViewModel serviceViewModel = window.grdService.DataContext as ServiceViewModel;
+                    serviceViewModel.LoadServices(window, serviceViewModel.currentPage);
                     CloseExpander(window, 3);
                     window.btnServiceM.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnServiceM.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);

@@ -16,7 +16,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     public class ServiceViewModel : BaseViewModel
     {
-        private int currentPage = 0;
+        public int currentPage = 0;
         private string oldName;
         private MainWindow mainWindow;
         private ServiceControl selectedUCService;
@@ -77,7 +77,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (!ServiceDAL.Instance.IsExisted(addServiceWindow.txtNameOfService.Text)) // kiểm tra tên dịch vụ mới
                     {
-                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
+                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.Add(service))
                         {
                             MessageBox.Show("Thành công!");
@@ -88,7 +88,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             uCService.txbName.Text = service.Name;
                             uCService.txbPrice.Text = service.Price.ToString();
                             uCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
-                            uCService.txbHiredNumber.Text = service.NumberOfHired.ToString();
                             if (mainWindow.cboSelectFilter.SelectedIndex == service.IsActived || mainWindow.cboSelectFilter.SelectedIndex == -1) // trùng trạng thái với filter thì thêm vào stk
                             {
                                 services.Add(service);
@@ -112,14 +111,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (!(ServiceDAL.Instance.IsExisted(addServiceWindow.txtNameOfService.Text) && oldName != addServiceWindow.txtNameOfService.Text))
                     {
-                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
+                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.Update(service))
                         {
                             addServiceWindow.Close();
                             selectedUCService.txbName.Text = service.Name;
                             selectedUCService.txbPrice.Text = service.Price.ToString();
                             selectedUCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
-                            selectedUCService.txbHiredNumber.Text = service.NumberOfHired.ToString();
                             if (service.IsActived != mainWindow.cboSelectFilter.SelectedIndex && mainWindow.cboSelectFilter.SelectedIndex != -1) // kiểm tra trạng thái để remove uc ra khỏi stk 
                             {
                                 mainWindow.stkService.Children.Remove(selectedUCService);
@@ -200,7 +198,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 uCService.txbName.Text = services[i].Name;
                 uCService.txbPrice.Text = services[i].Price.ToString();
                 uCService.txbStatus.Text = services[i].IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
-                uCService.txbHiredNumber.Text = services[i].NumberOfHired.ToString();
                 mainWindow.stkService.Children.Add(uCService);
             }
 
@@ -292,9 +289,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 case 1:
                     services = services.OrderBy(x => x.Price).ToList();
-                    break;
-                case 2:
-                    services = services.OrderBy(x => x.NumberOfHired).ToList();
                     break;
             }
 

@@ -256,5 +256,28 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public string GetNumberOfHiredSerivce(string idService)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = @"SELECT Count(*) FROM BillServiceInfo Where idService=" + idService;
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                return dataTable.Rows[0].ItemArray[0].ToString();
+            }
+            catch
+            {
+                return "0";
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }
