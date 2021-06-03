@@ -164,6 +164,7 @@
             <Button 
                 x:Name="btnDelete"
                 Grid.Column="7"
+                ToolTip="Xóa dịch vụ đã chọn"
                 Height="26"
                 Margin="0"
                 Width="24"

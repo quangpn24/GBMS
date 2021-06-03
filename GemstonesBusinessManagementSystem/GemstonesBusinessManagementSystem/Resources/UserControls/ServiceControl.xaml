@@ -84,7 +84,7 @@
                 FontWeight="Medium" />-->
             <Button 
                 Grid.Column="4"
-                x:Name="btnEditEmployee"
+                x:Name="btnEditService"
                 Command="{Binding OpenUpdateWindowCommand}"
                 CommandParameter="{Binding ElementName=ucService}"
                 ToolTip="Sửa thông tin"
@@ -108,10 +108,10 @@
             </Button>
             <Button 
                 Grid.Column="4"
-                x:Name="btnDeleteEmployee"
+                x:Name="btnDeleteService"
                 Command="{Binding DeleteServiceCommand}"
                 CommandParameter="{Binding ElementName=ucService}"
-                ToolTip="Xóa nhân viên"
+                ToolTip="Xóa dịch vụ"
                 Height="30"
                 materialDesign:ButtonAssist.CornerRadius="6"
                 Margin="0,0,10,0"

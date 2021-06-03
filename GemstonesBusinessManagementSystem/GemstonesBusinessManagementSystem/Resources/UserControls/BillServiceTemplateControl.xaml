@@ -160,7 +160,7 @@
                 Command="{Binding ConfirmDeliveriedCommand}"
                 CommandParameter="{Binding ElementName=ucBillServiceInfo}"
                 Style="{StaticResource MaterialDesignRaisedButton}"
-                ToolTip="Xóa nhân viên"
+                ToolTip="Xác nhận đã giao"
                 Height="30"
                 Background="{x:Null}"
                 BorderBrush="{x:Null}"

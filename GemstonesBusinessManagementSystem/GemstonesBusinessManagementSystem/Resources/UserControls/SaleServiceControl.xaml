@@ -14,6 +14,7 @@
     Margin="4,4,0,0"
     Style="{StaticResource MyUCHoverStyle }"
     Cursor="Hand"
+    ToolTip="Chọn dịch vụ"
     Focusable="True">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">

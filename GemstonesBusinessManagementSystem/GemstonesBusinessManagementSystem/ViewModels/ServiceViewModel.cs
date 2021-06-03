@@ -66,6 +66,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             oldName = addService.txtNameOfService.Text = uCService.txbName.Text;
             addService.txtPriceOfService.Text = uCService.txbPrice.Text;
             addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 1 : 0; // kiểm tra isActived
+            addService.Title = "Sửa thông tin dịch vụ";
             addService.ShowDialog();
         }
         public void AddService(AddServiceWindow addServiceWindow)
@@ -272,13 +273,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void FilterService(MainWindow mainWindow)
         {
             services = ServiceDAL.Instance.FindByName(mainWindow.txtSearchService.Text);
-            services.RemoveAll(x => x.IsActived != mainWindow.cboSelectFilter.SelectedIndex);
+            if (mainWindow.cboSelectFilter.SelectedIndex != 2)
+            {
+                services.RemoveAll(x => x.IsActived != mainWindow.cboSelectFilter.SelectedIndex);
+            }
             if (mainWindow.cboSelectSort.SelectedIndex >= 0)
             {
                 SortService(mainWindow);
             }
             else
+            {
                 LoadServices(mainWindow, 0);
+            }
         }
         public void SortService(MainWindow mainWindow)
         {
@@ -288,10 +294,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     services = services.OrderBy(x => x.Name).ToList();
                     break;
                 case 1:
+                    services = services.OrderByDescending(x => x.Name).ToList();
+                    break;
+                case 2:
                     services = services.OrderBy(x => x.Price).ToList();
                     break;
+                case 3:
+                    services = services.OrderByDescending(x => x.Price).ToList();
+                    break;
             }
-
             LoadServices(mainWindow, 0);
         }
     }
