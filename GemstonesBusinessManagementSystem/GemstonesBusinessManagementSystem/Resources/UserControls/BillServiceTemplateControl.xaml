@@ -120,7 +120,7 @@
                 FontSize="13" />
             <TextBlock 
                 x:Name="txbRest"
-                Text="Còn lại"
+                Text="0"
                 Grid.Column="7"
                 HorizontalAlignment="Center"
                 Margin="0"
@@ -132,7 +132,6 @@
                 FontSize="13" />
             <TextBlock 
                 x:Name="txbDeliveryDate"
-                Text="Ngày giao"
                 Grid.Column="8"
                 HorizontalAlignment="Center"
                 Margin="0"

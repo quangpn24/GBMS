@@ -117,12 +117,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceTemplateControl.txbPaidMoney.Text = billServiceInfos[i].PaidMoney.ToString();
                 billServiceTemplateControl.txbQuantity.Text = billServiceInfos[i].Quantity.ToString();
                 billServiceTemplateControl.txbTotal.Text = (float.Parse(billServiceTemplateControl.txbCalculateMoney.Text) * billServiceInfos[i].Quantity).ToString();
-                billServiceTemplateControl.txbRest.Text = (float.Parse(billServiceTemplateControl.txbTotal.Text) - billServiceInfos[i].PaidMoney).ToString();
-                billServiceTemplateControl.txbDeliveryDate.Text = billServiceInfos[i].DeliveryDate.ToShortDateString();
                 if (billServiceInfos[i].Status == 1)  // Đã giao thì bỏ button swap và chuyển màu sang success
                 {
                     if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
+                    {
                         billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
+                    }
+                    billServiceTemplateControl.txbDeliveryDate.Text = billServiceInfos[i].DeliveryDate.ToShortDateString();
                     billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
                     billServiceTemplateControl.txbStatus.Text = "Đã giao";
                     billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
@@ -130,6 +131,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
+                    billServiceTemplateControl.txbRest.Text = (float.Parse(billServiceTemplateControl.txbTotal.Text) - billServiceInfos[i].PaidMoney).ToString();
                     billServiceTemplateControl.txbStatus.Text = "Chưa giao";
                 }
                 main.stkBillServiceInfo.Children.Add(billServiceTemplateControl);
