@@ -26,44 +26,64 @@ namespace GemstonesBusinessManagementSystem.DAL
         }
         public DataTable GetDatatable()
         {
-            OpenConnection();
+            try
+            {
+                OpenConnection();
 
-            string queryStr = "Select * from Employee";
-            MySqlCommand cmd = new MySqlCommand(queryStr, conn);
-            MySqlDataReader dataReader = cmd.ExecuteReader();
-            DataTable dataTable = new DataTable();
-            dataTable.Load(dataReader);
-
-            return dataTable;
+                string queryStr = "Select * from Employee";
+                MySqlCommand cmd = new MySqlCommand(queryStr, conn);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                DataTable dataTable = new DataTable();
+                dataTable.Load(dataReader);
+                return dataTable;
+            }
+            catch
+            {
+                return new DataTable();
+            }
+            finally
+            {
+                CloseConnection();
+            }
         }
         public List<Employee> GetList()
         {
-            OpenConnection();
-
-            string queryStr = "select * from Employee where isDeleted = false";
-            MySqlCommand cmd = new MySqlCommand(queryStr, conn);
-            MySqlDataReader dataReader = cmd.ExecuteReader();
-            DataTable dt = new DataTable();
-            dt.Load(dataReader);
-
-            List<Employee> employees = new List<Employee>();
-            for (int i = 0; i < dt.Rows.Count; i++)
+            try
             {
-                int idAccount = -1;
-                if (dt.Rows[i].ItemArray[8].ToString() != "")
-                {
-                    idAccount = int.Parse(dt.Rows[i].ItemArray[8].ToString());
-                }
+                OpenConnection();
 
-                Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
-                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
-                    dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
-                    DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
-                    int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
-                    idAccount, Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
-                employees.Add(employee);
+                string queryStr = "select * from Employee where isDeleted = false";
+                MySqlCommand cmd = new MySqlCommand(queryStr, conn);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dataReader);
+
+                List<Employee> employees = new List<Employee>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    int idAccount = -1;
+                    if (dt.Rows[i].ItemArray[8].ToString() != "")
+                    {
+                        idAccount = int.Parse(dt.Rows[i].ItemArray[8].ToString());
+                    }
+                    Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                        dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
+                        dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
+                        DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
+                        int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
+                        idAccount, Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
+                    employees.Add(employee);
+                }
+                return employees;
             }
-            return employees;
+            catch
+            {
+                return new List<Employee>();
+            }
+            finally
+            {
+                CloseConnection();
+            }
         }
         public void InsertOrUpdate(Employee employee, bool isUpdating = false)
         {
@@ -94,7 +114,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 cmd.Parameters.AddWithValue("@dateofBirth", employee.DateOfBirth);
                 cmd.Parameters.AddWithValue("@idPosition", employee.IdPosition.ToString());
                 cmd.Parameters.AddWithValue("@startingdate", employee.StartingDate);
-                cmd.Parameters.AddWithValue("@idAccount", employee.IdAccount);
                 cmd.Parameters.AddWithValue("@imageFile", Convert.ToBase64String(employee.ImageFile));
                 cmd.Parameters.AddWithValue("@isDeleted", employee.IsDeleted);
 
@@ -131,7 +150,6 @@ namespace GemstonesBusinessManagementSystem.DAL
         }
         public Employee GetById(string idEmployee)
         {
-            Employee res = new Employee();
             try
             {
                 OpenConnection();
@@ -148,26 +166,25 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     idAccount = int.Parse(dt.Rows[0].ItemArray[8].ToString());
                 }
-                res = new Employee(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
+                Employee employee = new Employee(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
                      dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(),
                      dt.Rows[0].ItemArray[3].ToString(), dt.Rows[0].ItemArray[4].ToString(),
                      DateTime.Parse(dt.Rows[0].ItemArray[5].ToString()),
                      int.Parse(dt.Rows[0].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[0].ItemArray[7].ToString()),
                      idAccount, Convert.FromBase64String(dt.Rows[0].ItemArray[9].ToString()));
+                return employee;
             }
             catch
             {
-
+                return new Employee();
             }
             finally
             {
                 CloseConnection();
             }
-            return res;
         }
         public int GetMaxId()
         {
-            int res = 0;
             try
             {
                 OpenConnection();
@@ -176,22 +193,20 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 MySqlDataReader rdr = command.ExecuteReader();
                 rdr.Read();
-                res = int.Parse(rdr.GetString(0));
+                int maxId = int.Parse(rdr.GetString(0));
+                return maxId;
             }
             catch
             {
-
+                return 0;
             }
             finally
             {
                 CloseConnection();
             }
-            return res;
         }
         public List<Employee> FindByName(string name)
         {
-            DataTable dt = new DataTable();
-            List<Employee> employees = new List<Employee>();
             try
             {
                 OpenConnection();
@@ -200,6 +215,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
+                DataTable dt = new DataTable();
+                List<Employee> employeeList = new List<Employee>();
                 adapter.Fill(dt);
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -209,18 +226,18 @@ namespace GemstonesBusinessManagementSystem.DAL
                         DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
                         int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
                         int.Parse(dt.Rows[i].ItemArray[8].ToString()), Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
-                    employees.Add(employee);
+                    employeeList.Add(employee);
                 }
+                return employeeList;
             }
             catch
             {
-
+                return new List<Employee>();
             }
             finally
             {
                 CloseConnection();
             }
-            return employees;
         }
         public bool IsPosition(string idPosition)
         {

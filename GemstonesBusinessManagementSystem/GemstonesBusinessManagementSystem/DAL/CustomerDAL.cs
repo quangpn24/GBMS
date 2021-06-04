@@ -94,7 +94,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
                 adapter.Fill(dt);
-
             }
             catch
             {
@@ -113,7 +112,6 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             return customers;
         }
-
         public List<Customer> FindByName(string name)
         {
             DataTable dt = new DataTable();
@@ -255,24 +253,27 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
-        public void Count()
+
+        public Customer FindById(string idCustomer)
         {
             DataTable dt = new DataTable();
-            List<Customer> customers = new List<Customer>();
             try
             {
                 OpenConnection();
-                string queryString = "select * from customer";
-
+                string queryString = @"SELECT * FROM Customer WHERE idCustomer=" + idCustomer;
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
                 adapter.Fill(dt);
+                Customer customer = new Customer(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
+                    dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(), dt.Rows[0].ItemArray[3].ToString(),
+                    dt.Rows[0].ItemArray[4].ToString(), double.Parse(dt.Rows[0].ItemArray[5].ToString()), int.Parse(dt.Rows[0].ItemArray[6].ToString()));
+                return customer;
             }
             catch
             {
-
+                return new Customer();
             }
             finally
             {

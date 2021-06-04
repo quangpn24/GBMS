@@ -26,7 +26,6 @@ namespace GemstonesBusinessManagementSystem.DAL
 
         public List<EmployeePosition> GetList()
         {
-            List<EmployeePosition> positions = new List<EmployeePosition>();
             try
             {
                 OpenConnection();
@@ -37,21 +36,26 @@ namespace GemstonesBusinessManagementSystem.DAL
                 DataTable dt = new DataTable();
                 dt.Load(dataReader);
 
+                List<EmployeePosition> positionList = new List<EmployeePosition>();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    EmployeePosition employee = new EmployeePosition(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                    EmployeePosition position = new EmployeePosition(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                         dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()),
                         long.Parse(dt.Rows[i].ItemArray[3].ToString()), long.Parse(dt.Rows[i].ItemArray[4].ToString()),
                         int.Parse(dt.Rows[i].ItemArray[5].ToString()));
 
-                    positions.Add(employee);
+                    positionList.Add(position);
                 }
+                return positionList;
             }
             catch
             {
-
+                return new List<EmployeePosition>();
             }
-            return positions;
+            finally
+            {
+                CloseConnection();
+            }
         }
         public void InsertOrUpdate(EmployeePosition position, bool isUpdating = false)
         {
@@ -92,6 +96,10 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MessageBox.Show(e.Message.ToString());
                 return;
             }
+            finally
+            {
+                CloseConnection();
+            }
         }
         public bool Delete(string id)
         {
@@ -114,7 +122,6 @@ namespace GemstonesBusinessManagementSystem.DAL
         }
         public EmployeePosition GetById(int id)
         {
-            EmployeePosition position = new EmployeePosition();
             try
             {
                 OpenConnection();
@@ -126,24 +133,24 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
-                position = new EmployeePosition(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
-                    dt.Rows[0].ItemArray[1].ToString(), long.Parse(dt.Rows[0].ItemArray[2].ToString()),
-                    long.Parse(dt.Rows[0].ItemArray[3].ToString()), long.Parse(dt.Rows[0].ItemArray[4].ToString()),
-                    int.Parse(dt.Rows[0].ItemArray[5].ToString()));
+
+                EmployeePosition position = new EmployeePosition(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
+                        dt.Rows[0].ItemArray[1].ToString(), long.Parse(dt.Rows[0].ItemArray[2].ToString()),
+                        long.Parse(dt.Rows[0].ItemArray[3].ToString()), long.Parse(dt.Rows[0].ItemArray[4].ToString()),
+                        int.Parse(dt.Rows[0].ItemArray[5].ToString()));
+                return position;
             }
             catch
             {
-
+                return new EmployeePosition();
             }
             finally
             {
                 CloseConnection();
             }
-            return position;
         }
         public int GetMaxId()
         {
-            int res = 0;
             try
             {
                 OpenConnection();
@@ -152,17 +159,16 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 MySqlDataReader rdr = command.ExecuteReader();
                 rdr.Read();
-                res = int.Parse(rdr.GetString(0));
+                return int.Parse(rdr.GetString(0));
             }
             catch
             {
-
+                return 0;
             }
             finally
             {
                 CloseConnection();
             }
-            return res;
         }
         public bool IsExisted(string position)
         {

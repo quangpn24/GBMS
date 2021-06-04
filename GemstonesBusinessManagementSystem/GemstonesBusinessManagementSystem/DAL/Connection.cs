@@ -13,7 +13,6 @@ namespace GemstonesBusinessManagementSystem.DAL
     {
         private string strCon;
         public MySqlConnection conn;
-
         public Connection()
         {
             try

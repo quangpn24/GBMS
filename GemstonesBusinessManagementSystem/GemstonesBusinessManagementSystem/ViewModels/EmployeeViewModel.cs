@@ -53,7 +53,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         //Mainwindow
         private MainWindow mainWindow;
-        public MainWindow MainWindow { get => mainWindow; set => mainWindow = value; }
 
         private List<Employee> employeeList = EmployeeDAL.Instance.GetList();
         private EmployeeControl employeeControl;
@@ -126,7 +125,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             empPosControl = control;
             isEditingPosition = true;
             employeePositionWindow.txbTitle.Text = "Sửa chức vụ";
-            employeePositionWindow.txtId.Text = ConvertToIDString(control.txbId.Text);
+            employeePositionWindow.txtId.Text = control.txbId.Text;
 
             employeePositionWindow.txtPosition.Text = control.txbPosition.Text;
             employeePositionWindow.txtPosition.SelectionStart = control.txbPosition.Text.Length;
@@ -243,6 +242,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 empPosControl.txbWorkdays.Text = window.txtStandardWorkDays.Text;
                 empPosControl.txbShift.Text = window.txtOvertime.Text;
                 empPosControl.txbFault.Text = window.txtFault.Text;
+
+                window.txbTitle.Text = "Thêm chức vụ";
             }
             else
             {
@@ -453,6 +454,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     int i = employeeList.FindIndex(x => x.IdEmployee == employee.IdEmployee);
                     employeeList[i] = employee;
                 }
+                Filter(mainWindow);
                 Sort(mainWindow);
             }
             else
@@ -463,7 +465,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employee.IdPosition).Position;
                 control.txbPhoneNumber.Text = employee.PhoneNumber.ToString();
                 control.txbAddress.Text = employee.Address.ToString();
-                
+
                 if (FilterPosition == null || FilterPosition != null && FilterPosition.IdEmployeePosition == employee.IdPosition)
                 {
                     employeeList.Add(employee);
@@ -471,8 +473,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     {
                         mainWindow.stkEmployeeList.Children.Add(control);
                     }
-                    Sort(mainWindow);
                 }
+                Filter(mainWindow);
+                Sort(mainWindow);
             }
             int start = 0, end = 0;
             LoadInfoOfPage(ref start, ref end);
@@ -518,24 +521,27 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //MainWindow
         void SetItemSource()
         {
+            int i = mainWindow.cboFilterPosition.SelectedIndex;
+
             itemSourcePosition.Clear();
             itsAddEmpPosition.Clear();
-            
+
             EmployeePosition positionAll = new EmployeePosition(0, "Tất cả", 1, 1, 1, 1);
             itemSourcePosition.Add(positionAll);
-            
+
             List<EmployeePosition> positions = EmployeePositionDAL.Instance.GetList();
             foreach (var position in positions)
             {
                 itemSourcePosition.Add(position);
                 itsAddEmpPosition.Add(position);
             }
+            mainWindow.cboFilterPosition.SelectedIndex = i;
         }
         void Search(MainWindow mainWindow)
         {
             mainWindow.cboSortEmployee.SelectedIndex = -1;
             mainWindow.cboFilterPosition.SelectedIndex = -1;
-            string nameSearching = mainWindow.txtSearch.Text.ToLower();
+            string nameSearching = mainWindow.txtSearchEmployee.Text.ToLower();
             employeeList = EmployeeDAL.Instance.FindByName(nameSearching);
             currentPage = 0;
             LoadEmployeeList(mainWindow, currentPage);
@@ -553,7 +559,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     workbook.Worksheets.Add(EmployeeDAL.Instance.GetDatatable(), "Danh sách nhân viên");
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
-                MessageBox.Show("Xuất  danh sách thành công!");
+                MessageBox.Show("Xuất danh sách thành công!");
             }
         }
         void OpenAddWindow(MainWindow mainWindow)
@@ -594,7 +600,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (currentPage == employeeList.Count / 10)
                 end = employeeList.Count;
 
-            mainWindow.txtNumOfEmp.Text = String.Format("{0} - {1} of {2} items", start == end ? 0 : start + 1, end, employeeList.Count);
+            mainWindow.txtNumOfEmp.Text = String.Format("{0} of {1} items", mainWindow.stkEmployeeList.Children.Count, employeeList.Count);
         }
         public void GoToNextPage(MainWindow mainWindow, int currentPage)
         {
@@ -623,7 +629,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (mainWindow.cboFilterPosition.SelectedIndex == -1)
                 return;
-            string nameSearching = mainWindow.txtSearch.Text.ToLower();
+            string nameSearching = mainWindow.txtSearchEmployee.Text.ToLower();
             employeeList = EmployeeDAL.Instance.FindByName(nameSearching);
             if (mainWindow.cboFilterPosition.SelectedIndex == 0)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GemstonesBusinessManagementSystem.Resources.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace GemstonesBusinessManagementSystem.Views
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();  
         }
     }
 }

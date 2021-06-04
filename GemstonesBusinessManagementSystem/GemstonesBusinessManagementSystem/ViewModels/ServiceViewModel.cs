@@ -16,7 +16,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     public class ServiceViewModel : BaseViewModel
     {
-        private int currentPage = 0;
+        public int currentPage = 0;
         private string oldName;
         private MainWindow mainWindow;
         private ServiceControl selectedUCService;
@@ -66,6 +66,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             oldName = addService.txtNameOfService.Text = uCService.txbName.Text;
             addService.txtPriceOfService.Text = uCService.txbPrice.Text;
             addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 1 : 0; // kiểm tra isActived
+            addService.Title = "Sửa thông tin dịch vụ";
             addService.ShowDialog();
         }
         public void AddService(AddServiceWindow addServiceWindow)
@@ -77,7 +78,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (!ServiceDAL.Instance.IsExisted(addServiceWindow.txtNameOfService.Text)) // kiểm tra tên dịch vụ mới
                     {
-                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
+                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.Add(service))
                         {
                             MessageBox.Show("Thành công!");
@@ -88,7 +89,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             uCService.txbName.Text = service.Name;
                             uCService.txbPrice.Text = service.Price.ToString();
                             uCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
-                            uCService.txbHiredNumber.Text = service.NumberOfHired.ToString();
                             if (mainWindow.cboSelectFilter.SelectedIndex == service.IsActived || mainWindow.cboSelectFilter.SelectedIndex == -1) // trùng trạng thái với filter thì thêm vào stk
                             {
                                 services.Add(service);
@@ -112,14 +112,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (!(ServiceDAL.Instance.IsExisted(addServiceWindow.txtNameOfService.Text) && oldName != addServiceWindow.txtNameOfService.Text))
                     {
-                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), 0, addServiceWindow.cboStatus.SelectedIndex, 0);
+                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.Update(service))
                         {
                             addServiceWindow.Close();
                             selectedUCService.txbName.Text = service.Name;
                             selectedUCService.txbPrice.Text = service.Price.ToString();
                             selectedUCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
-                            selectedUCService.txbHiredNumber.Text = service.NumberOfHired.ToString();
                             if (service.IsActived != mainWindow.cboSelectFilter.SelectedIndex && mainWindow.cboSelectFilter.SelectedIndex != -1) // kiểm tra trạng thái để remove uc ra khỏi stk 
                             {
                                 mainWindow.stkService.Children.Remove(selectedUCService);
@@ -200,7 +199,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 uCService.txbName.Text = services[i].Name;
                 uCService.txbPrice.Text = services[i].Price.ToString();
                 uCService.txbStatus.Text = services[i].IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
-                uCService.txbHiredNumber.Text = services[i].NumberOfHired.ToString();
                 mainWindow.stkService.Children.Add(uCService);
             }
 
@@ -275,13 +273,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void FilterService(MainWindow mainWindow)
         {
             services = ServiceDAL.Instance.FindByName(mainWindow.txtSearchService.Text);
-            services.RemoveAll(x => x.IsActived != mainWindow.cboSelectFilter.SelectedIndex);
+            if (mainWindow.cboSelectFilter.SelectedIndex != 2)
+            {
+                services.RemoveAll(x => x.IsActived != mainWindow.cboSelectFilter.SelectedIndex);
+            }
             if (mainWindow.cboSelectSort.SelectedIndex >= 0)
             {
                 SortService(mainWindow);
             }
             else
+            {
                 LoadServices(mainWindow, 0);
+            }
         }
         public void SortService(MainWindow mainWindow)
         {
@@ -291,13 +294,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     services = services.OrderBy(x => x.Name).ToList();
                     break;
                 case 1:
-                    services = services.OrderBy(x => x.Price).ToList();
+                    services = services.OrderByDescending(x => x.Name).ToList();
                     break;
                 case 2:
-                    services = services.OrderBy(x => x.NumberOfHired).ToList();
+                    services = services.OrderBy(x => x.Price).ToList();
+                    break;
+                case 3:
+                    services = services.OrderByDescending(x => x.Price).ToList();
                     break;
             }
-
             LoadServices(mainWindow, 0);
         }
     }

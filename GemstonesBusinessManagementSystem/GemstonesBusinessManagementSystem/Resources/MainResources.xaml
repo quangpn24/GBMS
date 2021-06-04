@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources" 
                     xmlns:viewmodels="clr-namespace:GemstonesBusinessManagementSystem.ViewModels">
     <viewmodels:GoodsViewModel x:Key="GoodsVM"/>
     <viewmodels:LoginViewModel x:Key="LoginVM"/>
@@ -10,4 +9,9 @@
     <viewmodels:ServiceViewModel x:Key="ServiceVM" />
     <viewmodels:CustomerViewModel x:Key="CustomerVM"/>
 
+    <viewmodels:GoodsTypeViewModel x:Key="GoodsTypeVM"/>
+    <viewmodels:ImportGoodsViewModel x:Key="ImportGoodsVM"/>
+    <viewmodels:BusinessServiceViewModel x:Key="BusinessServiceVM"/>
+    <viewmodels:StockViewModel x:Key="StockVM" />
+    <viewmodels:BillServiceViewModel x:Key="BillServiceVM" />
 </ResourceDictionary>

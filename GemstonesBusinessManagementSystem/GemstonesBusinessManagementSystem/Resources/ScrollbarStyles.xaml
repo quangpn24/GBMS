@@ -139,7 +139,7 @@
             <RepeatButton Grid.Column="3" Style="{StaticResource ScrollBarLineButton}" Width="8" Command="ScrollBar.LineRightCommand" Content="M 0 0 L 4 4 L 0 8 Z"/>
         </Grid>
     </ControlTemplate>
-    <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+    <Style x:Key="ScrollBarStyle" TargetType="{x:Type ScrollBar}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Style.Triggers>
@@ -172,14 +172,18 @@
                         </Grid.RowDefinitions>
                         <ScrollContentPresenter Grid.Column="0" Grid.Row="0"/>
 
-                        <ScrollBar Name="PART_VerticalScrollBar"
-                                Grid.Column="1"
+                        <ScrollBar 
+                            Name="PART_VerticalScrollBar"
+                            Grid.Column="1"
+                            Style="{StaticResource ScrollBarStyle}"
                             Value="{TemplateBinding VerticalOffset}"
                             Maximum="{TemplateBinding ScrollableHeight}"
                             ViewportSize="{TemplateBinding ViewportHeight}"
                             Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
-                        <ScrollBar Name="PART_HorizontalScrollBar"
+                        <ScrollBar 
+                            Name="PART_HorizontalScrollBar"
                             Orientation="Horizontal"
+                            Style="{StaticResource ScrollBarStyle}"
                             Grid.Row="1"
                             Value="{TemplateBinding HorizontalOffset}"
                             Maximum="{TemplateBinding ScrollableWidth}"
