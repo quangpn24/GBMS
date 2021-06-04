@@ -73,6 +73,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand ExportExcelCommand { get; set; }
         public ICommand SelectReceiptCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+        public ICommand PrintReceiptInfoCommand { get; set; }
 
 
         //other
@@ -104,6 +105,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ApproveCommand = new RelayCommand<MainWindow>(p => true, p => ApproveRequest(p));
             ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
             SelectReceiptCommand = new RelayCommand<ReceiptControl>(p => true, p => SelectReceipt(p));
+            PrintReceiptInfoCommand = new RelayCommand<MainWindow>(p => true, p => PrintReceiptInfo(p));
             CancelCommand = new RelayCommand<MainWindow>(p => true, p => Cancel(p));
         }
         public void Init(MainWindow main)
@@ -132,6 +134,44 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadReceiptToView(main);
         }
 
+        void PrintReceiptInfo(MainWindow main)
+        {
+            StockReceiptTemplate receiptTemplate = new StockReceiptTemplate();
+            receiptTemplate.txbIdStockReceipt.Text = main.txbIdReceipt.Text;
+            receiptTemplate.txbDate.Text = main.txbDateReceipt.Text;
+            receiptTemplate.txbImporter.Text = main.txbImporter.Text;
+            receiptTemplate.txbSupplier.Text = main.txbSupplier.Text;
+            receiptTemplate.txbTotal.Text = main.txbTotalMoneyGoods.Text;
+            receiptTemplate.txbDiscount.Text = main.txbDiscount.Text;
+            receiptTemplate.txbMoneyToPay.Text = main.txbMoneyToPayGoods.Text;
+
+            //Load
+            for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
+            {
+                ImportGoodsControl importControl = (ImportGoodsControl)wdImportGoods.stkImportGoods.Children[i];
+                StockReceiptInfoControl infoReceiptControl = new StockReceiptInfoControl();
+                infoReceiptControl.txbNumericalOder.Text = (i + 1).ToString();
+                infoReceiptControl.txbName.Text = importControl.txbName.Text;
+                infoReceiptControl.txbUnit.Text = importControl.txbUnit.Text;
+                infoReceiptControl.txbQuantity.Text = importControl.nsQuantity.Value.ToString();
+                infoReceiptControl.txbImportPrice.Text = importControl.txbImportPrice.Text;
+                infoReceiptControl.txbTotalPrice.Text = importControl.txbTotalPrice.Text;
+                receiptTemplate.stkStockReceiptInfo.Children.Add(infoReceiptControl);
+            }
+            try
+            {
+                PrintDialog printDialog = new PrintDialog();
+                if (printDialog.ShowDialog() == true)
+                {
+                    receiptTemplate.btnPrint.Visibility = Visibility.Hidden;
+                    printDialog.PrintVisual(receiptTemplate.grdPrint, "Stock receipt");
+                }
+            }
+            finally
+            {
+                receiptTemplate.btnPrint.Visibility = Visibility.Visible;
+            }
+        }
         public void Cancel(MainWindow main)
         {
             main.cboSupplier.SelectedIndex = -1;
@@ -146,20 +186,23 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 ReceiptDetailControl receiptDetailControl = new ReceiptDetailControl();
-                Goods temp = GoodsDAL.Instance.GetById(dt.Rows[i].ItemArray[1].ToString());
-                receiptDetailControl.txbId.Text = AddPrefix("SP", temp.IdGoods);
-                receiptDetailControl.txbName.Text = temp.Name;
-                receiptDetailControl.txbImportPrice.Text = temp.ImportPrice.ToString();
+                Goods goods = GoodsDAL.Instance.GetById(dt.Rows[i].ItemArray[1].ToString());
+                GoodsType type = GoodsTypeDAL.Instance.GetById(goods.IdGoodsType);
+                receiptDetailControl.txbId.Text = AddPrefix("SP", goods.IdGoods);
+                receiptDetailControl.txbName.Text = goods.Name;
+                receiptDetailControl.txbGoodsType.Text = type.Name;
+                receiptDetailControl.txbUnit.Text = type.Unit;
+                receiptDetailControl.txbImportPrice.Text = goods.ImportPrice.ToString();
                 receiptDetailControl.txbQuantity.Text = dt.Rows[i].ItemArray[2].ToString();
-                receiptDetailControl.txbTotalPrice.Text = (temp.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString())).ToString();
+                receiptDetailControl.txbTotalPrice.Text = (goods.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString())).ToString();
                 mainWindow.stkReceiptDetail.Children.Add(receiptDetailControl);
-                Total += temp.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString());
+                Total += goods.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString());
             }
             mainWindow.txbIdReceipt.Text = control.txbId.Text;
             mainWindow.txbDateReceipt.Text = control.txbDateReceipt.Text;
             mainWindow.txbImporter.Text = control.txbImporter.Text;
             mainWindow.txbSupplier.Text = control.txbSupplier.Text;
-            mainWindow.txbMoneyToPay.Text = control.txbMoneyToPay.Text;
+            mainWindow.txbMoneyToPayGoods.Text = control.txbMoneyToPay.Text;
             mainWindow.txbDiscount.Text = (((Total - long.Parse(control.txbMoneyToPay.Text)) * 100) / Total).ToString() + "%";
         }
         public void LoadReceiptToView(MainWindow main)
@@ -297,7 +340,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             StockReceiptTemplate receiptTemplate = new StockReceiptTemplate();
             receiptTemplate.txbIdStockReceipt.Text = wdImportGoods.txbIdReceipt.Text;
             receiptTemplate.txbDate.Text = wdImportGoods.txbDate.Text;
-            receiptTemplate.txbTotal.Text = wdImportGoods.txbMoneyToPay.Text;
+            receiptTemplate.txbSupplier.Text = wdImportGoods.cboSupplier.Text;
+            //receiptTemplate.txbImporter.Text = 1: current account
+            receiptTemplate.txbTotal.Text = wdImportGoods.txbTotalGoodsPrice.Text;
+            receiptTemplate.txbDiscount.Text = wdImportGoods.txtDiscount.Text + "%";
+            receiptTemplate.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
 
             //Load
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)

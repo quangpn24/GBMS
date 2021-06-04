@@ -418,7 +418,7 @@
             </Grid>
             <Grid
                 x:Name="grdSupplier"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 Grid.Row="1"
                 DataContext="{StaticResource SupplierVM}">
                 <i:Interaction.Triggers>
@@ -1448,7 +1448,7 @@
             <Grid 
                 x:Name="grdImport"
                 Grid.Row="1"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource ImportGoodsVM}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
@@ -1708,7 +1708,7 @@
                         Grid.Column="1"
                         Background="{StaticResource White}"
                         Style="{StaticResource DropShadow}"
-                        Margin="10,0,10,10">
+                        Margin="0,0,10,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition Height="1*"/>
@@ -1716,7 +1716,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel 
                             Grid.Row="0" 
-                            Margin="10,0,9.8,0" 
+                            Margin="10,0,10,0" 
                             Orientation="Horizontal">
                             <materialDesign:PackIcon 
                                 Foreground="{StaticResource Primary}"
@@ -1737,6 +1737,19 @@
                                 Foreground="{StaticResource Primary}"
                                 VerticalAlignment="Center" 
                                 Margin="20,0,0,0"/>
+                            <Button 
+                                x:Name="btnPrint"
+                                materialDesign:ButtonAssist.CornerRadius="2"
+                                IsDefault="True"
+                                Content="In hóa đơn"
+                                Command="{Binding PrintReceiptInfoCommand}"
+                                CommandParameter="{Binding ElementName=wdMain}"
+                                HorizontalAlignment="Left"
+                                Height="30" 
+                                Width="100"
+                                VerticalAlignment="Center" 
+                                BorderBrush="{DynamicResource Success}" 
+                                Padding="0" Margin="130,0,0,0"/>
                         </StackPanel>
                         <Grid 
                             Margin="10 0"
@@ -1777,10 +1790,10 @@
                                     <TextBlock
                                         FontSize="18"
                                         Foreground="{StaticResource Gray1}"
-                                        Text="Thời gian: " 
+                                        Text="Nhà cung cấp: " 
                                         HorizontalAlignment="Left"/>
                                     <TextBlock
-                                        x:Name="txbTimeReceipt"
+                                        x:Name="txbSupplier"
                                         FontSize="18"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
@@ -1804,10 +1817,10 @@
                                     <TextBlock
                                         FontSize="18"
                                         Foreground="{StaticResource Gray1}"
-                                        Text="Nhà cung cấp: " 
+                                        Text="Tổng tiền: " 
                                         HorizontalAlignment="Left"/>
                                     <TextBlock
-                                        x:Name="txbSupplier"
+                                        x:Name="txbTotalMoneyGoods"
                                         FontSize="18"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
@@ -1829,7 +1842,7 @@
                                         Text="Thanh toán: " 
                                         HorizontalAlignment="Left"/>
                                     <TextBlock
-                                        x:Name="txbMoneyToPay"
+                                        x:Name="txbMoneyToPayGoods"
                                         FontSize="18"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
@@ -1848,8 +1861,10 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1.2*"/>
                                     <ColumnDefinition Width="1.5*"/>
-                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="1.3*"/>
                                     <ColumnDefinition Width="1.5*"/>
                                     <ColumnDefinition Width="15"/>
                                 </Grid.ColumnDefinitions>
@@ -1858,36 +1873,56 @@
                                     Text="Mã SP" 
                                     HorizontalAlignment="Center" 
                                     Style="{StaticResource TextHeader}"
+                                    FontSize="16"
                                     VerticalAlignment="Center"/>
                                 <TextBlock
                                     Grid.Column="1" 
                                     Text="Tên sản phẩm" 
                                     HorizontalAlignment="Left" 
                                     Margin="20 0 0 0"
+                                    FontSize="16"
                                     Style="{StaticResource TextHeader}"
                                     VerticalAlignment="Center"/>
                                 <TextBlock
                                     Grid.Column="2" 
-                                    Text="Đơn giá" 
-                                    HorizontalAlignment="Center" 
+                                    Text="Loại sản phẩm" 
+                                    HorizontalAlignment="Center"
+                                    FontSize="16"
                                     Style="{StaticResource TextHeader}"
                                     VerticalAlignment="Center"/>
                                 <TextBlock
                                     Grid.Column="3" 
-                                    Text="Số lượng" 
-                                    Margin="20,0,0,0"   
-                                    HorizontalAlignment="Left" 
+                                    Text="Đơn vị" 
+                                    HorizontalAlignment="Center" 
+                                    FontSize="16"
                                     Style="{StaticResource TextHeader}"
                                     VerticalAlignment="Center"/>
                                 <TextBlock
                                     Grid.Column="4" 
+                                    Text="Đơn giá" 
+                                    HorizontalAlignment="Center" 
+                                    FontSize="16"
+                                    Style="{StaticResource TextHeader}"
+                                    VerticalAlignment="Center"/>
+                                <TextBlock
+                                    Grid.Column="5" 
+                                    Text="Số lượng"
+                                    HorizontalAlignment="Center" 
+                                    FontSize="16"
+                                    Style="{StaticResource TextHeader}"
+                                    VerticalAlignment="Center"/>
+                                <TextBlock
+                                    Grid.Column="6" 
                                     Text="Tổng tiền"  
+                                    FontSize="16"
                                     HorizontalAlignment="Center" 
                                     Style="{StaticResource TextHeader}"
                                     VerticalAlignment="Center"/>
                             </Grid>
                             <ScrollViewer Grid.Row="1" Margin="10,0,10,10">
-                                <StackPanel x:Name="stkReceiptDetail"/>
+                                <StackPanel x:Name="stkReceiptDetail">
+                                    <UserControls:ReceiptDetailControl/>
+                                </StackPanel>
                             </ScrollViewer>
                         </Grid>
                     </Grid>

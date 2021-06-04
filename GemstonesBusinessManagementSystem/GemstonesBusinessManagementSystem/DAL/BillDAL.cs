@@ -19,7 +19,6 @@ namespace GemstonesBusinessManagementSystem.DAL
             get { if (instance == null) instance = new BillDAL(); return BillDAL.instance; }
             private set { BillDAL.instance = value; }
         }
-
         private BillDAL()
         {
 

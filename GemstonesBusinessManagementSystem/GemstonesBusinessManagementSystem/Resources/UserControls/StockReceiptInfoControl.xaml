@@ -32,7 +32,7 @@
             Width="2" 
             HorizontalAlignment="Left"/>
         <Rectangle 
-            Grid.Column="5"
+            Grid.Column="6"
             Fill="{StaticResource Light}"
             Width="2" 
             HorizontalAlignment="Right"/>
@@ -52,7 +52,7 @@
             HorizontalAlignment="Left"
             TextWrapping="Wrap"
             VerticalAlignment="Center" 
-            Margin="20,0,0,0"/>
+            Margin="10,0,0,0"/>
         <TextBlock 
             x:Name="txbUnit"
             Text="Vàng" 
