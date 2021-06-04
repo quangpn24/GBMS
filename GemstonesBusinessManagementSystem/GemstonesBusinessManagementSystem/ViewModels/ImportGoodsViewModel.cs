@@ -86,11 +86,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             MoneyToPay = 0;
             main.Hide();
             int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
-            if(idStockReceiptMax == -1)
+            if (idStockReceiptMax == -1)
             {
                 MessageBox.Show("Lỗi hệ thống!");
                 return;
-            }    
+            }
             newWindow.txbIdReceipt.Text = AddPrefix("PH", idStockReceiptMax + 1);
             newWindow.txbDate.Text = DateTime.Today.ToString("dd/MM/yyyy");
             newWindow.stkImportGoods.Children.Clear();
@@ -181,7 +181,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     int.Parse(control.nsQuantity.Value.ToString()));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
                 int quantity = GoodsDAL.Instance.GetQuantityById(ConvertToID(control.txbId.Text));
-                if(quantity !=-1)
+                if (quantity != -1)
                 {
                     k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), quantity + info.Quantity);
                 }
@@ -249,7 +249,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (wdImportGoods.cboSelectFast.SelectedIndex == -1)
                 return;
             DataTable dt = GoodsDAL.Instance.GetByidGoodsType(selectedGoodsType.IdGoodsType);
-            bool isExist;   
+            bool isExist;
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 isExist = false;

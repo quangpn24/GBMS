@@ -7,5 +7,8 @@
     <viewmodels:EmployeeViewModel x:Key="EmployeeVM"/>
     <viewmodels:HomeViewModel x:Key="HomeVM"/>
     <viewmodels:ServiceViewModel x:Key="ServiceVM" />
+    <viewmodels:BusinessServiceViewModel x:Key="BusinessServiceVM"/>
+    <viewmodels:CustomerViewModel x:Key="CustomerVM" />
     <viewmodels:StockViewModel x:Key="StockVM" />
+    <viewmodels:BillServiceViewModel x:Key="BillServiceVM" />
 </ResourceDictionary>

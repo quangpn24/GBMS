@@ -134,13 +134,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter.cs" />
+    <Compile Include="DAL\BillServiceDAL.cs" />
+    <Compile Include="DAL\BillServiceInfoDAL.cs" />
     <Compile Include="DAL\Connection.cs" />
+    <Compile Include="DAL\CustomerDAL.cs" />
     <Compile Include="DAL\BillDAL.cs" />
-    <Compile Include="DAL\StockReceiptDAL.cs" />
     <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="DAL\EmployeePositionDAL.cs" />
     <Compile Include="DAL\GoodsDAL.cs" />
     <Compile Include="DAL\GoodsTypeDAL.cs" />
+    <Compile Include="Models\BillService.cs" />
+    <Compile Include="Models\BillServiceInfo.cs" />
+    <Compile Include="Models\Customer.cs" />
     <Compile Include="DAL\StockReceiptDAL.cs" />
     <Compile Include="DAL\StockReceiptInfoDAL.cs" />
     <Compile Include="DAL\SupplierDAL.cs" />
@@ -176,8 +181,18 @@
     <Compile Include="ViewModels\ImportGoodsViewModel.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeePosition.cs" />
-    <Compile Include="Models\Goods.cs" />
-    <Compile Include="Models\GoodsType.cs" />
+    <Compile Include="Resources\Template\BillServiceTemplate.xaml.cs">
+      <DependentUpon>BillServiceTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\BillServiceControl.xaml.cs">
+      <DependentUpon>BillServiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\BillServiceTemplateControl.xaml.cs">
+      <DependentUpon>BillServiceTemplateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\CustomerControl.xaml.cs">
+      <DependentUpon>CustomerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\DashboardControl.xaml.cs">
       <DependentUpon>DashboardControl.xaml</DependentUpon>
     </Compile>
@@ -189,9 +204,18 @@
     </Compile>
     <Compile Include="DAL\ServiceDAL.cs" />
     <Compile Include="Models\Service.cs" />
+    <Compile Include="Resources\UserControls\SaleServiceControl.xaml.cs">
+      <DependentUpon>SaleServiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\SaleServiceDetailsControl.xaml.cs">
+      <DependentUpon>SaleServiceDetailsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\ServiceControl.xaml.cs">
       <DependentUpon>ServiceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BillServiceViewModel.cs" />
+    <Compile Include="ViewModels\BusinessServiceViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="Resources\UserControls\StockControl.xaml.cs">
       <DependentUpon>StockControl.xaml</DependentUpon>
     </Compile>
@@ -225,6 +249,9 @@
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PickCustomerWindow.xaml.cs">
+      <DependentUpon>PickCustomerWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Resources\ButtonStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -249,9 +276,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\Template\BillServiceTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\TextStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UserControls\BillServiceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\BillServiceTemplateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\CustomerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\DashboardControl.xaml">
       <SubType>Designer</SubType>
@@ -268,6 +311,14 @@
     <Page Include="Resources\UserControls\GoodsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UserControls\SaleServiceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\SaleServiceDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\GoodsTypeControl.xaml">
       <SubType>Designer</SubType>
@@ -324,6 +375,10 @@
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PickCustomerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

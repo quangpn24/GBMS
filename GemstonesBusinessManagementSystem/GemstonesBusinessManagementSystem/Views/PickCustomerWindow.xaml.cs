@@ -1,5 +1,4 @@
-﻿using GemstonesBusinessManagementSystem.Resources.UserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,13 +15,13 @@ using System.Windows.Shapes;
 namespace GemstonesBusinessManagementSystem.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for PickCustomerWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PickCustomerWindow : Window
     {
-        public MainWindow()
+        public PickCustomerWindow()
         {
-            InitializeComponent();  
+            InitializeComponent();
         }
     }
 }

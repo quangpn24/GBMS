@@ -1,5 +1,4 @@
-﻿using GemstonesBusinessManagementSystem.Resources.UserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace GemstonesBusinessManagementSystem.Views
+namespace GemstonesBusinessManagementSystem.Resources.Template
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for BillServiceTemplate.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class BillServiceTemplate : Window
     {
-        public MainWindow()
+        public BillServiceTemplate()
         {
-            InitializeComponent();  
+            InitializeComponent();
         }
     }
 }

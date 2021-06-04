@@ -43,9 +43,10 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <Style TargetType="Button">
+        <Style 
+            TargetType="Button">
             <Setter 
-                Property="Template" 
+                Property="Template"
                 Value="{StaticResource updown_button_style}" />
         </Style>
     </UserControl.Resources>
@@ -72,64 +73,66 @@
                 <ColumnDefinition Width="22" />
             </Grid.ColumnDefinitions>
             <TextBox 
-                x:Name="tb_main" 
-                x:FieldModifier="private" 
-                FontWeight="Medium" 
-                FontSize="14" 
-                VerticalContentAlignment="Center" 
-                Padding="10,1" 
-                Grid.Column="0" 
-                Grid.RowSpan="2" 
+                x:Name="tb_main"
+                x:FieldModifier="private"
+                FontWeight="Medium"
+                FontSize="14"
+                VerticalContentAlignment="Center"
+                Padding="5,1"
+                Grid.Column="0"
+                Grid.RowSpan="2"
                 Foreground="{StaticResource Gray1}"
                 Text="1"
-                TextChanged="tb_main_TextChanged" 
-                PreviewTextInput="tb_main_PreviewTextInput" 
-                IsTabStop="False" 
-                HorizontalContentAlignment="Left">
+                TextChanged="tb_main_TextChanged"
+                PreviewTextInput="tb_main_PreviewTextInput"
+                IsTabStop="False"
+                LostFocus="tb_main_LostFocus">
             </TextBox>
             <Button 
-                x:Name="cmdUp" 
-                x:FieldModifier="private" 
-                Grid.Column="1" 
-                Grid.Row="0" 
-                Width="auto" 
-                Height="auto" 
-                Click="cmdUp_Click" 
-                Cursor="Hand" IsTabStop="False">
+                x:Name="cmdUp"
+                x:FieldModifier="private"
+                Grid.Column="1"
+                Grid.Row="0"
+                Width="auto"
+                Height="auto"
+                Click="cmdUp_Click"
+                Cursor="Hand"
+                IsTabStop="False">
                 <Button.Content>
                     <Path 
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center" 
-                        Fill="{StaticResource White}" 
-                        Data="M4,0 L0,4 L8,4 z"/>
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="{StaticResource White}"
+                        Data="M4,0 L0,4 L8,4 z" />
                 </Button.Content>
             </Button>
             <Button 
-                x:Name="cmdDown" 
-                x:FieldModifier="private" 
-                Grid.Column="1" 
-                Grid.Row="1" 
-                Width="auto" 
-                Height="auto" 
-                Click="cmdDown_Click" 
-                Cursor="Hand" IsTabStop="False">
+                x:Name="cmdDown"
+                x:FieldModifier="private"
+                Grid.Column="1"
+                Grid.Row="1"
+                Width="auto"
+                Height="auto"
+                Click="cmdDown_Click"
+                Cursor="Hand"
+                IsTabStop="False">
                 <Button.Content>
                     <Path 
-                        HorizontalAlignment="Left" 
-                        VerticalAlignment="Top" 
-                        Fill="{StaticResource White}" 
-                        Data="M0,0 L8,0 L4,4 z"/>
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Fill="{StaticResource White}"
+                        Data="M0,0 L8,0 L4,4 z" />
                 </Button.Content>
             </Button>
             <Border 
-                x:Name="brdBrush" 
+                x:Name="brdBrush"
+                BorderBrush="{StaticResource Gray3}"
                 IsHitTestVisible="False"
-                BorderBrush="{StaticResource ThemeBrush}"
                 BorderThickness="1.5"
-                CornerRadius="4" 
-                Grid.RowSpan="2" 
-                Grid.ColumnSpan="2" 
-                Padding="0" 
+                CornerRadius="4"
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="2"
+                Padding="0"
                 Margin="0" />
         </Grid>
     </Border>
