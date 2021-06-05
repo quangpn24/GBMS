@@ -8,7 +8,7 @@
     <viewmodels:HomeViewModel x:Key="HomeVM"/>
     <viewmodels:ServiceViewModel x:Key="ServiceVM" />
     <viewmodels:CustomerViewModel x:Key="CustomerVM"/>
-
+    <viewmodels:BillViewModel x:Key="BillVM"/>
     <viewmodels:GoodsTypeViewModel x:Key="GoodsTypeVM"/>
     <viewmodels:ImportGoodsViewModel x:Key="ImportGoodsVM"/>
     <viewmodels:BusinessServiceViewModel x:Key="BusinessServiceVM"/>

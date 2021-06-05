@@ -125,7 +125,7 @@
                     FontSize="14"
                     BorderThickness="0"
                     MaxLines="1" 
-                    TabIndex="7"
+                    TabIndex="6"
                     Foreground="{StaticResource Gray1}"
                     Padding="0" 
                     Margin="0,0,10,0" 
@@ -146,7 +146,7 @@
                 Width="420" 
                 Height="40">
                 <Label 
-                    Content="số CMND" 
+                    Content="Số CMND" 
                     HorizontalAlignment="Left"
                     FontSize="18" 
                     FontWeight="SemiBold"
@@ -170,6 +170,7 @@
                     BorderThickness="0" 
                     MaxLines="1" 
                     TabIndex="6"
+                    MaxLength="11"
                     Foreground="{StaticResource Gray1}"
                     Padding="0"  
                     Margin="0,0,10,0" 

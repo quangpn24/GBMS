@@ -267,8 +267,8 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 adapter.Fill(dt);
                 Customer customer = new Customer(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
-                    dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(), dt.Rows[0].ItemArray[3].ToString(),
-                    dt.Rows[0].ItemArray[4].ToString(), double.Parse(dt.Rows[0].ItemArray[5].ToString()), int.Parse(dt.Rows[0].ItemArray[6].ToString()));
+                    dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(), int.Parse(dt.Rows[0].ItemArray[3].ToString()),
+                    long.Parse(dt.Rows[0].ItemArray[4].ToString()), int.Parse(dt.Rows[0].ItemArray[5].ToString()), (dt.Rows[0].ItemArray[6].ToString()));
                 return customer;
             }
             catch
@@ -302,7 +302,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch
             {
-                return -1;
+                return 0;
             }
             finally
             {

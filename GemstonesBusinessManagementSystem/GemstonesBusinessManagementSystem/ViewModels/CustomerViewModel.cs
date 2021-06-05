@@ -26,6 +26,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private List<CustomerControl> listCustomerControl = new List<CustomerControl>();
         private List<CustomerControl> listSearch = new List<CustomerControl>();
         public bool isEditing = false;
+        private PickCustomerWindow pickCustomerWindow;
         private CustomerControl customerControl;
 
         public ICommand LoadCustomerCommand { get; set; }
@@ -38,6 +39,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SortCustomerCommand { get; set; } 
         public ICommand CountCustomerCommand { get; set; }
         public ICommand FilterCommand { get; set; }
+        public ICommand PickCustomerCommand { get; set; }
 
         private MembershipsType filterMembership;
         public MembershipsType FilterMembership { get => filterMembership; set => filterMembership = value; }
@@ -72,6 +74,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             AddCustomerCommand = new RelayCommand<AddCustomerWindow>(p => true, p => AddCustomer(p));
             ExitCommand = new RelayCommand<AddCustomerWindow>((parameter) => true, (parameter) => parameter.Close());
         }
+
+        /*public void PickCustomer(CustomerControl customerControl)
+        {
+            pickCustomerWindow.txbId.Text = customerControl.txbId.Text;
+            pickCustomerWindow.txbName.Text = customerControl.txbName.Text;
+            pickCustomerWindow.txbAddress.Text = customerControl.txbAddress.Text;
+            pickCustomerWindow.txbPhoneNumber.Text = customerControl.txbPhoneNumber.Text;
+            pickCustomerWindow.txbIdNumber.Text = customerControl.txbIdNumber.Text;
+            pickCustomerWindow.txbRank.Text = customerControl.txbRank.Text;
+            customerControl.Focus();
+        }*/
 
         public void OpenAddCustomerWindow(MainWindow mainWindow)
         {
@@ -126,7 +139,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (currentPage == customerList.Count / 10)
                 end = customerList.Count;
 
-            mainWindow.txtNumOfCus.Text = String.Format("{0} - {1} of {2} items", start == end ? 0 : start + 1, end, customerList.Count);
+            mainWindow.txtNumOfCus.Text = String.Format("{0} - {1} of {2} customers", start == end ? 0 : start + 1, end, customerList.Count);
         }
         public void FindCustomer(MainWindow mainWindow)
         {

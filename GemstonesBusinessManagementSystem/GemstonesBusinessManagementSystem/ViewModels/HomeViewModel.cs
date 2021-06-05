@@ -158,7 +158,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //báo cáo phiếu
                 case 50:
-                    window.grdInvoice.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Báo cáo phiếu";
                     if (window.dpStartDateBS.SelectedDate != null)
                     {
@@ -174,6 +173,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //báo cáo doanh thu
                 case 51:
+                    window.grdInvoice.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Báo cáo doanh thu";
                     CloseExpander(window, 4);
                     window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);

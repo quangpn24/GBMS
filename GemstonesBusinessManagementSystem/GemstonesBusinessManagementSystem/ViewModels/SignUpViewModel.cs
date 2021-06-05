@@ -188,6 +188,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             int type = 0;
+            type = selectedEmployee.IdPosition;
             int idAccount = AccountDAL.Instance.GetNewID();
             if(idAccount != -1)
             {

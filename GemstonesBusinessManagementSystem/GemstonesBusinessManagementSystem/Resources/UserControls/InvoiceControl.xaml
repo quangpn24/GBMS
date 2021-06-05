@@ -10,6 +10,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             DataContext="{StaticResource BillVM}"
              Height="40"
              Margin="0,0,0,0">
     <Border
@@ -17,7 +18,6 @@
         BorderThickness="1">
         <Grid
             x:Name="grdMain"
-            Width="1180"
             Margin="0"
             Background="White">
             <Grid.ColumnDefinitions>
@@ -39,8 +39,8 @@
                 Padding="0"
                 FontWeight="Medium" />
             <TextBlock 
-                x:Name="txbDate"
-                Text="24/12/2001"
+                x:Name="txbNameCustomer"
+                Text="khách hàng"
                 Grid.Column="1"
                 HorizontalAlignment="Center"
                 Margin="20,0,0,0"
@@ -61,22 +61,22 @@
                 Padding="0"
                 FontWeight="Medium" />
             <TextBlock
-                x:Name="txbNameCustomer"
+                x:Name="txbPrice"
                 Grid.Column="3"
                 HorizontalAlignment="Center"
                 Margin="0"
-                Text="Nguyễn Văn A"
+                Text="Tỏng tiền"
                 TextWrapping="Wrap"
                 VerticalAlignment="Center"
                 FontSize="18"
                 Padding="0"
                 FontWeight="Medium" />
             <TextBlock 
-                x:Name="txbPrice"
+                x:Name="txbStatus"
                 Grid.Column="4"
                 HorizontalAlignment="Center"
                 Margin="0"
-                Text="50.000.000"
+                Text="Đã giao"
                 TextWrapping="Wrap"
                 VerticalAlignment="Center"
                 FontSize="18"

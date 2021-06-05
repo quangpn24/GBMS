@@ -24,6 +24,106 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
 
         }
+        public int GetMaxId()
+        {
+            int res = 0;
+            try
+            {
+                OpenConnection();
+                string queryString = @"SELECT MAX(idBill) FROM Bill";
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                res = int.Parse(dataTable.Rows[0].ItemArray[0].ToString());
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            return res;
+        }
+        public Bill GetBill(string idBill)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "select * from Bill where idBill = " + idBill;
+
+                MySqlCommand command = new MySqlCommand(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                Bill res;
+                if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[1].ToString()))
+                {
+                    res = new Bill(int.Parse(idBill), 1, DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
+                        long.Parse(dataTable.Rows[0].ItemArray[4].ToString()), int.Parse(dataTable.Rows[0].ItemArray[5].ToString()));
+                }
+                else
+                {
+                    res = new Bill(int.Parse(idBill), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
+                        long.Parse(dataTable.Rows[0].ItemArray[4].ToString()), int.Parse(dataTable.Rows[0].ItemArray[5].ToString()));
+                }
+                return res;
+            }
+            catch
+            {
+                return new Bill();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public List<Bill> GetByDate (DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                OpenConnection();
+                string start = startDate.ToString("yyyy-MM-dd");
+                string end = endDate.AddDays(1).ToString("yyyy-MM-dd");
+                string query = string.Format("select * from Bill where invoiceDate >= '{0}' and invoiceDate <= '{1}';", start, end);
+
+                MySqlCommand command = new MySqlCommand(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                List<Bill> res = new List<Bill>();
+                for(int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    Bill temp;
+                    if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[1].ToString()))
+                    {
+                        temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), 1, DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
+                            long.Parse(dataTable.Rows[0].ItemArray[4].ToString()), int.Parse(dataTable.Rows[0].ItemArray[5].ToString()));
+                    }
+                    else
+                    {
+                        temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
+                            long.Parse(dataTable.Rows[0].ItemArray[4].ToString()), int.Parse(dataTable.Rows[0].ItemArray[5].ToString()));
+                    }
+                    res.Add(temp);
+                }
+                return res;
+            }
+            catch
+            {
+                return new List<Bill>();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
         public SortedList<int, int> GetSoldDataAgo(string month, string year)
         {
             try

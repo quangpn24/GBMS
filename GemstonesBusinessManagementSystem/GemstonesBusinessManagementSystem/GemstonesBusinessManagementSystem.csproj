@@ -136,6 +136,7 @@
     <Compile Include="Converter.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\AuthorizationsDAL.cs" />
+    <Compile Include="DAL\BillInfoDAL.cs" />
     <Compile Include="DAL\BillServiceDAL.cs" />
     <Compile Include="DAL\BillServiceInfoDAL.cs" />
     <Compile Include="DAL\Connection.cs" />
@@ -148,6 +149,8 @@
     <Compile Include="DAL\MembershipsTypeDAL.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Authorizations.cs" />
+    <Compile Include="Models\Bill.cs" />
+    <Compile Include="Models\BillInfo.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeePosition.cs" />
@@ -187,8 +190,8 @@
       <DependentUpon>StockReceiptInfoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\BillViewModel.cs" />
     <Compile Include="ViewModels\GoodsTypeViewModel.cs" />
-    <Compile Include="ViewModels\GoodsViewModel.cs" />
     <Compile Include="ViewModels\ImportGoodsViewModel.cs" />
     <Compile Include="Resources\Template\BillServiceTemplate.xaml.cs">
       <DependentUpon>BillServiceTemplate.xaml</DependentUpon>
@@ -228,7 +231,6 @@
     <Compile Include="Resources\UserControls\ServiceControl.xaml.cs">
       <DependentUpon>ServiceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\EmployeeViewModel.cs" />
     <Compile Include="ViewModels\GoodsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\BillServiceViewModel.cs" />
@@ -247,7 +249,8 @@
     <Compile Include="ViewModels\SignUpViewModel.cs" />
     <Compile Include="Views\AddCustomerWindow.xaml.cs">
       <DependentUpon>AddCustomerWindow.xaml</DependentUpon>
-    <Compile Include="ViewModels\StockViewModel.cs"/>
+    </Compile>
+    <Compile Include="ViewModels\StockViewModel.cs" />
     <Compile Include="Views\AddEmployeeWindow.xaml.cs">
       <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
     </Compile>
@@ -281,6 +284,7 @@
     </Compile>
     <Compile Include="Views\SignUpWindow.xaml.cs">
       <DependentUpon>SignUpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PickCustomerWindow.xaml.cs">
       <DependentUpon>PickCustomerWindow.xaml</DependentUpon>
     </Compile>
@@ -301,7 +305,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Template\StockReceiptTemplate.xaml">
-     <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\ScrollbarStyles.xaml">
@@ -352,7 +356,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddCustomerWindow.xaml">
     <Page Include="Resources\UserControls\SaleServiceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -378,7 +381,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\StockReceiptInfoControl.xaml">
-    <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\StockControl.xaml">
@@ -401,6 +404,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddCustomerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ForgotPasswordWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -408,6 +415,7 @@
     <Page Include="Views\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\GoodsTypeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
