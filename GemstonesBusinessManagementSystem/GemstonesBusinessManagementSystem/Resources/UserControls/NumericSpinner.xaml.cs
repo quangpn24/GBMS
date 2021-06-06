@@ -58,14 +58,25 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
                 if (value < MinValue)
                 {
                     value = MinValue;
+                    this.brdBrush.BorderBrush = Brushes.Red;
+                }
+                else
+                {
+                    this.brdBrush.BorderBrush = Brushes.Gray;
+
                 }
                 if (value > MaxValue)
                 {
                     value = MaxValue;
+                    this.brdBrush.BorderBrush = Brushes.Red;
                 }
-                tb_main.Text = value.ToString();
+                else
+                {
+                    this.brdBrush.BorderBrush = Brushes.Gray;
+                }
                 SetValue(ValueProperty, value);
                 ValueChanged(this, new EventArgs());
+                tb_main.Text = Value.ToString();
             }
         }
 
@@ -135,8 +146,9 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
             get { return (decimal)GetValue(MinValueProperty); }
             set
             {
-                if (value > MaxValue)
-                    value = MaxValue;
+                if (value < MinValue)
+                    value = MinValue;
+
                 SetValue(MinValueProperty, value);
             }
         }
@@ -156,8 +168,8 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
             get { return (decimal)GetValue(MaxValueProperty); }
             set
             {
-                if (value < MinValue)
-                    value = MinValue;
+                if (value > MaxValue)
+                    value = MaxValue;
                 SetValue(MaxValueProperty, value);
             }
         }
@@ -204,6 +216,18 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void tb_main_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Text = decimal.Parse(this.tb_main.Text);
+            }
+            catch
+            {
+                Text = Value;
+            }
         }
     }
 }

@@ -15,7 +15,9 @@
         DataContext="{StaticResource GoodsVM}"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
-    <Grid Margin="0">
+    <Grid
+        Margin="0"
+        Height="400">
         <Grid
             x:Name="grdSelectImg"
             Margin="50,50,0,0" 
@@ -57,12 +59,13 @@
                 Width="64" Height="54"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"  
-                Margin="0,25,0,0" Foreground="{StaticResource Primary}"/>
+                Margin="0,25,0,0" 
+                Foreground="{StaticResource Primary}"/>
         </Grid>
         <Grid 
             x:Name="grdInfo"
             HorizontalAlignment="Left"
-            Height="280"
+            Height="220"
             Margin="240,40,0,0"
             VerticalAlignment="Top" 
             Width="420">
@@ -140,7 +143,7 @@
                     Margin="0,0,10,0" 
                     HorizontalContentAlignment="Left" 
                     VerticalContentAlignment="Center"
-                    FontWeight="SemiBold">
+                    FontWeight="SemiBold" TabIndex="0">
                 </TextBox>
             </Grid>
             <Grid 
@@ -178,12 +181,52 @@
                     DisplayMemberPath="Name"
                     VerticalContentAlignment="Center" 
                     HorizontalContentAlignment="Left"
-                    FontWeight="SemiBold">
+                    FontWeight="SemiBold" 
+                    TabIndex="1">
                 </ComboBox>
+            </Grid>
+            <Grid 
+                Margin="0,180,0,0" 
+                VerticalAlignment="Top" 
+                Width="420" 
+                Height="40">
+                <Label 
+                    Content="Giá nhập"
+                    HorizontalAlignment="Left"
+                    FontSize="18"
+                    FontWeight="SemiBold" 
+                    Height="32" 
+                    Margin="0" 
+                    VerticalAlignment="Center"/>
+                <Rectangle 
+                    HorizontalAlignment="Right" 
+                    Height="40" 
+                    Width="230" 
+                    RadiusY="6" 
+                    RadiusX="6"
+                    Margin="0"
+                    Stroke="{StaticResource Gray2}"/>
+                <TextBox 
+                    x:Name="txtImportPrice"
+                    Cursor="IBeam"
+                    materialDesign:HintAssist.Hint="Giá nhập"
+                    HorizontalAlignment="Right"
+                    Height="40"  
+                    Width="210" 
+                    FontSize="14" 
+                    BorderThickness="0" 
+                    MaxLines="1"
+                    Padding="0" 
+                    Margin="0,0,10,0" 
+                    HorizontalContentAlignment="Left" 
+                    VerticalContentAlignment="Center"
+                    FontWeight="SemiBold"
+                    TabIndex="2">
+                </TextBox>
             </Grid>
         </Grid>
         <Grid 
-            Margin="0,350,34,0" 
+            Margin="0,310,34,0" 
             VerticalAlignment="Top"  
             Height="40" 
             Width="220" 
@@ -203,22 +246,25 @@
                 FontSize="18" 
                 Style="{StaticResource GreenButton}"
                 VerticalAlignment="Center"
-                Padding="0" Background="{StaticResource Success}" />
+                Padding="0"
+                Background="{StaticResource Success}" 
+                IsTabStop="False" />
             <Button
                 x:Name="btnCancel"
                 Command="{Binding ExitCommand}"
                 CommandParameter="{Binding ElementName=wdAddGoods}"
                 Height="40"
                 Width="100"
-                ToolTip="Thoát"  
-                Margin="0" 
+                ToolTip="Thoát"
+                Margin="0"
                 HorizontalAlignment="Right"
                 FocusVisualStyle="{x:Null}"
-                Content="Bỏ qua" 
+                Content="Bỏ qua"
                 FontSize="18"
                 VerticalAlignment="Center"
                 Padding="0" 
-                Background="{StaticResource Gray2}" />
+                Background="{StaticResource Gray2}" 
+                IsTabStop="False"/>
         </Grid>
     </Grid>
 </Window>

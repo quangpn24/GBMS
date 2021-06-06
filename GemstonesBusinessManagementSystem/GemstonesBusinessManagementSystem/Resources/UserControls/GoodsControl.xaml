@@ -9,86 +9,101 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d" 
     x:Name="ucDisplayGoods"
-    Width="1180" 
     DataContext="{StaticResource GoodsVM}"
     Height="40" 
     Margin="0,0,0,2">
     <Grid
         x:Name="grdMain">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="160"/>
-            <ColumnDefinition Width="160"/>
-            <ColumnDefinition Width="160"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="9"
+            Fill="{StaticResource Light}"
+            Height="1"
+            VerticalAlignment="Bottom"/>
+        <Rectangle 
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Left"/>
+        <Rectangle 
+            Grid.Column="8"
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Right"/>
         <TextBlock 
             x:Name="txbId"
             Text="Mã SP"
             Grid.Column="0"
+            Style="{StaticResource Text}"
             HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold"/>
+            Margin="0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbName"
             Text="Tên sản phẩm" 
             Grid.Column="1"
+             Style="{StaticResource Text}"
             HorizontalAlignment="Left" 
-            Margin="20,0,0,0" 
-            Padding="10,0,0,0"
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold" />
+            Margin="20,0,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbGoodsType"
             Text="Loại sản phẩm" 
             Grid.Column="2"
+            Style="{StaticResource Text}"
             HorizontalAlignment="Left" 
-            Margin="20,0,0,0" 
-            Padding="10,0,0,0"
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold" />
-        <TextBlock 
-            x:Name="txbQuantity"
-            Text="Số lượng" 
-            Grid.Column="3"
-            HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold" />
+            Margin="10,0,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbUnit"
             Text="Đơn vị tính" 
-            Grid.Column="4"
+            Grid.Column="3"
+            Style="{StaticResource Text}"
             HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold"/>
+            Margin="0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
         <TextBlock 
-            x:Name="txbPrice"
-            Text="Đơn giá" 
-            Grid.Column="5"
+            x:Name="txbQuantity"
+            Text="Số lượng" 
+            Grid.Column="4"
+            Style="{StaticResource Text}"
             HorizontalAlignment="Center" 
-            Margin="0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
-            FontSize="18" 
-            FontWeight="SemiBold"/>
-        <Button 
+            Margin="0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
+        <TextBlock 
+            x:Name="txbImportPrice"
+            Text="Giá nhập" 
+            Grid.Column="5"
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Center" 
+            Margin="0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
+        <TextBlock 
+            x:Name="txbSalesPrice"
+            Text="Giá bán ra" 
             Grid.Column="6"
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Center" 
+            Margin="0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"/>
+        <Button 
+            Grid.Column="7"
             x:Name="btnEditGoods"
             ToolTip="Sửa thông tin"
             Command="{Binding EditGoodsCommand}"
@@ -108,10 +123,11 @@
                 Kind="SquareEditOutline" 
                 Width="24"
                 Height="24" 
-                HorizontalAlignment="Left" Foreground="{StaticResource Primary}" />
+                HorizontalAlignment="Left"
+                Foreground="{StaticResource Primary}" />
         </Button>
         <Button 
-            Grid.Column="6"
+            Grid.Column="7"
             x:Name="btnDeleteGoods"
             ToolTip="Xóa mặt hàng" 
             Height="30"
@@ -130,7 +146,8 @@
             <materialDesign:PackIcon 
                 Kind="DeleteOutline" 
                 Height="24"
-                Width="24" Foreground="{StaticResource Error}"/>
+                Width="24"
+                Foreground="{StaticResource Error}"/>
         </Button>
     </Grid>
 </UserControl>

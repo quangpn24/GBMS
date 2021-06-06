@@ -136,9 +136,11 @@
     </ApplicationDefinition>
     <Compile Include="Converter.cs" />
     <Compile Include="DAL\BillInfoDAL.cs" />
+    <Compile Include="DAL\BillServiceDAL.cs" />
+    <Compile Include="DAL\BillServiceInfoDAL.cs" />
     <Compile Include="DAL\Connection.cs" />
+    <Compile Include="DAL\CustomerDAL.cs" />
     <Compile Include="DAL\BillDAL.cs" />
-    <Compile Include="DAL\StockReceiptDAL.cs" />
     <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="DAL\EmployeePositionDAL.cs" />
     <Compile Include="DAL\GoodsDAL.cs" />
@@ -155,6 +157,56 @@
     <Compile Include="Resources\UserControls\BillInfoControl.xaml.cs">
       <DependentUpon>BillInfoControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\BillService.cs" />
+    <Compile Include="Models\BillServiceInfo.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="DAL\StockReceiptDAL.cs" />
+    <Compile Include="DAL\StockReceiptInfoDAL.cs" />
+    <Compile Include="DAL\SupplierDAL.cs" />
+    <Compile Include="Models\Goods.cs" />
+    <Compile Include="Models\GoodsType.cs" />
+    <Compile Include="Models\StockReceipt.cs" />
+    <Compile Include="Models\StockReceiptInfo.cs" />
+    <Compile Include="Models\Supplier.cs" />
+    <Compile Include="Resources\Template\StockReceiptTemplate.xaml.cs">
+      <DependentUpon>StockReceiptTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\GoodsControl.xaml.cs">
+      <DependentUpon>GoodsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\GoodsTypeControl.xaml.cs">
+      <DependentUpon>GoodsTypeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\ImportGoodsControl.xaml.cs">
+      <DependentUpon>ImportGoodsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\NumericSpinner.xaml.cs">
+      <DependentUpon>NumericSpinner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\SearchGoodsControl.xaml.cs">
+      <DependentUpon>SearchGoodsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\StockReceiptInfoControl.xaml.cs">
+      <DependentUpon>StockReceiptInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\GoodsTypeViewModel.cs" />
+    <Compile Include="ViewModels\GoodsViewModel.cs" />
+    <Compile Include="ViewModels\ImportGoodsViewModel.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeePosition.cs" />
+    <Compile Include="Resources\Template\BillServiceTemplate.xaml.cs">
+      <DependentUpon>BillServiceTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\BillServiceControl.xaml.cs">
+      <DependentUpon>BillServiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\BillServiceTemplateControl.xaml.cs">
+      <DependentUpon>BillServiceTemplateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\CustomerControl.xaml.cs">
+      <DependentUpon>CustomerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\DashboardControl.xaml.cs">
       <DependentUpon>DashboardControl.xaml</DependentUpon>
     </Compile>
@@ -166,8 +218,11 @@
     </Compile>
     <Compile Include="DAL\ServiceDAL.cs" />
     <Compile Include="Models\Service.cs" />
-    <Compile Include="Resources\UserControls\GoodsControl.xaml.cs">
-      <DependentUpon>GoodsControl.xaml</DependentUpon>
+    <Compile Include="Resources\UserControls\SaleServiceControl.xaml.cs">
+      <DependentUpon>SaleServiceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\SaleServiceDetailsControl.xaml.cs">
+      <DependentUpon>SaleServiceDetailsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\NumericSpinner.xaml.cs">
       <DependentUpon>NumericSpinner.xaml</DependentUpon>
@@ -181,12 +236,13 @@
     <Compile Include="Resources\UserControls\ServiceControl.xaml.cs">
       <DependentUpon>ServiceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BillServiceViewModel.cs" />
+    <Compile Include="ViewModels\BusinessServiceViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="Resources\UserControls\StockControl.xaml.cs">
       <DependentUpon>StockControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
-    <Compile Include="ViewModels\GoodsViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="App.xaml.cs">
@@ -201,6 +257,12 @@
     <Compile Include="Views\AddGoodsWindow.xaml.cs">
       <DependentUpon>AddGoodsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GoodsTypeWindow.xaml.cs">
+      <DependentUpon>GoodsTypeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImportGoodsWindow.xaml.cs">
+      <DependentUpon>ImportGoodsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EmployeePositionWindow.xaml.cs">
       <DependentUpon>EmployeePositionWindow.xaml</DependentUpon>
     </Compile>
@@ -210,6 +272,9 @@
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PickCustomerWindow.xaml.cs">
+      <DependentUpon>PickCustomerWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\ButtonStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -227,6 +292,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\Template\StockReceiptTemplate.xaml">
+     <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\ScrollbarStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -235,11 +304,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\Template\BillServiceTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\TextStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\UserControls\BillInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\BillServiceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\BillServiceTemplateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\CustomerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,6 +356,34 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\UserControls\SaleServiceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\SaleServiceDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\GoodsTypeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\ImportGoodsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\NumericSpinner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UserControls\SearchGoodsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\StockReceiptInfoControl.xaml">
+    <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\UserControls\StockControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -287,6 +400,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\GoodsTypeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImportGoodsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EmployeePositionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -298,6 +419,10 @@
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PickCustomerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
