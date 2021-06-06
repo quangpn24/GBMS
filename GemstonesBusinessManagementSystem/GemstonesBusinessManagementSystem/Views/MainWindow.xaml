@@ -445,11 +445,11 @@
                         Grid.Column="0" 
                         Margin="20,0,10,20">
                         <Grid
-                            Height="200"
+                            Height="270"
                             Style="{StaticResource DropShadow}"
                             Background="{StaticResource White}">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="70"/>
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0">
@@ -459,28 +459,16 @@
                                     Text="Sắp xếp" HorizontalAlignment="Left" 
                                     VerticalAlignment="Center" 
                                     Margin="20,0,0,0"/>
-                                <Button 
-                                    Width="100"
-                                    FontSize="18"
-                                    Content="Xóa chọn"
-                                    Command="{Binding DeleteFilterCommand}"
-                                    CommandParameter="{Binding ElementName=wdMain}"
-                                    Style="{StaticResource MaterialDesignFlatButton}"
-                                    Foreground="{StaticResource ThemeRedBrush}"
-                                    FocusVisualStyle="{x:Null}"
-                                    Background="{x:Null}" 
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center" 
-                                    Margin="0,0,10,0" 
-                                    Padding="0"/>
                                 <Rectangle 
                                     Height="3"
                                     Fill="{StaticResource Light}"
                                     VerticalAlignment="Bottom" Margin="20,0"/>
                             </Grid>
-                            <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                            <StackPanel
+                                Grid.Row="1" 
+                                VerticalAlignment="Top">
                                 <Grid  
-                                    Margin="20,20,20,0" 
+                                    Margin="20,30,20,0" 
                                     Height="45" 
                                     Style="{StaticResource DropShadow}" 
                                     VerticalAlignment="Center">
@@ -518,7 +506,7 @@
                                     </ComboBox>
                                 </Grid>
                                 <Grid  
-                                    Margin="20,20,20,0" 
+                                    Margin="20,30,20,0" 
                                     Height="45" 
                                     Style="{StaticResource DropShadow}" 
                                     VerticalAlignment="Center">
@@ -555,12 +543,12 @@
                             </StackPanel>
                         </Grid>
                         <Grid
-                            Height="150"
+                            Height="160"
                             Style="{StaticResource DropShadow}"
                             Background="{StaticResource White}"
                             Margin="0,20,0,0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="70"/>
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBlock
@@ -587,12 +575,12 @@
                                 VerticalAlignment="Center"/>
                         </Grid>
                         <Grid
-                            Height="150"
+                            Height="160"
                             Style="{StaticResource DropShadow}"
                             Background="{StaticResource White}"
                             Margin="0,20,0,0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="70"/>
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBlock
@@ -1522,7 +1510,7 @@
                                     Fill="{DynamicResource White}" 
                                     RadiusY="4" 
                                     RadiusX="4"
-                                    Panel.ZIndex="-1" />
+                                    Panel.ZIndex="-1"/>
                                 <ComboBox
                                     x:Name="cboSupplier"
                                     materialDesign:ComboBoxAssist.ClassicMode="True"
@@ -1667,7 +1655,6 @@
                             Margin="0,0,20,0">
                             <TextBlock 
                                 x:Name="txtNumOfReceipt"
-                                Text="0 trong 0 mặt hàng"
                                 Margin="0,0,40,0"
                                 FontSize="14"
                                 TextAlignment="Justify"

@@ -32,8 +32,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private GoodsType selectedGoodsType_Filter = new GoodsType();
         public GoodsType SelectedGoodsType_Filter { get => selectedGoodsType_Filter; set { selectedGoodsType_Filter = value; OnPropertyChanged("SelectedGoodsType"); } }
 
-        private ObservableCollection<GoodsType> itemSourceGoodsType = new ObservableCollection<GoodsType>();
-        public ObservableCollection<GoodsType> ItemSourceGoodsType { get => itemSourceGoodsType; set { itemSourceGoodsType = value; OnPropertyChanged(); } }
         public ObservableCollection<GoodsType> ItemSourceGoodsType_Filter { get => itemSourceGoodsType_Filter; set { itemSourceGoodsType_Filter = value; OnPropertyChanged(); } }
         private ObservableCollection<GoodsType> itemSourceGoodsType_Filter = new ObservableCollection<GoodsType>();
 
@@ -120,7 +118,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 end = listGoodsControl.Count;
             }
-            mainWindow.txtNumOfGoods.Text = String.Format("{0} trong {1} mặt hàng", end - start, listGoodsControl.Count);
+            mainWindow.txtNumOfGoods.Text = String.Format("Trang {0} trên {1} trang", currentPage, listGoodsControl.Count / 11 + 1);
         }
         void Sort(MainWindow main)
         {
@@ -212,7 +210,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void SetItemSourceGoodsType(MainWindow main)
         {
-            itemSourceGoodsType.Clear();
             itemSourceGoodsType_Filter.Clear();
             GoodsType newGoodsType = new GoodsType();
             newGoodsType.Name = "Tất cả";
@@ -223,7 +220,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 GoodsType type = new GoodsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), double.Parse(dt.Rows[0].ItemArray[2].ToString()),
                     dt.Rows[0].ItemArray[3].ToString(), true );
-                itemSourceGoodsType.Add(type);
                 itemSourceGoodsType_Filter.Add(type);
             }
         }

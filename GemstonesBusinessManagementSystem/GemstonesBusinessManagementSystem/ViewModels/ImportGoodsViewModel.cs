@@ -74,6 +74,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SelectReceiptCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand PrintReceiptInfoCommand { get; set; }
+        public ICommand VisibleChangedCommand { get; set; }
 
 
         //other
@@ -107,6 +108,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SelectReceiptCommand = new RelayCommand<ReceiptControl>(p => true, p => SelectReceipt(p));
             PrintReceiptInfoCommand = new RelayCommand<MainWindow>(p => true, p => PrintReceiptInfo(p));
             CancelCommand = new RelayCommand<MainWindow>(p => true, p => Cancel(p));
+            VisibleChangedCommand = new RelayCommand<MainWindow>(p => true, p => MessageBox.Show(""));
         }
         public void Init(MainWindow main)
         {
@@ -114,6 +116,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SetItemSource();
             currentPage = 1;
             DataTable dt = StockReceiptDAL.Instance.GetAll();
+            listReceiptControl.Clear();
+            listReceiptToView.Clear();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 ReceiptControl control = new ReceiptControl();
@@ -203,12 +207,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.txbImporter.Text = control.txbImporter.Text;
             mainWindow.txbSupplier.Text = control.txbSupplier.Text;
             mainWindow.txbMoneyToPayGoods.Text = control.txbMoneyToPay.Text;
+            mainWindow.txbTotalMoneyGoods.Text = Total.ToString();
             mainWindow.txbDiscount.Text = (((Total - long.Parse(control.txbMoneyToPay.Text)) * 100) / Total).ToString() + "%";
         }
         public void LoadReceiptToView(MainWindow main)
         {
             main.stkReceipt.Children.Clear();
-
             int start = 0;
             int end = 0;
             LoadInfoOfPage(ref start, ref end);
@@ -267,7 +271,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 end = listReceiptToView.Count;
             }
-            mainWindow.txtNumOfReceipt.Text = String.Format("{0} trong {1} mặt hàng", end - start, listReceiptToView.Count);
+            mainWindow.txtNumOfReceipt.Text = String.Format("Trang {0} trên {1} trang", currentPage, listReceiptToView.Count / 11 + 1);
         }
         public void ExportExcel(MainWindow main) // cần custom lại
         {
@@ -516,7 +520,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             wdImportGoods.cboSelectFast.SelectedIndex = -1;
         }
-        void SetItemSource()
+        public void SetItemSource()
         {
             //Set item source goodstype
             itemSourceGoodsType.Clear();
