@@ -26,6 +26,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             int index = int.Parse(uid);
 
+            window.grdSale.Visibility = Visibility.Collapsed;
             window.grdStock.Visibility = Visibility.Collapsed;
             window.grdEmployee.Visibility = Visibility.Collapsed;
             window.grdGoods.Visibility = Visibility.Collapsed;
@@ -74,6 +75,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //bán hàng
                 case 10:
                     window.txbTabName.Text = "Bán hàng";
+                    window.grdSale.Visibility = Visibility.Visible;
                     CloseExpander(window, 0);
                     window.btnStore.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnStore.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);

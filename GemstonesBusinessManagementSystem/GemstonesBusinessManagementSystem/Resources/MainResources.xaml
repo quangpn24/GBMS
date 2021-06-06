@@ -4,6 +4,7 @@
     <viewmodels:GoodsViewModel x:Key="GoodsVM"/>
     <viewmodels:EmployeeViewModel x:Key="EmployeeVM"/>
     <viewmodels:HomeViewModel x:Key="HomeVM"/>
-    <viewmodels:ServiceViewModel x:Key="ServiceVM" />
+    <viewmodels:ServiceViewModel x:Key="ServiceVM"/>
     <viewmodels:StockViewModel x:Key="StockVM" />
+    <viewmodels:SaleViewModel x:Key="SaleVM"/>
 </ResourceDictionary>

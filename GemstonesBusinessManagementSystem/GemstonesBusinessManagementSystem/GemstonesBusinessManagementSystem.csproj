@@ -73,6 +73,7 @@
     <Reference Include="MySql.Data, Version=8.0.23.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.23\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="Renci.SshNet, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2020.0.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
@@ -134,6 +135,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter.cs" />
+    <Compile Include="DAL\BillInfoDAL.cs" />
     <Compile Include="DAL\Connection.cs" />
     <Compile Include="DAL\BillDAL.cs" />
     <Compile Include="DAL\StockReceiptDAL.cs" />
@@ -141,10 +143,18 @@
     <Compile Include="DAL\EmployeePositionDAL.cs" />
     <Compile Include="DAL\GoodsDAL.cs" />
     <Compile Include="DAL\GoodsTypeDAL.cs" />
+    <Compile Include="Models\BillInfo.cs" />
+    <Compile Include="Models\Bill.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeePosition.cs" />
     <Compile Include="Models\Goods.cs" />
     <Compile Include="Models\GoodsType.cs" />
+    <Compile Include="Resources\Template\BillTemplate.xaml.cs">
+      <DependentUpon>BillTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\BillInfoControl.xaml.cs">
+      <DependentUpon>BillInfoControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\DashboardControl.xaml.cs">
       <DependentUpon>DashboardControl.xaml</DependentUpon>
     </Compile>
@@ -158,6 +168,15 @@
     <Compile Include="Models\Service.cs" />
     <Compile Include="Resources\UserControls\GoodsControl.xaml.cs">
       <DependentUpon>GoodsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\NumericSpinner.xaml.cs">
+      <DependentUpon>NumericSpinner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\SaleGoodsControl.xaml.cs">
+      <DependentUpon>SaleGoodsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\SelectedGoodsControl.xaml.cs">
+      <DependentUpon>SelectedGoodsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\ServiceControl.xaml.cs">
       <DependentUpon>ServiceControl.xaml</DependentUpon>
@@ -174,6 +193,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\SaleViewModel.cs" />
     <Compile Include="ViewModels\StockViewModel.cs" />
     <Compile Include="Views\AddEmployeeWindow.xaml.cs">
       <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
@@ -211,9 +231,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\Template\BillTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\TextStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UserControls\BillInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\DashboardControl.xaml">
       <SubType>Designer</SubType>
@@ -230,6 +258,18 @@
     <Page Include="Resources\UserControls\GoodsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UserControls\NumericSpinner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\SaleGoodsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\SelectedGoodsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\StockControl.xaml">
       <SubType>Designer</SubType>

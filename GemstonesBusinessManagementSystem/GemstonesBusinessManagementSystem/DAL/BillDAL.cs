@@ -24,6 +24,53 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
 
         }
+        public bool Insert(Bill bill)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "insert into Bill (idBill,idAccount,invoiceDate,status,totalMoney,idCustomer,note) " +
+                    "values(@idBill,@idAccount,@invoiceDate,@status,@totalMoney,@idCustomer,@note)";
+                
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@idBill", bill.IdBill);
+                cmd.Parameters.AddWithValue("@idAccount", bill.IdAccount);
+                cmd.Parameters.AddWithValue("@invoiceDate", bill.InvoiceDate);
+                cmd.Parameters.AddWithValue("@status", bill.Status);
+                cmd.Parameters.AddWithValue("@totalMoney", bill.TotalMoney);
+                cmd.Parameters.AddWithValue("@idCustomer", bill.IdCustomer);
+                cmd.Parameters.AddWithValue("@note", bill.Note);
+
+                return cmd.ExecuteNonQuery() == 1;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return false;
+            }
+        }
+        public int GetMaxId()
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "select max(idBill) from Bill";
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                MySqlDataReader rdr = command.ExecuteReader();
+                rdr.Read();
+                int maxId = int.Parse(rdr.GetString(0));
+                return maxId;
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
         public SortedList<int, int> GetSoldDataAgo(string month, string year)
         {
             try
