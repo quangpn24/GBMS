@@ -31,7 +31,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
         private GoodsType selectedGoodsType_Filter = new GoodsType();
         public GoodsType SelectedGoodsType_Filter { get => selectedGoodsType_Filter; set { selectedGoodsType_Filter = value; OnPropertyChanged("SelectedGoodsType"); } }
-
+        private ObservableCollection<GoodsType> itemSourceGoodsType = new ObservableCollection<GoodsType>();
+        public ObservableCollection<GoodsType> ItemSourceGoodsType { get => itemSourceGoodsType; set { itemSourceGoodsType = value; OnPropertyChanged(); } }
         public ObservableCollection<GoodsType> ItemSourceGoodsType_Filter { get => itemSourceGoodsType_Filter; set { itemSourceGoodsType_Filter = value; OnPropertyChanged(); } }
         private ObservableCollection<GoodsType> itemSourceGoodsType_Filter = new ObservableCollection<GoodsType>();
 
@@ -211,6 +212,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void SetItemSourceGoodsType(MainWindow main)
         {
             itemSourceGoodsType_Filter.Clear();
+            itemSourceGoodsType.Clear();
             GoodsType newGoodsType = new GoodsType();
             newGoodsType.Name = "Tất cả";
             itemSourceGoodsType_Filter.Add(newGoodsType);
@@ -221,6 +223,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     dt.Rows[i].ItemArray[1].ToString(), double.Parse(dt.Rows[0].ItemArray[2].ToString()),
                     dt.Rows[0].ItemArray[3].ToString(), true );
                 itemSourceGoodsType_Filter.Add(type);
+                itemSourceGoodsType.Add(type);
             }
         }
         void OpenGoodsTypeWindow(MainWindow main)

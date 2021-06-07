@@ -69,7 +69,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 cmd.Parameters.AddWithValue("@price", goods.ImportPrice);
                 cmd.Parameters.AddWithValue("@quantity", goods.Quantity);
                 cmd.Parameters.AddWithValue("@idGoodsType", goods.IdGoodsType);
-                cmd.Parameters.AddWithValue("@imageFile", Convert.ToBase64String(goods.ImageFile));
+                cmd.Parameters.AddWithValue("@imageFile", goods.ImageFile);
                 cmd.Parameters.AddWithValue("@isDeleted", goods.IsDeleted);
                 int rs = cmd.ExecuteNonQuery();
                 if (rs == 1)
@@ -184,8 +184,11 @@ namespace GemstonesBusinessManagementSystem.DAL
                 Goods res = new Goods(int.Parse(idGoods), dataTable.Rows[0].ItemArray[1].ToString(),
                     long.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
                     int.Parse(dataTable.Rows[0].ItemArray[4].ToString()),
-                    Convert.FromBase64String(dataTable.Rows[0].ItemArray[5].ToString()),
-                    bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));
+                   Convert.FromBase64String(dataTable.Rows[0].ItemArray[5].ToString()), bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));
+                /*   Goods res = new Goods(int.Parse(idGoods), dataTable.Rows[0].ItemArray[1].ToString(),
+                       long.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
+                       int.Parse(dataTable.Rows[0].ItemArray[4].ToString()),
+                       (Byte [])dataTable.Rows[0].ItemArray[5], bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));*/
                 return res;
             }
             catch

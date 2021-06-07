@@ -25,7 +25,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private string oldSupplier;
         private SupplierControl supplierControl;
         private ObservableCollection<string> itemSource = new ObservableCollection<string>();
-        public ObservableCollection<string> IteamSource { get =>itemSource; set { itemSource = value; OnPropertyChanged(); } }
+        public ObservableCollection<string> IteamSource { get => itemSource; set { itemSource = value; OnPropertyChanged(); } }
 
         public ICommand LoadSupplierCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
@@ -41,7 +41,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public SupplierViewModel()
         {
             LoadSupplierCommand = new RelayCommand<MainWindow>(p => true, p => Init(p));
-            ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel());
+            ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
             SearchCommand = new RelayCommand<MainWindow>(p => true, p => Search(p));
             OpenAddSupplierWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenAddSupplierWindow(p));
             SaveCommnad = new RelayCommand<AddSupplierWindow>(p => true, p => AddOrUpdate(p));
@@ -54,7 +54,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void Sort(MainWindow main)
         {
-           
+
             if (main.cboSortType.SelectedIndex == 0)
             {
                 switch (main.cboSortSupplier.SelectedIndex)
@@ -69,7 +69,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         break;
                 }
             }
-            else if(main.cboSortType.SelectedIndex == 1)
+            else if (main.cboSortType.SelectedIndex == 1)
             {
                 switch (main.cboSortSupplier.SelectedIndex)
                 {
@@ -82,8 +82,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     default:
                         break;
                 }
-            }    
-            else if(main.cboSortType.SelectedIndex == 2)
+            }
+            else if (main.cboSortType.SelectedIndex == 2)
             {
                 switch (main.cboSortSupplier.SelectedIndex)
                 {
@@ -110,7 +110,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     itemSource.Add("Từ A -> Z");
                     itemSource.Add("Từ Z -> A");
                     break;
-                case 1: case 2:
+                case 1:
+                case 2:
                     main.cboSortSupplier.SelectedIndex = -1;
                     itemSource.Add("Tăng dần");
                     itemSource.Add("Giảm dần");
@@ -133,7 +134,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void AddOrUpdate(AddSupplierWindow wdAddSupplier)
         {
-            if(string.IsNullOrEmpty(wdAddSupplier.txtName.Text))
+            if (string.IsNullOrEmpty(wdAddSupplier.txtName.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên nhà cung cấp!");
                 wdAddSupplier.txtName.Focus();
@@ -160,9 +161,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
 
-            if(SupplierDAL.Instance.InsertOrUpdate(newSupplier, isUpdate))
+            if (SupplierDAL.Instance.InsertOrUpdate(newSupplier, isUpdate))
             {
-                if(isUpdate)
+                if (isUpdate)
                 {
                     supplierControl.txbName.Text = newSupplier.Name;
                     supplierControl.txbAddress.Text = newSupplier.Address;
@@ -183,7 +184,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 var importVM = mainWindow.grdImport.DataContext as ImportGoodsViewModel;
                 importVM.Init(mainWindow);
                 wdAddSupplier.Close();
-            }    
+            }
         }
         void OpenAddSupplierWindow(MainWindow main)
         {
@@ -273,25 +274,38 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 end = listSupplierToView.Count;
             }
-            mainWindow.txtNumOfSupplier.Text = String.Format("Trang {0} trên {1} trang", currentPage, listSupplierToView.Count/11 + 1);
+            mainWindow.txtNumOfSupplier.Text = String.Format("Trang {0} trên {1} trang", currentPage, listSupplierToView.Count / 11 + 1);
         }
-
-        public void ExportExcel()
+        public void ExportExcel(MainWindow main)
         {
+            DataTable table = new DataTable();
+            table.Columns.Add("Mã NCC", typeof(string));
+            table.Columns.Add("Tên nhà cung cấp", typeof(string));
+            table.Columns.Add("Địa chỉ", typeof(string));
+            table.Columns.Add("Số điện thoại", typeof(string));
+            table.Columns.Add("Số đơn hàng", typeof(int));
+            table.Columns.Add("Tổng tiền", typeof(long));
+
+            DataTable dt = SupplierDAL.Instance.GetAll();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                SupplierControl control = (SupplierControl)main.stkSupplier.Children[i];
+                table.Rows.Add(control.txbId.Text, control.txbName.Text, control.txbAddress.Text,
+                    control.txbPhoneNumber.Text, control.txbNumOfReceipts.Text, control.txbTotal.Text);
+            }
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Excel Workbook|*.xlsx"
+                Filter = "Excel |*.xlsx"
             };
-            if (saveFileDialog.ShowDialog() == true)
+            if ((bool)saveFileDialog.ShowDialog())
             {
                 using (XLWorkbook workbook = new XLWorkbook())
                 {
-                    DataTable dt = SupplierDAL.Instance.GetAll();
-                    dt.Columns.Remove("imageFile");
-                    workbook.Worksheets.Add(dt, "Goods");
+                    workbook.Worksheets.Add(table, "Danh sách nhà cung cấp");
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
-                MessageBox.Show("Xuất dữ liệu thành công!!!", "Thông báo");
+                MessageBox.Show("Xuất danh sách thành công!");
             }
         }
     }

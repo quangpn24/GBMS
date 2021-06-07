@@ -69,12 +69,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand PreviousPageCommand { get; set; }
         public ICommand NextPageCommand { get; set; }
         public ICommand LoadReceiptCommand { get; set; }
-        public ICommand ApproveCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
         public ICommand SelectReceiptCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand PrintReceiptInfoCommand { get; set; }
-        public ICommand VisibleChangedCommand { get; set; }
+        public ICommand SelectFilterCommand { get; set; }
+        public ICommand SelectStartDateCommand { get; set; }
+        public ICommand SelectEndDateCommand { get; set; }
 
 
         //other
@@ -103,12 +104,37 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             OpenImportGoodsWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenImportGoodsWindow(p));
             PreviousPageCommand = new RelayCommand<MainWindow>(p => true, p => GoToPreviousPage(p));
             NextPageCommand = new RelayCommand<MainWindow>(p => true, p => GoToNextPage(p));
-            ApproveCommand = new RelayCommand<MainWindow>(p => true, p => ApproveRequest(p));
             ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
             SelectReceiptCommand = new RelayCommand<ReceiptControl>(p => true, p => SelectReceipt(p));
             PrintReceiptInfoCommand = new RelayCommand<MainWindow>(p => true, p => PrintReceiptInfo(p));
             CancelCommand = new RelayCommand<MainWindow>(p => true, p => Cancel(p));
-            VisibleChangedCommand = new RelayCommand<MainWindow>(p => true, p => MessageBox.Show(""));
+            SelectFilterCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
+            SelectStartDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
+            SelectEndDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
+        }
+
+        void HandleFilter(MainWindow main)
+        {
+            //Gan lai list ban dau
+            listReceiptToView.Clear();
+            for (int i = 0; i < listReceiptControl.Count; i++)
+            {
+                listReceiptToView.Add(listReceiptControl[i]);
+            }
+            if (main.cboSupplier.SelectedIndex > 0)
+            {
+                listReceiptToView = listReceiptToView.FindAll(x => x.txbSupplier.Text == selectedSupplier.Name);
+                currentPage = 1;
+            }
+            bool cs = main.dpkStartDate.SelectedDate != null; // kiem tra ngay bat dau co null hay khong
+            bool ce = main.dpkEndDate.SelectedDate != null; //kiem tra ngay ket thuc co null hay khong
+            if (cs && ce)
+            {
+                DateTime startDate = DateTime.Parse(main.dpkStartDate.Text);
+                DateTime endDate = DateTime.Parse(main.dpkEndDate.Text);
+                listReceiptToView = listReceiptToView.FindAll(x => DateTime.Parse(x.txbDateReceipt.Text) >= startDate && DateTime.Parse(x.txbDateReceipt.Text) <= endDate);
+            }
+            LoadReceiptToView(main);
         }
         public void Init(MainWindow main)
         {
@@ -131,7 +157,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 listReceiptControl.Add(control);
                 listReceiptToView.Add(control);
             }
-            if(listReceiptToView.Count > 0)
+            if (listReceiptToView.Count > 0)
             {
                 SelectReceipt(listReceiptToView[0]);
             }
@@ -230,35 +256,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void GoToNextPage(MainWindow main)
         {
             currentPage++;
-            LoadReceiptToView(main);
-        }
-        public void ApproveRequest(MainWindow main)
-        {
-            //Gan lai list ban dau
-            listReceiptToView.Clear();
-            for (int i = 0; i < listReceiptControl.Count; i++)
-            {
-                listReceiptToView.Add(listReceiptControl[i]);
-            }
-
-            if (!string.IsNullOrEmpty(main.cboSupplier.Text) && main.cboSupplier.SelectedIndex != 0)
-            {
-                listReceiptToView = listReceiptToView.FindAll(x => x.txbSupplier.Text == main.cboSupplier.Text);
-                currentPage = 1;
-            }
-            bool cs = main.dpkStartDate.SelectedDate != null; // kiem tra ngay bat dau co null hay khong
-            bool ce = main.dpkEndDate.SelectedDate != null; //kiem tra ngay ket thuc co null hay khong
-            if (cs && ce)
-            {
-                DateTime startDate = DateTime.Parse(main.dpkStartDate.Text);
-                DateTime endDate = DateTime.Parse(main.dpkEndDate.Text);
-                listReceiptToView = listReceiptToView.FindAll(x => DateTime.Parse(x.txbDateReceipt.Text) >= startDate && DateTime.Parse(x.txbDateReceipt.Text) <= endDate);
-            }
-            else if ((cs && !ce) || (!cs && ce))
-            {
-                MessageBox.Show("Để trống cả hai hoặc nhập đầy đủ khoảng thời gian");
-                return;
-            }
             LoadReceiptToView(main);
         }
         public void LoadInfoOfPage(ref int start, ref int end)
@@ -380,7 +377,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void PayBill(ImportGoodsWindow wdImportGoods)
         {
             bool k;
-            if(wdImportGoods.stkImportGoods.Children.Count == 0)
+            if (wdImportGoods.stkImportGoods.Children.Count == 0)
             {
                 MessageBox.Show("Hiện tại chưa có sản phẩm nào được nhập!");
                 return;
