@@ -74,8 +74,8 @@ namespace GemstonesBusinessManagementSystem.DAL
             for(int i = 0; i < dt.Rows.Count; i++)
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
-                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
-                    long.Parse(dt.Rows[i].ItemArray[4].ToString()), int.Parse(dt.Rows[i].ItemArray[5].ToString()), dt.Rows[i].ItemArray[6].ToString());
+                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), dt.Rows[i].ItemArray[3].ToString(),
+                    int.Parse(dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
                 customers.Add(customer);
             }
             return customers;
@@ -106,8 +106,8 @@ namespace GemstonesBusinessManagementSystem.DAL
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
-                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
-                    long.Parse(dt.Rows[i].ItemArray[4].ToString()), int.Parse(dt.Rows[i].ItemArray[5].ToString()), dt.Rows[i].ItemArray[6].ToString());
+                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), (dt.Rows[i].ItemArray[3].ToString()),
+                    int.Parse(dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
                 customers.Add(customer);
             }
             return customers;
@@ -138,8 +138,8 @@ namespace GemstonesBusinessManagementSystem.DAL
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
-                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
-                    long.Parse(dt.Rows[i].ItemArray[4].ToString()), int.Parse(dt.Rows[i].ItemArray[5].ToString()), dt.Rows[i].ItemArray[6].ToString());
+                    dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), (dt.Rows[i].ItemArray[3].ToString()),
+                    int.Parse(dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
                 customers.Add(customer);
             }
             return customers;
@@ -265,8 +265,8 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 adapter.Fill(dt);
                 Customer customer = new Customer(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
-                    dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(), int.Parse(dt.Rows[0].ItemArray[3].ToString()),
-                    long.Parse(dt.Rows[0].ItemArray[4].ToString()), int.Parse(dt.Rows[0].ItemArray[5].ToString()), (dt.Rows[0].ItemArray[6].ToString()));
+                    dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(), (dt.Rows[0].ItemArray[3].ToString()),
+                    int.Parse(dt.Rows[0].ItemArray[4].ToString()), long.Parse(dt.Rows[0].ItemArray[5].ToString()), int.Parse(dt.Rows[0].ItemArray[6].ToString()));
                 return customer;
             }
             catch

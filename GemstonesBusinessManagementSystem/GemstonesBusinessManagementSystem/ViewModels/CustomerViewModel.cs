@@ -342,8 +342,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (!CustomerDAL.Instance.IsExisted(addCustomerWindow.txtCMND.Text))   //kiem tra CMND của khách hàng mới
                     {
-                        Customer customer = new Customer(ConvertToID(addCustomerWindow.txtId.Text), addCustomerWindow.txtName.Text, (addCustomerWindow.txtPhoneNumber.Text),
-                            int.Parse(addCustomerWindow.txtCMND.Text), 0, selectedMembership.IdMembershipsType, addCustomerWindow.txtAddress.Text);
+                        Customer customer = new Customer(ConvertToID(addCustomerWindow.txtId.Text), addCustomerWindow.txtName.Text, (addCustomerWindow.txtPhoneNumber.Text), addCustomerWindow.txtAddress.Text,
+                            int.Parse(addCustomerWindow.txtCMND.Text), 0, selectedMembership.IdMembershipsType);
 
                         if (isEditing)
                         {
