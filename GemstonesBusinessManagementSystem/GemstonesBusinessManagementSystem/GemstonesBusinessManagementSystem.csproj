@@ -180,6 +180,9 @@
     <Compile Include="Resources\UserControls\ImportGoodsControl.xaml.cs">
       <DependentUpon>ImportGoodsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\UserControls\MembershipControl.xaml.cs">
+      <DependentUpon>MembershipControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\NumericSpinner.xaml.cs">
       <DependentUpon>NumericSpinner.xaml</DependentUpon>
     </Compile>
@@ -256,6 +259,9 @@
     </Compile>
     <Compile Include="Views\AddGoodsWindow.xaml.cs">
       <DependentUpon>AddGoodsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddMembershipWindow.xaml.cs">
+      <DependentUpon>AddMembershipWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddSupplierWindow.xaml.cs">
       <DependentUpon>AddSupplierWindow.xaml</DependentUpon>
@@ -356,6 +362,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\UserControls\MembershipControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\UserControls\SaleServiceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -399,6 +409,10 @@
     <Page Include="Views\AddGoodsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddMembershipWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddSupplierWindow.xaml">
       <SubType>Designer</SubType>

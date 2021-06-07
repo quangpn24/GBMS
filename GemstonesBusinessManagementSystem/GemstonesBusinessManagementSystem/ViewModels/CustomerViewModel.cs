@@ -26,9 +26,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private List<CustomerControl> listCustomerControl = new List<CustomerControl>();
         private List<CustomerControl> listSearch = new List<CustomerControl>();
         public bool isEditing = false;
+        public bool isEditingMembership = false;
+        private MembershipControl membershipControl;
+        private string oldMembership;
         private PickCustomerWindow pickCustomerWindow;
         private CustomerControl customerControl;
 
+        //CustomerWindow
         public ICommand LoadCustomerCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
@@ -40,6 +44,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand CountCustomerCommand { get; set; }
         public ICommand FilterCommand { get; set; }
         public ICommand PickCustomerCommand { get; set; }
+
+        //MembershipWindow
+        public ICommand OpenMembershipWindowCommand { get; set; }
+        public ICommand LoadMembershipCommand { get; set; }
+        public ICommand ClearViewCommand { get; set; }
+        public ICommand AddMembershipCommand { get; set; }
+        private AddMembershipWindow addMembershipWindow;
+
+        //MembershipControl
+        public ICommand DeleteMembershipCommand { get; set; }
+        public ICommand ViewMembershipCommand { get; set; }
 
         private MembershipsType filterMembership;
         public MembershipsType FilterMembership { get => filterMembership; set => filterMembership = value; }
@@ -73,6 +88,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //UC customer - addCustomer window
             AddCustomerCommand = new RelayCommand<AddCustomerWindow>(p => true, p => AddCustomer(p));
             ExitCommand = new RelayCommand<AddCustomerWindow>((parameter) => true, (parameter) => parameter.Close());
+            //MembershipWindow
+            OpenMembershipWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenMembershipWindow(p));
+            LoadMembershipCommand = new RelayCommand<AddMembershipWindow>(p => true, p => LoadMembership(p));
+            ClearViewCommand = new RelayCommand<AddMembershipWindow>((p) => true, (p) => ClearView(p));
+            AddMembershipCommand = new RelayCommand<AddMembershipWindow>(p => true, p => AddOrUpdateMembership(p));
+            //MembershipControl
+            ViewMembershipCommand = new RelayCommand<MembershipControl>(p => true, p => ViewMembership(p));
+            DeleteMembershipCommand = new RelayCommand<MembershipControl>(p => true, p => DeleteMembership(p));
         }
 
         /*public void PickCustomer(CustomerControl customerControl)
@@ -85,13 +108,129 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             pickCustomerWindow.txbRank.Text = customerControl.txbRank.Text;
             customerControl.Focus();
         }*/
+        void DeleteMembership(MembershipControl control)
+        {
+            string idMembership = ConvertToIDString(control.txbId.Text);
+            if (CustomerDAL.Instance.IsMembership(idMembership))
+            {
+                MessageBox.Show("Không thể xóa vì tồn tại khách hàng có hạng thành viên này");
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show("Xác nhận xóa hạng thành viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool isSuccess = MembershipsTypeDAL.Instance.Delete(idMembership);
+                    if (isSuccess)
+                    {
+                        addMembershipWindow.stkMembership.Children.Remove(control);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xoá thất bại");
+                    }
+                }
+            }
+        }
+        void ViewMembership(MembershipControl control)
+        {
+            oldMembership = control.txbMembership.Text;
+            membershipControl = control;
+            isEditingMembership = true;
+            addMembershipWindow.txbTitle.Text = "Sửa hạng thành viên";
+            addMembershipWindow.txtId.Text = control.txbId.Text;
+
+            addMembershipWindow.txtMembership.Text = control.txbMembership.Text;
+            addMembershipWindow.txtMembership.SelectionStart = control.txbMembership.Text.Length;
+
+            addMembershipWindow.txtTarget.Text = control.txbTarget.Text;
+            addMembershipWindow.txtTarget.SelectionLength = control.txbTarget.Text.Length;
+        }
+        void ClearView(AddMembershipWindow window)
+        {
+            isEditingMembership = false;
+            window.txtId.Text = AddPrefix("TV", (MembershipsTypeDAL.Instance.GetMaxId() + 1));
+            window.txtTarget.Clear();
+            window.txtMembership.Clear();
+        }
+        void OpenMembershipWindow(MainWindow mainWindow)
+        {
+            AddMembershipWindow window = new AddMembershipWindow();
+            window.txtId.Text = AddPrefix("TV", (MembershipsTypeDAL.Instance.GetMaxId() + 1));
+            window.ShowDialog();
+        }
+        void LoadMembership(AddMembershipWindow window)
+        {
+            addMembershipWindow = window;
+            List<MembershipsType> membershipsTypes = MembershipsTypeDAL.Instance.GetList();
+            window.stkMembership.Children.Clear();
+            foreach(var membershipType in membershipsTypes)
+            {
+                MembershipControl control = new MembershipControl();
+                control.txbId.Text = AddPrefix("TV", membershipType.IdMembershipsType);
+                control.txbMembership.Text = membershipType.Membership;
+                control.txbTarget.Text = membershipType.Target.ToString();
+
+                window.stkMembership.Children.Add(control);
+            }
+        }
         public void OpenAddCustomerWindow(MainWindow mainWindow)
         {
             AddCustomerWindow addCustomerWindow = new AddCustomerWindow();
             addCustomerWindow.txtId.Text = AddPrefix("KH", (CustomerDAL.Instance.GetMaxId() + 1));
             addCustomerWindow.ShowDialog();
         }   
+
+        void AddOrUpdateMembership(AddMembershipWindow window)
+        {
+            if (string.IsNullOrEmpty(window.txtMembership.Text))
+            {
+                MessageBox.Show("Vui lòng nhập hạng thành viên!");
+                window.txtMembership.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(window.txtTarget.Text))
+            {
+                MessageBox.Show("Vui lòng nhập chỉ tiêu!");
+                window.txtTarget.Focus();
+                return;
+            }
+            if (window.txtMembership.Text != oldMembership && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
+            {
+                MessageBox.Show("Hạng thành viên đã tồn tại!");
+                window.txtMembership.Focus();
+                return;
+            }
+
+            MembershipsType membership = new MembershipsType(ConvertToID(window.txtId.Text), window.txtMembership.Text,
+                double.Parse(window.txtTarget.Text));
+
+            MembershipsTypeDAL.Instance.InsertOrUpdate(membership, isEditingMembership);
+            if (isEditingMembership)
+            {
+                membershipControl.txbId.Text = window.txtId.Text;
+                membershipControl.txbMembership.Text = window.txtMembership.Text;
+                membershipControl.txbTarget.Text = window.txtTarget.Text;
+
+                window.txbTitle.Text = "Thêm hạng thành viên";
+            }
+            else
+            {
+                MembershipControl control = new MembershipControl();
+                control.txbId.Text = window.txtId.Text;
+                control.txbMembership.Text = membership.Membership;
+                control.txbTarget.Text = membership.Target.ToString();
+
+                window.stkMembership.Children.Add(control);
+            }
+            SetItemSource(mainWindow);
+            LoadCustomerToView(mainWindow, 0);
+            int start = 0, end = 0;
+            LoadInfoOfPage(ref start, ref end);
+            isEditingMembership = false;
+            ClearView(window);
+        }
 
         void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
         {
@@ -189,7 +328,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             DataTable dt = MembershipsTypeDAL.Instance.GetActive();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                MembershipsType type = new MembershipsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()), dt.Rows[i].ItemArray[1].ToString());
+                MembershipsType type = new MembershipsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()), dt.Rows[i].ItemArray[1].ToString(),1);
                 itemSourceMembership.Add(type);
                 itsAddCustomerMembership.Add(type);
             }
@@ -219,7 +358,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         control.txbName.Text = customer.CustomerName;
                         control.txbPhone.Text = customer.PhoneNumber;
                         control.txbAddress.Text = customer.Address.ToString();
-                        control.txbAllPrice.Text = customer.TotalPrice.ToString();     //0: thân thiết --- 1:vip
+                        control.txbAllPrice.Text = customer.TotalPrice.ToString();     
                         control.txbLevelCus.Text = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
 
                         if (!isEditing)

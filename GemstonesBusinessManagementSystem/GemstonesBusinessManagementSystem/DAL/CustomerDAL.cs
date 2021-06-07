@@ -308,6 +308,32 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 CloseConnection();
             }
-        } 
+        }
+        public bool IsMembership(string idMembership)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "select * from customer where idMembership=@idMembership";
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@idMembership", idMembership);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
+                return dataTable.Rows.Count >= 1;
+            }
+            catch
+            {
+                return true;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }

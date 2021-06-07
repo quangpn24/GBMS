@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.MembershipControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"       
+             mc:Ignorable="d"
+             DataContext="{StaticResource CustomerVM}"
+             Name="ucMembership"
+             Height="45">
+    <Grid
+        Height="45">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock 
+            x:Name="txbShift"
+            Text="20.000" 
+            Visibility="Hidden"/>
+        <TextBlock 
+            x:Name="txbId"
+            Grid.Column="0"
+            Style="{StaticResource Text}"
+            HorizontalAlignment="Center" 
+            Margin="0"
+            TextWrapping="Wrap" 
+            Text="HTV001" 
+            VerticalAlignment="Center"/>
+        <TextBlock 
+            x:Name="txbMembership"
+            Style="{StaticResource Text}"
+            Grid.Column="1"
+            HorizontalAlignment="Left" 
+            TextWrapping="Wrap" 
+            Text="Hang thanh vien" 
+            VerticalAlignment="Center" 
+            Margin="20,0,0,0" />
+        <TextBlock 
+            x:Name="txbTarget"
+            Style="{StaticResource Text}"
+            Grid.Column="2"
+            HorizontalAlignment="Center" 
+            TextWrapping="Wrap" 
+            Text="1000000" 
+            VerticalAlignment="Center" 
+            Margin="20,0,0,0" />
+        <StackPanel
+            Orientation="Horizontal"
+            Grid.Column="3" >
+            <Button 
+                x:Name="btnView"
+                Command="{Binding ViewMembershipCommand}"
+                CommandParameter="{Binding ElementName=ucMembership}"
+                ToolTip="Xem thông tin"
+                Height="28"
+                Background="{x:Null}" 
+                BorderBrush="{x:Null}" 
+                Foreground="{DynamicResource Black2}" 
+                VerticalAlignment="Center" 
+                FocusVisualStyle="{x:Null}"
+                HorizontalAlignment="Right" 
+                Padding="0" 
+                Margin="0,0,5,0">
+                <materialDesign:PackIcon 
+                    Kind="EyeOutline" 
+                    Width="22"
+                    Height="22"/>
+            </Button>
+            <Button 
+                x:Name="btnDelete"
+                Command="{Binding DeleteMembershipCommand}"
+                CommandParameter="{Binding ElementName=ucMembership}"
+                ToolTip="Xem thông tin"
+                Height="28"
+                Background="{x:Null}" 
+                BorderBrush="{x:Null}" 
+                Foreground="{DynamicResource Error}" 
+                VerticalAlignment="Center" 
+                FocusVisualStyle="{x:Null}"
+                HorizontalAlignment="Right" 
+                Padding="0" 
+                Margin="0,0,10,0">
+                <materialDesign:PackIcon 
+                    Kind="BinOutline" 
+                    Width="22"
+                    Height="22"/>
+            </Button>
+        </StackPanel>
+        <Rectangle 
+            Grid.ColumnSpan="4"           
+            Fill="{StaticResource Light}" 
+            Height="2"
+            VerticalAlignment="Bottom"/>
+        <Rectangle 
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Left"/>
+        <Rectangle 
+            Grid.Column="3"
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Right"/>
+    </Grid>
+</UserControl>
