@@ -284,7 +284,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             mainWindow.cboSelectCustomerIdMembership.SelectedIndex = -1;
             mainWindow.cboSelectCustomerSort.SelectedIndex = -1;
-            customerList = CustomerDAL.Instance.FindByName(mainWindow.txtSearchCustomer.Text);
+            string nameSearching = mainWindow.txtSearchCustomer.Text.ToLower();
+            customerList = CustomerDAL.Instance.FindByName(nameSearching);
             currentPage = 0;
             LoadCustomerToView(mainWindow, currentPage);
         }
@@ -414,6 +415,27 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void Filter(MainWindow mainWindow)
         {
             mainWindow.stkCustomer.Children.Clear();
+            if (mainWindow.cboSelectCustomerIdMembership.SelectedIndex == -1)
+            {
+                return;
+            }
+            string nameSearching = mainWindow.txtSearchCustomer.Text.ToLower();
+            customerList = CustomerDAL.Instance.FindByName(nameSearching);
+            if (mainWindow.cboSelectCustomerIdMembership.SelectedIndex == 0)
+            {
+                LoadCustomerToView(mainWindow, 0);
+                SortCustomer(mainWindow);
+                return;
+            }
+            customerList.RemoveAll(x => x.IdMembership != filterMembership.IdMembershipsType);
+            if (mainWindow.cboSelectCustomerIdMembership.SelectedIndex != -1)
+            {
+                SortCustomer(mainWindow);
+            }
+            else
+            {
+                LoadCustomerToView(mainWindow, 0);
+            }
             if (filterMembership == null)
             {
                 return;
@@ -421,7 +443,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             listCustomerControl.Clear();
             if(filterMembership.IdMembershipsType != 0)
             {
-                customerList = CustomerDAL.Instance.GetListByIdMembership(filterMembership.IdMembershipsType);
                 for (int i = 0; i < listSearch.Count; i++)
                 {
                     CustomerControl control = listSearch[i];
@@ -433,7 +454,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else //chon tat ca
             {
-                customerList = CustomerDAL.Instance.ConvertDBToList();
                 for (int i = 0; i < listSearch.Count; i++)
                 {
                     listCustomerControl.Add(listSearch[i]);

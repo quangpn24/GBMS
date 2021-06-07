@@ -139,9 +139,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()),
-                    long.Parse(dt.Rows[i].ItemArray[4].ToString()), 0, dt.Rows[i].ItemArray[6].ToString());
-                if (dt.Rows[i].ItemArray[5].ToString() == "True")
-                    customer.IdMembership = 1;
+                    long.Parse(dt.Rows[i].ItemArray[4].ToString()), int.Parse(dt.Rows[i].ItemArray[5].ToString()), dt.Rows[i].ItemArray[6].ToString());
                 customers.Add(customer);
             }
             return customers;
