@@ -98,7 +98,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //nhập hàng
                 case 21:
-                    window.txbTabName.Text = "Nhập kho";
+                    window.txbTabName.Text = "Nhập hàng";
                     window.grdImport.Visibility = Visibility.Visible;
                     CloseExpander(window, 1);
                     window.btnImport.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);

@@ -166,7 +166,7 @@
                                 Command="{Binding NavigateCommand}"
                                 CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
-                                Content="Nhập kho">
+                                Content="Nhập hàng">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
@@ -418,7 +418,7 @@
             </Grid>
             <Grid
                 x:Name="grdSupplier"
-                Visibility="Hidden"
+                Visibility="Collapsed"
                 Grid.Row="1"
                 DataContext="{StaticResource SupplierVM}">
                 <i:Interaction.Triggers>
@@ -431,10 +431,6 @@
                     <RowDefinition Height="90"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Grid 
-                    Grid.Row="0">
-                    
-                </Grid>
                 <Grid 
                     Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -601,7 +597,7 @@
                                 Margin="20,0"
                                 VerticalAlignment="Bottom"/>
                             <TextBlock
-                                x:Name="txbTotalSpent"
+                                x:Name="txbTotalSpentToSupplier"
                                 Grid.Row="1"
                                 Text="500"
                                 FontSize="20"
@@ -682,6 +678,7 @@
                                 <Button
                                     Style="{StaticResource PrimaryButton}"
                                     Command="{Binding ExportExcelCommand}"
+                                    CommandParameter="{Binding ElementName=wdMain}"
                                     Content="Xuất excel"
                                     ToolTip="Xuất danh sách nhà cung cấp"
                                     Margin="0,0,20,0"
@@ -1641,7 +1638,7 @@
                                 VerticalAlignment="Center"/>
                             <TextBlock
                                 Grid.Column="4" 
-                                Text="Tổng tiền"  
+                                Text="Thanh toán"  
                                 HorizontalAlignment="Center" 
                                 Style="{StaticResource TextHeader}"
                                 VerticalAlignment="Center"/>
@@ -1792,6 +1789,8 @@
                                         HorizontalAlignment="Left"/>
                                     <TextBlock
                                         x:Name="txbDateReceipt"
+                                        FontWeight="SemiBold"
+                                        Foreground="{StaticResource Black2}"
                                         FontSize="18"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
@@ -1805,6 +1804,8 @@
                                     <TextBlock
                                         x:Name="txbSupplier"
                                         FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Foreground="{StaticResource Black2}"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Grid 
@@ -1817,6 +1818,8 @@
                                     <TextBlock
                                         x:Name="txbImporter"
                                         FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Foreground="{StaticResource Black2}"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
                             </StackPanel>
@@ -1834,6 +1837,8 @@
                                     <TextBlock
                                         x:Name="txbTotalMoneyGoods"
                                         FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Foreground="{StaticResource Black2}"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Grid 
@@ -1846,6 +1851,8 @@
                                     <TextBlock
                                         x:Name="txbDiscount"
                                         FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Foreground="{StaticResource Black2}"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Grid 
@@ -1858,6 +1865,8 @@
                                     <TextBlock
                                         x:Name="txbMoneyToPayGoods"
                                         FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Foreground="{StaticResource Black2}"
                                         HorizontalAlignment="Right"/>
                                 </Grid>
                             </StackPanel>

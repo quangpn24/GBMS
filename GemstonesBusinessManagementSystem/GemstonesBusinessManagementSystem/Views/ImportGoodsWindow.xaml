@@ -15,13 +15,19 @@
         x:Name="wdImportGoods"
         Background="#F7F8FC"
         Width="1500">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding HidenGridDiscountCommand}"
+                                       CommandParameter="{Binding ElementName=wdImportGoods}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid
         x:Name="grdImportGoods"
         Grid.Row="1" 
         Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="420"/>
         </Grid.ColumnDefinitions>
         <Grid 
             Grid.Column="0"
@@ -54,7 +60,7 @@
                         VerticalAlignment="Center"  />
                 </Button>
                 <TextBlock 
-                    Text="Nhập kho" 
+                    Text="Nhập hàng" 
                     FontSize="24"
                     Foreground="{StaticResource Primary}"
                     FontWeight="SemiBold"
@@ -76,10 +82,12 @@
                     <TextBox 
                         x:Name="txtSearch"
                         materialDesign:HintAssist.Hint="Tìm sản phẩm"
+                        materialDesign:HintAssist.IsFloating="False"
                         HorizontalAlignment="Left" 
                         FontSize="16" 
                         BorderThickness="0" 
                         MaxLines="1"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
                         Margin="12,0,0,0" 
                         FontWeight="SemiBold" 
                         Height="40" 
@@ -242,7 +250,6 @@
                 Margin="20,0,20,20">
                 <ScrollViewer>
                     <StackPanel x:Name="stkImportGoods">
-                        <UserControls:ImportGoodsControl/>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
@@ -284,8 +291,8 @@
             Margin="20,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="1.3*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1.4*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <TextBlock 
@@ -298,7 +305,7 @@
                     Foreground="{DynamicResource Primary}" 
                     Width="174" 
                     FontWeight="Bold" />
-                <Grid Margin="20,10,20,0">
+                <Grid Margin="20,20,20,0">
                     <TextBlock 
                         FontSize="18"
                         FontWeight="SemiBold"
@@ -313,7 +320,8 @@
                         HorizontalAlignment="Right"
                         Margin="0"/>
                 </Grid>
-                <Grid Margin="20,10,20,0">
+                <Grid 
+                    Margin="20,20,20,0">
                     <TextBlock 
                         FontSize="18"
                         FontWeight="SemiBold"
@@ -376,16 +384,14 @@
                     Fill="{StaticResource Primary}" 
                     Height="3" 
                     VerticalAlignment="Top" 
-                    Margin="30,20,30,0"/>
+                    Margin="30,40,30,0"/>
             </StackPanel>
             <StackPanel
                 Grid.Row="1"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Center">
+                VerticalAlignment="Top">
                 <Grid
                     VerticalAlignment="Top" 
-                    Width="340" 
-                    Margin="20,0">
+                    Margin="20,10,20,0">
                     <TextBlock 
                         HorizontalAlignment="Left" 
                         TextWrapping="Wrap"
@@ -410,58 +416,37 @@
                 <Grid 
                     Height="50"
                     VerticalAlignment="Top" 
-                    Margin="20,20,20,0">
+                    Margin="20,30,20,0">
                     <TextBlock 
                         HorizontalAlignment="Left" 
                         TextWrapping="Wrap" 
                         Text="Giảm giá" 
                         VerticalAlignment="Center"
                         FontSize="18"
-                        Margin="0" FontWeight="SemiBold"/>
-                    <TextBox 
-                        x:Name="txtDiscount" 
-                        HorizontalAlignment="Right" 
-                        TextWrapping="Wrap"
-                        Text="0"
-                        Foreground="{StaticResource Gray1}"
-                        MaxLength="2"
-                        VerticalAlignment="Center"
-                        FontSize="18" 
-                        Width="60"
-                        Margin="0,0,20,0" 
-                        BorderBrush="{x:Null}"
-                        TextAlignment="Right"
-                        FontWeight="SemiBold" 
-                        HorizontalContentAlignment="Center" 
-                        VerticalContentAlignment="Center">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="TextChanged">
-                                <i:InvokeCommandAction Command="{Binding ChangeDiscountCommand}"
-                                                       CommandParameter="{Binding ElementName=wdImportGoods}"/>
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="LostFocus">
-                                <i:InvokeCommandAction Command="{Binding LostFocusDiscountCommand}"
-                                                       CommandParameter="{Binding ElementName=wdImportGoods}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBox>
+                        Margin="0" 
+                        FontWeight="SemiBold"/>
                     <Rectangle 
-                        Stroke="{StaticResource Primary}"
-                        Height="40"
-                        RadiusX="4"
-                        RadiusY="4"
+                        Fill="{StaticResource Gray}"
+                        Height="2"
                         HorizontalAlignment="Right" 
-                        VerticalAlignment="Center" 
-                        Width="60"
-                        Margin="0,0,20,0" 
-                        StrokeThickness="2"/>
-                    <TextBlock
-                        Text="%"
-                        FontSize="18" 
+                        VerticalAlignment="Bottom" 
+                        Width="200"
+                        Margin="0,0,0,6"/>
+                    <Button
+                        x:Name="btnDiscount"
+                        Content="{Binding VndDiscount, Mode=TwoWay}"
+                        Style="{StaticResource HoverContentButton}"
+                        Background="{x:Null}"
+                        Command="{Binding CustomDiscountCommand}"
+                        CommandParameter="{Binding ElementName=wdImportGoods}"
+                        Width="200"
+                        Height="40" 
+                        FontSize="18"
                         HorizontalAlignment="Right" 
-                        VerticalAlignment="Center"/>
+                        HorizontalContentAlignment="Right" 
+                        Margin="0"/>
                 </Grid>
-                <TextBox 
+                <!--<TextBox 
                     x:Name="txtMoreInfo"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     AcceptsReturn="True"
@@ -472,15 +457,18 @@
                     FocusVisualStyle="{x:Null}"
                     BorderBrush="{StaticResource Light}"
                     FontSize="16" 
-                    FontWeight="SemiBold" VerticalAlignment="Top" 
-                    Height="120"/>
+                    FontWeight="SemiBold" 
+                    VerticalAlignment="Top" 
+                    Height="120"/>-->
                 <Rectangle 
                     Height="3" 
-                    Margin="30,30,30,0" 
+                    Margin="30,60,30,0" 
                     VerticalAlignment="Bottom"
                     Fill="{StaticResource Primary}"/>
             </StackPanel>
-            <StackPanel Grid.Row="2" Margin="20,0">
+            <StackPanel
+                Grid.Row="2" 
+                Margin="20,0">
                 <Grid VerticalAlignment="Top">
                     <TextBlock  
                         HorizontalAlignment="Left" 
@@ -508,7 +496,7 @@
                     CommandParameter="{Binding ElementName=wdImportGoods}"
                     materialDesign:ButtonAssist.CornerRadius="4"
                     BorderThickness="2"
-                    Margin="0,20,0,0" 
+                    Margin="0,30,0,0" 
                     FontSize="20" 
                     Content="Thanh toán"
                     VerticalAlignment="Top" 
@@ -521,7 +509,7 @@
                     CommandParameter="{Binding ElementName=wdImportGoods}"
                     materialDesign:ButtonAssist.CornerRadius="4"
                     BorderThickness="2"
-                    Margin="0,20,0,0" 
+                    Margin="0,30,0,0" 
                     Background="{DynamicResource White}" 
                     BorderBrush="{DynamicResource Primary}"  
                     Foreground="{DynamicResource Primary}" 
@@ -537,10 +525,91 @@
                             VerticalAlignment="Bottom" 
                             Margin="15,0,0,0"
                             Width="24" 
-                            Height="24" />
+                            Height="24"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
+        </Grid>
+        <Grid
+            x:Name="grdDiscount"
+            Width="400"
+            Height="100"
+            Visibility="Hidden"
+            Background="{StaticResource White}"
+            Style="{StaticResource DropShadowSearchBar}"
+            Grid.ColumnSpan="2" 
+            HorizontalAlignment="Right" 
+            Margin="0,0,200,0">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="LostFocus">
+                    <i:InvokeCommandAction Command="{Binding HidenGridDiscountCommand}"
+                                       CommandParameter="{Binding ElementName=wdImportGoods}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TextBlock
+                FontSize="18"
+                FontWeight="SemiBold"
+                Text="Giảm giá" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center" 
+                Margin="10,0,0,0"/>
+            <Rectangle 
+                Fill="{StaticResource Gray}"
+                Height="3"
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center" 
+                Width="200"
+                Margin="0,25,100,0"/>
+            <TextBox
+                x:Name="txtDiscount"
+                Text="0"
+                Width="200"
+                Height="40"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                FontSize="18"
+                FontWeight="SemiBold"
+                BorderBrush="{x:Null}"
+                HorizontalAlignment="Right"
+                Margin="0,0,100,0"
+                HorizontalContentAlignment="Right" 
+                Padding="0,4,5,4">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <i:InvokeCommandAction Command="{Binding ChangeDiscountCommand}"
+                                               CommandParameter="{Binding ElementName=wdImportGoods}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="GotFocus">
+                        <i:InvokeCommandAction Command="{Binding GotFocusDiscountCommand}"
+                                               CommandParameter="{Binding ElementName=wdImportGoods}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <Button
+                x:Name="btnVND"
+                Content="VND"
+                Width="40"
+                Height="30"
+                BorderThickness="2"
+                Command="{Binding SelectVNDCommand}"
+                CommandParameter="{Binding ElementName=wdImportGoods}"
+                BorderBrush="{StaticResource ThemeRedBrush}"
+                Background="{StaticResource ThemeRedBrush}"
+                Style="{StaticResource PaginationButton}" 
+                HorizontalAlignment="Right" 
+                Margin="0,0,55,0"/>
+            <Button
+                x:Name="btnPercent"
+                Content="%"
+                Width="40"
+                Height="30"
+                BorderThickness="2"
+                Command="{Binding SelectPercentDiscountCommand}"
+                CommandParameter="{Binding ElementName=wdImportGoods}"
+                BorderBrush="{StaticResource Gray2}"
+                Background="{StaticResource Gray2}"
+                Style="{StaticResource PaginationButton}" 
+                HorizontalAlignment="Right" 
+                Margin="0,0,10,0"/>
         </Grid>
     </Grid>
 </Window>

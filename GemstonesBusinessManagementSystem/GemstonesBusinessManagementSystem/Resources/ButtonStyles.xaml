@@ -151,4 +151,25 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="HoverContentButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton }">
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="0" />
+        <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="Red" />
+                <Setter Property="Background" Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource Black1}" />
+                <Setter Property="Background" Value="{x:Null}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

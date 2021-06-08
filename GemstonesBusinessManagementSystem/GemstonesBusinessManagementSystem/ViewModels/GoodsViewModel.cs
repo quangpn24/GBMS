@@ -170,7 +170,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbImportPrice.Text = importPrice.ToString();
-                control.txbSalesPrice.Text = ((long)(importPrice * (1 + profitPercentage))).ToString();
+                control.txbSalesPrice.Text = importPrice % 100 != 0 ? ((importPrice * (1 + profitPercentage))).ToString() : ((long)(importPrice * (1 + profitPercentage) + 1)).ToString();
                 control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbGoodsType.Text = goodsType.Name;
                 control.txbUnit.Text = goodsType.Unit;

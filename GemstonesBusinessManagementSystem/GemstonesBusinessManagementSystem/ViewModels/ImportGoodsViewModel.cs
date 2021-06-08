@@ -27,6 +27,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private long moneyToPay = 0;
         public long MoneyToPay { get => moneyToPay; set { moneyToPay = value; OnPropertyChanged(); } }
 
+        private bool isVND = true;
+        private bool isTexboxVND = true;
+        private double percentDiscount = 0;
+        private long vndDiscount = 0;
+        public long VndDiscount { get => vndDiscount; set { vndDiscount = value; OnPropertyChanged(); } }
+
         private ImportGoodsWindow wdImportGoods;
         //Main window (manager receipt)
         private List<ReceiptControl> listReceiptControl = new List<ReceiptControl>();// luu tất cả các receipt ban đầu
@@ -36,7 +42,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         //cbo goodsType
         private GoodsType selectedGoodsType = new GoodsType();
-        public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
+        public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; } }
         private ObservableCollection<GoodsType> itemSourceGoodsType = new ObservableCollection<GoodsType>();
         public ObservableCollection<GoodsType> ItemSourceGoodsType { get => itemSourceGoodsType; set { itemSourceGoodsType = value; OnPropertyChanged(); } }
 
@@ -61,8 +67,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //bill
         public ICommand PayBillCommand { get; set; }
         public ICommand PrintReceiptCommand { get; set; }
-        public ICommand LostFocusDiscountCommand { get; set; }
+
+        //Grid discount
+        public ICommand CustomDiscountCommand { get; set; }
+        public ICommand SelectVNDCommand { get; set; }
+        public ICommand SelectPercentDiscountCommand { get; set; }
         public ICommand ChangeDiscountCommand { get; set; }
+        public ICommand GotFocusDiscountCommand { get; set; }
 
         // maneger list receipt(in main window)
         public ICommand OpenImportGoodsWindowCommand { get; set; }
@@ -81,6 +92,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //other
         public ICommand BackCommand { get; set; }
         public ICommand SelectionChangedGoodsTypeCommand { get; set; } // cboGoodsType
+        public ICommand HidenGridDiscountCommand { get; set; }
         public ImportGoodsViewModel()
         {
             SelectGoodsCommand = new RelayCommand<SearchGoodsControl>(p => true, p => SelectGoodsResult(p));
@@ -89,8 +101,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             PrintReceiptCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => PrintReceipt(p));
             PayBillCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => PayBill(p));
-            LostFocusDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => LostFocusDiscount(p));
+            CustomDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => VisibleGridDiscount(p));
+            SelectPercentDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => SelectPercent(p));
+            SelectVNDCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => SelectVND(p));
             ChangeDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => ChangeDiscount(p));
+            GotFocusDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => GotFocusDiscount(p));
 
             TextChangedSearchCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => AutoSuggest(p));
             SearchCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => Search(p));
@@ -98,6 +113,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             SelectionChangedGoodsTypeCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => SelectGoodsType(p));
             BackCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => p.Close());
+            HidenGridDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => HidenGridDiscount(p));
 
 
             LoadReceiptCommand = new RelayCommand<MainWindow>(p => true, p => Init(p));
@@ -112,6 +128,80 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SelectStartDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
             SelectEndDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
         }
+
+        //Grid discount
+        void VisibleGridDiscount(ImportGoodsWindow window)
+        {
+            window.grdDiscount.Visibility = Visibility.Visible;
+            window.txtDiscount.Focus();
+        }
+        void HidenGridDiscount(ImportGoodsWindow window)
+        {
+            if (!window.grdDiscount.IsMouseOver)
+            {
+                window.grdDiscount.Visibility = Visibility.Hidden;
+            }
+        }
+        void SelectVND(ImportGoodsWindow window)
+        {
+            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#D14040");
+            window.btnVND.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#D14040");
+            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
+            window.btnPercent.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
+            isVND = true;
+            window.txtDiscount.Text = VndDiscount.ToString();
+        }
+        void SelectPercent(ImportGoodsWindow window)
+        {
+            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
+            window.btnVND.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
+            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#d14040");
+            window.btnPercent.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#d14040");
+            isVND = false;
+            window.txtDiscount.Text = percentDiscount.ToString();
+        }
+        void ChangeDiscount(ImportGoodsWindow wdImportGoods)
+        {
+            if (string.IsNullOrEmpty(wdImportGoods.txtDiscount.Text))
+            {
+                wdImportGoods.txtDiscount.Text = "0";
+            }
+            if (isVND & isTexboxVND)
+            {
+                VndDiscount = long.Parse(wdImportGoods.txtDiscount.Text);
+                if (VndDiscount > long.Parse(wdImportGoods.txbTotalGoodsPrice.Text))
+                {
+                    wdImportGoods.txtDiscount.Text = wdImportGoods.txbTotalGoodsPrice.Text;
+                    VndDiscount = long.Parse(wdImportGoods.txbTotalGoodsPrice.Text);
+                }
+                percentDiscount = Math.Round(VndDiscount / double.Parse(wdImportGoods.txbTotalGoodsPrice.Text) * 100, 2);
+            }
+            else if (!isVND && !isTexboxVND)
+            {
+                percentDiscount = double.Parse(wdImportGoods.txtDiscount.Text);
+                if (percentDiscount > 100)
+                {
+                    wdImportGoods.txtDiscount.Text = "100";
+                    percentDiscount = 100;
+                }
+                VndDiscount = long.Parse(Math.Round(percentDiscount * double.Parse(wdImportGoods.txbTotalGoodsPrice.Text) / 100).ToString());
+            }
+            MoneyToPay = TotalPrice - long.Parse(vndDiscount.ToString());
+        }
+        void GotFocusDiscount(ImportGoodsWindow window)
+        {
+            if (isVND)
+            {
+                isTexboxVND = true;
+            }
+            else
+            {
+                isTexboxVND = false;
+            }
+            window.txtDiscount.SelectionStart = 0;
+            window.txtDiscount.SelectionLength = window.txtDiscount.Text.Length;
+        }
+        //
 
         void HandleFilter(MainWindow main)
         {
@@ -153,7 +243,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbImporter.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbDateReceipt.Text = DateTime.Parse(dt.Rows[i].ItemArray[2].ToString()).ToString("dd/MM/yyyy");
                 control.txbMoneyToPay.Text = dt.Rows[i].ItemArray[3].ToString();
-                control.txbSupplier.Text = SupplierDAL.Instance.GetNameById(dt.Rows[i].ItemArray[4].ToString());
+                control.txbSupplier.Text = SupplierDAL.Instance.GetNameById(dt.Rows[i].ItemArray[5].ToString());
                 listReceiptControl.Add(control);
                 listReceiptToView.Add(control);
             }
@@ -234,7 +324,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.txbSupplier.Text = control.txbSupplier.Text;
             mainWindow.txbMoneyToPayGoods.Text = control.txbMoneyToPay.Text;
             mainWindow.txbTotalMoneyGoods.Text = Total.ToString();
-            mainWindow.txbDiscount.Text = (((Total - long.Parse(control.txbMoneyToPay.Text)) * 100) / Total).ToString() + "%";
+            mainWindow.txbDiscount.Text = (Total - long.Parse(control.txbMoneyToPay.Text)).ToString();
         }
         public void LoadReceiptToView(MainWindow main)
         {
@@ -270,28 +360,44 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             mainWindow.txtNumOfReceipt.Text = String.Format("Trang {0} trên {1} trang", currentPage, listReceiptToView.Count / 11 + 1);
         }
-        public void ExportExcel(MainWindow main) // cần custom lại
+        public void ExportExcel(MainWindow main)
         {
+            DataTable table = new DataTable();
+            table.Columns.Add("Mã PN", typeof(string));
+            table.Columns.Add("Ngày nhập", typeof(string));
+            table.Columns.Add("Người nhập", typeof(string));
+            table.Columns.Add("Nhà cung cấp", typeof(string));
+            table.Columns.Add("Tổng tiền", typeof(long));
+            table.Columns.Add("Giảm giá", typeof(string));
+            table.Columns.Add("Thanh toán", typeof(long));
+
+
+            for (int i = 0; i < listReceiptToView.Count; i++)
+            {
+                ReceiptControl control = listReceiptToView[i];
+                long totalMoneyGoods = StockReceiptInfoDAL.Instance.SumMoneyByIdReceipt(ConvertToIDString(control.txbId.Text));
+                string discount = (totalMoneyGoods - long.Parse(control.txbMoneyToPay.Text)).ToString();
+                table.Rows.Add(control.txbId.Text, control.txbDateReceipt.Text, control.txbImporter.Text,
+                    control.txbSupplier.Text, totalMoneyGoods.ToString(), discount, control.txbMoneyToPay.Text);
+            }
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Excel Workbook|*.xlsx"
+                Filter = "Excel |*.xlsx"
             };
-            if (saveFileDialog.ShowDialog() == true)
+            if ((bool)saveFileDialog.ShowDialog())
             {
                 using (XLWorkbook workbook = new XLWorkbook())
                 {
-                    DataTable dt = StockReceiptDAL.Instance.GetAll();
-                    dt.Columns.Remove("imageFile");
-                    workbook.Worksheets.Add(dt, "Goods");
+                    workbook.Worksheets.Add(table, "Danh sách phiếu nhập hàng");
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
-                MessageBox.Show("Xuất dữ liệu thành công!!!", "Thông báo");
+                MessageBox.Show("Xuất danh sách thành công!");
             }
-
         }
         public void OpenImportGoodsWindow(MainWindow main)
         {
             SelectedSupplier = null;
+            selectedGoodsType = null;
             ImportGoodsWindow newWindow = new ImportGoodsWindow();
             TotalPrice = 0;
             MoneyToPay = 0;
@@ -320,22 +426,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             wdImportGoods.txtSearch.SelectionStart = 0;
             wdImportGoods.txtSearch.SelectionLength = this.wdImportGoods.txtSearch.Text.Length;
         }
-        void LostFocusDiscount(ImportGoodsWindow wdImportGoods)
-        {
-            if (string.IsNullOrEmpty(wdImportGoods.txtDiscount.Text))
-            {
-                wdImportGoods.txtDiscount.Text = "0";
-            }
-            wdImportGoods.txtDiscount.SelectionStart = 0;
-            wdImportGoods.txtDiscount.SelectionLength = wdImportGoods.txtDiscount.Text.Length;
-        }
-        void ChangeDiscount(ImportGoodsWindow wdImportGoods)
-        {
-            if (!string.IsNullOrEmpty(wdImportGoods.txtDiscount.Text))
-            {
-                MoneyToPay = TotalPrice - TotalPrice * int.Parse(wdImportGoods.txtDiscount.Text) / 100;
-            }
-        }
+
         void PrintReceipt(ImportGoodsWindow wdImportGoods)
         {
             StockReceiptTemplate receiptTemplate = new StockReceiptTemplate();
@@ -344,7 +435,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             receiptTemplate.txbSupplier.Text = wdImportGoods.cboSupplier.Text;
             //receiptTemplate.txbImporter.Text = 1: current account
             receiptTemplate.txbTotal.Text = wdImportGoods.txbTotalGoodsPrice.Text;
-            receiptTemplate.txbDiscount.Text = wdImportGoods.txtDiscount.Text + "%";
+            receiptTemplate.txbDiscount.Text = wdImportGoods.btnDiscount.Content.ToString();
             receiptTemplate.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
 
             //Load
@@ -390,7 +481,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             StockReceipt stockReceipt = new StockReceipt(ConvertToID(wdImportGoods.txbIdReceipt.Text),
                 1, DateTime.Parse(wdImportGoods.txbDate.Text), long.Parse(wdImportGoods.txbMoneyToPay.Text),
-                selectedSupplier.Id);
+                vndDiscount, selectedSupplier.Id);
             k = StockReceiptDAL.Instance.Insert(stockReceipt);
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
             {
@@ -398,7 +489,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 ImportGoodsControl control = (ImportGoodsControl)wdImportGoods.stkImportGoods.Children[i];
                 StockReceiptInfo info = new StockReceiptInfo(stockReceipt.Id, ConvertToID(control.txbId.Text),
-                    int.Parse(control.nsQuantity.Value.ToString()));
+                    int.Parse(control.nsQuantity.Value.ToString()), long.Parse(control.txbImportPrice.Text));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
                 int quantity = GoodsDAL.Instance.GetQuantityById(ConvertToID(control.txbId.Text));
                 if (quantity != -1)
@@ -426,6 +517,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.currentPage = 1;
                 LoadReceiptToView(mainWindow);
 
+                //Update tab supplier
+                SupplierViewModel supplierVM = (SupplierViewModel)mainWindow.grdSupplier.DataContext;
+                supplierVM.Search(mainWindow);
+                mainWindow.txbTotalSpentToSupplier.Text = (long.Parse(mainWindow.txbTotalSpentToSupplier.Text) + long.Parse(wdImportGoods.txbMoneyToPay.Text)).ToString();
+                TotalPrice = 0;
+                MoneyToPay = 0;
                 wdImportGoods.Close();
             }
             else
@@ -438,7 +535,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             TotalPrice -= long.Parse(control.txbTotalPrice.Text);
             control.txbTotalPrice.Text = (int.Parse(control.txbImportPrice.Text) * control.nsQuantity.Value).ToString();
             TotalPrice += long.Parse(control.txbTotalPrice.Text);
-            MoneyToPay = this.totalPrice - this.totalPrice * int.Parse(this.wdImportGoods.txtDiscount.Text) / 100;
+            MoneyToPay = this.totalPrice - VndDiscount;
+            if (MoneyToPay < 0)
+            {
+                MoneyToPay = 0;
+                VndDiscount = TotalPrice;
+            }
         }
         void DeleteSelected(ImportGoodsControl control)
         {
@@ -449,7 +551,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 ((ImportGoodsControl)wdImportGoods.stkImportGoods.Children[i - 1]).txbNumericalOder.Text = i.ToString();
             }
             TotalPrice -= long.Parse(control.txbTotalPrice.Text);
-            MoneyToPay = this.totalPrice - this.totalPrice * int.Parse(this.wdImportGoods.txtDiscount.Text) / 100;
+            MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
+            if(MoneyToPay < 0)
+            {
+                MoneyToPay = 0;
+                VndDiscount = TotalPrice;
+            }
         }
         void SelectGoodsResult(SearchGoodsControl control)
         {
@@ -475,7 +582,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             this.wdImportGoods.stkImportGoods.Children.Add(importControl);
             TotalPrice += long.Parse(control.txbImportPrice.Text);
-            MoneyToPay = this.totalPrice - this.totalPrice * int.Parse(this.wdImportGoods.txtDiscount.Text) / 100;
+            MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
         }
         void SelectGoodsType(ImportGoodsWindow wdImportGoods)
         {
@@ -487,7 +594,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 isExist = false;
                 ImportGoodsControl control = new ImportGoodsControl();
-                control.txbNumericalOder.Text = (this.wdImportGoods.stkImportGoods.Children.Count + 1).ToString();
+                control.txbNumericalOder.Text = (wdImportGoods.stkImportGoods.Children.Count + 1).ToString();
                 control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbUnit.Text = selectedGoodsType.Unit;
@@ -508,7 +615,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     wdImportGoods.stkImportGoods.Children.Add(control);
                     TotalPrice += long.Parse(control.txbTotalPrice.Text);
-                    MoneyToPay = this.totalPrice - this.totalPrice * int.Parse(this.wdImportGoods.txtDiscount.Text) / 100;
+                    MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
                 }
             }
             if (dt.Rows.Count == 0)
@@ -559,7 +666,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdImportGoods.grdSearchResult.Visibility = Visibility.Hidden;
             }
         }
-
         void AutoSuggest(ImportGoodsWindow wdImportGoods)
         {
             wdImportGoods.stkSearchResult.Children.Clear();
@@ -577,7 +683,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (goodsName.Contains(wdImportGoods.txtSearch.Text.ToLower()))
                 {
                     SearchGoodsControl control = new SearchGoodsControl();
-                    Byte[] tmp = Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString());
+                    //Byte[] tmp = Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString());
+                    Byte[] tmp = (Byte[])dt.Rows[i].ItemArray[5];
                     control.imgGoods.Source = Converter.Instance.ConvertByteToBitmapImage(tmp);
                     control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                     control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));

@@ -27,14 +27,15 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "insert into StockReceipt(idStockReceipt, idAccount, dateTimeStockReceipt, total, idSupplier) "
-                    + "values(@idStockReceipt,@idAccount, str_to_date(@dateTimeStockReceipt,'%d/%m/%Y'), @total, @idSupplier)";
+                string query = "insert into StockReceipt(idStockReceipt, idAccount, dateTimeStockReceipt, total, discount, idSupplier) "
+                    + "values(@idStockReceipt,@idAccount, str_to_date(@dateTimeStockReceipt,'%d/%m/%Y'), @total, @discount, @idSupplier)";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 string s = stockReceipt.Date.ToString("dd/MM/yyyy");
                 cmd.Parameters.AddWithValue("@idStockReceipt", stockReceipt.Id.ToString());
                 cmd.Parameters.AddWithValue("@idAccount", stockReceipt.IdAccount.ToString());
                 cmd.Parameters.AddWithValue("@dateTimeStockReceipt", s);
                 cmd.Parameters.AddWithValue("@total", stockReceipt.TotalMoney.ToString());
+                cmd.Parameters.AddWithValue("@discount", stockReceipt.Discount.ToString());
                 cmd.Parameters.AddWithValue("@idSupplier", stockReceipt.IdSupplier.ToString());
                 return cmd.ExecuteNonQuery() == 1;
             }
@@ -78,7 +79,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
-                return int.Parse(reader.GetString(0));
+                return long.Parse(reader.GetString(0));
             }
             catch
             {

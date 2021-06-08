@@ -28,12 +28,13 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "insert into StockReceiptInfo(idStockReceipt, idGoods, quantity) "
-                    + "values(@idStockReceipt,@idGoods, @quantity)";
+                string query = "insert into StockReceiptInfo(idStockReceipt, idGoods, quantity, importPrice) "
+                    + "values(@idStockReceipt,@idGoods, @quantity, @importPrice)";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idStockReceipt", info.IdStockReceipt.ToString());
                 cmd.Parameters.AddWithValue("@idGoods", info.IdGoods.ToString());
                 cmd.Parameters.AddWithValue("@quantity", info.Quantity.ToString());
+                cmd.Parameters.AddWithValue("@importPrice", info.ImportPrice.ToString());
                 return cmd.ExecuteNonQuery() == 1;
 
             }
@@ -62,6 +63,27 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch
             {
                 return new DataTable();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+        public long SumMoneyByIdReceipt(string idReceipt)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "select sum(importPrice) from StockReceiptInfo where idStockReceipt = " + idReceipt;
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return long.Parse(reader.GetString(0));
+            }
+            catch
+            {
+                return 0;
             }
             finally
             {

@@ -181,14 +181,14 @@ namespace GemstonesBusinessManagementSystem.DAL
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
+              /*  Goods res = new Goods(int.Parse(idGoods), dataTable.Rows[0].ItemArray[1].ToString(),
+                    long.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
+                    int.Parse(dataTable.Rows[0].ItemArray[4].ToString()),
+                   Convert.FromBase64String(dataTable.Rows[0].ItemArray[5].ToString()), bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));*/
                 Goods res = new Goods(int.Parse(idGoods), dataTable.Rows[0].ItemArray[1].ToString(),
                     long.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
                     int.Parse(dataTable.Rows[0].ItemArray[4].ToString()),
-                   Convert.FromBase64String(dataTable.Rows[0].ItemArray[5].ToString()), bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));
-                /*   Goods res = new Goods(int.Parse(idGoods), dataTable.Rows[0].ItemArray[1].ToString(),
-                       long.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
-                       int.Parse(dataTable.Rows[0].ItemArray[4].ToString()),
-                       (Byte [])dataTable.Rows[0].ItemArray[5], bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));*/
+                    (Byte[])dataTable.Rows[0].ItemArray[5], bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));
                 return res;
             }
             catch

@@ -19,6 +19,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     class SupplierViewModel : BaseViewModel
     {
         private List<SupplierControl> listSupplierToView = new List<SupplierControl>();
+        public List<SupplierControl> ListSupplierToView { get => listSupplierToView; set => listSupplierToView = value; }
         private MainWindow mainWindow;
         private int currentPage;
         private bool isUpdate = false;
@@ -38,6 +39,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SortCommand { get; set; }
         public ICommand NextPageCommand { get; set; }
         public ICommand PreviousPageCommand { get; set; }
+
         public SupplierViewModel()
         {
             LoadSupplierCommand = new RelayCommand<MainWindow>(p => true, p => Init(p));
@@ -60,10 +62,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 switch (main.cboSortSupplier.SelectedIndex)
                 {
                     case 0:
-                        listSupplierToView = listSupplierToView.OrderBy(x => x.txbName.Text).ToList();
+                        ListSupplierToView = ListSupplierToView.OrderBy(x => x.txbName.Text).ToList();
                         break;
                     case 1:
-                        listSupplierToView = listSupplierToView.OrderByDescending(x => x.txbName.Text).ToList();
+                        ListSupplierToView = ListSupplierToView.OrderByDescending(x => x.txbName.Text).ToList();
                         break;
                     default:
                         break;
@@ -74,10 +76,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 switch (main.cboSortSupplier.SelectedIndex)
                 {
                     case 0:
-                        listSupplierToView = listSupplierToView.OrderBy(x => int.Parse(x.txbNumOfReceipts.Text)).ToList();
+                        ListSupplierToView = ListSupplierToView.OrderBy(x => int.Parse(x.txbNumOfReceipts.Text)).ToList();
                         break;
                     case 1:
-                        listSupplierToView = listSupplierToView.OrderByDescending(x => int.Parse(x.txbNumOfReceipts.Text)).ToList();
+                        ListSupplierToView = ListSupplierToView.OrderByDescending(x => int.Parse(x.txbNumOfReceipts.Text)).ToList();
                         break;
                     default:
                         break;
@@ -88,10 +90,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 switch (main.cboSortSupplier.SelectedIndex)
                 {
                     case 0:
-                        listSupplierToView = listSupplierToView.OrderBy(x => long.Parse(x.txbTotal.Text)).ToList();
+                        ListSupplierToView = ListSupplierToView.OrderBy(x => long.Parse(x.txbTotal.Text)).ToList();
                         break;
                     case 1:
-                        listSupplierToView = listSupplierToView.OrderByDescending(x => long.Parse(x.txbTotal.Text)).ToList();
+                        ListSupplierToView = ListSupplierToView.OrderByDescending(x => long.Parse(x.txbTotal.Text)).ToList();
                         break;
                     default:
                         break;
@@ -198,10 +200,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             newWindow.txtId.Text = AddPrefix("NC", idMax + 1);
             newWindow.ShowDialog();
         }
-        void Search(MainWindow main)
+        public void Search(MainWindow main)
         {
             DataTable dt = SupplierDAL.Instance.SearchByName(main.txtSearchSupplier.Text);
-            listSupplierToView.Clear();
+            ListSupplierToView.Clear();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 SupplierControl control = new SupplierControl();
@@ -213,11 +215,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbPhoneNumber.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbNumOfReceipts.Text = StockReceiptDAL.Instance.NumOfReceiptsBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString();
                 control.txbTotal.Text = StockReceiptDAL.Instance.SumMoneyBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString();
-                listSupplierToView.Add(control);
+                ListSupplierToView.Add(control);
             }
             Sort(main);
         }
-        void Init(MainWindow main)
+        public void Init(MainWindow main)
         {
             this.mainWindow = main;
             currentPage = 1;
@@ -235,10 +237,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbNumOfReceipts.Text = StockReceiptDAL.Instance.NumOfReceiptsBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString();
                 control.txbTotal.Text = StockReceiptDAL.Instance.SumMoneyBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString();
                 total += long.Parse(control.txbTotal.Text);
-                listSupplierToView.Add(control);
+                ListSupplierToView.Add(control);
             }
-            main.txbSupplierQuantity.Text = listSupplierToView.Count.ToString();
-            main.txbTotalSpent.Text = total.ToString();
+            main.txbSupplierQuantity.Text = ListSupplierToView.Count.ToString();
+            main.txbTotalSpentToSupplier.Text = total.ToString();
             LoadSupplierToView(main);
         }
         public void LoadSupplierToView(MainWindow main)
@@ -250,7 +252,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadInfoOfPage(ref start, ref end);
             for (int i = start; i < end; i++)
             {
-                main.stkSupplier.Children.Add(listSupplierToView[i]);
+                main.stkSupplier.Children.Add(ListSupplierToView[i]);
             }
         }
 
@@ -267,14 +269,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void LoadInfoOfPage(ref int start, ref int end)
         {
             mainWindow.btnPrePageSupplier.IsEnabled = (currentPage == 1 ? false : true);
-            mainWindow.btnNextPageSupplier.IsEnabled = (currentPage > ((listSupplierToView.Count) / 11) ? false : true);
+            mainWindow.btnNextPageSupplier.IsEnabled = (currentPage > ((ListSupplierToView.Count) / 11) ? false : true);
             start = (currentPage - 1) * 10;
             end = start + 10;
-            if (currentPage - 1 == listSupplierToView.Count / 10)
+            if (currentPage - 1 == ListSupplierToView.Count / 10)
             {
-                end = listSupplierToView.Count;
+                end = ListSupplierToView.Count;
             }
-            mainWindow.txtNumOfSupplier.Text = String.Format("Trang {0} trên {1} trang", currentPage, listSupplierToView.Count / 11 + 1);
+            mainWindow.txtNumOfSupplier.Text = String.Format("Trang {0} trên {1} trang", currentPage, ListSupplierToView.Count / 11 + 1);
         }
         public void ExportExcel(MainWindow main)
         {
@@ -286,11 +288,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             table.Columns.Add("Số đơn hàng", typeof(int));
             table.Columns.Add("Tổng tiền", typeof(long));
 
-            DataTable dt = SupplierDAL.Instance.GetAll();
-
-            for (int i = 0; i < dt.Rows.Count; i++)
+            for (int i = 0; i < ListSupplierToView.Count; i++)
             {
-                SupplierControl control = (SupplierControl)main.stkSupplier.Children[i];
+                SupplierControl control = ListSupplierToView[i];
                 table.Rows.Add(control.txbId.Text, control.txbName.Text, control.txbAddress.Text,
                     control.txbPhoneNumber.Text, control.txbNumOfReceipts.Text, control.txbTotal.Text);
             }
