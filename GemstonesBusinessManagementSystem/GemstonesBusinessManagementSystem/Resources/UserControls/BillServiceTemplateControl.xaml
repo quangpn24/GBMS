@@ -39,14 +39,14 @@
                 x:Name="txbNumber"
                 Grid.Column="0"
                 Text="STT"
-                HorizontalAlignment="Center"
-                Margin="0"
+                HorizontalAlignment="Right"
+                Margin="0,15,79.6,15"
                 TextWrapping="Wrap"
                 VerticalAlignment="Center"
                 FontWeight="SemiBold"
                 Foreground="{DynamicResource Black1}"
                 TextAlignment="Center"
-                FontSize="13" />
+                FontSize="13" Grid.ColumnSpan="2" />
             <TextBlock
                 x:Name="txbName"
                 Grid.Column="1"

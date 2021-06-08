@@ -2076,7 +2076,7 @@
                 x:Name="grdInvoice"
                 Grid.Row="1"
                 DataContext="{StaticResource BillVM}"
-                Visibility="Hidden">
+                Visibility="Visible">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80"/>
                     <RowDefinition/>
@@ -2474,11 +2474,11 @@
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
-                                    Text="Mã SP" 
+                                    Text="STT" 
                                     Grid.Column="0"
                                     Style="{StaticResource TextHeader}"
                                     HorizontalAlignment="Center"
@@ -2525,7 +2525,7 @@
                                 VerticalScrollBarVisibility="Auto" 
                                 HorizontalScrollBarVisibility="Disabled" >
                                 <StackPanel 
-                                    x:Name="stkInfoBill"
+                                    x:Name="stkBillInfo"
                                     VerticalAlignment="Top" />
                             </ScrollViewer>
                         </Grid>
@@ -2542,7 +2542,7 @@
                 x:Name="grdCustomer"
                 Grid.Row="1"
                 DataContext="{StaticResource CustomerVM}"
-                Visibility="Visible" >
+                Visibility="Hidden" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCustomerCommand}" 

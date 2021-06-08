@@ -225,8 +225,8 @@
     <Compile Include="Resources\UserControls\SaleServiceDetailsControl.xaml.cs">
       <DependentUpon>SaleServiceDetailsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Resources\UserControls\InfoInvoiceControl.xaml.cs">
-      <DependentUpon>InfoInvoiceControl.xaml</DependentUpon>
+    <Compile Include="Resources\UserControls\InvoiceInfoControl.xaml.cs">
+      <DependentUpon>InvoiceInfoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\InvoiceControl.xaml.cs">
       <DependentUpon>InvoiceControl.xaml</DependentUpon>
@@ -354,7 +354,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\UserControls\InfoInvoiceControl.xaml">
+    <Page Include="Resources\UserControls\InvoiceInfoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
