@@ -460,6 +460,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             customer.TotalPrice = int.Parse(customerControl.txbAllPrice.Text);
                         }
+                        else
+                        {
+                            CustomerControl control = new CustomerControl();
+                            control.txbSerial.Text = addCustomerWindow.txtId.Text ;
+                            control.txbName.Text = customer.CustomerName.ToString();
+                            control.txbPhone.Text = customer.PhoneNumber.ToString();
+                            control.txbAddress.Text = customer.Address.ToString();
+                            control.txbAllPrice.Text = customer.TotalPrice.ToString();
+                            control.txbLevelCus.Text = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
+                            mainWindow.lbCountCustomer.Content = (int.Parse(mainWindow.lbCountCustomer.Content.ToString()) + 1).ToString();
+                        }
                         CustomerDAL.Instance.AddOrUpdate(customer, isEditing);
 
                         int indexSort = mainWindow.cboSelectCustomerSort.SelectedIndex;
@@ -468,7 +479,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         FindCustomer(mainWindow);
                         mainWindow.cboSelectCustomerSort.SelectedIndex = indexSort;
                         mainWindow.cboSelectCustomerIdMembership.SelectedIndex = indexFilter;
-                        mainWindow.lbCountCustomer.Content = (int.Parse(mainWindow.lbCountCustomer.Content.ToString()) + 1).ToString();
+                        
                         mainWindow.lbCountAllPrice.Content = CustomerDAL.Instance.CountPrice().ToString();
 
                         addCustomerWindow.Close();
