@@ -11,8 +11,8 @@
     xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
     mc:Ignorable="d"
     Title="Phần mềm quản lý Tiệm vàng bạc đá quý"
-    Height="830" 
-    Width="1460" 
+    Height="830"
+    Width="1460"
     x:Name="wdMain"
     ResizeMode="CanMinimize" 
     WindowStartupLocation="CenterScreen" 
@@ -1946,7 +1946,6 @@
                                 Grid.Row="1" 
                                 Margin="10,0,10,10">
                                 <StackPanel x:Name="stkReceiptDetail">
-                                    <UserControls:ReceiptDetailControl/>
                                 </StackPanel>
                             </ScrollViewer>
                         </Grid>

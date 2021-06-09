@@ -446,20 +446,6 @@
                         HorizontalContentAlignment="Right" 
                         Margin="0"/>
                 </Grid>
-                <!--<TextBox 
-                    x:Name="txtMoreInfo"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    AcceptsReturn="True"
-                    TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto"
-                    materialDesign:HintAssist.Hint="Thông tin thêm" 
-                    Margin="20,10,20,0" 
-                    FocusVisualStyle="{x:Null}"
-                    BorderBrush="{StaticResource Light}"
-                    FontSize="16" 
-                    FontWeight="SemiBold" 
-                    VerticalAlignment="Top" 
-                    Height="120"/>-->
                 <Rectangle 
                     Height="3" 
                     Margin="30,60,30,0" 

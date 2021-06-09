@@ -48,7 +48,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         //cbo supplier
         private Supplier selectedSupplier = new Supplier();
-        public Supplier SelectedSupplier { get => selectedSupplier; set { selectedSupplier = value; OnPropertyChanged("SelectedSupplier"); } }
+        public Supplier SelectedSupplier { get => selectedSupplier; set { selectedSupplier = value; } }
         private ObservableCollection<Supplier> itemSourceSupplier = new ObservableCollection<Supplier>();
         public ObservableCollection<Supplier> ItemSourceSupplier { get => itemSourceSupplier; set { itemSourceSupplier = value; OnPropertyChanged(); } }
         private ObservableCollection<Supplier> itemSourceFilter = new ObservableCollection<Supplier>();
@@ -413,7 +413,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             newWindow.stkImportGoods.Children.Clear();
             this.wdImportGoods = newWindow;
             newWindow.ShowDialog();
-            SelectedSupplier = null;
+            HandleFilter(mainWindow);
             main.Show();
         }
 
@@ -683,8 +683,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (goodsName.Contains(wdImportGoods.txtSearch.Text.ToLower()))
                 {
                     SearchGoodsControl control = new SearchGoodsControl();
-                    //Byte[] tmp = Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString());
-                    Byte[] tmp = (Byte[])dt.Rows[i].ItemArray[5];
+                    Byte[] tmp = Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString());
                     control.imgGoods.Source = Converter.Instance.ConvertByteToBitmapImage(tmp);
                     control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                     control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
