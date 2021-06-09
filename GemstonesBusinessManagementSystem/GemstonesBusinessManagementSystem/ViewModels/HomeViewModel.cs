@@ -32,7 +32,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdImport.Visibility = Visibility.Collapsed;
             window.grdService.Visibility = Visibility.Collapsed;
             window.grdCustomer.Visibility = Visibility.Collapsed;
-            window.grdSupplier.Visibility = Visibility.Collapsed;
             window.grdInvoice.Visibility = Visibility.Collapsed;
             window.grdPayService.Visibility = Visibility.Collapsed;
             window.grdBillService.Visibility = Visibility.Collapsed;
@@ -114,7 +113,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //nhà cc
                 case 30:
-                    window.grdSupplier.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Danh sách nhà cung cấp";
                     CloseExpander(window, 2);
                     window.btnSupplier.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);

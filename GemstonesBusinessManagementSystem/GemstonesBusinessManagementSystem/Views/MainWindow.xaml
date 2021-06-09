@@ -1199,7 +1199,7 @@
                 Margin="0"
                 Grid.Row="1" 
                 DataContext="{StaticResource EmployeeVM}"
-                Visibility="Collapsed">
+                Visibility="Hidden">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}" 
@@ -2076,7 +2076,7 @@
                 x:Name="grdInvoice"
                 Grid.Row="1"
                 DataContext="{StaticResource BillVM}"
-                Visibility="Visible">
+                Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80"/>
                     <RowDefinition/>
@@ -2096,7 +2096,7 @@
                             <RowDefinition />
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
-                        
+
                         <StackPanel
                             Orientation="Horizontal"
                             HorizontalAlignment="Right"
@@ -2542,7 +2542,7 @@
                 x:Name="grdCustomer"
                 Grid.Row="1"
                 DataContext="{StaticResource CustomerVM}"
-                Visibility="Hidden" >
+                Visibility="Visible" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCustomerCommand}" 
@@ -2889,6 +2889,7 @@
                                     <ColumnDefinition Width="2.5*"/>
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Text="Mã KH" 
@@ -2924,19 +2925,23 @@
                                     VerticalAlignment="Center" 
                                     Margin="0"/>
                                 <TextBlock
-                                    Text="Hạng thành viên" 
+                                    Text="HTV" 
                                     Grid.Column="5"
                                     Style="{StaticResource TextHeader}"
                                     VerticalAlignment="Center" 
                                     Grid.ColumnSpan="3" 
-                                    Margin="0" 
-                                    HorizontalAlignment="Center"/>
+                                    Margin="50,0,0,0" 
+                                    HorizontalAlignment="Left"/>
 
                             </Grid>
                         </Border>
                         <Grid
                             Grid.Row="1"
                             Margin="20,40,20,0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="590*"/>
+                                <ColumnDefinition Width="231*"/>
+                            </Grid.ColumnDefinitions>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Loaded">
                                     <i:InvokeCommandAction Command="{Binding LoadCustomerCommand}"
@@ -2945,7 +2950,7 @@
                             </i:Interaction.Triggers>
                             <ScrollViewer 
                                 VerticalScrollBarVisibility="Auto" 
-                                HorizontalScrollBarVisibility="Disabled" >
+                                HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Margin="0,0,-0.2,-0.4" >
                                 <StackPanel 
                                     x:Name="stkCustomer"
                                     VerticalAlignment="Top" />

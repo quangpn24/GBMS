@@ -35,7 +35,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         //CustomerWindow
         public ICommand LoadCustomerCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
         public ICommand GoToNextPageCommandCus { get; set; }
         public ICommand GoToPreviousPageCommandCus { get; set; }
@@ -44,6 +43,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SortCustomerCommand { get; set; } 
         public ICommand CountCustomerCommand { get; set; }
         public ICommand FilterCommand { get; set; }
+        public ICommand EditCommand { get; set; }
 
         //PickCustomer
         public ICommand LoadPickCustomerCommand { get; set; }
@@ -78,7 +78,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
 
         //AddCustomer window
-        public ICommand AddCustomerCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
         public ICommand ExitCommand { get; set; }
 
         private int currentPage = 0;
@@ -102,8 +102,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ExportExcelCommand = new RelayCommand<Window>(p => true, p => ExportExcel());
             SortCustomerCommand = new RelayCommand<MainWindow>(p => true, p => SortCustomer(p));
             FilterCommand = new RelayCommand<MainWindow>(p => true, p => Filter(p));
+            EditCommand = new RelayCommand<CustomerControl>((p) => true, (p) => OpenEditWindow(p));
             //UC customer - addCustomer window
-            AddCustomerCommand = new RelayCommand<AddCustomerWindow>(p => true, p => AddCustomer(p));
+            SaveCommand = new RelayCommand<AddCustomerWindow>(p => true, p => AddOrUpdateCustomer(p));
             ExitCommand = new RelayCommand<AddCustomerWindow>((parameter) => true, (parameter) => parameter.Close());
             //MembershipWindow
             OpenMembershipWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenMembershipWindow(p));
@@ -268,6 +269,33 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addCustomerWindow.txtId.Text = AddPrefix("KH", (CustomerDAL.Instance.GetMaxId() + 1));
             addCustomerWindow.ShowDialog();
         }   
+        void OpenEditWindow(CustomerControl control)
+        {
+            isEditing = true;
+            this.customerControl = control;
+            AddCustomerWindow addCustomerWindow = new AddCustomerWindow();
+            Customer customer = CustomerDAL.Instance.FindById(ConvertToIDString(control.txbSerial.Text));
+
+            addCustomerWindow.txtId.Text = control.txbSerial.Text;
+
+            addCustomerWindow.txtName.Text = customer.CustomerName;
+            addCustomerWindow.txtName.SelectionStart = addCustomerWindow.txtName.Text.Length;
+
+            addCustomerWindow.txtPhoneNumber.Text = customer.PhoneNumber;
+            addCustomerWindow.txtPhoneNumber.SelectionStart = addCustomerWindow.txtPhoneNumber.Text.Length;
+
+            addCustomerWindow.txtCMND.Text = customer.IdNumber.ToString();
+            addCustomerWindow.txtCMND.SelectionStart = addCustomerWindow.txtCMND.Text.Length;
+
+            addCustomerWindow.cbMembership.Text = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
+
+            addCustomerWindow.txtAddress.Text = customer.Address;
+            addCustomerWindow.txtAddress.SelectionStart = addCustomerWindow.txtAddress.Text.Length;
+
+            addCustomerWindow.btnSave.ToolTip = "Cập nhật thông tin khách hàng";
+            addCustomerWindow.Title = "Cập nhật thông tin khách hàng";
+            addCustomerWindow.ShowDialog();
+        }
 
         void AddOrUpdateMembership(AddMembershipWindow window)
         {
@@ -421,14 +449,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 itsAddCustomerMembership.Add(type);
             }
         }
-        public void AddCustomer(AddCustomerWindow addCustomerWindow) 
+        public void AddOrUpdateCustomer(AddCustomerWindow addCustomerWindow) 
         {
             if(CheckData(addCustomerWindow))// kiem tra du lieu dau vao
             {
-                if (ConvertToID(addCustomerWindow.txtId.Text) > CustomerDAL.Instance.GetMaxId()) // tao id moi cho khach hang moi
-                {
-                    if (!CustomerDAL.Instance.IsExisted(addCustomerWindow.txtCMND.Text))   //kiem tra CMND của khách hàng mới
-                    {
                         Customer customer = new Customer(ConvertToID(addCustomerWindow.txtId.Text), addCustomerWindow.txtName.Text, (addCustomerWindow.txtPhoneNumber.Text), addCustomerWindow.txtAddress.Text,
                             int.Parse(addCustomerWindow.txtCMND.Text), 0, selectedMembership.IdMembershipsType);
 
@@ -436,7 +460,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             customer.TotalPrice = int.Parse(customerControl.txbAllPrice.Text);
                         }
-                        CustomerDAL.Instance.Add(customer, isEditing);
+                        CustomerDAL.Instance.AddOrUpdate(customer, isEditing);
 
                         int indexSort = mainWindow.cboSelectCustomerSort.SelectedIndex;
                         int indexFilter = mainWindow.cboSelectCustomerIdMembership.SelectedIndex;
@@ -448,13 +472,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         mainWindow.lbCountAllPrice.Content = CustomerDAL.Instance.CountPrice().ToString();
 
                         addCustomerWindow.Close();
-                                            
-                    }
-                    else
-                    {
-                        MessageBox.Show("Khách hàng này đã tồn tại!");
-                    }
-                }  
             }
             int start = 0, end = 0;
             LoadInfoOfPage(ref start, ref end);

@@ -193,24 +193,34 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
 }
-        public bool Add(Customer customer, bool isUpdating = false)
+        public bool AddOrUpdate(Customer customer, bool isUpdating)
         {
             try
             {
                 OpenConnection();
-                string queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber,totalPrice, idMembership, address)" +
+                string queryString = "";
+                if (!isUpdating)
+                {
+                    queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber,totalPrice, idMembership, address)" +
                     "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalPrice, @idMembership, @address);";
+                }
+                else
+                {
+                    queryString = "update Customer set customerName = @customerName, phoneNumber=@phoneNumber, idNumber=@idNumber," +
+                        "totalPrice=@totalPrice, idMembership=@idMembership, address=@address where idCustomer = @idCustomer";
+                }               
                 MySqlCommand command = new MySqlCommand(queryString, conn);
-                command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer.ToString());
-                command.Parameters.AddWithValue("@customerName", customer.CustomerName.ToString());
-                command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber.ToString());
-                command.Parameters.AddWithValue("@idNumber", customer.IdCustomer.ToString());
-                command.Parameters.AddWithValue("@totalPrice", customer.TotalPrice.ToString());
-                command.Parameters.AddWithValue("@idMembership", customer.IdMembership.ToString());
-                command.Parameters.AddWithValue("@address", customer.Address.ToString());
+                command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer);
+                command.Parameters.AddWithValue("@customerName", customer.CustomerName);
+                command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber);
+                command.Parameters.AddWithValue("@idNumber", customer.IdCustomer);
+                command.Parameters.AddWithValue("@totalPrice", customer.TotalPrice);
+                command.Parameters.AddWithValue("@idMembership", customer.IdMembership);
+                command.Parameters.AddWithValue("@address", customer.Address);
                 int rs = command.ExecuteNonQuery();
                 if(rs == 1)
                 {
+                    MessageBox.Show("Thành công!!!", "Thông báo");
                     return true;
                 }
                 else

@@ -284,7 +284,7 @@
                     x:Name="btnSave"
                     IsDefault="True"
                     Style="{StaticResource GreenButton}"
-                    Command="{Binding AddCustomerCommand}"
+                    Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=wdAddCustomer}"
                     Height="40" 
                     Width="100"
