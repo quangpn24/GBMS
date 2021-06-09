@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -43,7 +44,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SortCustomerCommand { get; set; } 
         public ICommand CountCustomerCommand { get; set; }
         public ICommand FilterCommand { get; set; }
+
+        //PickCustomer
+        public ICommand LoadPickCustomerCommand { get; set; }
+        public ICommand FindPickCustomerCommand { get; set; }
+        public ICommand GoToNextPageCommandPickCus { get; set; }
+        public ICommand GoToPreviousPageCommandPickCus { get; set; }
         public ICommand PickCustomerCommand { get; set; }
+        public ICommand ConfirmCommand { get; set; }
+        public ICommand ClosingWdCommand { get; set; }
 
         //MembershipWindow
         public ICommand OpenMembershipWindowCommand { get; set; }
@@ -76,6 +85,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         public CustomerViewModel()
         {
+            //pickCustomer
+            LoadPickCustomerCommand = new RelayCommand<Window>(p => true, p => LoadPickCustomerToView(p, 0));
+            ConfirmCommand = new RelayCommand<PickCustomerWindow>(p => true, p => ConfirmCustomer(p));
+            PickCustomerCommand = new RelayCommand<PickCustomerControl>(p => true, p => PickCustomer(p));
+            ClosingWdCommand = new RelayCommand<PickCustomerWindow>((p) => true, (p) => CloseWindow(p));
+            FindPickCustomerCommand = new RelayCommand<PickCustomerWindow>(p => true, p => FindPickCustomer(p));
+            GoToNextPageCommandCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToNextPagePickCustomer(p, ++currentPage));
+            GoToPreviousPageCommandCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToPreviousPagePickCustomer(p, --currentPage));
             //Grid Customer to mainWindow
             LoadCustomerCommand = new RelayCommand<MainWindow>(p => true, p => { Load(p); });
             GoToNextPageCommandCus = new RelayCommand<MainWindow>(p => true, p => GoToNextPage(p, ++currentPage));
@@ -98,16 +115,86 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             DeleteMembershipCommand = new RelayCommand<MembershipControl>(p => true, p => DeleteMembership(p));
         }
 
-        /*public void PickCustomer(CustomerControl customerControl)
+        //PickCustomer
+        public void CloseWindow(PickCustomerWindow pickCustomerWindow)
         {
-            pickCustomerWindow.txbId.Text = customerControl.txbId.Text;
-            pickCustomerWindow.txbName.Text = customerControl.txbName.Text;
-            pickCustomerWindow.txbAddress.Text = customerControl.txbAddress.Text;
-            pickCustomerWindow.txbPhoneNumber.Text = customerControl.txbPhoneNumber.Text;
-            pickCustomerWindow.txbIdNumber.Text = customerControl.txbIdNumber.Text;
-            pickCustomerWindow.txbRank.Text = customerControl.txbRank.Text;
-            customerControl.Focus();
-        }*/
+            if (!new StackTrace().GetFrames().Any(x => x.GetMethod().Name == "Close"))
+            {
+                pickCustomerWindow.txbId.Text = pickCustomerWindow.txbName.Text
+                    = pickCustomerWindow.txbRank.Text = pickCustomerWindow.txbIdNumber.Text
+                    = pickCustomerWindow.txbAddress.Text = pickCustomerWindow.txbPhoneNumber.Text = "";
+            }
+        }
+        public void ConfirmCustomer(PickCustomerWindow pickCustomerWindow)
+        {
+            if (String.IsNullOrEmpty(pickCustomerWindow.txbId.Text))
+            {
+                MessageBox.Show("Vui lòng chọn khách hàng!");
+            }
+            else
+            {
+                pickCustomerWindow.Close();
+            }
+        }
+        public void PickCustomer(PickCustomerControl pickCustomerControl)
+        {
+            pickCustomerWindow.txbId.Text = pickCustomerControl.txbId.Text;
+            pickCustomerWindow.txbName.Text = pickCustomerControl.txbName.Text;
+            pickCustomerWindow.txbAddress.Text = pickCustomerControl.txbAddress.Text;
+            pickCustomerWindow.txbPhoneNumber.Text = pickCustomerControl.txbPhoneNumber.Text;
+            pickCustomerWindow.txbIdNumber.Text = pickCustomerControl.txbIdNumber.Text;
+            pickCustomerWindow.txbRank.Text = pickCustomerControl.txbRank.Text;
+            pickCustomerControl.Focus();
+        }
+        public void LoadPickCustomerToView(Window window, int currentPage)
+        {
+            this.pickCustomerWindow = window as PickCustomerWindow;
+            this.pickCustomerWindow.stkCustomer.Children.Clear();
+            int start = 0, end = 0;
+            this.currentPage = currentPage;
+            LoadInfoOfPagePickCustomer(ref start, ref end);
+
+            for (int i = start; i < end; i++)
+            {
+                PickCustomerControl ucCustomer = new PickCustomerControl();
+                ucCustomer.txbId.Text = AddPrefix("KH", customerList[i].IdCustomer);
+                ucCustomer.txbName.Text = customerList[i].CustomerName;
+                ucCustomer.txbPhoneNumber.Text = customerList[i].PhoneNumber.ToString();
+                ucCustomer.txbIdNumber.Text = customerList[i].IdNumber.ToString();
+                ucCustomer.txbAddress.Text = customerList[i].Address.ToString();
+                pickCustomerWindow.stkCustomer.Children.Add(ucCustomer);
+            }
+
+        }
+        public void LoadInfoOfPagePickCustomer(ref int start, ref int end)
+        {
+            pickCustomerWindow.btnPrePageCus.IsEnabled = currentPage == 0 ? false : true;
+            pickCustomerWindow.btnNextPageCus.IsEnabled = currentPage == (customerList.Count - 1) / 10 ? false : true;
+
+            start = currentPage * 10;
+            end = (currentPage + 1) * 10;
+            if (currentPage == customerList.Count / 10)
+                end = customerList.Count;
+
+            pickCustomerWindow.txtNumOfCus.Text = String.Format("Trang {0} trên {1} trang", currentPage + 1, (customerList.Count - 1) / 10 + 1);
+        }
+        public void GoToNextPagePickCustomer(PickCustomerWindow pickCustomerWindow, int currentPage)
+        {
+            LoadPickCustomerToView(pickCustomerWindow, currentPage);
+        }
+        public void GoToPreviousPagePickCustomer(PickCustomerWindow pickCustomerWindow, int currentPage)
+        {
+            LoadPickCustomerToView(pickCustomerWindow, currentPage);
+        }
+        public void FindPickCustomer(PickCustomerWindow pickCustomerWindow)
+        {
+            customerList = CustomerDAL.Instance.FindByName(pickCustomerWindow.txtSearchCustomer.Text);
+            currentPage = 0;
+            LoadPickCustomerToView(pickCustomerWindow, currentPage);
+        }
+
+
+        //Customer
         void DeleteMembership(MembershipControl control)
         {
             string idMembership = ConvertToIDString(control.txbId.Text);
@@ -278,7 +365,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (currentPage == customerList.Count / 10)
                 end = customerList.Count;
 
-            mainWindow.txtNumOfCus.Text = String.Format("{0} - {1} of {2} customers", start == end ? 0 : start + 1, end, customerList.Count);
+            mainWindow.txtNumOfCus.Text = String.Format("Trang {0} trên {1} trang", currentPage + 1, (customerList.Count - 1) / 10 + 1);
         }
         public void FindCustomer(MainWindow mainWindow)
         {
@@ -453,5 +540,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.currentPage = 0;
             LoadCustomerToView(mainWindow, currentPage);
         }
+
+
     }
 }

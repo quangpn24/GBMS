@@ -186,6 +186,9 @@
     <Compile Include="Resources\UserControls\NumericSpinner.xaml.cs">
       <DependentUpon>NumericSpinner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\UserControls\PickCustomerControl.xaml.cs">
+      <DependentUpon>PickCustomerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\SearchGoodsControl.xaml.cs">
       <DependentUpon>SearchGoodsControl.xaml</DependentUpon>
     </Compile>
@@ -363,6 +366,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\MembershipControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\PickCustomerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
