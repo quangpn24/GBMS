@@ -222,6 +222,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void Init(MainWindow main)
         {
             this.mainWindow = main;
+            main.stkSupplier.Children.Clear(); 
+            ListSupplierToView.Clear();
             currentPage = 1;
             DataTable dt = SupplierDAL.Instance.GetAll();
             long total = 0;

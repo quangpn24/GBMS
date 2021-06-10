@@ -1,0 +1,122 @@
+﻿<UserControl 
+    x:Name="ucCustomer"
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.CustomerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+    mc:Ignorable="d" 
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    Height="40"
+    DataContext="{StaticResource CustomerVM}"
+    Margin="0,0,0,0">
+    <Border 
+        BorderBrush="{StaticResource Light}"
+        BorderThickness="1">
+        <Grid 
+            x:Name="grdMain"
+            Margin="0"
+            Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock 
+                x:Name="txbSerial"
+                Grid.Column="0"
+                TextAlignment="Center"
+                Text="Mã KH"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                FontWeight="Medium" 
+                HorizontalAlignment="Center" />
+            <TextBlock 
+                x:Name="txbName"
+                Text="Họ tên"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Margin="20,0,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                FontWeight="Medium" />
+            <TextBlock
+                x:Name="txbPhone"
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                Margin="0"
+                Text="SĐT"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Padding="0"
+                FontWeight="Medium" />
+            <TextBlock 
+                x:Name="txbAddress"
+                Grid.Column="3"
+                Text="Địa chỉ"
+                HorizontalAlignment="Center"
+                Margin="0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Padding="0"
+                FontWeight="Medium" />
+            <TextBlock 
+                x:Name="txbAllPrice"
+                Grid.Column="4"
+                HorizontalAlignment="Center"
+                Margin="0"
+                Text="Tổng tiền mua"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Padding="0"
+                FontWeight="Medium" />
+            <TextBlock 
+                x:Name="txbLevelCus"
+                Grid.Column="5"
+                HorizontalAlignment="Center"
+                Margin="0"
+                Text="Hạng KH"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Padding="0"
+                FontWeight="Medium" />
+            <StackPanel
+                Orientation="Horizontal"
+                Grid.Column="6">
+                <Button 
+                    x:Name="btnEditCustomer"
+                    Command="{Binding EditCommand}"
+                    CommandParameter="{Binding ElementName=ucCustomer}"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    ToolTip="Sửa thông tin"
+                    Height="30"
+                    Background="{x:Null}" 
+                    BorderBrush="{x:Null}" 
+                    Foreground="{DynamicResource Primary}" 
+                    VerticalAlignment="Center" 
+                    FocusVisualStyle="{x:Null}"
+                    HorizontalAlignment="Right" 
+                    Padding="0" 
+                    Margin="10,0">
+                    <materialDesign:PackIcon 
+                        Kind="SquareEditOutline" 
+                        Width="24"
+                        Height="24"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

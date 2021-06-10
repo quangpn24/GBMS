@@ -50,7 +50,7 @@
                         FontWeight="SemiBold" 
                         Foreground="{StaticResource Black2}" 
                         Height="32" 
-                        VerticalAlignment="Center"/>
+                        VerticalAlignment="Bottom" Margin="0,0,0,4"/>
                     <Rectangle 
                         HorizontalAlignment="Right" 
                         Height="40" 

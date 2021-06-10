@@ -1,0 +1,92 @@
+﻿<UserControl 
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.BillServiceControl"
+    x:Name="ucBillService"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+    DataContext="{StaticResource BillServiceVM}"
+    Style="{StaticResource MyUCHoverStyle}"
+    Cursor="Hand"
+    mc:Ignorable="d"
+    Focusable="True">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding PickBillServiceCommand}"
+                                   CommandParameter="{Binding ElementName=ucBillService}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid 
+        x:Name="grdMain"
+        Grid.Row="1"
+        Height="50"
+        VerticalAlignment="Top"
+        Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock 
+            x:Name="txbId"
+            Grid.Column="0"
+            HorizontalAlignment="Center"
+            Margin="0"
+            TextWrapping="Wrap"
+            Text="Mã PDV"
+            VerticalAlignment="Center"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Foreground="#FF4F4F4F" />
+        <TextBlock 
+            x:Name="txbNameCustomer"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Margin="20,0,0,0"
+            TextWrapping="Wrap"
+            Text="Khách hàng"
+            Padding="10,0,0,0"
+            VerticalAlignment="Center"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Foreground="#FF4F4F4F" />
+        <TextBlock
+            x:Name="txbTotal"
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            Margin="0"
+            TextWrapping="Wrap"
+            Text="Tổng tiền"
+            Padding="10,0,0,0"
+            VerticalAlignment="Center"
+            FontSize="16"
+            FontWeight="SemiBold"
+            Foreground="#FF4F4F4F" />
+        <TextBlock 
+            x:Name="txbRest"
+            Grid.Column="3"
+            HorizontalAlignment="Center"
+            Margin="0"
+            Foreground="#FF4F4F4F"
+            TextWrapping="Wrap"
+            Text="Còn lại"
+            VerticalAlignment="Center"
+            FontSize="16"
+            FontWeight="SemiBold" />
+        <TextBlock 
+            x:Name="txbStatus"
+            Grid.Column="4"
+            HorizontalAlignment="Center"
+            Margin="0"
+            TextWrapping="Wrap"
+            Foreground="#FF4F4F4F"
+            Text="Trạng thái"
+            VerticalAlignment="Center"
+            FontSize="16"
+            FontWeight="SemiBold" />
+    </Grid>
+</UserControl>

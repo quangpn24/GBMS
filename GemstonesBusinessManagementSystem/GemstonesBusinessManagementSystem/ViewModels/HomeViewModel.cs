@@ -32,6 +32,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdImport.Visibility = Visibility.Collapsed;
             window.grdService.Visibility = Visibility.Collapsed;
             window.grdSupplier.Visibility = Visibility.Collapsed;
+            window.grdCustomer.Visibility = Visibility.Collapsed;
+            window.grdInvoice.Visibility = Visibility.Collapsed;
+            window.grdPayService.Visibility = Visibility.Collapsed;
+            window.grdBillService.Visibility = Visibility.Collapsed;
 
             string fore = "#666666";
             string back = "#FFFFFF";
@@ -48,7 +52,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnEmployee.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnGoods.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnServiceM.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
-            window.btnNote.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
+            window.btnBillService.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
 
             window.btnHome.Background = (Brush)new BrushConverter().ConvertFrom(back);
@@ -61,7 +65,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnEmployee.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnGoods.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnServiceM.Background = (Brush)new BrushConverter().ConvertFrom(back);
-            window.btnNote.Background = (Brush)new BrushConverter().ConvertFrom(back);
+            window.btnBillService.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(back);
 
             switch (index)
@@ -82,7 +86,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //dịch vụ
                 case 11:
+                    window.grdPayService.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Dịch vụ";
+                    BusinessServiceViewModel businessServiceViewModel = new BusinessServiceViewModel();
+                    businessServiceViewModel.LoadSaleServices(window);
                     CloseExpander(window, 0);
                     window.btnService.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnService.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -115,6 +122,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //khách hàng
                 case 31:
+                    window.grdCustomer.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Danh sách khách hàng";
                     CloseExpander(window, 2);
                     window.btnCustomer.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
@@ -141,6 +149,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case 42:
                     window.txbTabName.Text = "Quản lý dịch vụ";
                     window.grdService.Visibility = Visibility.Visible;
+                    ServiceViewModel serviceViewModel = window.grdService.DataContext as ServiceViewModel;
+                    serviceViewModel.LoadServices(window, serviceViewModel.currentPage);
                     CloseExpander(window, 3);
                     window.btnServiceM.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnServiceM.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -149,12 +159,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //báo cáo phiếu
                 case 50:
                     window.txbTabName.Text = "Báo cáo phiếu";
+                    if (window.dpStartDateBS.SelectedDate != null)
+                    {
+                        window.grdBillService.Visibility = Visibility.Visible;
+                        DateTime temp = (DateTime)window.dpStartDateBS.SelectedDate;
+                        window.dpStartDateBS.SelectedDate = null;
+                        window.dpStartDateBS.SelectedDate = temp;
+                    }
+                    window.grdBillService.Visibility = Visibility.Visible;
                     CloseExpander(window, 4);
-                    window.btnNote.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
-                    window.btnNote.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
+                    window.btnBillService.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
+                    window.btnBillService.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //báo cáo doanh thu
                 case 51:
+                    window.grdInvoice.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Báo cáo doanh thu";
                     CloseExpander(window, 4);
                     window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
