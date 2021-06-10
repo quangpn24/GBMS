@@ -29,7 +29,7 @@
         </Grid.ColumnDefinitions>
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Loaded">
-                <i:InvokeCommandAction Command="{Binding LoadCustomerCommand}"
+                <i:InvokeCommandAction Command="{Binding LoadPickCustomerCommand}"
                                        CommandParameter="{Binding ElementName=wdPickCustomer}" />
             </i:EventTrigger>
             <i:EventTrigger EventName="Closed">
@@ -242,7 +242,7 @@
                     VerticalAlignment="Center" />
                 <Button 
                     Grid.Row="0"
-                    Command="{Binding FindCustomerCommand}"
+                    Command="{Binding FindPickCustomerCommand}"
                     CommandParameter="{Binding ElementName=wdPickCustomer}"
                     Height="30"
                     Width="30"
@@ -356,7 +356,7 @@
                     Margin="8,0"
                     ToolTip="Trang trước"
                     Style="{StaticResource PaginationButton}"
-                    Command="{Binding GoToPreviousPageCommandCus}"
+                    Command="{Binding GoToPreviousPageCommandPickCus}"
                     CommandParameter="{Binding ElementName=wdPickCustomer}">
                     <materialDesign:PackIcon 
                         Width="26"
@@ -370,7 +370,7 @@
                     Margin="8,0,0,0"
                     ToolTip="Trang tiếp theo"
                     Style="{StaticResource PaginationButton}"
-                    Command="{Binding GoToNextPageCommandCus}"
+                    Command="{Binding GoToNextPageCommandPickCus}"
                     CommandParameter="{Binding ElementName=wdPickCustomer}">
                     <materialDesign:PackIcon 
                         Width="26"

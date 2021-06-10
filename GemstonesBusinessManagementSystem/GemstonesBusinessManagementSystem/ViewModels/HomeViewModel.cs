@@ -31,6 +31,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdGoods.Visibility = Visibility.Collapsed;
             window.grdImport.Visibility = Visibility.Collapsed;
             window.grdService.Visibility = Visibility.Collapsed;
+            window.grdCustomer.Visibility = Visibility.Collapsed;
+            window.grdInvoice.Visibility = Visibility.Collapsed;
             window.grdPayService.Visibility = Visibility.Collapsed;
             window.grdBillService.Visibility = Visibility.Collapsed;
 
@@ -118,6 +120,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //khách hàng
                 case 31:
+                    window.grdCustomer.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Danh sách khách hàng";
                     CloseExpander(window, 2);
                     window.btnCustomer.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
@@ -168,6 +171,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //báo cáo doanh thu
                 case 51:
+                    window.grdInvoice.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Báo cáo doanh thu";
                     CloseExpander(window, 4);
                     window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
