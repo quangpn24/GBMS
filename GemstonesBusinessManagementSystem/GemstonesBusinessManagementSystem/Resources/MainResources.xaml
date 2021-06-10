@@ -13,5 +13,6 @@
     <viewmodels:ImportGoodsViewModel x:Key="ImportGoodsVM"/>
     <viewmodels:BusinessServiceViewModel x:Key="BusinessServiceVM"/>
     <viewmodels:StockViewModel x:Key="StockVM" />
+    <viewmodels:SupplierViewModel x:Key="SupplierVM" />
     <viewmodels:BillServiceViewModel x:Key="BillServiceVM" />
 </ResourceDictionary>

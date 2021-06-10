@@ -171,6 +171,12 @@
     <Compile Include="Resources\Template\StockReceiptTemplate.xaml.cs">
       <DependentUpon>StockReceiptTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\UserControls\ReceiptControl.xaml.cs">
+      <DependentUpon>ReceiptControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\ReceiptDetailControl.xaml.cs">
+      <DependentUpon>ReceiptDetailControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\GoodsControl.xaml.cs">
       <DependentUpon>GoodsControl.xaml</DependentUpon>
     </Compile>
@@ -195,6 +201,9 @@
     <Compile Include="Resources\UserControls\StockReceiptInfoControl.xaml.cs">
       <DependentUpon>StockReceiptInfoControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\UserControls\SupplierControl.xaml.cs">
+      <DependentUpon>SupplierControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BillViewModel.cs" />
     <Compile Include="ViewModels\GoodsTypeViewModel.cs" />
@@ -207,9 +216,6 @@
     </Compile>
     <Compile Include="Resources\UserControls\BillServiceTemplateControl.xaml.cs">
       <DependentUpon>BillServiceTemplateControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\UserControls\CustomerControl.xaml.cs">
-      <DependentUpon>CustomerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\DashboardControl.xaml.cs">
       <DependentUpon>DashboardControl.xaml</DependentUpon>
@@ -252,11 +258,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\StockViewModel.cs" />
+    <Compile Include="ViewModels\SupplierViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
     <Compile Include="Views\AddCustomerWindow.xaml.cs">
       <DependentUpon>AddCustomerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\StockViewModel.cs" />
     <Compile Include="Views\AddEmployeeWindow.xaml.cs">
       <DependentUpon>AddEmployeeWindow.xaml</DependentUpon>
     </Compile>
@@ -345,6 +352,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\UserControls\ReceiptControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\ReceiptDetailControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\UserControls\EmployeeControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -402,6 +417,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\StockControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\SupplierControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

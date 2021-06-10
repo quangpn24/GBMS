@@ -19,7 +19,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     class GoodsViewModel : BaseViewModel
     {
-        private List<GoodsControl> listGoodsControl = new List<GoodsControl>(); // Luu nhung control khi dang filter, de hien thi len cac page
+        private List<GoodsControl> listControlToView = new List<GoodsControl>(); // Luu nhung control khi dang filter, de hien thi len cac page
         private List<GoodsControl> listSearch = new List<GoodsControl>(); // Luu nhung control sau khi search xong 
         private GoodsControl goodsControl; // Khi edit thi truyen gia tri vao cho window edit
         private bool isUpdate = false;
@@ -31,7 +31,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
         private GoodsType selectedGoodsType_Filter = new GoodsType();
         public GoodsType SelectedGoodsType_Filter { get => selectedGoodsType_Filter; set { selectedGoodsType_Filter = value; OnPropertyChanged("SelectedGoodsType"); } }
-
         private ObservableCollection<GoodsType> itemSourceGoodsType = new ObservableCollection<GoodsType>();
         public ObservableCollection<GoodsType> ItemSourceGoodsType { get => itemSourceGoodsType; set { itemSourceGoodsType = value; OnPropertyChanged(); } }
         public ObservableCollection<GoodsType> ItemSourceGoodsType_Filter { get => itemSourceGoodsType_Filter; set { itemSourceGoodsType_Filter = value; OnPropertyChanged(); } }
@@ -99,7 +98,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadInfoOfPage(ref start, ref end);
             for (int i = start; i < end; i++)
             {
-                main.stkGoods.Children.Add(listGoodsControl[i]);
+                main.stkGoods.Children.Add(listControlToView[i]);
             }
         }
         void GoToPreviousPage(MainWindow main, int currentPage)
@@ -113,19 +112,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void LoadInfoOfPage(ref int start, ref int end)
         {
             mainWindow.btnPrePageGoods.IsEnabled = (currentPage == 1 ? false : true);
-            mainWindow.btnNextPageGoods.IsEnabled = (currentPage > ((listGoodsControl.Count) / 11) ? false : true);
+            mainWindow.btnNextPageGoods.IsEnabled = (currentPage > ((listControlToView.Count) / 11) ? false : true);
             start = (currentPage - 1) * 10;
             end = start + 10;
-            if (currentPage - 1 == listGoodsControl.Count / 10)
+            if (currentPage - 1 == listControlToView.Count / 10)
             {
-                end = listGoodsControl.Count;
+                end = listControlToView.Count;
             }
-            mainWindow.txtNumOfGoods.Text = String.Format("{0} trong {1} mặt hàng", end - start, listGoodsControl.Count);
+            mainWindow.txtNumOfGoods.Text = String.Format("Trang {0} trên {1} trang", currentPage, listControlToView.Count / 11 + 1);
         }
         void Sort(MainWindow main)
         {
             List<GoodsControl> listTemp;
-            switch (main.cboSort.SelectedIndex)
+            switch (main.cboSortGoods.SelectedIndex)
             {
                 case 0:
                     listTemp = listSearch.OrderBy(x => x.txbName.Text).ToList();
@@ -155,9 +154,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void SearchGoods(MainWindow main)
         {
             main.cboFilterType.SelectedIndex = 0;
-            main.cboSort.SelectedIndex = -1;
+            main.cboSortGoods.SelectedIndex = -1;
             this.currentPage = 1;
-            listGoodsControl.Clear();
+            listControlToView.Clear();
             listSearch.Clear();
             DataTable dt = GoodsDAL.Instance.SearchByName(main.txtSearchGoods.Text.ToLower());
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -171,11 +170,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbImportPrice.Text = importPrice.ToString();
-                control.txbSalesPrice.Text = ((long)(importPrice * (1 + profitPercentage))).ToString();
+                control.txbSalesPrice.Text = importPrice % 100 == 0 ? ((importPrice * (1 + profitPercentage))).ToString() : ((long)(importPrice * (1 + profitPercentage) + 1)).ToString();
                 control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbGoodsType.Text = goodsType.Name;
                 control.txbUnit.Text = goodsType.Unit;
-                listGoodsControl.Add(control);
+                listControlToView.Add(control);
                 listSearch.Add(control);
             }
             LoadListGoods(main, this.currentPage);
@@ -187,7 +186,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 return;
             }
-            listGoodsControl.Clear();
+            listControlToView.Clear();
             if (selectedGoodsType_Filter.IdGoodsType != 0)// tránh TH người dùng đặt tên loại SP là "Tất cả"
             {
                 for (int i = 0; i < listSearch.Count; i++)
@@ -195,7 +194,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     GoodsControl control = listSearch[i];
                     if (control.txbGoodsType.Text == selectedGoodsType_Filter.Name)
                     {
-                        listGoodsControl.Add(control);
+                        listControlToView.Add(control);
                     }
                 }
             }
@@ -203,7 +202,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 for (int i = 0; i < listSearch.Count; i++)
                 {
-                    listGoodsControl.Add(listSearch[i]);
+                    listControlToView.Add(listSearch[i]);
                 }
             }
             this.currentPage = 1;
@@ -212,8 +211,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void SetItemSourceGoodsType(MainWindow main)
         {
-            itemSourceGoodsType.Clear();
             itemSourceGoodsType_Filter.Clear();
+            itemSourceGoodsType.Clear();
             GoodsType newGoodsType = new GoodsType();
             newGoodsType.Name = "Tất cả";
             itemSourceGoodsType_Filter.Add(newGoodsType);
@@ -223,8 +222,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 GoodsType type = new GoodsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), double.Parse(dt.Rows[0].ItemArray[2].ToString()),
                     dt.Rows[0].ItemArray[3].ToString(), true );
-                itemSourceGoodsType.Add(type);
                 itemSourceGoodsType_Filter.Add(type);
+                itemSourceGoodsType.Add(type);
             }
         }
         void OpenGoodsTypeWindow(MainWindow main)
@@ -232,9 +231,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             GoodsTypeWindow newWindow = new GoodsTypeWindow();
             newWindow.ShowDialog();
             SetItemSourceGoodsType(main);
-            int indexSort = main.cboSort.SelectedIndex;
+            int indexSort = main.cboSortGoods.SelectedIndex;
             SearchGoods(main);
-            main.cboSort.SelectedIndex = indexSort;
+            main.cboSortGoods.SelectedIndex = indexSort;
         }
         void OpenEditGoodsWindow(GoodsControl control)
         {
@@ -291,8 +290,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (GoodsDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
                 {
                     listSearch.Remove(control);
-                    listGoodsControl.Remove(control);
-                    if(listGoodsControl.Count <= (this.currentPage - 1) * 10)
+                    listControlToView.Remove(control);
+                    if(listControlToView.Count <= (this.currentPage - 1) * 10)
                         LoadListGoods(mainWindow, --currentPage);
                     else
                     {
@@ -308,22 +307,36 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void ExportExcel(MainWindow wdMain)
         {
+            DataTable table = new DataTable();
+            table.Columns.Add("Mã SP", typeof(string));
+            table.Columns.Add("Tên sản phẩm", typeof(string));
+            table.Columns.Add("Loại sản phẩm", typeof(string));
+            table.Columns.Add("Số lượng", typeof(int));
+            table.Columns.Add("Đơn vị tính", typeof(string));
+            table.Columns.Add("Giá mua", typeof(long));
+            table.Columns.Add("Giá bán", typeof(long));
+
+
+            for (int i = 0; i < listControlToView.Count; i++)
+            {
+                GoodsControl control = listControlToView[i];
+                table.Rows.Add(control.txbId.Text, control.txbName.Text, control.txbGoodsType.Text,
+                    control.txbQuantity.Text,control.txbUnit.Text, control.txbImportPrice.Text, 
+                    control.txbSalesPrice.Text);
+            }
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Excel Workbook|*.xlsx"
+                Filter = "Excel |*.xlsx"
             };
-            if (saveFileDialog.ShowDialog() == true)
+            if ((bool)saveFileDialog.ShowDialog())
             {
                 using (XLWorkbook workbook = new XLWorkbook())
                 {
-                    DataTable dt = GoodsDAL.Instance.GetActive();
-                    dt.Columns.Remove("imageFile");
-                    workbook.Worksheets.Add(dt, "Goods");
+                    workbook.Worksheets.Add(table, "Danh sách hàng hóa");
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
-                MessageBox.Show("Xuất dữ liệu thành công!!!", "Thông báo");
+                MessageBox.Show("Xuất danh sách thành công!");
             }
-
         }
         public void SelectImage(Grid parameter)
         {
@@ -381,11 +394,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
 
-            int indexSort = mainWindow.cboSort.SelectedIndex;
+            int indexSort = mainWindow.cboSortGoods.SelectedIndex;
             int indexFilter = mainWindow.cboFilterType.SelectedIndex;
 
             SearchGoods(mainWindow);
-            mainWindow.cboSort.SelectedIndex = indexSort;
+            mainWindow.cboSortGoods.SelectedIndex = indexSort;
             mainWindow.cboFilterType.SelectedIndex = indexFilter;
             addGoodsWd.Close();
         }
