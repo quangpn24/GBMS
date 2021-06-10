@@ -31,7 +31,6 @@
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1.5*" />
             </Grid.ColumnDefinitions>
             <TextBlock 
                 x:Name="txbSerial"
@@ -72,17 +71,6 @@
                 HorizontalAlignment="Center"
                 Margin="0"
                 Text="Tỏng tiền"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />
-            <TextBlock 
-                x:Name="txbStatus"
-                Grid.Column="4"
-                HorizontalAlignment="Center"
-                Margin="0"
-                Text="Đã giao"
                 TextWrapping="Wrap"
                 VerticalAlignment="Center"
                 FontSize="18"

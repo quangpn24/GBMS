@@ -75,7 +75,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), dt.Rows[i].ItemArray[3].ToString(),
-                    int.Parse(dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
+                    (dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
                 customers.Add(customer);
             }
             return customers;
@@ -107,7 +107,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), (dt.Rows[i].ItemArray[3].ToString()),
-                    int.Parse(dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
+                    (dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
                 customers.Add(customer);
             }
             return customers;
@@ -139,7 +139,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 Customer customer = new Customer(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), (dt.Rows[i].ItemArray[3].ToString()),
-                    int.Parse(dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
+                    (dt.Rows[i].ItemArray[4].ToString()), long.Parse(dt.Rows[i].ItemArray[5].ToString()), int.Parse(dt.Rows[i].ItemArray[6].ToString()));
                 customers.Add(customer);
             }
             return customers;
@@ -202,20 +202,20 @@ namespace GemstonesBusinessManagementSystem.DAL
                 if (!isUpdating)
                 {
                     queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber,totalPrice, idMembership, address)" +
-                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalPrice, @idMembership, @address);";
+                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalPrice, 0, @address);";
                 }
                 else
                 {
                     queryString = "update Customer set customerName = @customerName, phoneNumber=@phoneNumber, idNumber=@idNumber," +
-                        "totalPrice=@totalPrice, idMembership=@idMembership, address=@address where idCustomer = @idCustomer";
+                        "totalPrice=@totalPrice, address=@address where idCustomer = @idCustomer";
                 }               
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer);
                 command.Parameters.AddWithValue("@customerName", customer.CustomerName);
                 command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber);
-                command.Parameters.AddWithValue("@idNumber", customer.IdCustomer);
+                command.Parameters.AddWithValue("@idNumber", customer.IdNumber);
                 command.Parameters.AddWithValue("@totalPrice", customer.TotalPrice);
-                command.Parameters.AddWithValue("@idMembership", customer.IdMembership);
+
                 command.Parameters.AddWithValue("@address", customer.Address);
                 int rs = command.ExecuteNonQuery();
                 if(rs == 1)
@@ -227,30 +227,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     return false;
                 }
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                CloseConnection();
-            }
-        }
-        public bool Update(Customer customer)
-        {
-            try
-            {
-                OpenConnection();
-                string queryString = "update customer set " +
-                    "customerName = @customerName, phoneNumber = @phoneNumber, idNumber = @idNumber where idCustomer = @idCustomer; ";
-                MySqlCommand command = new MySqlCommand(queryString, conn);
-                command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer.ToString());
-                command.Parameters.AddWithValue("@customerName", customer.CustomerName.ToString());
-                command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber.ToString());
-                command.Parameters.AddWithValue("@idNumber", customer.IdCustomer.ToString());
-                command.ExecuteNonQuery();
-                return true;
             }
             catch
             {
@@ -276,7 +252,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 adapter.Fill(dt);
                 Customer customer = new Customer(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
                     dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(), (dt.Rows[0].ItemArray[3].ToString()),
-                    int.Parse(dt.Rows[0].ItemArray[4].ToString()), long.Parse(dt.Rows[0].ItemArray[5].ToString()), int.Parse(dt.Rows[0].ItemArray[6].ToString()));
+                    (dt.Rows[0].ItemArray[4].ToString()), long.Parse(dt.Rows[0].ItemArray[5].ToString()), int.Parse(dt.Rows[0].ItemArray[6].ToString()));
                 return customer;
             }
             catch

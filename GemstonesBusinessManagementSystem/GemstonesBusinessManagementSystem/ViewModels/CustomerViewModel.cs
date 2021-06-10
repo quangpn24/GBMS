@@ -255,6 +255,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.stkMembership.Children.Clear();
             foreach(var membershipType in membershipsTypes)
             {
+                if(membershipType.IdMembershipsType == 0)
+                {
+                    continue;
+                }
                 MembershipControl control = new MembershipControl();
                 control.txbId.Text = AddPrefix("TV", membershipType.IdMembershipsType);
                 control.txbMembership.Text = membershipType.Membership;
@@ -287,7 +291,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addCustomerWindow.txtCMND.Text = customer.IdNumber.ToString();
             addCustomerWindow.txtCMND.SelectionStart = addCustomerWindow.txtCMND.Text.Length;
 
-            addCustomerWindow.cbMembership.Text = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
 
             addCustomerWindow.txtAddress.Text = customer.Address;
             addCustomerWindow.txtAddress.SelectionStart = addCustomerWindow.txtAddress.Text.Length;
@@ -421,11 +424,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng nhập số CMND khách hàng!");
                 return false;
             }
-            if (string.IsNullOrEmpty(addCustomerWindow.cbMembership.Text))
-            {
-                MessageBox.Show("Vui lòng chọn loại thành viên!");
-                return false;
-            }
             if (string.IsNullOrEmpty(addCustomerWindow.txtAddress.Text))
             {
                 MessageBox.Show("Vui lòng nhập địa chỉ khách hàng!");
@@ -454,11 +452,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if(CheckData(addCustomerWindow))// kiem tra du lieu dau vao
             {
                 Customer customer = new Customer(ConvertToID(addCustomerWindow.txtId.Text), addCustomerWindow.txtName.Text, (addCustomerWindow.txtPhoneNumber.Text), addCustomerWindow.txtAddress.Text,
-                    int.Parse(addCustomerWindow.txtCMND.Text), 0, selectedMembership.IdMembershipsType);
+                    (addCustomerWindow.txtCMND.Text), 0, 0);
 
                 if (isEditing)
                 {
-                    customer.TotalPrice = int.Parse(customerControl.txbAllPrice.Text);
+                    customer.TotalPrice = int.Parse(customerControl.txbAllPrice.Text);                   
                 }
                 else
                 {

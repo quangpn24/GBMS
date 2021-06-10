@@ -54,15 +54,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 invoiceControl.txbNameCustomer.Text = customer.CustomerName;
                 //invoiceControl.txbNameEmployee.Text = customer.CustomerName;
                 invoiceControl.txbPrice.Text = bills[i].TotalPrice.ToString();
-                if(bills[i].Status1 == 1)
-                {
-                    invoiceControl.txbStatus.Text = "Đã thanh toán";
-                    invoiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
-                }
-                else
-                {
-                    invoiceControl.txbStatus.Text = "Chưa thanh toán";
-                }
                 invoiceControl.IsHitTestVisible = true;
                 mainWindow.stkBill.Children.Add(invoiceControl);
             }
@@ -78,24 +69,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 checkedItem.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
                 checkedItem.txbNameEmployee.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
                 checkedItem.txbPrice.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
-                if (checkedItem.txbStatus.Text == "Đã thanh toán")
-                {
-                    checkedItem.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
-                }
-                else
-                {
-                    checkedItem.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
-                }
             }
             // chuyen sang mau duoc chon
             invoiceControl.txbSerial.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             invoiceControl.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             invoiceControl.txbNameEmployee.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             invoiceControl.txbPrice.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            if (invoiceControl.txbStatus.Text == "Chưa thanh toán")
-            {
-                invoiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            }
             checkedItem = invoiceControl;
             // hien thi thong tin
             main.txbIdBill.Text = invoiceControl.txbSerial.Text;

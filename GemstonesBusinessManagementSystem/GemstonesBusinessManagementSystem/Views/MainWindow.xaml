@@ -2076,7 +2076,7 @@
                 x:Name="grdInvoice"
                 Grid.Row="1"
                 DataContext="{StaticResource BillVM}"
-                Visibility="Hidden">
+                Visibility="Visible">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80"/>
                     <RowDefinition/>
@@ -2189,7 +2189,6 @@
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="1.5*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Text="Mã đơn" 
@@ -2213,13 +2212,6 @@
                                 <TextBlock
                                     Text="Tổng tiền" 
                                     Grid.Column="3"
-                                    Style="{StaticResource TextHeader}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" 
-                                    Margin="0"/>
-                                <TextBlock
-                                    Text="Trạng thái" 
-                                    Grid.Column="4"
                                     Style="{StaticResource TextHeader}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center" 
@@ -2542,7 +2534,7 @@
                 x:Name="grdCustomer"
                 Grid.Row="1"
                 DataContext="{StaticResource CustomerVM}"
-                Visibility="Visible" >
+                Visibility="Hidden" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCustomerCommand}" 
