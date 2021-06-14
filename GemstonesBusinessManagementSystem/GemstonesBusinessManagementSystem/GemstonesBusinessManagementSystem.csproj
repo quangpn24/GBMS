@@ -163,8 +163,6 @@
     <Compile Include="DAL\StockReceiptDAL.cs" />
     <Compile Include="DAL\StockReceiptInfoDAL.cs" />
     <Compile Include="DAL\SupplierDAL.cs" />
-    <Compile Include="Models\Goods.cs" />
-    <Compile Include="Models\GoodsType.cs" />
     <Compile Include="Models\StockReceipt.cs" />
     <Compile Include="Models\StockReceiptInfo.cs" />
     <Compile Include="Models\Supplier.cs" />
@@ -193,8 +191,6 @@
     <Compile Include="ViewModels\GoodsTypeViewModel.cs" />
     <Compile Include="ViewModels\GoodsViewModel.cs" />
     <Compile Include="ViewModels\ImportGoodsViewModel.cs" />
-    <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\EmployeePosition.cs" />
     <Compile Include="Resources\Template\BillServiceTemplate.xaml.cs">
       <DependentUpon>BillServiceTemplate.xaml</DependentUpon>
     </Compile>
@@ -223,9 +219,6 @@
     </Compile>
     <Compile Include="Resources\UserControls\SaleServiceDetailsControl.xaml.cs">
       <DependentUpon>SaleServiceDetailsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\UserControls\NumericSpinner.xaml.cs">
-      <DependentUpon>NumericSpinner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\SaleGoodsControl.xaml.cs">
       <DependentUpon>SaleGoodsControl.xaml</DependentUpon>
@@ -293,7 +286,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Template\StockReceiptTemplate.xaml">
-     <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\ScrollbarStyles.xaml">
@@ -372,16 +365,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\UserControls\NumericSpinner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Resources\UserControls\SearchGoodsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\StockReceiptInfoControl.xaml">
-    <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\StockControl.xaml">

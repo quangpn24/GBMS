@@ -56,7 +56,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             DeleteCommand = new RelayCommand<SelectedGoodsControl>((p) => true, (p) => DeleteSelectedGoods(p));
             ChangeQuantityCommand = new RelayCommand<SelectedGoodsControl>((p) => true, (p) => ChangeQuantity(p));
         }
-        
+
         void ChangeQuantity(SelectedGoodsControl control)
         {
             SubTotal -= long.Parse(control.txbTotalPrice.Text);
@@ -70,10 +70,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.stkSelectedGoods.Children.Remove(control);
             Total = SubTotal - Discount;
         }
-        
+
         void SelectCustomer(MainWindow window)
         {
-
+            PickCustomerWindow pickCustomerWindow = new PickCustomerWindow();
+            pickCustomerWindow.ShowDialog();
+            mainWindow.txbSaleIdCustomer.Text = pickCustomerWindow.txbId.Text;
+            mainWindow.txbSaleCustomerName.Text = pickCustomerWindow.txbName.Text;
+            mainWindow.txbSaleCustomerAddress.Text = pickCustomerWindow.txbAddress.Text;
+            mainWindow.txbSaleCustomerPhone.Text = pickCustomerWindow.txbPhoneNumber.Text;
+            mainWindow.txbSaleCustomerClass.Text = pickCustomerWindow.txbRank.Text;
         }
 
         private void CompletePayment(MainWindow window)
@@ -102,7 +108,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 SelectedGoodsControl control = (SelectedGoodsControl)mainWindow.stkSelectedGoods.Children[i];
 
                 int quantity = int.Parse(control.nmsQuantity.Text.ToString());
-                BillInfo billInfo = new BillInfo(bill.IdBill, ConvertToID(control.txbId.Text), quantity);
+                BillInfo billInfo = new BillInfo(bill.IdBill, ConvertToID(control.txbId.Text), quantity, long.Parse(control.txbPrice.Text));
                 BillInfoDAL.Instance.Insert(billInfo);
 
                 isSuccess = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), -quantity);
@@ -153,7 +159,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 PrintDialog printDialog = new PrintDialog();
                 printDialog.PrintTicket.PageMediaSize = new PageMediaSize(PageMediaSizeName.ISOA5);
-                
+
                 if (printDialog.ShowDialog() == true)
                 {
                     printDialog.PrintVisual(billTemplate.grdPrint, window.txbIdBill.Text);
@@ -181,7 +187,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             selectedControl.txbUnit.Text = control.txbUnit.Text;
             selectedControl.txbPrice.Text = control.txbPrice.Text;
             selectedControl.txbTotalPrice.Text =
-                (int.Parse(control.txbPrice.Text) * selectedControl.nmsQuantity.Value).ToString();
+                (decimal.Parse(control.txbPrice.Text) * selectedControl.nmsQuantity.Value).ToString();
             selectedControl.nmsQuantity.MaxValue = decimal.Parse(control.txbQuantity.Text);
 
             int numOfItems = mainWindow.stkSelectedGoods.Children.Count;
@@ -199,7 +205,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     return;
                 }
             }
-            SubTotal += int.Parse(selectedControl.txbPrice.Text);
+            //SubTotal += double.Parse(selectedControl.txbPrice.Text);
             Total = SubTotal - Discount;
             mainWindow.stkSelectedGoods.Children.Add(selectedControl);
         }
@@ -224,8 +230,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     control.txbId.Text = saleGoodsList[i].IdGoods.ToString();
                     control.imgGood.Source = Converter.Instance.ConvertByteToBitmapImage(saleGoodsList[i].ImageFile);
                     control.txbName.Text = saleGoodsList[i].Name;
-                    control.txbPrice.Text = saleGoodsList[i].Price.ToString();
-                    GoodsType type = GoodsTypeDAL.Instance.GetGoodsTypeWithId(saleGoodsList[i].IdGoodsType);
+                    GoodsType type = GoodsTypeDAL.Instance.GetById(saleGoodsList[i].IdGoodsType);
+                    double profitPercentage = type.ProfitPercentage;
+                    control.txbPrice.Text = (saleGoodsList[i].ImportPrice * (1 + profitPercentage)).ToString();
                     control.txbType.Text = type.Name;
                     control.txbUnit.Text = type.Unit;
 

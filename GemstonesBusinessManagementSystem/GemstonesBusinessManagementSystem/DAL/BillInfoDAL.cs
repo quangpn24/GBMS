@@ -29,13 +29,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "insert into BillInfo (idBill,idGoods,quantity) " +
-                    "values(@idBill,@idGoods,@quantity)";
+                string query = "insert into BillInfo (idBill,idGoods,quantity,price) " +
+                    "values(@idBill,@idGoods,@quantity,@price)";
                 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idBill", billInfo.IdBill);
                 cmd.Parameters.AddWithValue("@idGoods", billInfo.IdGoods);
                 cmd.Parameters.AddWithValue("@quantity", billInfo.Quantity);
+                cmd.Parameters.AddWithValue("@price", billInfo.Price);
 
                 return cmd.ExecuteNonQuery() == 1;
             }

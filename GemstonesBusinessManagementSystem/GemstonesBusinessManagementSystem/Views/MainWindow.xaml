@@ -854,12 +854,6 @@
                         Margin="0,0,20,20" />
                 </Grid>
             </Grid>
-            <!--<Grid x:Name="grdEmployee"
-                  Margin="0"
-                  Grid.Row="1"
-                  DataContext="{StaticResource EmployeeVM}"
-                  Visibility="Collapsed">
-            </Grid>-->
             <Grid
                 x:Name="grdSale"
                 DataContext="{StaticResource SaleVM}"
@@ -1102,7 +1096,7 @@
                             <TextBlock
                                 x:Name="txbSaleCustomerName"
                                 Style="{StaticResource Text}"
-                                Text="Nguyễn Đức Thành Phát Phát Phát"
+                                Text=""
                                 HorizontalAlignment="Right" 
                                 TextTrimming="WordEllipsis"
                                 Width="180" 
@@ -1119,7 +1113,7 @@
                             <TextBlock
                                 x:Name="txbSaleCustomerPhone"
                                 Style="{StaticResource Text}"
-                                Text="0123456789"
+                                Text=""
                                 HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid 
@@ -1133,7 +1127,7 @@
                             <TextBlock
                                 x:Name="txbSaleCustomerClass"
                                 Style="{StaticResource Text}"
-                                Text="Thân thiết"
+                                Text=""
                                 HorizontalAlignment="Right"
                                 TextTrimming="WordEllipsis"
                                 Width="180" 
@@ -1151,7 +1145,7 @@
                                 x:Name="txbSaleCustomerAddress"
                                 Style="{StaticResource Text}"
                                 TextTrimming="CharacterEllipsis"
-                                Text="1 Hàn Thuyên, P. Linh Trung, TP Thủ Đức"
+                                Text=""
                                 HorizontalAlignment="Right" 
                                 Width="180" 
                                 TextWrapping="Wrap"

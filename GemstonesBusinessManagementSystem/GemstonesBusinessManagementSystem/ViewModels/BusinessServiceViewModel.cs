@@ -35,7 +35,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand DeleteBillServiceInfoDetailsCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand PayBillServiceCommand { get; set; }
-        //public ICommand CheckPaidMoneyCommand { get; set; }
+        public ICommand CheckPaidMoneyCommand { get; set; }
         public ICommand PickCustomerCommand { get; set; }
         //billservicetemplate
         public ICommand PrintBillServiceCommand { get; set; }
