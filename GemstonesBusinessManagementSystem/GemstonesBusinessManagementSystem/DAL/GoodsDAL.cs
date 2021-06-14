@@ -62,8 +62,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
                  "where idGoods = @idGoods";
-                    query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted" +
-                 "where idGoods = @idGoods";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idGoods", goods.IdGoods);
@@ -86,6 +84,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch
             {
+                MessageBox.Show("Thất bại!!!", "Thông báo");
                 return false;
             }
             finally
@@ -186,8 +185,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 Goods res = new Goods(int.Parse(idGoods), dataTable.Rows[0].ItemArray[1].ToString(),
                     long.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
                     int.Parse(dataTable.Rows[0].ItemArray[4].ToString()),
-                    Convert.FromBase64String(dataTable.Rows[0].ItemArray[5].ToString()),
-                    bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));
+                   Convert.FromBase64String(dataTable.Rows[0].ItemArray[5].ToString()), bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));
                 return res;
             }
             catch

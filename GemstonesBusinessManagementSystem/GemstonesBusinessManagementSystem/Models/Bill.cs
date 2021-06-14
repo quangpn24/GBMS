@@ -39,5 +39,15 @@ namespace GemstonesBusinessManagementSystem.Models
             this.idCustomer = idCustomer;
             this.note = note;
         }
+        public Bill(int idBill, int idAccount, DateTime billDate, long totalPrice, int idCustomer)
+        {
+            this.idBill = idBill;
+            this.idAccount = idAccount;
+            this.billDate = billDate;
+            this.totalPrice = totalPrice;
+            this.idCustomer = idCustomer;
+        }
     }
 }
+
+        

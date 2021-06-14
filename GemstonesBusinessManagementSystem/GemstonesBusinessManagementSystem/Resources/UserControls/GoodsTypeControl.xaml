@@ -69,7 +69,7 @@
                 TextWrapping="Wrap" 
                 VerticalAlignment="Center"/>
             <Button 
-                Grid.ColumnSpan="5"
+                Grid.ColumnSpan="4"
                 Command="{Binding SelectedGoodsTypeCommand}"
                 CommandParameter="{Binding ElementName=ucGoodsTypeControl}"
                 Background="{x:Null}"

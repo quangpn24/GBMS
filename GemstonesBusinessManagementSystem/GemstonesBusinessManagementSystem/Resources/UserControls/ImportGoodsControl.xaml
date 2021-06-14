@@ -45,7 +45,6 @@
             Grid.Column="0"
             Style="{StaticResource Text}"
             HorizontalAlignment="Center"
-            TextWrapping="Wrap"
             VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbId"
@@ -53,7 +52,6 @@
             Grid.Column="1"
             Style="{StaticResource Text}"
             HorizontalAlignment="Center"
-            TextWrapping="Wrap"
             VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbName"
@@ -61,7 +59,6 @@
             Grid.Column="2"
             Style="{StaticResource Text}"
             HorizontalAlignment="Left"
-            TextWrapping="Wrap"
             VerticalAlignment="Center" 
             Margin="20,0,0,0"/>
         <TextBlock 
@@ -70,15 +67,14 @@
             Grid.Column="3"
             Style="{StaticResource Text}"
             HorizontalAlignment="Left"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center" Margin="10,0,0,0"/>
+            VerticalAlignment="Center"
+            Margin="10,0,0,0"/>
         <TextBlock 
             x:Name="txbUnit"
             Text="Chỉ" 
             Grid.Column="4"
             Style="{StaticResource Text}"
             HorizontalAlignment="Center"
-            TextWrapping="Wrap"
             VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbImportPrice"
@@ -86,7 +82,6 @@
             Grid.Column="5"
             Style="{StaticResource Text}"
             HorizontalAlignment="Center"
-            TextWrapping="Wrap"
             VerticalAlignment="Center"/>
         <local:NumericSpinner
             x:Name="nsQuantity"
@@ -110,7 +105,6 @@
             Grid.Column="7"
             Style="{StaticResource Text}"
             HorizontalAlignment="Center"
-            TextWrapping="Wrap"
             VerticalAlignment="Center"/>
         <Button 
             Grid.Column="8"

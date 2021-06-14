@@ -46,7 +46,7 @@
                 FontWeight="SemiBold"
                 Foreground="{DynamicResource Black1}"
                 TextAlignment="Center"
-                FontSize="13" />
+                FontSize="13"/>
             <TextBlock
                 x:Name="txbName"
                 Grid.Column="1"

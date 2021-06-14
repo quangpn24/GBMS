@@ -10,9 +10,10 @@ namespace GemstonesBusinessManagementSystem.Models
     {
         private int id;
         private int idAccount;
-        private int idSupplier;
         private DateTime date;
         private long totalMoney;
+        private long discount;
+        private int idSupplier;
         
 
         public int Id { get => id; set => id = value; }
@@ -20,13 +21,15 @@ namespace GemstonesBusinessManagementSystem.Models
         public int IdSupplier { get => idSupplier; set => idSupplier = value; }
         public DateTime Date { get => date; set => date = value; }
         public long TotalMoney { get => totalMoney; set => totalMoney = value; }
+        public long Discount { get => discount; set => discount = value; }
 
-        public StockReceipt(int id , int idAccount, DateTime date, long total, int idSupplier)
-        {
+        public StockReceipt(int id , int idAccount, DateTime date, long total,long discount, int idSupplier)
+        { 
             this.id = id;
             this.idAccount = idAccount;
             this.date = date;
             this.totalMoney = total;
+            this.discount = discount;
             this.idSupplier = idSupplier;
         }
         public StockReceipt() { }

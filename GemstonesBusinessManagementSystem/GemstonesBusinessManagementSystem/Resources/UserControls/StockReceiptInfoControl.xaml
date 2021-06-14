@@ -15,7 +15,7 @@
     <Grid
         x:Name="grdMain">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="1.5*"/>
@@ -32,13 +32,13 @@
             Width="2" 
             HorizontalAlignment="Left"/>
         <Rectangle 
-            Grid.Column="5"
+            Grid.Column="6"
             Fill="{StaticResource Light}"
             Width="2" 
             HorizontalAlignment="Right"/>
         <TextBlock 
             x:Name="txbNumericalOder"
-            Text="1"
+            Text="SP0001"
             Grid.Column="0"
             Style="{StaticResource Text}"
             HorizontalAlignment="Center"
@@ -51,15 +51,16 @@
             Style="{StaticResource Text}"
             HorizontalAlignment="Left"
             TextWrapping="Wrap"
-            VerticalAlignment="Center" Margin="20,0,0,0"/>
+            VerticalAlignment="Center" 
+            Margin="10,0,0,0"/>
         <TextBlock 
-            x:Name="txbGoodsType"
+            x:Name="txbUnit"
             Text="Vàng" 
             Grid.Column="2"
              Style="{StaticResource Text}"
-            HorizontalAlignment="Left"
+            HorizontalAlignment="Center"
             TextWrapping="Wrap"
-            VerticalAlignment="Center" Padding="10,0,0,0"/>
+            VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbImportPrice"
             Text="70000000" 
@@ -70,7 +71,7 @@
             VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbQuantity"
-            Text="Chỉ" 
+            Text="10" 
             Grid.Column="4"
             Style="{StaticResource Text}"
             HorizontalAlignment="Center"
