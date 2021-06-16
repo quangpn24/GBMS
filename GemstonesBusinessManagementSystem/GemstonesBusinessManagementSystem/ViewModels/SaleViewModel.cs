@@ -35,12 +35,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private MainWindow mainWindow;
         private List<Goods> saleGoodsList = GoodsDAL.Instance.GetList();
 
-        private long subTotal = 0;
-        public long SubTotal { get => subTotal; set { subTotal = value; OnPropertyChanged(); } }
+        private long quantity = 0;
+        public long Quantity { get => quantity; set { quantity = value; OnPropertyChanged(); } }
         private long total = 0;
         public long Total { get => total; set { total = value; OnPropertyChanged(); } }
-        private long discount = 0;
-        public long Discount { get => discount; set { discount = value; OnPropertyChanged(); } }
 
         public SaleViewModel()
         {
@@ -56,19 +54,29 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             DeleteCommand = new RelayCommand<SelectedGoodsControl>((p) => true, (p) => DeleteSelectedGoods(p));
             ChangeQuantityCommand = new RelayCommand<SelectedGoodsControl>((p) => true, (p) => ChangeQuantity(p));
         }
-
+        void OnChangeQuantity()
+        {
+            Quantity = 0;
+            int n = mainWindow.stkSelectedGoods.Children.Count;
+            for (int i = 0; i < n; i++)
+            {
+                SelectedGoodsControl control = (SelectedGoodsControl)mainWindow.stkSelectedGoods.Children[i];
+                int tmp = int.Parse(control.nmsQuantity.Text.ToString());
+                Quantity += tmp;
+            }
+        }
         void ChangeQuantity(SelectedGoodsControl control)
         {
-            SubTotal -= long.Parse(control.txbTotalPrice.Text);
+            OnChangeQuantity();
+            Total -= long.Parse(control.txbTotalPrice.Text);
             control.txbTotalPrice.Text = (int.Parse(control.txbPrice.Text) * control.nmsQuantity.Value).ToString();
-            SubTotal += long.Parse(control.txbTotalPrice.Text);
-            Total = SubTotal - Discount;
+            Total += long.Parse(control.txbTotalPrice.Text);
         }
         void DeleteSelectedGoods(SelectedGoodsControl control)
         {
-            SubTotal -= int.Parse(control.txbTotalPrice.Text);
+            OnChangeQuantity();
+            Total -= int.Parse(control.txbTotalPrice.Text);
             mainWindow.stkSelectedGoods.Children.Remove(control);
-            Total = SubTotal - Discount;
         }
 
         void SelectCustomer(MainWindow window)
@@ -84,7 +92,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         private void CompletePayment(MainWindow window)
         {
-            if (string.IsNullOrEmpty(window.txbSaleCustomerName.Text))
+            if (string.IsNullOrEmpty(window.txbSaleIdCustomer.Text))
             {
                 MessageBox.Show("Vui lòng nhập thông tin khách hàng!");
                 return;
@@ -94,8 +102,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng chọn sản phẩm!");
                 return;
             }
-            Bill bill = new Bill(ConvertToID(window.txbIdBillSale.Text), CurrentAccount.IdAccount, 
-                DateTime.Parse(window.txbSaleDate.Text), Total, ConvertToID(window.txbSaleIdCustomer.Text), 
+            Bill bill = new Bill(ConvertToID(window.txbIdBillSale.Text), CurrentAccount.IdAccount,
+                DateTime.Parse(window.txbSaleDate.Text), Total, ConvertToID(window.txbSaleIdCustomer.Text),
                 window.txbSaleNote.Text);
             bool isSuccess = BillDAL.Instance.Insert(bill);
 
@@ -128,6 +136,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 MessageBox.Show("Thanh toán thất bại!");
             }
+            mainWindow.stkSelectedGoods.Children.Clear();
+            LoadDefault(mainWindow);
         }
         private void PrintPayment(MainWindow window)
         {
@@ -138,9 +148,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billTemplate.txbCustomerName.Text = window.txbSaleCustomerName.Text;
             billTemplate.txbCustomerPhoneNumber.Text = window.txbSaleCustomerPhone.Text;
             billTemplate.txbCustomerAddress.Text = window.txbSaleCustomerAddress.Text;
-            billTemplate.txbSubTotal.Text = window.txbSaleSubTotal.Text;
-            billTemplate.txbDiscount.Text = window.txbSaleDiscount.Text;
             billTemplate.txbTotal.Text = window.txbSaleTotal.Text;
+            if (string.IsNullOrEmpty(window.txbSaleNote.Text))
+            {
+                billTemplate.stkNote.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                billTemplate.txbNote.Text = window.txbSaleNote.Text;
+            }
 
             int numOfItems = mainWindow.stkSelectedGoods.Children.Count;
             for (int i = 0; i < numOfItems; i++)
@@ -206,9 +222,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     return;
                 }
             }
-            SubTotal += int.Parse(selectedControl.txbPrice.Text);
-            Total = SubTotal - Discount;
+            Total += int.Parse(selectedControl.txbPrice.Text);
             mainWindow.stkSelectedGoods.Children.Add(selectedControl);
+            OnChangeQuantity();
         }
         void LoadDefault(MainWindow window)
         {

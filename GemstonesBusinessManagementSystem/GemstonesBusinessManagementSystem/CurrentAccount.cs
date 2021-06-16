@@ -12,6 +12,7 @@ namespace GemstonesBusinessManagementSystem
         private static int idAccount;
         private static int idEmployee;
         private static int idPosition;
+        private static int type;
         private static string name;
         private static byte[] imageFile;
         private static List<PositionDetail> positionDetails;
@@ -19,6 +20,7 @@ namespace GemstonesBusinessManagementSystem
         public static int IdAccount { get => idAccount; set => idAccount = value; }
         public static int IdEmployee { get => idEmployee; set => idEmployee = value; }
         public static int IdPosition { get => idPosition; set => idPosition = value; }
+        public static int Type { get => type; set => type = value; }
         public static string Name { get => name; set => name = value; }
         public static byte[] ImageFile { get => imageFile; set => imageFile = value; }
         internal static List<PositionDetail> PositionDetails { get => positionDetails; set => positionDetails = value; }

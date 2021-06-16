@@ -483,12 +483,12 @@
                         x:Name="txbUsername"
                         HorizontalAlignment="Left"
                         TextWrapping="Wrap"
-                        Text="QuangPn"
+                        Text="Adminstrator"
                         VerticalAlignment="Center"
                         Foreground="{StaticResource Dark}"
                         FontSize="22" 
                         FontWeight="Bold"
-                        Width="200"
+                        MaxWidth="400"
                         Margin="0,0,20,0"
                         FlowDirection="RightToLeft" />
                     <Ellipse 
@@ -1166,7 +1166,6 @@
                             <TextBlock
                                 x:Name="txbSaleIdCustomer"
                                 Style="{StaticResource Text}"
-                                Text="KH001"
                                 HorizontalAlignment="Right" 
                                 VerticalAlignment="Bottom"
                                 FontSize="18" 
@@ -1227,7 +1226,7 @@
                                 Text="Địa chỉ"
                                 HorizontalAlignment="Left" 
                                 Foreground="{DynamicResource Black1}"
-                                FontWeight="Bold"/>
+                                FontWeight="Bold" VerticalAlignment="Top"/>
                             <TextBlock
                                 x:Name="txbSaleCustomerAddress"
                                 Style="{StaticResource Text}"
@@ -1239,35 +1238,15 @@
                                 TextAlignment="Right" />
                         </Grid>
                     </StackPanel>
-                    <StackPanel 
-                        Orientation="Horizontal"
-                        VerticalAlignment="Bottom" 
-                        Margin="20,0,20,10">
-                        <Button
-                            Style="{StaticResource GreenButton}"
-                            Command="{Binding SelectCustomerCommand}"
-                            CommandParameter="{Binding ElementName=wdMain}"
-                            Content="Chọn KH"
-                            VerticalAlignment="Bottom"
-                            Margin="0,0,20,0"
-                            Height="35" 
-                            FontSize="18" 
-                            HorizontalAlignment="Left" 
-                            Width="210"/>
-                        <Button
-                            Style="{StaticResource GreenButton}"
-                            VerticalAlignment="Bottom"
-                            Margin="0"
-                            Height="35" 
-                            FontSize="18"
-                            Width="50" 
-                            Padding="0,0,2,0">
-                            <materialDesign:PackIcon
-                                Kind="Plus" 
-                                Width="24" 
-                                Height="24" />
-                        </Button>
-                    </StackPanel>
+                    <Button
+                        Style="{StaticResource GreenButton}"
+                        Command="{Binding SelectCustomerCommand}"
+                        CommandParameter="{Binding ElementName=wdMain}"
+                        Content="Chọn khách hàng"
+                        VerticalAlignment="Bottom"
+                        Margin="20,0,20,10"
+                        Height="35" 
+                        FontSize="18" />
                 </Grid>
                 <Grid 
                     Style="{StaticResource DropShadow}"
@@ -1289,7 +1268,7 @@
                         FontSize="20"/>
                     <StackPanel 
                         VerticalAlignment="Top" 
-                        Margin="20,50,20,0">
+                        Margin="20,55,20,0">
                         <Grid 
                             Margin="0,0,0,10">
                             <TextBlock
@@ -1301,7 +1280,6 @@
                             <TextBlock
                                 x:Name="txbIdBillSale"
                                 Style="{StaticResource Text}"
-                                Text="HD0001"
                                 HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid 
@@ -1315,39 +1293,24 @@
                             <TextBlock
                                 x:Name="txbSaleDate"
                                 Style="{StaticResource Text}"
-                                Text="25/05/2021"
                                 HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid 
                             Margin="0,0,0,10">
                             <TextBlock
                                 Style="{StaticResource Text}"
-                                Text="Tổng"
+                                Text="Số lượng"
                                 HorizontalAlignment="Left" 
                                 Foreground="{DynamicResource Black1}"
                                 FontWeight="Bold"/>
                             <TextBlock
-                                x:Name="txbSaleSubTotal"
+                                x:Name="txbSaleQuantity"
                                 Style="{StaticResource Text}"
-                                Text="{Binding SubTotal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid 
-                            Margin="0,0,0,10">
-                            <TextBlock
-                                Style="{StaticResource Text}"
-                                Text="Giảm giá"
-                                HorizontalAlignment="Left" 
-                                Foreground="{DynamicResource Black1}"
-                                FontWeight="Bold"/>
-                            <TextBlock
-                                x:Name="txbSaleDiscount"
-                                Style="{StaticResource Text}"
-                                Text="{Binding Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                HorizontalAlignment="Right"/>
-                        </Grid>
-                        <Grid 
-                            Margin="0,0,0,15">
+                            Margin="0,0,0,20">
                             <TextBlock
                                 Style="{StaticResource Text}"
                                 Text="Thành tiền"
@@ -1371,48 +1334,22 @@
                             VerticalScrollBarVisibility="Auto"
                             materialDesign:HintAssist.Hint="Ghi chú"
                             HorizontalContentAlignment="Left"
-                            MaxLines="2" 
-                            Foreground="{DynamicResource Black1}"
+                            MaxLines="3" 
+                            Foreground="{DynamicResource Black2}"
                             BorderBrush="{DynamicResource Light}"
                             BorderThickness="2" 
-                            Height="80"/>
+                            Height="110"/>
                     </StackPanel>
-                    <StackPanel 
-                        VerticalAlignment="Bottom" 
-                        Margin="20,0,20,15">
-                        <Button
-                            x:Name="btnSalePay"
-                            Style="{StaticResource GreenButton}"
-                            Command="{Binding CompletePaymentCommand}"
-                            CommandParameter="{Binding ElementName=wdMain}"
-                            Content="Thanh toán"
-                            VerticalAlignment="Bottom"
-                            Margin="0,0,0,10"
-                            Height="35" 
-                            FontSize="18"/>
-                        <Button
-                            x:Name="btnSalePrint"
-                            Style="{StaticResource PrimaryOutlineButton}"
-                            Command="{Binding PrintPaymentCommand}"
-                            CommandParameter="{Binding ElementName=wdMain}"
-                            VerticalAlignment="Bottom"
-                            Margin="0"
-                            Height="35" 
-                            FontSize="18">
-                            <StackPanel
-                                Orientation="Horizontal">
-                                <TextBlock
-                                    Text="In hóa đơn"
-                                    FontSize="18"/>
-                                <materialDesign:PackIcon 
-                                    Kind="Printer" 
-                                    VerticalAlignment="Bottom" 
-                                    Margin="15,0,0,0"
-                                    Width="24" 
-                                    Height="24" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
+                    <Button
+                        x:Name="btnSalePay"
+                        Style="{StaticResource GreenButton}"
+                        Command="{Binding CompletePaymentCommand}"
+                        CommandParameter="{Binding ElementName=wdMain}"
+                        Content="Thanh toán"
+                        VerticalAlignment="Bottom"
+                        Margin="20,0,20,15"
+                        Height="35" 
+                        FontSize="18"/>
                 </Grid>
             </Grid>
             <Grid

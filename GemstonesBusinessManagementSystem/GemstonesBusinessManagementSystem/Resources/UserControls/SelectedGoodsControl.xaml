@@ -76,10 +76,10 @@
                     <i:InvokeCommandAction Command="{Binding ChangeQuantityCommand}"
                                            CommandParameter="{Binding ElementName=ucSelectedGoods}"/>
                 </i:EventTrigger>
-                <!--<i:EventTrigger EventName="TextChanged">
+                <i:EventTrigger EventName="KeyUp">
                     <i:InvokeCommandAction Command="{Binding ChangeQuantityCommand}"
                                            CommandParameter="{Binding ElementName=ucSelectedGoods}"/>
-                </i:EventTrigger>-->
+                </i:EventTrigger>
             </i:Interaction.Triggers>
         </local:NumericSpinner>
         <TextBlock 

@@ -89,11 +89,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (isLogin)
             {
                 MainWindow main = new MainWindow();
+                CurrentAccount.IdAccount = acc.IdAccount;
+                CurrentAccount.Type = acc.Type;
                 if (acc.Type != 0)
                 {
                     Employee employee = EmployeeDAL.Instance.GetByIdAccount(acc.IdAccount.ToString());
                     CurrentAccount.PositionDetails = PositionDetailDAL.Instance.GetListByPosition(employee.IdPosition);
-                    CurrentAccount.IdAccount = acc.IdAccount;
                     CurrentAccount.IdEmployee = employee.IdEmployee;
                     CurrentAccount.Name = employee.Name;
                     CurrentAccount.ImageFile = employee.ImageFile;

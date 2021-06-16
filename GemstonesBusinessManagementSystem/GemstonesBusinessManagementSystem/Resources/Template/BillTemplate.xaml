@@ -23,6 +23,10 @@
         <Grid
             Grid.Row="0" 
             Margin="0">
+            <Rectangle
+                Fill="{StaticResource Gray}" 
+                VerticalAlignment="Bottom"
+                Height="1"/>
             <TextBlock 
                 Text="HÓA ĐƠN" 
                 FontWeight="Black"
@@ -343,11 +347,29 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
+            <StackPanel
+                x:Name="stkNote"
+                Grid.Column="1" 
+                Margin="15,70,15,15">
+                <TextBlock 
+                    TextWrapping="Wrap" 
+                    Text="Ghi chú:" 
+                    FontSize="14" 
+                    FontWeight="Black" 
+                    Foreground="{DynamicResource Black2}"/>
+                <TextBlock 
+                    x:Name="txbNote"
+                    TextWrapping="Wrap" 
+                    FontSize="12" 
+                    FontWeight="SemiBold" 
+                    Foreground="{DynamicResource Black2}"
+                    Margin="0,5,0,0"/>
+            </StackPanel>
             <TextBlock 
                 x:Name="txbTotal"
                 Grid.Column="1"
                 HorizontalAlignment="Right"
-                Margin="0,69,0,0" 
+                Margin="0,30,0,0" 
                 TextWrapping="Wrap" 
                 Text="1.100.000" 
                 VerticalAlignment="Top"
@@ -364,7 +386,7 @@
                 VerticalAlignment="Top" 
                 Width="242" 
                 Fill="{DynamicResource Primary}"
-                Margin="0,65,0,0"/>
+                Margin="0,25,0,0"/>
             <Rectangle 
                 Fill="{DynamicResource Primary}"
                 HorizontalAlignment="Left" 
@@ -372,7 +394,7 @@
                 StrokeThickness="0" 
                 VerticalAlignment="Top" 
                 Width="21.5" 
-                Margin="-11,69.2,0,0"
+                Margin="-11,29.2,0,0"
                 RenderTransformOrigin="0.5,0.5" 
                 Grid.Column="2">
                 <Rectangle.RenderTransform>
@@ -387,7 +409,7 @@
             <TextBlock 
                 Grid.Column="1"
                 HorizontalAlignment="Left"
-                Margin="20,70,0,0" 
+                Margin="20,30,0,0" 
                 TextWrapping="Wrap" 
                 Text="Thành tiền" 
                 VerticalAlignment="Top"
@@ -454,67 +476,6 @@
                         Foreground="{DynamicResource Black1}"/>
                 </Grid>
             </StackPanel>
-            <Grid 
-                Grid.Column="1"
-                Margin="20,15,0,0" 
-                VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="70"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <StackPanel 
-                    Grid.Column="0" 
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top" >
-                    <TextBlock 
-                        HorizontalAlignment="Left"
-                        Margin="0" 
-                        TextWrapping="Wrap" 
-                        Text="Tổng" 
-                        VerticalAlignment="Top"
-                        FontSize="14" 
-                        FontWeight="SemiBold" 
-                        Foreground="{DynamicResource Black2}" 
-                        TextAlignment="Right"/>
-                    <TextBlock 
-                        HorizontalAlignment="Left"
-                        Margin="0" 
-                        TextWrapping="Wrap" 
-                        Text="Giảm" 
-                        VerticalAlignment="Top"
-                        FontSize="14" 
-                        FontWeight="SemiBold" 
-                        Foreground="{DynamicResource Black2}" 
-                        TextAlignment="Right"/>
-                </StackPanel>
-                <StackPanel 
-                    Grid.Column="1" 
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top" >
-                    <TextBlock 
-                        x:Name="txbSubTotal"
-                        HorizontalAlignment="Right"
-                        Margin="0" 
-                        TextWrapping="Wrap" 
-                        Text="1.300.000" 
-                        VerticalAlignment="Top"
-                        FontSize="14" 
-                        FontWeight="SemiBold" 
-                        Foreground="{DynamicResource Black2}" 
-                        TextAlignment="Right"/>
-                    <TextBlock 
-                        x:Name="txbDiscount"
-                        HorizontalAlignment="Right"
-                        Margin="0" 
-                        TextWrapping="Wrap" 
-                        Text="200.000" 
-                        VerticalAlignment="Top"
-                        FontSize="14" 
-                        FontWeight="SemiBold" 
-                        Foreground="{DynamicResource Black2}" 
-                        TextAlignment="Right"/>
-                </StackPanel>
-            </Grid>
         </Grid>
     </Grid>
 </Window>

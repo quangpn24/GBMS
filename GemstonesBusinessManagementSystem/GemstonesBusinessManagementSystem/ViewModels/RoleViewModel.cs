@@ -47,6 +47,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void SetRole()
         {
+            if (CurrentAccount.Type == 0)
+            {
+                return;
+            }
             List<PositionDetail> positionDetails =
                 PositionDetailDAL.Instance.GetListByPosition(CurrentAccount.IdPosition);
 
@@ -54,68 +58,68 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             mainWindow.btnStore.IsEnabled = positionDetails[1].IsPermitted;
             mainWindow.btnService.IsEnabled = positionDetails[2].IsPermitted;
-            if (!positionDetails[1].IsPermitted || !positionDetails[2].IsPermitted)
-            {
-                mainWindow.expStore.IsEnabled = false;
-                mainWindow.expStore.Opacity = 0.5;
-            }
-            else
+            if (positionDetails[1].IsPermitted || positionDetails[2].IsPermitted)
             {
                 mainWindow.expStore.IsEnabled = true;
                 mainWindow.expStore.Opacity = 1;
             }
+            else
+            {
+                mainWindow.expStore.IsEnabled = false;
+                mainWindow.expStore.Opacity = 0.5;
+            }
 
             mainWindow.btnStock.IsEnabled = positionDetails[3].IsPermitted;
             mainWindow.btnImport.IsEnabled = positionDetails[4].IsPermitted;
-            if (!positionDetails[3].IsPermitted || !positionDetails[4].IsPermitted)
-            {
-                mainWindow.expWarehouse.IsEnabled = false;
-                mainWindow.expWarehouse.Opacity = 0.5;
-            }
-            else
+            if (positionDetails[3].IsPermitted || positionDetails[4].IsPermitted)
             {
                 mainWindow.expWarehouse.IsEnabled = true;
                 mainWindow.expWarehouse.Opacity = 1;
             }
+            else
+            {
+                mainWindow.expWarehouse.IsEnabled = false;
+                mainWindow.expWarehouse.Opacity = 0.5;
+            }
 
             mainWindow.btnSupplier.IsEnabled = positionDetails[5].IsPermitted;
             mainWindow.btnCustomer.IsEnabled = positionDetails[6].IsPermitted;
-            if (!positionDetails[5].IsPermitted || !positionDetails[6].IsPermitted)
-            {
-                mainWindow.expPartner.IsEnabled = false;
-                mainWindow.expPartner.Opacity = 0.5;
-            }
-            else
+            if (positionDetails[5].IsPermitted || positionDetails[6].IsPermitted)
             {
                 mainWindow.expPartner.IsEnabled = true;
                 mainWindow.expPartner.Opacity = 1;
+            }
+            else
+            {
+                mainWindow.expPartner.IsEnabled = false;
+                mainWindow.expPartner.Opacity = 0.5;
             }
 
             mainWindow.btnEmployee.IsEnabled = positionDetails[7].IsPermitted;
             mainWindow.btnGoods.IsEnabled = positionDetails[8].IsPermitted;
             mainWindow.btnServiceM.IsEnabled = positionDetails[9].IsPermitted;
-            if (!positionDetails[7].IsPermitted || !positionDetails[8].IsPermitted || !positionDetails[9].IsPermitted)
-            {
-                mainWindow.expManage.IsEnabled = false;
-                mainWindow.expManage.Opacity = 0.5;
-            }
-            else
+            if (positionDetails[7].IsPermitted || positionDetails[8].IsPermitted || positionDetails[9].IsPermitted)
             {
                 mainWindow.expManage.IsEnabled = true;
                 mainWindow.expManage.Opacity = 1;
             }
+            else
+            {
+                mainWindow.expManage.IsEnabled = false;
+                mainWindow.expManage.Opacity = 0.5;
+            }
 
             mainWindow.btnBillService.IsEnabled = positionDetails[10].IsPermitted;
             mainWindow.btnRevenue.IsEnabled = positionDetails[11].IsPermitted;
-            if (!positionDetails[5].IsPermitted || !positionDetails[6].IsPermitted)
-            {
-                mainWindow.expReport.IsEnabled = false;
-                mainWindow.expReport.Opacity = 0.5;
-            }
-            else
+            if (positionDetails[10].IsPermitted || positionDetails[11].IsPermitted)
             {
                 mainWindow.expReport.IsEnabled = true;
                 mainWindow.expReport.Opacity = 1;
+            }
+            else
+            {
+                mainWindow.expReport.IsEnabled = false;
+                mainWindow.expReport.Opacity = 0.5;
             }
 
             mainWindow.btnSetting.IsEnabled = positionDetails[12].IsPermitted;

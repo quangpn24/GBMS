@@ -491,11 +491,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 StockReceiptInfo info = new StockReceiptInfo(stockReceipt.Id, ConvertToID(control.txbId.Text),
                     int.Parse(control.nsQuantity.Value.ToString()), long.Parse(control.txbImportPrice.Text));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
-                int quantity = GoodsDAL.Instance.GetQuantityById(ConvertToID(control.txbId.Text));
-                if (quantity != -1)
-                {
-                    k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), quantity + info.Quantity);
-                }
+                k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), info.Quantity);
             }
             if (k)
             {
@@ -552,7 +548,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             TotalPrice -= long.Parse(control.txbTotalPrice.Text);
             MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
-            if(MoneyToPay < 0)
+            if (MoneyToPay < 0)
             {
                 MoneyToPay = 0;
                 VndDiscount = TotalPrice;

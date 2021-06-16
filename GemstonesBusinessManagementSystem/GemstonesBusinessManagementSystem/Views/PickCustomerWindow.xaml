@@ -84,7 +84,6 @@
                     <TextBlock
                         x:Name="txbId"
                         Style="{StaticResource Text}"
-                        Text="KH001"
                         HorizontalAlignment="Right"/>
                 </Grid>
                 <Grid 
@@ -99,7 +98,6 @@
                     <TextBlock
                         x:Name="txbName"
                         Style="{StaticResource Text}"
-                        Text="Nguyễn Đức Thành"
                         HorizontalAlignment="Right" 
                         TextTrimming="WordEllipsis"
                         Width="180" 
@@ -116,7 +114,6 @@
                     <TextBlock
                         x:Name="txbPhoneNumber"
                         Style="{StaticResource Text}"
-                        Text="12"
                         HorizontalAlignment="Right"/>
                 </Grid>
                 <Grid 
@@ -130,7 +127,6 @@
                     <TextBlock
                         x:Name="txbIdNumber"
                         Style="{StaticResource Text}"
-                        Text="12312321321"
                         HorizontalAlignment="Right"/>
                 </Grid>
                 <Grid 
@@ -144,7 +140,6 @@
                     <TextBlock
                         x:Name="txbRank"
                         Style="{StaticResource Text}"
-                        Text="than thiet"
                         TextAlignment="Right" 
                         Width="140" 
                         HorizontalAlignment="Right"/>
@@ -161,7 +156,6 @@
                         x:Name="txbAddress"
                         Style="{StaticResource Text}"
                         TextTrimming="CharacterEllipsis"
-                        Text="1 Hàn Thuyên, P. Linh Trung, TP Thủ Đức"
                         HorizontalAlignment="Right" 
                         Width="180" 
                         TextWrapping="Wrap"
