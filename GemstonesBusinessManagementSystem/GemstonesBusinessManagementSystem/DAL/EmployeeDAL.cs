@@ -128,6 +128,10 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MessageBox.Show(e.Message.ToString());
                 return;
             }
+            finally
+            {
+                CloseConnection();
+            }
         }
         public bool Delete(string idEmployee)
         {
@@ -276,15 +280,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 command.Parameters.AddWithValue("@idAccount", idAccount.ToString());
                 command.Parameters.AddWithValue("@idEmployee", idEmployee.ToString());
 
-                int result = command.ExecuteNonQuery();
-                if(result != 1)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                return command.ExecuteNonQuery() == 1;
             }
             catch
             {
@@ -328,16 +324,26 @@ namespace GemstonesBusinessManagementSystem.DAL
                 return employees;
         }
 
-        public string GetNameByIdAccount(string idAccount)
+        public Employee GetByIdAccount(string idAccount)
         {
             try
             {
                 OpenConnection();
-                string query = "select name from Employee where idAccount = " + idAccount;
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-                return reader.GetString(0);
+                string query = "select * from Employee where idAccount = " + idAccount;
+
+                MySqlCommand command = new MySqlCommand(query, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                Employee employee = new Employee(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
+                     dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(),
+                     dt.Rows[0].ItemArray[3].ToString(), dt.Rows[0].ItemArray[4].ToString(),
+                     DateTime.Parse(dt.Rows[0].ItemArray[5].ToString()),
+                     int.Parse(dt.Rows[0].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[0].ItemArray[7].ToString()),
+                     int.Parse(dt.Rows[0].ItemArray[8].ToString()), Convert.FromBase64String(dt.Rows[0].ItemArray[9].ToString()));
+                return employee;
             }
             catch
             {

@@ -23,7 +23,7 @@ using GemstonesBusinessManagementSystem.DAL;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
-    class LoginViewModel :BaseViewModel
+    class LoginViewModel : BaseViewModel
     {
         public ICommand LogInCommand { get; set; }
         public ICommand OpenSignUpWindowCommand { get; set; }
@@ -49,9 +49,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ForgotPasswordWindow forgotPasswordWindow = new ForgotPasswordWindow();
             forgotPasswordWindow.txtUsername.Text = null;
             loginWindow.Opacity = 0.5;
-            loginWindow.WindowStyle = WindowStyle.None;
             forgotPasswordWindow.ShowDialog();
-            loginWindow.WindowStyle = WindowStyle.SingleBorderWindow;
             loginWindow.Opacity = 1;
             loginWindow.Show();
         }
@@ -78,16 +76,31 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             string username = parameter.txtUsername.Text;
             string password = MD5Hash(parameter.txtPassword.Password);
+            Account acc = new Account();
             foreach (var account in accounts)
             {
                 if (account.Username == username && account.Password == password)
                 {
                     isLogin = true;
+                    acc = new Account(account.IdAccount, account.Username, account.Password, account.Type);
+                    break;
                 }
             }
-            if(isLogin)
+            if (isLogin)
             {
                 MainWindow main = new MainWindow();
+                if (acc.Type != 0)
+                {
+                    Employee employee = EmployeeDAL.Instance.GetByIdAccount(acc.IdAccount.ToString());
+                    CurrentAccount.PositionDetails = PositionDetailDAL.Instance.GetListByPosition(employee.IdPosition);
+                    CurrentAccount.IdAccount = acc.IdAccount;
+                    CurrentAccount.IdEmployee = employee.IdEmployee;
+                    CurrentAccount.Name = employee.Name;
+                    CurrentAccount.ImageFile = employee.ImageFile;
+                    CurrentAccount.IdPosition = employee.IdPosition;
+                    DisplayInfo(main);
+                    SetRole(main);
+                }
                 parameter.Hide();
                 main.ShowDialog();
                 parameter.Show();
@@ -102,11 +115,69 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SignUpWindow signUp = new SignUpWindow();
             signUp.txtUsername.Text = null;
             parameter.Opacity = 0.5;
-            parameter.WindowStyle = WindowStyle.None;
             signUp.ShowDialog();
-            parameter.WindowStyle = WindowStyle.SingleBorderWindow;
             parameter.Opacity = 1;
             parameter.Show();
+        }
+        void SetRole(MainWindow window)
+        {
+            List<PositionDetail> positionDetails = CurrentAccount.PositionDetails;
+
+            window.btnHome.IsEnabled = positionDetails[0].IsPermitted;
+
+            window.btnStore.IsEnabled = positionDetails[1].IsPermitted;
+            window.btnService.IsEnabled = positionDetails[2].IsPermitted;
+            if (!positionDetails[1].IsPermitted || !positionDetails[2].IsPermitted)
+            {
+                window.expStore.IsEnabled = false;
+                window.expStore.Opacity = 0.5;
+            }
+
+            window.btnStock.IsEnabled = positionDetails[3].IsPermitted;
+            window.btnImport.IsEnabled = positionDetails[4].IsPermitted;
+            if (!positionDetails[3].IsPermitted || !positionDetails[4].IsPermitted)
+            {
+                window.expWarehouse.IsEnabled = false;
+                window.expWarehouse.Opacity = 0.5;
+            }
+
+            window.btnSupplier.IsEnabled = positionDetails[5].IsPermitted;
+            window.btnCustomer.IsEnabled = positionDetails[6].IsPermitted;
+            if (!positionDetails[5].IsPermitted || !positionDetails[6].IsPermitted)
+            {
+                window.expPartner.IsEnabled = false;
+                window.expPartner.Opacity = 0.5;
+            }
+
+            window.btnEmployee.IsEnabled = positionDetails[7].IsPermitted;
+            window.btnGoods.IsEnabled = positionDetails[8].IsPermitted;
+            window.btnServiceM.IsEnabled = positionDetails[9].IsPermitted;
+            if (!positionDetails[7].IsPermitted || !positionDetails[8].IsPermitted || !positionDetails[9].IsPermitted)
+            {
+                window.expManage.IsEnabled = false;
+                window.expManage.Opacity = 0.5;
+            }
+
+            window.btnBillService.IsEnabled = positionDetails[10].IsPermitted;
+            window.btnRevenue.IsEnabled = positionDetails[11].IsPermitted;
+            if (!positionDetails[5].IsPermitted || !positionDetails[6].IsPermitted)
+            {
+                window.expReport.IsEnabled = false;
+                window.expReport.Opacity = 0.5;
+            }
+
+            window.btnSetting.IsEnabled = positionDetails[12].IsPermitted;
+        }
+        void DisplayInfo(MainWindow window)
+        {
+            window.txbUsername.Text = CurrentAccount.Name;
+
+            ImageBrush imageBrush = new ImageBrush();
+            imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(CurrentAccount.ImageFile);
+            if (imageBrush.ImageSource != null)
+            {
+                window.imgAccount.Fill = imageBrush;
+            }
         }
     }
 }

@@ -183,7 +183,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (isPaidMoney)
             {
                 int idBillService = BillServiceDAL.Instance.GetMaxId() + 1;
-                BillService billService = new BillService(idBillService, 1, DateTime.Now, totalMoney, totalPaidMoney, 1, 0);
+                BillService billService = new BillService(idBillService, CurrentAccount.IdAccount, DateTime.Now, totalMoney, totalPaidMoney, 1, 0);
                 if (TotalMoney != 0) // Kiểm tra xem có hàng hóa nào được chọn không
                 {
                     if (BillServiceDAL.Instance.Add(billService)) // Tạo hóa đơn mới

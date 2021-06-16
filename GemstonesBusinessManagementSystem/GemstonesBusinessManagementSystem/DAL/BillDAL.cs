@@ -28,14 +28,13 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "insert into Bill (idBill,idAccount,invoiceDate,status,totalMoney,idCustomer,note) " +
-                    "values(@idBill,@idAccount,@invoiceDate,@status,@totalMoney,@idCustomer,@note)";
+                string query = "insert into Bill (idBill,idAccount,invoiceDate,totalMoney,idCustomer,note) " +
+                    "values(@idBill,@idAccount,@invoiceDate,@totalMoney,@idCustomer,@note)";
                 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idBill", bill.IdBill);
                 cmd.Parameters.AddWithValue("@idAccount", bill.IdAccount);
                 cmd.Parameters.AddWithValue("@invoiceDate", bill.InvoiceDate);
-                cmd.Parameters.AddWithValue("@status", bill.Status);
                 cmd.Parameters.AddWithValue("@totalMoney", bill.TotalMoney);
                 cmd.Parameters.AddWithValue("@idCustomer", bill.IdCustomer);
                 cmd.Parameters.AddWithValue("@note", bill.Note);
@@ -46,6 +45,10 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 MessageBox.Show(e.Message.ToString());
                 return false;
+            }
+            finally
+            {
+                CloseConnection();
             }
         }
         public int GetMaxId()
@@ -86,12 +89,12 @@ namespace GemstonesBusinessManagementSystem.DAL
                 if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[1].ToString()))
                 {
                     res = new Bill(int.Parse(idBill), 1, DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
+                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
                 }
                 else
                 {
                     res = new Bill(int.Parse(idBill), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
+                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
                 }
                 return res;
             }
@@ -125,12 +128,12 @@ namespace GemstonesBusinessManagementSystem.DAL
                     if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[1].ToString()))
                     {
                         temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), 1, DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
+                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
                     }               
                     else
                     {
                         temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
+                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
                     }
                     res.Add(temp);
                 }

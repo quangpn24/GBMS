@@ -187,12 +187,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Mật khẩu không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            int type = 0;
-            type = selectedEmployee.IdPosition;
             int idAccount = AccountDAL.Instance.GetNewID();
             if(idAccount != -1)
             {
-                Account newAccount = new Account(idAccount, parameter.txtUsername.Text.ToString(), password,type);
+                Account newAccount = new Account(idAccount, parameter.txtUsername.Text.ToString(), password, 1);
                 isSignUp = AccountDAL.Instance.AddintoDB(newAccount);
                 if (isSignUp && EmployeeDAL.Instance.UpdateIdAccount(idAccount, selectedEmployee.IdEmployee))
                 {

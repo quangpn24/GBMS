@@ -13,14 +13,36 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     class HomeViewModel : BaseViewModel
     {
+        public ICommand MouseLeaveCommand { get; set; }
+        public ICommand LogOutCommand { get; set; }
         public ICommand NavigateCommand { get; set; }
         public ICommand GetUidCommand { get; set; }
 
         private string uid;
         public HomeViewModel()
         {
-            NavigateCommand = new RelayCommand<MainWindow>((p) => true, (p) => Navigate(p));
-            GetUidCommand = new RelayCommand<Button>((p) => true, (p) => uid = p.Uid);
+            MouseLeaveCommand = new RelayCommand<Button>(p => true, p => MouseLeave(p));
+            LogOutCommand = new RelayCommand<MainWindow>(p => true, p => p.Close());
+            NavigateCommand = new RelayCommand<MainWindow>(p => true, p => Navigate(p));
+            GetUidCommand = new RelayCommand<Button>(p => true, p => { uid = p.Uid; Hover(p); });
+        }
+        void MouseLeave(Button btn)
+        {
+            if (btn.IsFocused)
+            {
+                return;
+            }
+            string fore = "#666666";
+            string back = "#FFFFFF";
+            btn.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
+            btn.Background = (Brush)new BrushConverter().ConvertFrom(back);
+        }
+        void Hover(Button btn)
+        {
+            string foreFocus = "#FFF5D577";
+            string backFocus = "#FF00329E";
+            btn.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
+            btn.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
         }
         void Navigate(MainWindow window)
         {
@@ -37,6 +59,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdInvoice.Visibility = Visibility.Collapsed;
             window.grdPayService.Visibility = Visibility.Collapsed;
             window.grdBillService.Visibility = Visibility.Collapsed;
+            window.grdSetting.Visibility = Visibility.Collapsed;
 
             string fore = "#666666";
             string back = "#FFFFFF";
@@ -55,6 +78,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnServiceM.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnBillService.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
+            window.btnSetting.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
 
             window.btnHome.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnStore.Background = (Brush)new BrushConverter().ConvertFrom(back);
@@ -68,6 +92,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnServiceM.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnBillService.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(back);
+            window.btnSetting.Background = (Brush)new BrushConverter().ConvertFrom(back);
 
             switch (index)
             {
@@ -180,6 +205,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     CloseExpander(window, 4);
                     window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
+                    break;
+                //cài đặt
+                case 6:
+                    window.txbTabName.Text = "Cài đặt";
+                    window.grdSetting.Visibility = Visibility.Visible;
+                    window.btnSetting.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
+                    window.btnSetting.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
             }
         }

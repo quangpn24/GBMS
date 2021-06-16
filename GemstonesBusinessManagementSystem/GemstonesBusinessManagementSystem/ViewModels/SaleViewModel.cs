@@ -94,8 +94,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng chọn sản phẩm!");
                 return;
             }
-            Bill bill = new Bill(ConvertToID(window.txbIdBill.Text), 1, DateTime.Parse(window.txbSaleDate.Text),
-                "", Total, ConvertToID(window.txbSaleIdCustomer.Text), window.txbSaleNote.Text);
+            Bill bill = new Bill(ConvertToID(window.txbIdBillSale.Text), CurrentAccount.IdAccount, 
+                DateTime.Parse(window.txbSaleDate.Text), Total, ConvertToID(window.txbSaleIdCustomer.Text), 
+                window.txbSaleNote.Text);
             bool isSuccess = BillDAL.Instance.Insert(bill);
 
             int numOfItems = mainWindow.stkSelectedGoods.Children.Count;
@@ -133,7 +134,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             BillTemplate billTemplate = new BillTemplate();
 
             billTemplate.txbInvoiceDate.Text = window.txbSaleDate.Text;
-            billTemplate.txbIdBill.Text = window.txbIdBill.Text;
+            billTemplate.txbIdBill.Text = window.txbIdBillSale.Text;
             billTemplate.txbCustomerName.Text = window.txbSaleCustomerName.Text;
             billTemplate.txbCustomerPhoneNumber.Text = window.txbSaleCustomerPhone.Text;
             billTemplate.txbCustomerAddress.Text = window.txbSaleCustomerAddress.Text;
@@ -162,7 +163,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 if (printDialog.ShowDialog() == true)
                 {
-                    printDialog.PrintVisual(billTemplate.grdPrint, window.txbIdBill.Text);
+                    printDialog.PrintVisual(billTemplate.grdPrint, window.txbIdBillSale.Text);
                 }
             }
             catch
@@ -205,14 +206,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     return;
                 }
             }
-            //SubTotal += double.Parse(selectedControl.txbPrice.Text);
+            SubTotal += int.Parse(selectedControl.txbPrice.Text);
             Total = SubTotal - Discount;
             mainWindow.stkSelectedGoods.Children.Add(selectedControl);
         }
         void LoadDefault(MainWindow window)
         {
             int maxId = BillDAL.Instance.GetMaxId();
-            window.txbIdBill.Text = AddPrefix("HD", maxId + 1);
+            window.txbIdBillSale.Text = AddPrefix("HD", maxId + 1);
             window.txbSaleDate.Text = DateTime.Now.ToShortDateString();
         }
         void LoadSaleGoods(MainWindow window)
@@ -232,7 +233,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     control.txbName.Text = saleGoodsList[i].Name;
                     GoodsType type = GoodsTypeDAL.Instance.GetById(saleGoodsList[i].IdGoodsType);
                     double profitPercentage = type.ProfitPercentage;
-                    control.txbPrice.Text = (saleGoodsList[i].ImportPrice * (1 + profitPercentage)).ToString();
+                    control.txbPrice.Text = Math.Round(saleGoodsList[i].ImportPrice * (1 + profitPercentage)).ToString();
                     control.txbType.Text = type.Name;
                     control.txbUnit.Text = type.Unit;
 

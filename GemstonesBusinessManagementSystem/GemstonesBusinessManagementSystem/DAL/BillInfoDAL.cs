@@ -30,7 +30,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 OpenConnection();
                 string query = "insert into BillInfo (idBill,idGoods,quantity,price) " +
                     "values(@idBill,@idGoods,@quantity,@price)";
-                
+
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idBill", billInfo.IdBill);
                 cmd.Parameters.AddWithValue("@idGoods", billInfo.IdGoods);
@@ -43,6 +43,8 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 MessageBox.Show(e.Message.ToString());
                 return false;
+            }
+        }
         public List<BillInfo> GetBillInfos(string idBill)
         {
             List<BillInfo> billInfos = new List<BillInfo>();
@@ -58,8 +60,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                     BillInfo billInfo = new BillInfo(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()),
-                        int.Parse(dataTable.Rows[i].ItemArray[1].ToString()), double.Parse(dataTable.Rows[i].ItemArray[2].ToString()),
-                        int.Parse(dataTable.Rows[i].ItemArray[3].ToString()), int.Parse(dataTable.Rows[i].ItemArray[4].ToString()));
+                        int.Parse(dataTable.Rows[i].ItemArray[1].ToString()), int.Parse(dataTable.Rows[i].ItemArray[2].ToString()),
+                        long.Parse(dataTable.Rows[i].ItemArray[3].ToString()));
                     billInfos.Add(billInfo);
                 }
                 return billInfos;
