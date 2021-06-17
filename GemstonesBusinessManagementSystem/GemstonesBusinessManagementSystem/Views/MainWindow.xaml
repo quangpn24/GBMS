@@ -3708,7 +3708,7 @@
                 x:Name="grdCustomer"
                 Grid.Row="1"
                 DataContext="{StaticResource CustomerVM}"
-                Visibility="Hidden" >
+                Visibility="Collapsed" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCustomerCommand}" 

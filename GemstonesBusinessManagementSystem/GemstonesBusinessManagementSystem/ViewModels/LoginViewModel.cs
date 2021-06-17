@@ -122,13 +122,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void SetRole(MainWindow window)
         {
-            List<PositionDetail> positionDetails = CurrentAccount.PositionDetails;
+            List<PositionDetail> positionDetails =
+                PositionDetailDAL.Instance.GetListByPosition(CurrentAccount.IdPosition);
 
             window.btnHome.IsEnabled = positionDetails[0].IsPermitted;
 
             window.btnStore.IsEnabled = positionDetails[1].IsPermitted;
             window.btnService.IsEnabled = positionDetails[2].IsPermitted;
-            if (!positionDetails[1].IsPermitted || !positionDetails[2].IsPermitted)
+            if (positionDetails[1].IsPermitted || positionDetails[2].IsPermitted)
+            {
+                window.expStore.IsEnabled = true;
+                window.expStore.Opacity = 1;
+            }
+            else
             {
                 window.expStore.IsEnabled = false;
                 window.expStore.Opacity = 0.5;
@@ -136,7 +142,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             window.btnStock.IsEnabled = positionDetails[3].IsPermitted;
             window.btnImport.IsEnabled = positionDetails[4].IsPermitted;
-            if (!positionDetails[3].IsPermitted || !positionDetails[4].IsPermitted)
+            if (positionDetails[3].IsPermitted || positionDetails[4].IsPermitted)
+            {
+                window.expWarehouse.IsEnabled = true;
+                window.expWarehouse.Opacity = 1;
+            }
+            else
             {
                 window.expWarehouse.IsEnabled = false;
                 window.expWarehouse.Opacity = 0.5;
@@ -144,7 +155,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             window.btnSupplier.IsEnabled = positionDetails[5].IsPermitted;
             window.btnCustomer.IsEnabled = positionDetails[6].IsPermitted;
-            if (!positionDetails[5].IsPermitted || !positionDetails[6].IsPermitted)
+            if (positionDetails[5].IsPermitted || positionDetails[6].IsPermitted)
+            {
+                window.expPartner.IsEnabled = true;
+                window.expPartner.Opacity = 1;
+            }
+            else
             {
                 window.expPartner.IsEnabled = false;
                 window.expPartner.Opacity = 0.5;
@@ -153,7 +169,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnEmployee.IsEnabled = positionDetails[7].IsPermitted;
             window.btnGoods.IsEnabled = positionDetails[8].IsPermitted;
             window.btnServiceM.IsEnabled = positionDetails[9].IsPermitted;
-            if (!positionDetails[7].IsPermitted || !positionDetails[8].IsPermitted || !positionDetails[9].IsPermitted)
+            if (positionDetails[7].IsPermitted || positionDetails[8].IsPermitted || positionDetails[9].IsPermitted)
+            {
+                window.expManage.IsEnabled = true;
+                window.expManage.Opacity = 1;
+            }
+            else
             {
                 window.expManage.IsEnabled = false;
                 window.expManage.Opacity = 0.5;
@@ -161,7 +182,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             window.btnBillService.IsEnabled = positionDetails[10].IsPermitted;
             window.btnRevenue.IsEnabled = positionDetails[11].IsPermitted;
-            if (!positionDetails[5].IsPermitted || !positionDetails[6].IsPermitted)
+            if (positionDetails[10].IsPermitted || positionDetails[11].IsPermitted)
+            {
+                window.expReport.IsEnabled = true;
+                window.expReport.Opacity = 1;
+            }
+            else
             {
                 window.expReport.IsEnabled = false;
                 window.expReport.Opacity = 0.5;

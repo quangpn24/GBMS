@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -123,6 +124,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
 
             mainWindow.btnSetting.IsEnabled = positionDetails[12].IsPermitted;
+            if (!positionDetails[12].IsPermitted)
+            {
+                mainWindow.grdSetting.Visibility = Visibility.Collapsed;
+                string fore = "#666666";
+                string back = "#FFFFFF";
+                mainWindow.btnSetting.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
+                mainWindow.btnSetting.Background = (Brush)new BrushConverter().ConvertFrom(back);
+            }
         }
         void UpdatePermission(Button btn)
         {

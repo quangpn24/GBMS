@@ -480,7 +480,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             StockReceipt stockReceipt = new StockReceipt(ConvertToID(wdImportGoods.txbIdReceipt.Text),
-                1, DateTime.Parse(wdImportGoods.txbDate.Text), long.Parse(wdImportGoods.txbMoneyToPay.Text),
+                CurrentAccount.IdAccount, DateTime.Parse(wdImportGoods.txbDate.Text), long.Parse(wdImportGoods.txbMoneyToPay.Text),
                 vndDiscount, selectedSupplier.Id);
             k = StockReceiptDAL.Instance.Insert(stockReceipt);
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
@@ -516,6 +516,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //Update tab sale
                 SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
                 saleVM.Search(mainWindow);
+                mainWindow.stkSelectedGoods.Children.Clear();
 
                 //Update tab supplier
                 SupplierViewModel supplierVM = (SupplierViewModel)mainWindow.grdSupplier.DataContext;

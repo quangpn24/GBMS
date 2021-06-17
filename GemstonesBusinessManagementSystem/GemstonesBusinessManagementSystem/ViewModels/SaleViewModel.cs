@@ -151,6 +151,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 MessageBox.Show("Thanh toán thất bại!");
             }
+            CustomerDAL.Instance.UpdateTotalSpending(ConvertToID(IdCustomer), Total);
+            CustomerViewModel customerVM = (CustomerViewModel)mainWindow.grdCustomer.DataContext;
+            customerVM.Load(mainWindow);
             mainWindow.stkSelectedGoods.Children.Clear();
             LoadDefault(mainWindow);
             Search(mainWindow);
