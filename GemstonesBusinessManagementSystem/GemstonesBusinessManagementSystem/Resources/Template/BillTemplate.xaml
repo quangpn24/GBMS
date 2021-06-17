@@ -172,14 +172,12 @@
             <TextBlock 
                 x:Name="txbCustomerName"
                 TextWrapping="Wrap"
-                Text="Phan Ngọc Quang"  
                 FontWeight="Bold" 
                 FontSize="16" 
                 Foreground="{DynamicResource Primary}"/>
             <TextBlock 
                 x:Name="txbCustomerPhoneNumber"
                 TextWrapping="Wrap"
-                Text="0123456789" 
                 FontWeight="SemiBold" 
                 Margin="0,2,0,0"
                 FontSize="13" 
@@ -187,7 +185,6 @@
             <TextBlock 
                 x:Name="txbCustomerAddress"
                 TextWrapping="Wrap"
-                Text="Song Hành, khu phố 6, Thủ Đức, Thành phố Hồ Chí Minh" 
                 FontWeight="SemiBold" 
                 Margin="0,2,0,0"
                 FontSize="13" 
@@ -443,12 +440,10 @@
                     FontWeight="SemiBold"
                     Margin="0,0,0,2" 
                     Foreground="{DynamicResource Black2}" 
-                    Text="Song Hành, khu phố 6, Thủ Đức, Thành phố Hồ Chí Minh"
                     MaxHeight="48" />
                 <TextBlock 
                     x:Name="txbPhoneNumber"
                     TextWrapping="Wrap" 
-                    Text="0123456789" 
                     FontWeight="SemiBold"
                     Margin="0"
                     Foreground="{DynamicResource Black2}"/>
@@ -470,7 +465,6 @@
                         Grid.Column="1"
                         TextWrapping="Wrap" 
                         TextTrimming="WordEllipsis"
-                        Text="Đỗ Văn Bảo" 
                         FontWeight="SemiBold"
                         Margin="0" 
                         Foreground="{DynamicResource Black1}"/>

@@ -513,6 +513,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.currentPage = 1;
                 LoadReceiptToView(mainWindow);
 
+                //Update tab sale
+                SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+                saleVM.Search(mainWindow);
+
                 //Update tab supplier
                 SupplierViewModel supplierVM = (SupplierViewModel)mainWindow.grdSupplier.DataContext;
                 supplierVM.Search(mainWindow);

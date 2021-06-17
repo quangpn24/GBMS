@@ -951,7 +951,6 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="340"/>
                 </Grid.ColumnDefinitions>
-
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadSaleGoodsCommand}" 
@@ -1166,6 +1165,7 @@
                             <TextBlock
                                 x:Name="txbSaleIdCustomer"
                                 Style="{StaticResource Text}"
+                                Text="{Binding IdCustomer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right" 
                                 VerticalAlignment="Bottom"
                                 FontSize="18" 
@@ -1182,7 +1182,7 @@
                             <TextBlock
                                 x:Name="txbSaleCustomerName"
                                 Style="{StaticResource Text}"
-                                Text=""
+                                Text="{Binding CustomerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right" 
                                 TextTrimming="WordEllipsis"
                                 Width="180" 
@@ -1199,7 +1199,7 @@
                             <TextBlock
                                 x:Name="txbSaleCustomerPhone"
                                 Style="{StaticResource Text}"
-                                Text=""
+                                Text="{Binding CustomerPhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid 
@@ -1212,8 +1212,8 @@
                                 FontWeight="Bold"/>
                             <TextBlock
                                 x:Name="txbSaleCustomerClass"
-                                Style="{StaticResource Text}"
-                                Text=""
+                                Style="{StaticResource Text}"                               
+                                Text="{Binding CustomerClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right"
                                 TextTrimming="WordEllipsis"
                                 Width="180" 
@@ -1231,11 +1231,12 @@
                                 x:Name="txbSaleCustomerAddress"
                                 Style="{StaticResource Text}"
                                 TextTrimming="CharacterEllipsis"
-                                Text=""
+                                Text="{Binding CustomerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right" 
                                 Width="180" 
                                 TextWrapping="Wrap"
-                                TextAlignment="Right" />
+                                TextAlignment="Right" 
+                                VerticalAlignment="Top" />
                         </Grid>
                     </StackPanel>
                     <Button
@@ -1280,6 +1281,7 @@
                             <TextBlock
                                 x:Name="txbIdBillSale"
                                 Style="{StaticResource Text}"
+                                Text="{Binding IdBill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid 
@@ -1293,6 +1295,7 @@
                             <TextBlock
                                 x:Name="txbSaleDate"
                                 Style="{StaticResource Text}"
+                                Text="{Binding InvoiceDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid 

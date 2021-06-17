@@ -35,9 +35,24 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private MainWindow mainWindow;
         private List<Goods> saleGoodsList = GoodsDAL.Instance.GetList();
 
+        private string idCustomer;
+        private string customerName;
+        private string customerPhoneNumber;
+        private string customerClass;
+        private string customerAddress;
+        private string idBill;
+        private string invoiceDate;
         private long quantity = 0;
-        public long Quantity { get => quantity; set { quantity = value; OnPropertyChanged(); } }
         private long total = 0;
+
+        public string IdCustomer { get => idCustomer; set { idCustomer = value; OnPropertyChanged(); } }
+        public string CustomerName { get => customerName; set { customerName = value; OnPropertyChanged(); } }
+        public string CustomerPhoneNumber { get => customerPhoneNumber; set { customerPhoneNumber = value; OnPropertyChanged(); } }
+        public string CustomerClass { get => customerClass; set { customerClass = value; OnPropertyChanged(); } }
+        public string CustomerAddress { get => customerAddress; set { customerAddress = value; OnPropertyChanged(); } }
+        public string IdBill { get => idBill; set { idBill = value; OnPropertyChanged(); } }
+        public string InvoiceDate { get => invoiceDate; set { invoiceDate = value; OnPropertyChanged(); } }
+        public long Quantity { get => quantity; set { quantity = value; OnPropertyChanged(); } }
         public long Total { get => total; set { total = value; OnPropertyChanged(); } }
 
         public SaleViewModel()
@@ -83,16 +98,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             PickCustomerWindow pickCustomerWindow = new PickCustomerWindow();
             pickCustomerWindow.ShowDialog();
-            mainWindow.txbSaleIdCustomer.Text = pickCustomerWindow.txbId.Text;
-            mainWindow.txbSaleCustomerName.Text = pickCustomerWindow.txbName.Text;
-            mainWindow.txbSaleCustomerAddress.Text = pickCustomerWindow.txbAddress.Text;
-            mainWindow.txbSaleCustomerPhone.Text = pickCustomerWindow.txbPhoneNumber.Text;
-            mainWindow.txbSaleCustomerClass.Text = pickCustomerWindow.txbRank.Text;
+            IdCustomer = pickCustomerWindow.txbId.Text;
+            CustomerName = pickCustomerWindow.txbName.Text;
+            CustomerAddress = pickCustomerWindow.txbAddress.Text;
+            CustomerPhoneNumber = pickCustomerWindow.txbPhoneNumber.Text;
+            CustomerClass = pickCustomerWindow.txbRank.Text;
         }
 
         private void CompletePayment(MainWindow window)
         {
-            if (string.IsNullOrEmpty(window.txbSaleIdCustomer.Text))
+            if (string.IsNullOrEmpty(IdCustomer))
             {
                 MessageBox.Show("Vui lòng nhập thông tin khách hàng!");
                 return;
@@ -103,7 +118,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             Bill bill = new Bill(ConvertToID(window.txbIdBillSale.Text), CurrentAccount.IdAccount,
-                DateTime.Parse(window.txbSaleDate.Text), Total, ConvertToID(window.txbSaleIdCustomer.Text),
+                DateTime.Parse(InvoiceDate), Total, ConvertToID(IdCustomer),
                 window.txbSaleNote.Text);
             bool isSuccess = BillDAL.Instance.Insert(bill);
 
@@ -138,17 +153,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             mainWindow.stkSelectedGoods.Children.Clear();
             LoadDefault(mainWindow);
+            Search(mainWindow);
         }
         private void PrintPayment(MainWindow window)
         {
             BillTemplate billTemplate = new BillTemplate();
 
-            billTemplate.txbInvoiceDate.Text = window.txbSaleDate.Text;
-            billTemplate.txbIdBill.Text = window.txbIdBillSale.Text;
-            billTemplate.txbCustomerName.Text = window.txbSaleCustomerName.Text;
-            billTemplate.txbCustomerPhoneNumber.Text = window.txbSaleCustomerPhone.Text;
-            billTemplate.txbCustomerAddress.Text = window.txbSaleCustomerAddress.Text;
-            billTemplate.txbTotal.Text = window.txbSaleTotal.Text;
+            billTemplate.txbInvoiceDate.Text = InvoiceDate;
+            billTemplate.txbIdBill.Text = IdBill;
+            billTemplate.txbCustomerName.Text = CustomerName;
+            billTemplate.txbCustomerPhoneNumber.Text = CustomerPhoneNumber;
+            billTemplate.txbCustomerAddress.Text = CustomerAddress;
+            billTemplate.txbTotal.Text = Total.ToString();
             if (string.IsNullOrEmpty(window.txbSaleNote.Text))
             {
                 billTemplate.stkNote.Visibility = Visibility.Hidden;
@@ -188,7 +204,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
         }
 
-        void Search(MainWindow window)
+        public void Search(MainWindow window)
         {
             string namesearching = mainWindow.txtSearchSaleGoods.Text.ToLower();
             saleGoodsList = GoodsDAL.Instance.FindByName(namesearching);
@@ -229,8 +245,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void LoadDefault(MainWindow window)
         {
             int maxId = BillDAL.Instance.GetMaxId();
-            window.txbIdBillSale.Text = AddPrefix("HD", maxId + 1);
-            window.txbSaleDate.Text = DateTime.Now.ToShortDateString();
+            IdBill = AddPrefix("HD", maxId + 1);
+            InvoiceDate = DateTime.Now.ToShortDateString();
+            Quantity = 0;
+            Total = 0;
+            IdCustomer = "";
+            CustomerName = "";
+            CustomerPhoneNumber = "";
+            CustomerClass = "";
+            CustomerAddress = "";
         }
         void LoadSaleGoods(MainWindow window)
         {
