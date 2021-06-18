@@ -90,7 +90,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 OpenConnection();
                 string start = startDate.ToString("yyyy-MM-dd");
                 string end = endDate.AddDays(1).ToString("yyyy-MM-dd");
-                string query = string.Format("select * from Bill where invoiceDate >= '{0}' and invoiceDate <= '{1}';", start, end);
+                string query = String.Format("select * from Bill where invoiceDate >= '{0}' and invoiceDate <= '{1}';", start, end);
 
                 MySqlCommand command = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -118,6 +118,25 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch
             {
                 return new List<Bill>();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public bool Delete(string idBill)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "delete from Bill where idBill = " + idBill;
+                MySqlCommand command = new MySqlCommand(query, conn);
+
+                return (command.ExecuteNonQuery() > 0);
+            }
+            catch
+            {
+                return false;
             }
             finally
             {

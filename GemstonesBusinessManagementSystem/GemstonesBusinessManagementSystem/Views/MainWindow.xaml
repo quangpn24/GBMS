@@ -421,7 +421,7 @@
                 Margin="0"
                 Grid.Row="1"
                 DataContext="{StaticResource BusinessServiceVM}"
-                Visibility="Collapsed">
+                Visibility="Hidden">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}"
@@ -865,7 +865,7 @@
                 x:Name="grdStock"
                 DataContext="{StaticResource StockVM}"
                 Margin="0"
-                Visibility="Collapsed"
+                Visibility="Hidden"
                 Grid.Row="1" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
@@ -1499,7 +1499,7 @@
             <Grid
                 x:Name="grdGoods"
                 Grid.Row="1"
-                Visibility="Collapsed"
+                Visibility="Hidden"
                 DataContext="{StaticResource GoodsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />
@@ -1857,7 +1857,7 @@
             <Grid 
                 x:Name="grdImport"
                 Grid.Row="1"
-                Visibility="Collapsed"
+                Visibility="Hidden"
                 DataContext="{StaticResource ImportGoodsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="90"/>
@@ -2076,11 +2076,17 @@
                 x:Name="grdInvoice"
                 Grid.Row="1"
                 DataContext="{StaticResource BillVM}"
-                Visibility="Visible">
+                Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <i:InvokeCommandAction Command="{Binding LoadGoodsCommand}"
+                                               CommandParameter="{Binding ElementName=wdMain}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <Grid Grid.Row="0"></Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -2096,8 +2102,125 @@
                             <RowDefinition />
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
-
-                        <StackPanel
+                        <Grid Grid.Row="0">
+                            <!--<Grid Margin="10,0,0,0"
+                              Height="46"
+                              Width="350"
+                              Style="{StaticResource DropShadow}"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center">
+                            <Rectangle Fill="{DynamicResource White}"
+                                       RadiusY="4"
+                                       RadiusX="4"
+                                       Panel.ZIndex="-1" />
+                            <TextBox materialDesign:HintAssist.Hint="Tìm sản phẩm"
+                                     HorizontalAlignment="Left"
+                                     FontSize="16"
+                                     BorderThickness="0"
+                                     MaxLines="1"
+                                     Margin="12,0,0,0"
+                                     FontWeight="SemiBold"
+                                     Height="40"
+                                     VerticalAlignment="Center"
+                                     HorizontalContentAlignment="Left"
+                                     VerticalContentAlignment="Center"
+                                     Padding="2,0,0,0"
+                                     Width="300">
+                            </TextBox>
+                            <Button Grid.Column="6"
+                                    IsDefault="True"
+                                    Command="{Binding FindServiceCommand}"
+                                    CommandParameter="{Binding ElementName=wdMain}"
+                                    Height="30"
+                                    Margin="0,0,10,0"
+                                    Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
+                                    FontSize="16"
+                                    VerticalAlignment="Center"
+                                    FocusVisualStyle="{x:Null}"
+                                    Width="30"
+                                    HorizontalAlignment="Right"
+                                    Padding="0"
+                                    FontWeight="SemiBold">
+                                <materialDesign:PackIcon Kind="Magnify"
+                                                         Width="30"
+                                                         Height="30"
+                                                         HorizontalAlignment="Left"
+                                                         Foreground="{StaticResource Black2}" />
+                            </Button>
+                        </Grid>-->
+                        <StackPanel 
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,10,0">
+                            <Grid 
+                                Margin="0,0,20,0"
+                                Style="{StaticResource DropShadow}"
+                                HorizontalAlignment="Left">
+                                    <!--<Rectangle 
+                                    Fill="{DynamicResource White}"
+                                    RadiusY="4"
+                                    RadiusX="4"
+                                    Panel.ZIndex="-1" />-->
+                                <DatePicker 
+                                    x:Name="dpStartDateBill"
+                                    SelectedDateFormat="Short"
+                                    materialDesign:TextFieldAssist.TextFieldCornerRadius="0"
+                                    materialDesign:TextFieldAssist.HasFilledTextField="False"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    materialDesign:HintAssist.Hint="Từ ngày"
+                                    Width="140"
+                                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                    VerticalAlignment="Stretch"
+                                    BorderBrush="Gray"
+                                    FontSize="16"
+                                    FontWeight="Medium"
+                                    Foreground="{DynamicResource Black1}"
+                                    Margin="0,2">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectedDateChanged">
+                                                <i:InvokeCommandAction Command="{Binding LoadBillCommand}"
+                                                                   CommandParameter="{Binding ElementName=wdMain}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </DatePicker>
+                                </Grid>
+                            <Grid 
+                                Margin="0"
+                                Style="{StaticResource DropShadow}"
+                                HorizontalAlignment="Left">
+                                <Rectangle 
+                                    Fill="{DynamicResource White}"
+                                    RadiusY="4"
+                                    RadiusX="4"
+                                    Panel.ZIndex="-1" />
+                                <DatePicker
+                                    x:Name="dpEndDateBill"
+                                    SelectedDateFormat="Short"
+                                    materialDesign:TextFieldAssist.TextFieldCornerRadius="0"
+                                    materialDesign:TextFieldAssist.HasFilledTextField="False"
+                                    materialDesign:HintAssist.IsFloating="True"
+                                    materialDesign:HintAssist.Hint="Đến ngày"
+                                    Width="140"
+                                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Stretch"
+                                    BorderBrush="Gray"
+                                    FontSize="16"
+                                    FontWeight="Medium"
+                                    Foreground="{DynamicResource Black1}"
+                                    Margin="0,2">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectedDateChanged">
+                                                <i:InvokeCommandAction Command="{Binding LoadBillCommand}"
+                                                                   CommandParameter="{Binding ElementName=wdMain}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </DatePicker>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                        <!--<StackPanel
                             Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             Height="45"
@@ -2172,7 +2295,7 @@
                                     </i:Interaction.Triggers>
                                 </DatePicker>
                             </Grid>
-                        </StackPanel>
+                        </StackPanel>-->
                         <Border
                             CornerRadius="4,4,0,0"
                             BorderThickness="1"
@@ -2189,6 +2312,7 @@
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="50"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Text="Mã đơn" 
@@ -2375,27 +2499,6 @@
                                     VerticalAlignment="Center"
                                     FontSize="18"
                                     FontWeight="SemiBold" />
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Margin="350,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text="Tổng tiền trả trước: "
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock 
-                                    x:Name="txbTotalPaidBill"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Right"
-                                    Margin="0,0,10,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    FlowDirection="RightToLeft"
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Width="120" />
                             </Grid>
                             <Grid 
                             Grid.Row="3">
@@ -2411,27 +2514,6 @@
                                     Height="25"
                                     Width="100"
                                     Padding="0" />
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Margin="350,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text="Tổng tiền còn lại: "
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock 
-                                    x:Name="txbRestBill"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Right"
-                                    Margin="0,0,10,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    FlowDirection="RightToLeft"
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Width="120" />
                             </Grid>
                             <Rectangle 
                                 Grid.Row="4"
@@ -2507,12 +2589,12 @@
                         <Grid
                             Grid.Row="3"
                             Margin="20,40,20,0">
-                            <i:Interaction.Triggers>
+                            <!--<i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Loaded">
                                     <i:InvokeCommandAction Command="{Binding }"
                                                        CommandParameter="{Binding ElementName=wdMain}"/>
                                 </i:EventTrigger>
-                            </i:Interaction.Triggers>
+                            </i:Interaction.Triggers>-->
                             <ScrollViewer 
                                 VerticalScrollBarVisibility="Auto" 
                                 HorizontalScrollBarVisibility="Disabled" >
@@ -2534,7 +2616,7 @@
                 x:Name="grdCustomer"
                 Grid.Row="1"
                 DataContext="{StaticResource CustomerVM}"
-                Visibility="Hidden" >
+                Visibility="Visible" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCustomerCommand}" 
@@ -3004,7 +3086,7 @@
             <Grid 
                 x:Name="grdService"
                 Grid.Row="1"
-                Visibility="Collapsed"
+                Visibility="Hidden"
                 DataContext="{StaticResource ServiceVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />

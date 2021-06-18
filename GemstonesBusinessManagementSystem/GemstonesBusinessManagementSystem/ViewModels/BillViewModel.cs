@@ -25,11 +25,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private InvoiceControl checkedItem;
         public ICommand LoadBillCommand { get; set; }
         public ICommand PickBillCommand { get; set; }
-
+        public ICommand DeleteCommand { get; set; }
         public BillViewModel()
         {
             LoadBillCommand = new RelayCommand<MainWindow>(p => true, p => LoadBill(p));
             PickBillCommand = new RelayCommand<InvoiceControl>(p => true, p => PickBill(p));
+            DeleteCommand = new RelayCommand<InvoiceControl>(p => true, p => Delete(p));
         }
 
         public void LoadBill(MainWindow mainWindow)
@@ -49,10 +50,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             for(int i = 0; i < bills.Count; i++)
             {
                 Customer customer = CustomerDAL.Instance.FindById(bills[i].IdCustomer.ToString());
+                Employee employee = EmployeeDAL.Instance.GetById(bills[i].IdAccount.ToString());
                 InvoiceControl invoiceControl = new InvoiceControl();
                 invoiceControl.txbSerial.Text = AddPrefix("HD", bills[i].IdBill);
                 invoiceControl.txbNameCustomer.Text = customer.CustomerName;
-                //invoiceControl.txbNameEmployee.Text = customer.CustomerName;
+                invoiceControl.txbNameEmployee.Text = employee.Name;
                 invoiceControl.txbPrice.Text = bills[i].TotalPrice.ToString();
                 invoiceControl.IsHitTestVisible = true;
                 mainWindow.stkBill.Children.Add(invoiceControl);
@@ -86,7 +88,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //hien thi list billinfo
             for (int i = 0; i < billInfos.Count; i++)
             {
-                Goods goods = GoodsDAL.Instance.GetById(billInfos[i].IdGoods.ToString());
+                Goods goods = GoodsDAL.Instance.FindById(billInfos[i].IdGoods.ToString());
                 InfoInvoiceControl infoInvoiceControl = new InfoInvoiceControl();
                 infoInvoiceControl.txbNumber.Text = (i + 1).ToString();
                 infoInvoiceControl.txbNameGoods.Text = goods.Name;
@@ -95,6 +97,24 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 infoInvoiceControl.txbTotal.Text = (float.Parse(infoInvoiceControl.txbPrice.Text) * billInfos[i].Quantity).ToString();
 
                 main.stkBillInfo.Children.Add(infoInvoiceControl);
+            }
+        }
+        void Delete (InvoiceControl invoiceControl)
+        {
+            string idBill = ConvertToIDString(invoiceControl.txbSerial.Text);
+            MessageBoxResult result = MessageBox.Show("Xác nhận xóa hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if(result == MessageBoxResult.Yes)
+            {
+                bool isSuccess = BillDAL.Instance.Delete(idBill);
+                if (isSuccess)
+                {
+                    main.stkBill.Children.Remove(invoiceControl);
+                    LoadBill(main);
+                }
+                else
+                {
+                    MessageBox.Show("Xoá thất bại");
+                }
             }
         }
     }

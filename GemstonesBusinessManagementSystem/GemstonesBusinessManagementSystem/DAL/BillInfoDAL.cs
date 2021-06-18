@@ -28,7 +28,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "SELECT * FROM BillInfo WHERE idBill=" + idBill;
+                string queryString = "SELECT * FROM billinfo WHERE idBill=" + idBill;
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -38,11 +38,11 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     BillInfo billInfo = new BillInfo(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()),
                         int.Parse(dataTable.Rows[i].ItemArray[1].ToString()), double.Parse(dataTable.Rows[i].ItemArray[2].ToString()),
-                        int.Parse(dataTable.Rows[i].ItemArray[3].ToString()), int.Parse(dataTable.Rows[i].ItemArray[4].ToString()));
+                        int.Parse(dataTable.Rows[i].ItemArray[3].ToString()), 0);
                     billInfos.Add(billInfo);
                 }
                 return billInfos;
-            }
+        }
             catch
             {
                 return billInfos;
@@ -50,7 +50,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             finally
             {
                 CloseConnection();
-            }
+}
         }
     }
 }

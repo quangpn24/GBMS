@@ -266,9 +266,6 @@
     <Compile Include="Views\AddMembershipWindow.xaml.cs">
       <DependentUpon>AddMembershipWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddSupplierWindow.xaml.cs">
-      <DependentUpon>AddSupplierWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ForgotPasswordWindow.xaml.cs">
       <DependentUpon>ForgotPasswordWindow.xaml</DependentUpon>
     </Compile>
@@ -418,10 +415,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AddMembershipWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddSupplierWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
