@@ -480,7 +480,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             StockReceipt stockReceipt = new StockReceipt(ConvertToID(wdImportGoods.txbIdReceipt.Text),
-                1, DateTime.Parse(wdImportGoods.txbDate.Text), long.Parse(wdImportGoods.txbMoneyToPay.Text),
+                CurrentAccount.IdAccount, DateTime.Parse(wdImportGoods.txbDate.Text), long.Parse(wdImportGoods.txbMoneyToPay.Text),
                 vndDiscount, selectedSupplier.Id);
             k = StockReceiptDAL.Instance.Insert(stockReceipt);
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
@@ -491,11 +491,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 StockReceiptInfo info = new StockReceiptInfo(stockReceipt.Id, ConvertToID(control.txbId.Text),
                     int.Parse(control.nsQuantity.Value.ToString()), long.Parse(control.txbImportPrice.Text));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
-                int quantity = GoodsDAL.Instance.GetQuantityById(ConvertToID(control.txbId.Text));
-                if (quantity != -1)
-                {
-                    k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), quantity + info.Quantity);
-                }
+                k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), info.Quantity);
             }
             if (k)
             {
@@ -516,6 +512,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.listReceiptControl.Add(receiptControl);
                 this.currentPage = 1;
                 LoadReceiptToView(mainWindow);
+
+                //Update tab sale
+                SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+                saleVM.Search(mainWindow);
+                saleVM.LoadDefault(mainWindow);
+                mainWindow.stkSelectedGoods.Children.Clear();
 
                 //Update tab supplier
                 SupplierViewModel supplierVM = (SupplierViewModel)mainWindow.grdSupplier.DataContext;
@@ -552,7 +554,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             TotalPrice -= long.Parse(control.txbTotalPrice.Text);
             MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
-            if(MoneyToPay < 0)
+            if (MoneyToPay < 0)
             {
                 MoneyToPay = 0;
                 VndDiscount = TotalPrice;

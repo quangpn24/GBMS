@@ -30,7 +30,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 OpenConnection();
 
-                string queryStr = "select * from EmployeePosition";
+                string queryStr = "select * from EmployeePosition where isDeleted = 0";
                 MySqlCommand cmd = new MySqlCommand(queryStr, conn);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 DataTable dt = new DataTable();

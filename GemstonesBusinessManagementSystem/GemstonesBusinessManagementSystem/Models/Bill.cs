@@ -10,27 +10,32 @@ namespace GemstonesBusinessManagementSystem.Models
     {
         private int idBill;
         private int idAccount;
-        private DateTime billDate;
-        private long totalPrice;
+        private DateTime invoiceDate;
+        private long totalMoney;
         private int idCustomer;
+        private string note;
 
         public int IdBill { get => idBill; set => idBill = value; }
         public int IdAccount { get => idAccount; set => idAccount = value; }
-        public DateTime BillDate { get => billDate; set => billDate = value; }
-        public long TotalPrice { get => totalPrice; set => totalPrice = value; }
+        public DateTime InvoiceDate { get => invoiceDate; set => invoiceDate = value; }
+        public long TotalMoney { get => totalMoney; set => totalMoney = value; }
         public int IdCustomer { get => idCustomer; set => idCustomer = value; }
+        public string Note { get => note; set => note = value; }
 
         public Bill()
         {
-
         }
-        public Bill(int idBill, int idAccount, DateTime billDate, long totalPrice, int idCustomer)
+
+        public Bill(int id, int idAccount, DateTime date, long total, int idCustomer, string note)
         {
-            this.idBill = idBill;
+            this.idBill = id;
             this.idAccount = idAccount;
-            this.billDate = billDate;
-            this.totalPrice = totalPrice;
+            this.invoiceDate = date;
+            this.totalMoney = total;
             this.idCustomer = idCustomer;
+            this.note = note;
         }
     }
 }
+
+        

@@ -126,7 +126,7 @@
             </Button>
             <Border 
                 x:Name="brdBrush"
-                BorderBrush="{StaticResource Gray3}"
+                BorderBrush="{StaticResource Light}"
                 IsHitTestVisible="False"
                 BorderThickness="1.5"
                 CornerRadius="4"

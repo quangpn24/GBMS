@@ -37,7 +37,7 @@
                                        CommandParameter="{Binding ElementName=wdPickCustomer}" />
             </i:EventTrigger>
         </i:Interaction.Triggers>
-        
+
         <Grid 
             Grid.Column="1"
             Style="{StaticResource DropShadow}"
@@ -45,150 +45,9 @@
             Panel.ZIndex="-2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition />
                 <RowDefinition Height="60" />
             </Grid.RowDefinitions>
-            <Rectangle 
-                Grid.RowSpan="1"
-                Fill="{StaticResource Primary}"
-                Height="1"
-                VerticalAlignment="Bottom"
-                Margin="20,0" />
-            <Label 
-                Grid.Row="0"
-                Content="Thông tin khách hàng"
-                Padding="0"
-                FontSize="20"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                FontWeight="Bold"
-                Foreground="{StaticResource Primary}"
-                Margin="20,20,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
-            <TextBlock 
-                Grid.Row="1"
-                Text="Mã khách hàng"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="20,20,0,10"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
-            <TextBlock 
-                Grid.Row="1"
-                x:Name="txbId"
-                FlowDirection="RightToLeft"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="0,20,20,10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Width="100" />
-            <TextBlock 
-                Grid.Row="2"
-                Text="Họ tên"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="20,20,0,10"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
-            <TextBlock 
-                Grid.Row="2"
-                x:Name="txbName"
-                FlowDirection="RightToLeft"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="0,20,20,10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Width="100" />
-            <TextBlock 
-                Grid.Row="3"
-                Text="Địa chỉ"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="20,20,0,10"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
-            <TextBlock 
-                Grid.Row="3"
-                x:Name="txbAddress"
-                FlowDirection="RightToLeft"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="0,20,20,10"
-                HorizontalAlignment="Right"
-                TextWrapping="Wrap"
-                Width="150"
-                VerticalAlignment="Top" />
-            <TextBlock 
-                Grid.Row="4"
-                Text="Số điện thoại"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="20,20,0,10"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
-            <TextBlock 
-                Grid.Row="4"
-                x:Name="txbPhoneNumber"
-                FlowDirection="RightToLeft"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="0,20,20,10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Width="100" />
-            <TextBlock 
-                Grid.Row="5"
-                Text="CMND"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="20,20,0,10"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
-            <TextBlock 
-                Grid.Row="5"
-                x:Name="txbIdNumber"
-                FlowDirection="RightToLeft"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="0,20,20,10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Width="100" />
-            <TextBlock 
-                Grid.Row="6"
-                Text="Hạng khách hàng"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="20,20,0,10"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" />
-            <TextBlock 
-                Grid.Row="6"
-                x:Name="txbRank"
-                FlowDirection="RightToLeft"
-                FontSize="16"
-                Foreground="{StaticResource Primary}"
-                Margin="0,20,20,10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Width="100" />
-            <Button 
-                Grid.Row="7"
-                Style="{StaticResource GreenButton}"
-                Content="Xác nhận"
-                Command="{Binding ConfirmCommand}"
-                CommandParameter="{Binding ElementName=wdPickCustomer}"
-                Margin="10,0"
-                FontSize="16"
-                VerticalAlignment="Top" />
             <Rectangle 
                 Fill="{DynamicResource White}"
                 RadiusY="4"
@@ -196,6 +55,123 @@
                 Grid.RowSpan="8"
                 Panel.ZIndex="-1"
                 Margin="0" />
+            <Rectangle 
+                Grid.RowSpan="1"
+                Fill="{StaticResource Primary}"
+                Height="1"
+                VerticalAlignment="Bottom"
+                Margin="20,0" />
+            <TextBlock 
+                Grid.Row="0"
+                Text="Thông tin khách hàng"
+                Style="{StaticResource HeadingText2}"
+                FontSize="20"
+                Margin="15,15,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" />
+            <StackPanel 
+                Grid.Row="1"
+                VerticalAlignment="Top" 
+                Margin="20,50,20,0">
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Mã KH"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"
+                        FontWeight="Bold"/>
+                    <TextBlock
+                        x:Name="txbId"
+                        Style="{StaticResource Text}"
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Họ tên"
+                        HorizontalAlignment="Left"
+                        Foreground="{DynamicResource Black1}" 
+                        FontWeight="Bold" 
+                        VerticalAlignment="Top"/>
+                    <TextBlock
+                        x:Name="txbName"
+                        Style="{StaticResource Text}"
+                        HorizontalAlignment="Right" 
+                        TextTrimming="WordEllipsis"
+                        Width="180" 
+                        TextAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Số điện thoại"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"
+                        FontWeight="Bold"/>
+                    <TextBlock
+                        x:Name="txbPhoneNumber"
+                        Style="{StaticResource Text}"
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="CMND"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"
+                        FontWeight="Bold"/>
+                    <TextBlock
+                        x:Name="txbIdNumber"
+                        Style="{StaticResource Text}"
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Hạng thành viên"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"
+                        FontWeight="Bold" VerticalAlignment="Top"/>
+                    <TextBlock
+                        x:Name="txbRank"
+                        Style="{StaticResource Text}"
+                        TextAlignment="Right" 
+                        Width="140" 
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid >
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Địa chỉ"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"
+                        FontWeight="Bold"
+                        VerticalAlignment="Top"/>
+                    <TextBlock
+                        x:Name="txbAddress"
+                        Style="{StaticResource Text}"
+                        TextTrimming="CharacterEllipsis"
+                        HorizontalAlignment="Right" 
+                        Width="180" 
+                        TextWrapping="Wrap"
+                        TextAlignment="Right" 
+                        VerticalAlignment="Top" />
+                </Grid>
+            </StackPanel>
+            <Button 
+                Grid.Row="2"
+                Style="{StaticResource GreenButton}"
+                Content="Xác nhận"
+                Command="{Binding ConfirmCommand}"
+                CommandParameter="{Binding ElementName=wdPickCustomer}"
+                Margin="15,0,15,10"
+                VerticalAlignment="Bottom"
+                Height="40" />
         </Grid>
         <Grid 
             Grid.Column="0"
@@ -209,10 +185,7 @@
             <TextBlock 
                 Grid.Row="0"
                 Text="Danh sách khách hàng "
-                FontSize="26"
-                FontWeight="Medium"
-                TextWrapping="Wrap"
-                Foreground="{DynamicResource Primary}"
+                Style="{StaticResource HeadingText2}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Margin="20,20,0,0" />

@@ -125,6 +125,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             empPosControl = control;
             isEditingPosition = true;
             employeePositionWindow.txbTitle.Text = "Sửa chức vụ";
+            employeePositionWindow.btnSave.Content = "Cập nhật";
+            employeePositionWindow.btnSave.ToolTip = "Cập nhật";
             employeePositionWindow.txtId.Text = control.txbId.Text;
 
             employeePositionWindow.txtPosition.Text = control.txbPosition.Text;
@@ -244,6 +246,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 empPosControl.txbFault.Text = window.txtFault.Text;
 
                 window.txbTitle.Text = "Thêm chức vụ";
+                employeePositionWindow.btnSave.Content = "Lưu";
+                employeePositionWindow.btnSave.ToolTip = "Lưu";
             }
             else
             {
@@ -256,6 +260,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbWorkdays.Text = position.StandardWorkDays.ToString();
 
                 window.stkPosition.Children.Add(control);
+
+                for (int i = 1; i <= 13; i++)
+                {
+                    PositionDetail positionDetail = new PositionDetail(ConvertToID(window.txtId.Text), i, false);
+                    PositionDetailDAL.Instance.InsertOrUpdate(positionDetail);
+                }
             }
             SetItemSource();
             LoadEmployeeList(mainWindow, 0);
@@ -459,6 +469,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
+                ImageBrush imageBrush = new ImageBrush
+                {
+                    ImageSource = Converter.Instance.ConvertByteToBitmapImage(imgByteArr)
+                };
+                if (imageBrush.ImageSource != null)
+                {
+                     mainWindow.imgAccount.Fill = imageBrush;
+                }
+
                 EmployeeControl control = new EmployeeControl();
                 control.txbId.Text = window.txtId.Text;
                 control.txbName.Text = employee.Name.ToString();

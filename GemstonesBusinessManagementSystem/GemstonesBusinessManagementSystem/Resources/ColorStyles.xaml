@@ -8,15 +8,15 @@
     <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFF9FEF9"/>
     <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#FFD1E6FA"/>
     <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFEFEFE"/>
-    
+
     <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#FFFF5722"/>
     <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FF282828"/>
     <!-- Color styles -->
     <SolidColorBrush x:Key="Primary" Color="#FF00329E" />
     <SolidColorBrush x:Key="Secondary" Color="#FFF5D577" />
-    <SolidColorBrush x:Key="Success" Color="#FF01B500" />
-    <SolidColorBrush x:Key="Warning" Color="#FFFFC700" />
-    <SolidColorBrush x:Key="Error" Color="#d14040" />
+    <SolidColorBrush x:Key="Success" Color="#FF1BA345" />
+    <SolidColorBrush x:Key="Warning" Color="#FFFEC001" />
+    <SolidColorBrush x:Key="Error" Color="#FFDE3E44" />
     <SolidColorBrush x:Key="Black1" Color="#FF263238" />
     <SolidColorBrush x:Key="Black2" Color="#FF4F4F4F" />
     <SolidColorBrush x:Key="White" Color="#FFFFFFFF" />
@@ -26,15 +26,14 @@
     <SolidColorBrush x:Key="Dark" Color="#FF223263" />
     <SolidColorBrush x:Key="Gray" Color="#FF9098B1" />
     <SolidColorBrush x:Key="Light" Color="#FFEBF0FF" />
-    
     <SolidColorBrush x:Key="Theme_Brush_Bg" Color="White" />
     <SolidColorBrush x:Key="Theme_Brush_SilverBorder" Color="Silver" />
-    <Color x:Key="ThemeColor">#40a6d1</Color>
+    <Color x:Key="ThemeColor">#FF00329E</Color>
     <Color x:Key="ThemeRedColor">#d14040</Color>
     <Color x:Key="ThemeColorDark">#3992b8</Color>
     <Color x:Key="ThemeColorDarker">#FF688CAF</Color>
     <Color x:Key="ThemeColorInactive">#4cd1ff</Color>
-    <Color x:Key="ThemeColorActive">#FF3BACDC</Color>
+    <Color x:Key="ThemeColorActive">#005ce6</Color>
     <SolidColorBrush x:Key="ThemeBrush" Color="{DynamicResource ThemeColor}" />
     <SolidColorBrush x:Key="ThemeBrushDark" Color="{DynamicResource ThemeColorDark}" />
     <SolidColorBrush x:Key="ThemeBrushDarker" Color="{DynamicResource ThemeColorDarker}" />

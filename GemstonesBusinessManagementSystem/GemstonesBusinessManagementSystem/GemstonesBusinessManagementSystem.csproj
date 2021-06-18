@@ -73,6 +73,7 @@
     <Reference Include="MySql.Data, Version=8.0.23.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.23\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="Renci.SshNet, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2020.0.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
@@ -134,6 +135,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter.cs" />
+    <Compile Include="CurrentAccount.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DAL\AuthorizationsDAL.cs" />
     <Compile Include="DAL\BillInfoDAL.cs" />
@@ -147,14 +149,26 @@
     <Compile Include="DAL\GoodsDAL.cs" />
     <Compile Include="DAL\GoodsTypeDAL.cs" />
     <Compile Include="DAL\MembershipsTypeDAL.cs" />
-    <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\Authorizations.cs" />
-    <Compile Include="Models\Bill.cs" />
-    <Compile Include="Models\BillInfo.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\Employee.cs" />
+    <Compile Include="DAL\PermissionDAL.cs" />
+    <Compile Include="DAL\PositionDetailDAL.cs" />
     <Compile Include="Models\EmployeePosition.cs" />
     <Compile Include="Models\MembershipsType.cs" />
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Authorizations.cs" />
+    <Compile Include="Models\BillInfo.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Bill.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Goods.cs" />
+    <Compile Include="Models\GoodsType.cs" />
+    <Compile Include="Models\Permission.cs" />
+    <Compile Include="Models\PositionDetail.cs" />
+    <Compile Include="Resources\Template\BillTemplate.xaml.cs">
+      <DependentUpon>BillTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\BillInfoControl.xaml.cs">
+      <DependentUpon>BillInfoControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\CustomerControl.xaml.cs">
       <DependentUpon>CustomerControl.xaml</DependentUpon>
     </Compile>
@@ -163,13 +177,14 @@
     <Compile Include="DAL\StockReceiptDAL.cs" />
     <Compile Include="DAL\StockReceiptInfoDAL.cs" />
     <Compile Include="DAL\SupplierDAL.cs" />
-    <Compile Include="Models\Goods.cs" />
-    <Compile Include="Models\GoodsType.cs" />
     <Compile Include="Models\StockReceipt.cs" />
     <Compile Include="Models\StockReceiptInfo.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Resources\Template\StockReceiptTemplate.xaml.cs">
       <DependentUpon>StockReceiptTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\PermissionControl.xaml.cs">
+      <DependentUpon>PermissionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\ReceiptControl.xaml.cs">
       <DependentUpon>ReceiptControl.xaml</DependentUpon>
@@ -194,6 +209,9 @@
     </Compile>
     <Compile Include="Resources\UserControls\PickCustomerControl.xaml.cs">
       <DependentUpon>PickCustomerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\RoleControl.xaml.cs">
+      <DependentUpon>RoleControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\SearchGoodsControl.xaml.cs">
       <DependentUpon>SearchGoodsControl.xaml</DependentUpon>
@@ -234,6 +252,12 @@
     <Compile Include="Resources\UserControls\SaleServiceDetailsControl.xaml.cs">
       <DependentUpon>SaleServiceDetailsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\UserControls\SaleGoodsControl.xaml.cs">
+      <DependentUpon>SaleGoodsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\SelectedGoodsControl.xaml.cs">
+      <DependentUpon>SelectedGoodsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserControls\InvoiceInfoControl.xaml.cs">
       <DependentUpon>InvoiceInfoControl.xaml</DependentUpon>
     </Compile>
@@ -258,6 +282,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\RoleViewModel.cs" />
+    <Compile Include="ViewModels\SaleViewModel.cs" />
     <Compile Include="ViewModels\StockViewModel.cs" />
     <Compile Include="ViewModels\SupplierViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
@@ -328,6 +354,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\Template\BillTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Template\BillServiceTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -335,6 +365,10 @@
     <Page Include="Resources\TextStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UserControls\BillInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\BillServiceControl.xaml">
       <SubType>Designer</SubType>
@@ -349,6 +383,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\DashboardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\PermissionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -371,6 +409,22 @@
     <Page Include="Resources\UserControls\GoodsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\UserControls\NumericSpinner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\RoleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\SaleGoodsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\SelectedGoodsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\InvoiceInfoControl.xaml">
       <SubType>Designer</SubType>
@@ -403,10 +457,6 @@
     <Page Include="Resources\UserControls\ImportGoodsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\UserControls\NumericSpinner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\UserControls\SearchGoodsControl.xaml">
       <SubType>Designer</SubType>

@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GemstonesBusinessManagementSystem.DAL
 {
@@ -22,6 +23,28 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
 
         }
+        public bool Insert(BillInfo billInfo)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "insert into BillInfo (idBill,idGoods,quantity,price) " +
+                    "values(@idBill,@idGoods,@quantity,@price)";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@idBill", billInfo.IdBill);
+                cmd.Parameters.AddWithValue("@idGoods", billInfo.IdGoods);
+                cmd.Parameters.AddWithValue("@quantity", billInfo.Quantity);
+                cmd.Parameters.AddWithValue("@price", billInfo.Price);
+
+                return cmd.ExecuteNonQuery() == 1;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return false;
+            }
+        }
         public List<BillInfo> GetBillInfos(string idBill)
         {
             List<BillInfo> billInfos = new List<BillInfo>();
@@ -37,8 +60,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
                     BillInfo billInfo = new BillInfo(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()),
-                        int.Parse(dataTable.Rows[i].ItemArray[1].ToString()), double.Parse(dataTable.Rows[i].ItemArray[2].ToString()),
-                        int.Parse(dataTable.Rows[i].ItemArray[3].ToString()), int.Parse(dataTable.Rows[i].ItemArray[4].ToString()));
+                        int.Parse(dataTable.Rows[i].ItemArray[1].ToString()), int.Parse(dataTable.Rows[i].ItemArray[2].ToString()),
+                        long.Parse(dataTable.Rows[i].ItemArray[3].ToString()));
                     billInfos.Add(billInfo);
                 }
                 return billInfos;

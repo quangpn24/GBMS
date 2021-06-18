@@ -23,30 +23,55 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
 
         }
-        public int GetMaxId()
+        public bool Insert(Bill bill)
         {
-            int res = 0;
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT MAX(idBill) FROM Bill";
+                string query = "insert into Bill (idBill,idAccount,invoiceDate,totalMoney,idCustomer,note) " +
+                    "values(@idBill,@idAccount,@invoiceDate,@totalMoney,@idCustomer,@note)";
+                
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@idBill", bill.IdBill);
+                cmd.Parameters.AddWithValue("@idAccount", bill.IdAccount);
+                cmd.Parameters.AddWithValue("@invoiceDate", bill.InvoiceDate);
+                cmd.Parameters.AddWithValue("@totalMoney", bill.TotalMoney);
+                cmd.Parameters.AddWithValue("@idCustomer", bill.IdCustomer);
+                cmd.Parameters.AddWithValue("@note", bill.Note);
 
-                MySqlCommand command = new MySqlCommand(queryString, conn);
-                command.ExecuteNonQuery();
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                res = int.Parse(dataTable.Rows[0].ItemArray[0].ToString());
+                return cmd.ExecuteNonQuery() == 1;
             }
-            catch
+            catch (Exception e)
             {
-
+                MessageBox.Show(e.Message.ToString());
+                return false;
             }
             finally
             {
                 CloseConnection();
             }
-            return res;
+        }
+        public int GetMaxId()
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "select max(idBill) from Bill";
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                MySqlDataReader rdr = command.ExecuteReader();
+                rdr.Read();
+                int maxId = int.Parse(rdr.GetString(0));
+                return maxId;
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                CloseConnection();
+            }
         }
         public Bill GetBill(string idBill)
         {
@@ -64,12 +89,12 @@ namespace GemstonesBusinessManagementSystem.DAL
                 if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[1].ToString()))
                 {
                     res = new Bill(int.Parse(idBill), 1, DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
+                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
                 }
                 else
                 {
                     res = new Bill(int.Parse(idBill), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
+                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
                 }
                 return res;
             }
@@ -103,12 +128,12 @@ namespace GemstonesBusinessManagementSystem.DAL
                     if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[1].ToString()))
                     {
                         temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), 1, DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
+                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
                     }               
                     else
                     {
                         temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()));
+                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
                     }
                     res.Add(temp);
                 }
