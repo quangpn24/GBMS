@@ -307,6 +307,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 addEmployeeWindow.grdSelectImage.Children.Remove(addEmployeeWindow.grdSelectImage.Children[1]);
             }
             addEmployeeWindow.btnSave.ToolTip = "Cập nhật thông tin nhân viên";
+            addEmployeeWindow.btnSave.Conten = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.Title = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.ShowDialog();
         }

@@ -277,7 +277,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 command.Parameters.AddWithValue("@idEmployee", idEmployee.ToString());
 
                 int result = command.ExecuteNonQuery();
-                if(result != 1)
+                if (result != 1)
                 {
                     return false;
                 }
@@ -297,35 +297,35 @@ namespace GemstonesBusinessManagementSystem.DAL
         }
         public List<Employee> GetEmployeeNonAccount()   // lấy list nhân viên không có Account
         {
-                List<Employee> employees = new List<Employee>();
+            List<Employee> employees = new List<Employee>();
 
-                OpenConnection();
-                string query = "select * from Employee where idAccount is null";
+            OpenConnection();
+            string query = "select * from Employee where idAccount is null";
 
-                MySqlCommand command = new MySqlCommand(query, conn);
-                command.ExecuteNonQuery();
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                MySqlDataReader dataReader = command.ExecuteReader();
-                DataTable dt = new DataTable();
-                dt.Load(dataReader);
+            MySqlCommand command = new MySqlCommand(query, conn);
+            command.ExecuteNonQuery();
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            MySqlDataReader dataReader = command.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(dataReader);
 
-                for (int i = 0; i < dt.Rows.Count; i++)
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int idAccount = -1;
+                if (dt.Rows[i].ItemArray[8].ToString() != "")
                 {
-                    int idAccount = -1;
-                    if (dt.Rows[i].ItemArray[8].ToString() != "")
-                    {
-                        idAccount = int.Parse(dt.Rows[i].ItemArray[8].ToString());
-                    }
-
-                    Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
-                     dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
-                     dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
-                     DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
-                     int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
-                     idAccount, Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
-                    employees.Add(employee);
+                    idAccount = int.Parse(dt.Rows[i].ItemArray[8].ToString());
                 }
-                return employees;
+
+                Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                 dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
+                 dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
+                 DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
+                 int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
+                 idAccount, Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
+                employees.Add(employee);
+            }
+            return employees;
         }
 
         public string GetNameByIdAccount(string idAccount)

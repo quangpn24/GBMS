@@ -173,7 +173,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng chọn khách hàng!");
                 return;
             }
-            isPaidMoney = CheckPaidMoney(mainWindow);
+            double prepaymentPercent = double.Parse(ParameterDAL.Instance.GetPrepayment().Value) / 100;
+            isPaidMoney = CheckPaidMoney(mainWindow, prepaymentPercent);
             isOver = IsOverMoney(mainWindow);
             if (isOver)
             {
@@ -208,6 +209,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         }
                         mainWindow.stkPickedService.Children.Clear();
                         TotalMoney = TotalPaidMoney = TotalServices = 0;
+                        //Update tab home
+                        ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+                        reportVM.Init(mainWindow);
                     }
                     else
                     {
@@ -221,17 +225,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                MessageBox.Show("Vui lòng nhập tiền đặt cọc >= 50% tiền thanh toán trong từng dịch vụ!");
+                MessageBox.Show(string.Format("Vui lòng nhập tiền đặt cọc >= {0}% tiền thanh toán trong từng dịch vụ!", prepaymentPercent * 100));
             }
         }
-        public bool CheckPaidMoney(MainWindow mainWindow)
+        public bool CheckPaidMoney(MainWindow mainWindow, double prepaymentPercent)
         {
             for (int i = 0; i < mainWindow.stkPickedService.Children.Count; i++)
             {
                 SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
                 if (!String.IsNullOrEmpty(temp.txtPaidMoney.Text))
                 {
-                    if (double.Parse(temp.txtPaidMoney.Text) / double.Parse(temp.txtTotal.Text) < 0.5)
+                    if (double.Parse(temp.txtPaidMoney.Text) / double.Parse(temp.txtTotal.Text) < prepaymentPercent)
                     {
                         return false;
                     }

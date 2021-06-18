@@ -15,17 +15,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     {
         public ICommand NavigateCommand { get; set; }
         public ICommand GetUidCommand { get; set; }
+        public ICommand HiddenGridChangeInfoCommand { get; set; }
 
         private string uid;
+        public string Uid { get => uid; set => uid = value; }
         public HomeViewModel()
         {
             NavigateCommand = new RelayCommand<MainWindow>((p) => true, (p) => Navigate(p));
-            GetUidCommand = new RelayCommand<Button>((p) => true, (p) => uid = p.Uid);
+            GetUidCommand = new RelayCommand<Button>((p) => true, (p) => Uid = p.Uid);
+            HiddenGridChangeInfoCommand = new RelayCommand<MainWindow>(p => true, p => HiddenGridChangeInfo(p));
         }
-        void Navigate(MainWindow window)
+        public void Navigate(MainWindow window)
         {
-            int index = int.Parse(uid);
+            int index = int.Parse(Uid);
 
+            window.grdHome.Visibility = Visibility.Collapsed;
             window.grdStock.Visibility = Visibility.Collapsed;
             window.grdEmployee.Visibility = Visibility.Collapsed;
             window.grdGoods.Visibility = Visibility.Collapsed;
@@ -36,6 +40,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdInvoice.Visibility = Visibility.Collapsed;
             window.grdPayService.Visibility = Visibility.Collapsed;
             window.grdBillService.Visibility = Visibility.Collapsed;
+            window.grdSetting.Visibility = Visibility.Collapsed;
 
             string fore = "#666666";
             string back = "#FFFFFF";
@@ -54,6 +59,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnServiceM.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnBillService.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
             window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
+            window.btnSetting.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
 
             window.btnHome.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnStore.Background = (Brush)new BrushConverter().ConvertFrom(back);
@@ -67,12 +73,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.btnServiceM.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnBillService.Background = (Brush)new BrushConverter().ConvertFrom(back);
             window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(back);
+            window.btnSetting.Background = (Brush)new BrushConverter().ConvertFrom(back);
 
             switch (index)
             {
                 //home
                 case 0:
                     window.txbTabName.Text = "Trang chủ";
+                    window.grdHome.Visibility = Visibility.Visible;
                     window.btnHome.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnHome.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
@@ -179,6 +187,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
+                //cài đặt
+                case 60:
+                    window.grdSetting.Visibility = Visibility.Visible;
+                    window.txbTabName.Text = "Cài đặt";
+                    CloseExpander(window, 4);
+                    window.btnSetting.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
+                    window.btnSetting.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
+                    break;
             }
         }
         void CloseExpander(MainWindow window, int index)
@@ -216,6 +232,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     window.expManage.IsExpanded = false;
                     break;
             }
+        }
+        void HiddenGridChangeInfo(MainWindow main)
+        {
+            if (!main.grdChangeInfo.IsMouseOver)
+                main.grdChangeInfo.Visibility = Visibility.Hidden;
         }
     }
 }

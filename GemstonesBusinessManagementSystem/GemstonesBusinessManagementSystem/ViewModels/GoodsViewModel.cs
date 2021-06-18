@@ -26,6 +26,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private string imageFileName;
         private MainWindow mainWindow;
         private int currentPage; // trang dau tien la trang 1
+        private string oldGoods;
 
         private GoodsType selectedGoodsType = new GoodsType();
         public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
@@ -234,11 +235,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int indexSort = main.cboSortGoods.SelectedIndex;
             SearchGoods(main);
             main.cboSortGoods.SelectedIndex = indexSort;
+            ImportGoodsViewModel importVM = (ImportGoodsViewModel)main.grdImport.DataContext;
+            importVM.SetItemSource();
         }
         void OpenEditGoodsWindow(GoodsControl control)
         {
             isUpdate = true;
             goodsControl = control;
+            oldGoods = control.txbName.Text;
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             Goods goods = GoodsDAL.Instance.GetById(control.txbId.Text.Remove(0, 2));
             addGoodsWd.txtIdGoods.Text = control.txbId.Text;
@@ -264,7 +268,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void OpenImportGoodsWindow(MainWindow main)
         {
-            
+            ImportGoodsViewModel importVM = (ImportGoodsViewModel)main.grdImport.DataContext;
+            importVM.OpenImportGoodsWindow(main);
         }
         void OpenAddGoodsWindow(MainWindow wdMain)
         {
@@ -384,13 +389,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
-
+            if ((!isUpdate || addGoodsWd.txtName.Text != oldGoods) && GoodsDAL.Instance.IsExisted(addGoodsWd.txtName.Text))
+            {
+                MessageBox.Show("Sản phẩm đã tồn tại!");
+                addGoodsWd.txtName.Focus();
+                return;
+            }
             Goods newGoods = new Goods(ConvertToID(addGoodsWd.txtIdGoods.Text), addGoodsWd.txtName.Text,
                              long.Parse(addGoodsWd.txtImportPrice.Text), 0, selectedGoodsType.IdGoodsType, imgByteArr, false);
             if (isUpdate)
             {
                 newGoods.ImportPrice = long.Parse(addGoodsWd.txtImportPrice.Text);
-                newGoods.Quantity = int.Parse(goodsControl.txbQuantity.Text);
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
 

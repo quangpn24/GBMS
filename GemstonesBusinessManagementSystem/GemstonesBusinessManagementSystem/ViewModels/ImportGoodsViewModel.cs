@@ -87,12 +87,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SelectFilterCommand { get; set; }
         public ICommand SelectStartDateCommand { get; set; }
         public ICommand SelectEndDateCommand { get; set; }
+        public ICommand DeleteReceiptCommand { get; set; }
 
 
         //other
         public ICommand BackCommand { get; set; }
         public ICommand SelectionChangedGoodsTypeCommand { get; set; } // cboGoodsType
-        public ICommand HidenGridDiscountCommand { get; set; }
+        public ICommand HiddenGridDiscountCommand { get; set; }
         public ImportGoodsViewModel()
         {
             SelectGoodsCommand = new RelayCommand<SearchGoodsControl>(p => true, p => SelectGoodsResult(p));
@@ -113,7 +114,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             SelectionChangedGoodsTypeCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => SelectGoodsType(p));
             BackCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => p.Close());
-            HidenGridDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => HidenGridDiscount(p));
+            HiddenGridDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => HiddenGridDiscount(p));
 
 
             LoadReceiptCommand = new RelayCommand<MainWindow>(p => true, p => Init(p));
@@ -127,6 +128,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SelectFilterCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
             SelectStartDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
             SelectEndDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
+            DeleteReceiptCommand = new RelayCommand<ReceiptControl>(p => true, p => DeleteReceipt(p));
         }
 
         //Grid discount
@@ -135,7 +137,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdDiscount.Visibility = Visibility.Visible;
             window.txtDiscount.Focus();
         }
-        void HidenGridDiscount(ImportGoodsWindow window)
+        void HiddenGridDiscount(ImportGoodsWindow window)
         {
             if (!window.grdDiscount.IsMouseOver)
             {
@@ -202,7 +204,27 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.txtDiscount.SelectionLength = window.txtDiscount.Text.Length;
         }
         //
-
+        void DeleteReceipt(ReceiptControl control)
+        {
+            if (StockReceiptInfoDAL.Instance.DeleteByIdReceipt(ConvertToIDString(control.txbId.Text))
+                && StockReceiptDAL.Instance.Delete(ConvertToIDString(control.txbId.Text)))
+            {
+                var result = MessageBox.Show("Bạn xác nhận muốn xóa phiếu nhập này?", "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.OK)
+                {
+                    mainWindow.stkReceipt.Children.Remove(control);
+                    listReceiptControl.Remove(control);
+                    listReceiptToView.Remove(control);
+                    ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+                    reportVM.Init(mainWindow);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Lỗi không thể xóa");
+                return;
+            }
+        }
         void HandleFilter(MainWindow main)
         {
             //Gan lai list ban dau
@@ -414,7 +436,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.wdImportGoods = newWindow;
             newWindow.ShowDialog();
             HandleFilter(mainWindow);
-            main.Show();
+            HomeViewModel homeVM = (HomeViewModel)main.DataContext;
+            homeVM.Uid = "21";
+            homeVM.Navigate(main);
+            main.ShowDialog();
         }
 
         void LostFocusSearchBar(ImportGoodsWindow wdImportGoods)
@@ -426,7 +451,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             wdImportGoods.txtSearch.SelectionStart = 0;
             wdImportGoods.txtSearch.SelectionLength = this.wdImportGoods.txtSearch.Text.Length;
         }
-
         void PrintReceipt(ImportGoodsWindow wdImportGoods)
         {
             StockReceiptTemplate receiptTemplate = new StockReceiptTemplate();
@@ -523,6 +547,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 mainWindow.txbTotalSpentToSupplier.Text = (long.Parse(mainWindow.txbTotalSpentToSupplier.Text) + long.Parse(wdImportGoods.txbMoneyToPay.Text)).ToString();
                 TotalPrice = 0;
                 MoneyToPay = 0;
+
+                //Update tab home 
+                ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+                reportVM.Init(mainWindow);
                 wdImportGoods.Close();
             }
             else
@@ -552,7 +580,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             TotalPrice -= long.Parse(control.txbTotalPrice.Text);
             MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
-            if(MoneyToPay < 0)
+            if (MoneyToPay < 0)
             {
                 MoneyToPay = 0;
                 VndDiscount = TotalPrice;
@@ -697,6 +725,5 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdImportGoods.txbNoResult.Visibility = Visibility.Visible;
             }
         }
-
     }
 }

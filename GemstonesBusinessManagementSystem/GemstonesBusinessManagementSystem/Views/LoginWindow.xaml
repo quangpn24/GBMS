@@ -109,7 +109,8 @@
                     VerticalAlignment="Center" 
                     CaretBrush="{StaticResource Primary}" 
                     FontWeight="SemiBold" 
-                    Padding="2,0,0,0" VerticalContentAlignment="Center">
+                    Padding="2,0,0,0" 
+                    VerticalContentAlignment="Center">
                 </PasswordBox>
             </Grid>
             <Button 

@@ -47,6 +47,25 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public bool DeleteByIdReceipt(string idReceipt)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "Delete from StockReceiptInfo where idStockReceipt = " + idReceipt;
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                int rs = cmd.ExecuteNonQuery();
+                return rs > 0;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
 
         public DataTable GetByIdReceipt(int idReceipt)
         {

@@ -56,18 +56,17 @@ namespace GemstonesBusinessManagementSystem.DAL
                 if (!isUpdate) // insert
                 {
                     query = "Insert into Goods(idGoods, name, price, quantity, idGoodsType, imageFile, isDeleted) " +
-                   "values(@idGoods, @name, @price, @quantity, @idGoodsType, @imageFile, @isDeleted)";
+                   "values(@idGoods, @name, @price, 0 , @idGoodsType, @imageFile, @isDeleted)";
                 }
                 else
                 {
-                    query = "update Goods set name=@name, price =@price,quantity = @quantity,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
+                    query = "update Goods set name=@name, price =@price,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
                  "where idGoods = @idGoods";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idGoods", goods.IdGoods);
                 cmd.Parameters.AddWithValue("@name", goods.Name);
                 cmd.Parameters.AddWithValue("@price", goods.ImportPrice);
-                cmd.Parameters.AddWithValue("@quantity", goods.Quantity);
                 cmd.Parameters.AddWithValue("@idGoodsType", goods.IdGoodsType);
                 cmd.Parameters.AddWithValue("@imageFile", Convert.ToBase64String(goods.ImageFile));
                 cmd.Parameters.AddWithValue("@isDeleted", goods.IsDeleted);
@@ -251,6 +250,31 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
         }
 
+        public bool IsExisted(string name)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = string.Format("select * from Goods where name = '{0}'", name);
+
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
+                return dataTable.Rows.Count >= 1;
+            }
+            catch
+            {
+                return true;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
 
         public DataTable SearchByName(string name)
         {
