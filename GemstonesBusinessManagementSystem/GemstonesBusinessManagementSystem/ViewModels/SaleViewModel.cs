@@ -89,9 +89,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void DeleteSelectedGoods(SelectedGoodsControl control)
         {
-            OnChangeQuantity();
             Total -= int.Parse(control.txbTotalPrice.Text);
             mainWindow.stkSelectedGoods.Children.Remove(control);
+            OnChangeQuantity();
         }
 
         void SelectCustomer(MainWindow window)
@@ -245,7 +245,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.stkSelectedGoods.Children.Add(selectedControl);
             OnChangeQuantity();
         }
-        void LoadDefault(MainWindow window)
+        public void LoadDefault(MainWindow window)
         {
             int maxId = BillDAL.Instance.GetMaxId();
             IdBill = AddPrefix("HD", maxId + 1);
