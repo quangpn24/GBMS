@@ -241,8 +241,28 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = string.Format("update Customer set totalPrice = totalPrice + {0} " +
+                string query = string.Format("update Customer set totalPrice = {0} " +
                     "where idCustomer = {1}", spending, idCustomer);
+                MySqlCommand command = new MySqlCommand(query, conn);
+
+                return command.ExecuteNonQuery() == 1;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public bool UpdateMembership(int idCustomer, int idMembership)
+        {
+            try
+            {
+                OpenConnection();
+                string query = string.Format("update Customer set idMembership = {0} " +
+                    "where idCustomer = {1}", idMembership, idCustomer);
                 MySqlCommand command = new MySqlCommand(query, conn);
 
                 return command.ExecuteNonQuery() == 1;

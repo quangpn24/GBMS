@@ -56,7 +56,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdService.Visibility = Visibility.Collapsed;
             window.grdSupplier.Visibility = Visibility.Collapsed;
             window.grdCustomer.Visibility = Visibility.Collapsed;
-            window.grdInvoice.Visibility = Visibility.Collapsed;
+            window.grdBill.Visibility = Visibility.Collapsed;
             window.grdPayService.Visibility = Visibility.Collapsed;
             window.grdBillService.Visibility = Visibility.Collapsed;
             window.grdSetting.Visibility = Visibility.Collapsed;
@@ -200,7 +200,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //báo cáo doanh thu
                 case 51:
-                    window.grdInvoice.Visibility = Visibility.Visible;
+                    window.grdBill.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Báo cáo doanh thu";
                     CloseExpander(window, 4);
                     window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);

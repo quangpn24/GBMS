@@ -24,6 +24,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private double totalPaidMoney = 0;
         private bool isPaidMoney = false;
         private bool isOver = false;
+        private long totalSpending = 0;
 
         public int TotalServices { get => totalServices; set { totalServices = value; OnPropertyChanged(); } }
         public double TotalMoney { get => totalMoney; set { totalMoney = value; OnPropertyChanged(); } }
@@ -51,6 +52,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PayBillServiceCommand = new RelayCommand<MainWindow>((p) => true, (p) => PayBillService(p));
             //CheckPaidMoneyCommand = new RelayCommand<SaleServiceDetailsControl>((p) => true, (p) => CheckPaidMoney(p));
             PrintBillServiceCommand = new RelayCommand<BillServiceTemplate>((p) => true, (p) => PrintBillService(p));
+        }
+        void UpdateMembership(int idCustomer, long totalSpending)
+        {
+            CustomerDAL.Instance.UpdateTotalSpending(idCustomer, totalSpending);
+            List<KeyValuePair<long, int>> membershipList = MembershipsTypeDAL.Instance.GetSortedList();
+            foreach (var mem in membershipList)
+            {
+                if (totalSpending >= mem.Key)
+                {
+                    CustomerDAL.Instance.UpdateMembership(idCustomer, mem.Value);
+                    break;
+                }
+            }
         }
         public void PrintBillService(BillServiceTemplate billServiceTemplate)
         {
@@ -206,6 +220,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             PrintBill(mainWindow);
                         }
+                        UpdateMembership(ConvertToID(mainWindow.txbIdCustomer.Text), totalSpending + Convert.ToInt64(TotalMoney));
+                        CustomerViewModel customerVM = (CustomerViewModel)mainWindow.grdCustomer.DataContext;
+                        customerVM.LoadCustomerToView(mainWindow, 0);
                         mainWindow.stkPickedService.Children.Clear();
                         TotalMoney = TotalPaidMoney = TotalServices = 0;
                     }
@@ -303,6 +320,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.txbNameCustomer.Text = pickCustomerWindow.txbName.Text;
             mainWindow.txbAddressCustomer.Text = pickCustomerWindow.txbAddress.Text;
             mainWindow.txbPhoneCustomer.Text = pickCustomerWindow.txbPhoneNumber.Text;
+            totalSpending = long.Parse(pickCustomerWindow.txbSpending.Text);
         }
     }
 }

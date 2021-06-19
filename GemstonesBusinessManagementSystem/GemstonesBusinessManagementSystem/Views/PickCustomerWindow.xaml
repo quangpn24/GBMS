@@ -133,6 +133,22 @@
                     Margin="0,0,0,15">
                     <TextBlock
                         Style="{StaticResource Text}"
+                        Text="Tổng chi tiêu"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"
+                        FontWeight="Bold"
+                        VerticalAlignment="Top"/>
+                    <TextBlock
+                        x:Name="txbSpending"
+                        Style="{StaticResource Text}"
+                        TextAlignment="Right" 
+                        Width="140" 
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
                         Text="Hạng thành viên"
                         HorizontalAlignment="Left" 
                         Foreground="{DynamicResource Black1}"

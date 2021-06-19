@@ -509,7 +509,7 @@
                 Margin="0"
                 Grid.Row="1"
                 DataContext="{StaticResource BusinessServiceVM}"
-                Visibility="Collapsed">
+                Visibility="Visible">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}"
@@ -2585,16 +2585,6 @@
                             Grid.Row="2" 
                             x:Name="stkReceipt"
                             Margin="10,0">
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
-                            <UserControls:ReceiptControl/>
                         </StackPanel>
                         <StackPanel
                             Grid.Row="3"
@@ -3247,105 +3237,95 @@
                 </Grid>
             </Grid>
             <Grid
-                x:Name="grdInvoice"
+                x:Name="grdBill"
                 Grid.Row="1"
                 DataContext="{StaticResource BillVM}"
                 Visibility="Collapsed">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="40"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0"/>
-                <Grid Grid.Row="1">
+                <Grid 
+                    Grid.Row="1"
+                    Margin="20,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="550"/>
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid
                         Grid.Column="0"
                         Style="{StaticResource DropShadow}" 
-                        Margin="0,0,20,10">
+                        Margin="0,0,0,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80"/>
+                            <RowDefinition Height="40"/>
                             <RowDefinition />
-                            <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
-
+                        <Rectangle 
+                            Fill="{DynamicResource White}" 
+                            RadiusY="4" 
+                            RadiusX="4"
+                            Grid.RowSpan="3"
+                            Panel.ZIndex="-1" />
                         <StackPanel
                             Orientation="Horizontal"
                             HorizontalAlignment="Right"
-                            Height="45"
-                            Margin="0,0,10,0">
-                            <Grid 
-                                Margin="0,0,10,0"
-                                Height="45"
-                                Style="{StaticResource DropShadow}"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <Rectangle 
-                                    Fill="{DynamicResource White}"
-                                    RadiusY="4"
-                                    RadiusX="4"
-                                    Panel.ZIndex="-1" />
-                                <DatePicker 
-                                    x:Name="dpStartDateBill"
-                                    SelectedDateFormat="Short"
-                                    materialDesign:TextFieldAssist.TextFieldCornerRadius="0"
-                                    materialDesign:TextFieldAssist.HasFilledTextField="False"
-                                    materialDesign:HintAssist.IsFloating="True"
-                                    materialDesign:HintAssist.Hint="Chọn ngày"
-                                    Width="140"
-                                    Style="{StaticResource MaterialDesignFilledDatePicker}"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
-                                    BorderBrush="Gray"
-                                    Height="48"
-                                    FontSize="16"
-                                    FontWeight="Medium"
-                                    Foreground="{DynamicResource Black1}" Margin="0">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectedDateChanged">
-                                            <i:InvokeCommandAction Command="{Binding LoadBillCommand}"
-                                                                   CommandParameter="{Binding ElementName=wdMain}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </DatePicker>
-                            </Grid>
-                            <Grid 
+                            Margin="0,0,20,0" 
+                            Height="40">
+                            <DatePicker 
+                                x:Name="dpStartDateBill"
+                                SelectedDateFormat="Short"
+                                materialDesign:TextFieldAssist.TextFieldCornerRadius="2"
+                                materialDesign:TextFieldAssist.HasFilledTextField="False"
+                                materialDesign:HintAssist.IsFloating="True"
+                                materialDesign:HintAssist.Hint="Từ ngày"
+                                Width="140"
+                                BorderBrush="{StaticResource Gray1}"
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Foreground="{StaticResource Gray1}" 
+                                HorizontalContentAlignment="Left"
+                                VerticalContentAlignment="Center"
+                                Padding="10,0" 
+                                VerticalAlignment="Center"
+                                Margin="0,0,20,0"
+                                FirstDayOfWeek="Monday" 
+                                Height="40"
+                                Style="{StaticResource MaterialDesignOutlinedDatePicker}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedDateChanged">
+                                        <i:InvokeCommandAction Command="{Binding LoadBillCommand}"
+                                                               CommandParameter="{Binding ElementName=wdMain}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DatePicker>
+                            <DatePicker 
+                                x:Name="dpEndDateBill"
+                                SelectedDateFormat="Short"
+                                materialDesign:TextFieldAssist.TextFieldCornerRadius="2"
+                                materialDesign:TextFieldAssist.HasFilledTextField="False"
+                                materialDesign:HintAssist.IsFloating="True"
+                                materialDesign:HintAssist.Hint="Đến ngày"
+                                Width="140"
+                                BorderBrush="{StaticResource Gray1}"
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Foreground="{StaticResource Gray1}" 
+                                HorizontalContentAlignment="Left"
+                                VerticalContentAlignment="Center"
+                                Padding="10,0" 
+                                VerticalAlignment="Center"
                                 Margin="0"
-                                Height="45"
-                                Style="{StaticResource DropShadow}"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <Rectangle 
-                                    Fill="{DynamicResource White}"
-                                    RadiusY="4"
-                                    RadiusX="4"
-                                    Panel.ZIndex="-1" HorizontalAlignment="Left" />
-                                <DatePicker
-                                    x:Name="dpEndDateBill"
-                                    SelectedDateFormat="Short"
-                                    materialDesign:TextFieldAssist.TextFieldCornerRadius="0"
-                                    materialDesign:TextFieldAssist.HasFilledTextField="False"
-                                    materialDesign:HintAssist.IsFloating="True"
-                                    materialDesign:HintAssist.Hint="Chọn ngày"
-                                    Width="140"
-                                    Style="{StaticResource MaterialDesignFilledDatePicker}"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Bottom"
-                                    BorderBrush="Gray"
-                                    Height="48"
-                                    FontSize="16"
-                                    FontWeight="Medium"
-                                    Foreground="{DynamicResource Black1}" Margin="-338,-4,0,1">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectedDateChanged">
-                                            <i:InvokeCommandAction Command="{Binding LoadBillCommand}"
-                                                                   CommandParameter="{Binding ElementName=wdMain}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </DatePicker>
-                            </Grid>
+                                FirstDayOfWeek="Monday" 
+                                Height="40"
+                                Style="{StaticResource MaterialDesignOutlinedDatePicker}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedDateChanged">
+                                        <i:InvokeCommandAction Command="{Binding LoadBillCommand}"
+                                                               CommandParameter="{Binding ElementName=wdMain}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DatePicker>
                         </StackPanel>
                         <Border
                             CornerRadius="4,4,0,0"
@@ -3359,13 +3339,14 @@
                             <Grid
                                 Margin="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="5" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
-                                    Text="Mã đơn" 
+                                    Text="Mã HĐ" 
                                     Grid.Column="0"
                                     Style="{StaticResource TextHeader}"
                                     HorizontalAlignment="Center"
@@ -3374,15 +3355,16 @@
                                     Text="Khách hàng" 
                                     Grid.Column="1"
                                     Style="{StaticResource TextHeader}"
-                                    HorizontalAlignment="Center"
+                                    HorizontalAlignment="Left"
                                     VerticalAlignment="Center" 
-                                    Margin="20,0,0,0"/>
+                                    Margin="10,0,0,0"/>
                                 <TextBlock
                                     Text="Người lập" 
                                     Grid.Column="2"
                                     Style="{StaticResource TextHeader}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" />
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center" 
+                                    Margin="10,0,0,0" />
                                 <TextBlock
                                     Text="Tổng tiền" 
                                     Grid.Column="3"
@@ -3392,244 +3374,196 @@
                                     Margin="0"/>
                             </Grid>
                         </Border>
-                        <Grid
-                            Grid.Row="1"
-                            Margin="20,40,20,0" >
+                        <Border
+                            Grid.Row="2"
+                            BorderBrush="{DynamicResource Light}"
+                            BorderThickness="2,0,2,2" 
+                            Margin="20,0,20,20">
                             <ScrollViewer 
+                                Style="{StaticResource FavsScrollViewer}"
                                 VerticalScrollBarVisibility="Auto" 
-                                HorizontalScrollBarVisibility="Disabled" >
+                                HorizontalScrollBarVisibility="Disabled">
                                 <StackPanel 
                                     x:Name="stkBill"
                                     VerticalAlignment="Top" />
                             </ScrollViewer>
-                        </Grid>
-                        <Rectangle 
-                                Fill="{DynamicResource White}" 
-                                RadiusY="4" 
-                                RadiusX="4"
-                                Grid.RowSpan="3"
-                                Panel.ZIndex="-1" />
+                        </Border>
                     </Grid>
                     <Grid
-                        Grid.Column="1"
+                        Grid.Column="1" 
                         Style="{StaticResource DropShadow}" 
-                        Margin="0,0,20,10">
+                        Margin="20,0,0,10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50" />
-                            <RowDefinition Height="270" />
-                            <RowDefinition />
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="180"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Grid 
-                        Grid.Row="0">
+                        <Rectangle 
+                            Fill="{DynamicResource White}" 
+                            RadiusY="4" 
+                            RadiusX="4"
+                            Grid.RowSpan="4"
+                            Panel.ZIndex="-1" />
+                        <StackPanel
+                            Orientation="Horizontal">
                             <materialDesign:PackIcon 
                                 Kind="FileDocumentBoxMultipleOutline"
-                                VerticalAlignment="Center"
                                 Foreground="{StaticResource Primary}"
-                                Width="30"
-                                Height="30"
-                                Margin="10,0,0,0" />
+                                Width="32"
+                                Height="32"
+                                VerticalAlignment="Center" 
+                                Margin="20,0,0,0" />
                             <TextBlock 
                                 HorizontalAlignment="Left"
-                                Margin="50,0,0,0"
+                                Margin="20,0,0,0"
                                 TextWrapping="Wrap"
                                 Foreground="{StaticResource Primary}"
                                 Text="Mã hóa đơn: "
                                 VerticalAlignment="Center"
-                                FontSize="24"
-                                FontWeight="SemiBold" />
+                                FontSize="22"
+                                FontWeight="Bold" />
                             <TextBlock 
                                 x:Name="txbIdBill"
-                                HorizontalAlignment="Left"
-                                Margin="260,0,0,0"
-                                TextWrapping="Wrap"
-                                Foreground="{StaticResource Primary}"
-                                VerticalAlignment="Center"
-                                FontSize="24"
-                                FontWeight="SemiBold" />
-                            <TextBlock 
-                                x:Name="txbCreateDateBill"
-                                HorizontalAlignment="Right"
-                                Margin="0,0,10,0"
-                                TextWrapping="Wrap"
-                                Foreground="{StaticResource Primary}"
-                                VerticalAlignment="Center"
-                                FontSize="24"
-                                FontWeight="SemiBold" />
-                            <Rectangle 
-                                Height="2"
-                                StrokeThickness="0"
-                                VerticalAlignment="Bottom"
-                                Fill="{DynamicResource Light}" />
-                        </Grid>
-                        <Grid
-                            Grid.Row="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="20" />
-                                <RowDefinition Height="50" />
-                            </Grid.RowDefinitions>
-                            <Grid   
-                            Grid.Row="0">
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Margin="10,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text="Thông tin hóa đơn "
-                                    VerticalAlignment="Center"
-                                    FontSize="20"
-                                    FontWeight="SemiBold" />
-                            </Grid>
-                            <Grid
-                            Grid.Row="1">
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Margin="10,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text="Khách hàng: "
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock 
-                                    x:Name="txbNameCustomerBill"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    Margin="120,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text=""
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Margin="350,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text="Số điện thoại: "
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock 
-                                    x:Name="txbPhoneCustomerBill"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Right"
-                                    Margin="0,0,10,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    FlowDirection="RightToLeft"
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Width="120" />
-                            </Grid>
-                            <Grid 
-                            Grid.Row="2">
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Margin="10,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text="Tổng tiền:"
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock
-                                    x:Name="txbTotalBill"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    Margin="120,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text=""
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Margin="350,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text="Tổng tiền trả trước: "
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock 
-                                    x:Name="txbTotalPaidBill"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Right"
-                                    Margin="0,0,10,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    FlowDirection="RightToLeft"
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Width="120" />
-                            </Grid>
-                            <Grid 
-                            Grid.Row="3">
-                                <Button 
-                                    x:Name="btnPrintBill"
-                                    materialDesign:ButtonAssist.CornerRadius="2"
-                                    Command="{Binding PrintBillServiceCommand}"
-                                    CommandParameter="{Binding ElementName=wdMain}"
-                                    Visibility="Hidden"
-                                    Content="In hóa đơn"
-                                    HorizontalAlignment="Left"
-                                    Margin="10,0,0,0"
-                                    Height="25"
-                                    Width="100"
-                                    Padding="0" />
-                                <TextBlock 
-                                    HorizontalAlignment="Left"
-                                    Margin="350,0,0,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    Text="Tổng tiền còn lại: "
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold" />
-                                <TextBlock 
-                                    x:Name="txbRestBill"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Right"
-                                    Margin="0,0,10,0"
-                                    TextWrapping="Wrap"
-                                    Foreground="{StaticResource Primary}"
-                                    FlowDirection="RightToLeft"
-                                    VerticalAlignment="Center"
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Width="120" />
-                            </Grid>
-                            <Rectangle 
-                                Grid.Row="4"
-                                Height="2"
-                                StrokeThickness="0"
-                                VerticalAlignment="Center"
-                                Fill="{DynamicResource Light}" />
-                            <Grid 
-                            Grid.Row="5">
-                                <TextBlock
+                                Text="{Binding Path=IdBill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Left"
                                 Margin="10,0,0,0"
                                 TextWrapping="Wrap"
                                 Foreground="{StaticResource Primary}"
-                                Text="Chi tiết hóa đơn "
                                 VerticalAlignment="Center"
+                                FontSize="22"
+                                FontWeight="Bold" />
+                        </StackPanel>
+                        <Button
+                            Content="In hoá đơn"
+                            Style="{StaticResource PrimaryButton}" 
+                            Command="{Binding PrintBillCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}"
+                            Height="35" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,20,0"/>
+                        <Grid
+                            Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Rectangle 
+                                Grid.ColumnSpan="2"
+                                Height="2"
+                                VerticalAlignment="Top"
+                                Fill="{DynamicResource Light}" Margin="20,0" />
+                            <TextBlock 
+                                HorizontalAlignment="Left"
+                                Margin="20,10,0,0"
+                                TextWrapping="Wrap"
+                                Foreground="{StaticResource Primary}"
+                                Text="Thông tin hóa đơn "
+                                VerticalAlignment="Top"
                                 FontSize="20"
-                                FontWeight="SemiBold" />
-                            </Grid>
+                                FontWeight="Bold" />
+                            <StackPanel
+                                VerticalAlignment="Top" 
+                                Margin="20,50,10,0">
+                                <Grid 
+                                    Margin="0">
+                                    <TextBlock 
+                                        HorizontalAlignment="Left"
+                                        Foreground="{StaticResource Primary}"
+                                        Text="Khách hàng:"
+                                        FontSize="18"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock 
+                                        x:Name="txbCustomerNameBill"
+                                        Text="{Binding Path=CustomerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        HorizontalAlignment="Right"
+                                        TextWrapping="Wrap"
+                                        Foreground="{StaticResource Primary}"
+                                        FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Width="160" 
+                                        FlowDirection="RightToLeft" />
+                                </Grid>
+                                <Grid 
+                                    Margin="0,15,0,0">
+                                    <TextBlock 
+                                        HorizontalAlignment="Left"
+                                        Foreground="{StaticResource Primary}"
+                                        Text="SĐT:"
+                                        FontSize="18"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock 
+                                        x:Name="txbCustomerPhoneBill"
+                                        Text="{Binding Path=CustomerPhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        HorizontalAlignment="Right"
+                                        TextWrapping="Wrap"
+                                        Foreground="{StaticResource Primary}"
+                                        FontSize="18"
+                                        FontWeight="SemiBold" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Column="1"
+                                VerticalAlignment="Top" 
+                                Margin="10,50,10,0">
+                                <Grid 
+                                    Margin="0">
+                                    <TextBlock 
+                                        HorizontalAlignment="Left"
+                                        Foreground="{StaticResource Primary}"
+                                        Text="Ngày lập:"
+                                        FontSize="18"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock 
+                                        x:Name="txbDateBill"
+                                        Text="{Binding Path=InvoiceDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        HorizontalAlignment="Right"
+                                        TextWrapping="Wrap"
+                                        Foreground="{StaticResource Primary}"
+                                        FontSize="18"
+                                        FontWeight="SemiBold" />
+                                </Grid>
+                                <Grid 
+                                    Margin="0,15,0,0">
+                                    <TextBlock 
+                                        HorizontalAlignment="Left"
+                                        Foreground="{StaticResource Primary}"
+                                        Text="Người lập:"
+                                        FontSize="18"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock 
+                                        x:Name="txbEmployeeNameBill"
+                                        Text="{Binding Path=EmployeeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        HorizontalAlignment="Right"
+                                        TextWrapping="Wrap"
+                                        Foreground="{StaticResource Primary}"
+                                        FontSize="18"
+                                        Width="180"
+                                        FontWeight="SemiBold" />
+                                </Grid>
+                                <Grid 
+                                    Margin="0,15,0,0">
+                                    <TextBlock 
+                                        HorizontalAlignment="Left"
+                                        Foreground="{StaticResource Primary}"
+                                        Text="Tổng tiền:"
+                                        FontSize="18"
+                                        FontWeight="SemiBold" />
+                                    <TextBlock 
+                                        x:Name="txbTotalBill"
+                                        Text="{Binding Path=Total, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        HorizontalAlignment="Right"
+                                        TextWrapping="Wrap"
+                                        Foreground="{StaticResource Primary}"
+                                        FontSize="18"
+                                        FontWeight="SemiBold" />
+                                </Grid>
+                            </StackPanel>
                         </Grid>
                         <Border
                             CornerRadius="4,4,0,0"
                             BorderThickness="1"
-                            Grid.Row="3" 
+                            Grid.Row="2" 
                             Margin="20,0"
                             Height="40" 
                             VerticalAlignment="Top" 
@@ -3637,70 +3571,50 @@
                             Background="{StaticResource Primary}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="60" />
                                     <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="1.5*" />
-                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="5"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Text="STT" 
-                                    Grid.Column="0"
-                                    Style="{StaticResource TextHeader}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"/>
+                                    Style="{StaticResource TextHeader}"/>
                                 <TextBlock
                                     Text="Tên sản phẩm" 
                                     Grid.Column="1"
                                     Style="{StaticResource TextHeader}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" 
-                                    Margin="20,0,0,0"/>
+                                    Margin="10,0,10,0" 
+                                    HorizontalAlignment="Left" />
                                 <TextBlock
                                     Text="Đơn giá" 
                                     Grid.Column="2"
-                                    Style="{StaticResource TextHeader}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" />
+                                    Style="{StaticResource TextHeader}"/>
                                 <TextBlock
                                     Text="Số lượng" 
                                     Grid.Column="3"
-                                    Style="{StaticResource TextHeader}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" 
-                                    Margin="0"/>
+                                    Style="{StaticResource TextHeader}"/>
                                 <TextBlock
                                     Text="Thành tiền" 
                                     Grid.Column="4"
-                                    Style="{StaticResource TextHeader}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" 
-                                    Margin="0"/>
+                                    Style="{StaticResource TextHeader}"/>
                             </Grid>
                         </Border>
-                        <Grid
+                        <Border
                             Grid.Row="3"
-                            Margin="20,40,20,0">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Loaded">
-                                    <i:InvokeCommandAction Command="{Binding ''}"
-                                                       CommandParameter="{Binding ElementName=wdMain}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
+                            Margin="20,0,20,20"
+                            BorderBrush="{DynamicResource Light}"
+                            BorderThickness="2,0,2,2" >
                             <ScrollViewer 
+                                Style="{StaticResource FavsScrollViewer}"
                                 VerticalScrollBarVisibility="Auto" 
                                 HorizontalScrollBarVisibility="Disabled" >
                                 <StackPanel 
                                     x:Name="stkBillInfo"
                                     VerticalAlignment="Top" />
                             </ScrollViewer>
-                        </Grid>
-                        <Rectangle 
-                                Fill="{DynamicResource White}" 
-                                RadiusY="4" 
-                                RadiusX="4"
-                                Grid.RowSpan="4"
-                                Panel.ZIndex="-1" />
+                        </Border>
                     </Grid>
                 </Grid>
             </Grid>
