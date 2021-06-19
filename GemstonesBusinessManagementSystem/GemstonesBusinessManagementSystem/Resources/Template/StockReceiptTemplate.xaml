@@ -92,6 +92,7 @@
                     FontWeight="Bold" 
                     Foreground="{DynamicResource Gray1}"/>
                 <TextBlock 
+                    x:Name="txbStoreName"
                     TextWrapping="Wrap" 
                     Text="PNJ" 
                     FontWeight="Bold" 
@@ -99,7 +100,7 @@
                     Foreground="{DynamicResource Black2}" 
                     FontSize="16"/>
                 <TextBlock 
-                    x:Name="txbAddress"
+                    x:Name="txbStoreAddress"
                     TextTrimming="WordEllipsis"
                     TextWrapping="Wrap" 
                     FontWeight="SemiBold"
@@ -108,7 +109,7 @@
                     Text="Song Hành, khu phố 6, Thủ Đức, Thành phố Hồ Chí Minh"
                     MaxHeight="48" />
                 <TextBlock 
-                    x:Name="txbPhoneNumber"
+                    x:Name="txbStorePhoneNumber"
                     TextWrapping="Wrap" 
                     Text="0123456789" 
                     FontWeight="SemiBold"

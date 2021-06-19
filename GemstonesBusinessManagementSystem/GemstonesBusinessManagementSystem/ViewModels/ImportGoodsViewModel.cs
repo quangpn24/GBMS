@@ -22,6 +22,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     class ImportGoodsViewModel : BaseViewModel
     {
+        private ReceiptControl checkedItem;
         private long totalPrice = 0;
         public long TotalPrice { get => totalPrice; set { totalPrice = value; OnPropertyChanged(); } }
         private long moneyToPay = 0;
@@ -260,9 +261,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 ReceiptControl control = new ReceiptControl();
                 control.txbId.Text = AddPrefix("PN", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
-                //control.txbImporter.Text = EmployeeDAL.Instance.GetNameByIdAccount(dt.Rows[i].ItemArray[1].ToString());
-                //Chua lam current account nen tam de id nha
-                control.txbImporter.Text = dt.Rows[i].ItemArray[1].ToString();
+                control.txbImporter.Text = CurrentAccount.Name;
                 control.txbDateReceipt.Text = DateTime.Parse(dt.Rows[i].ItemArray[2].ToString()).ToString("dd/MM/yyyy");
                 control.txbMoneyToPay.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbSupplier.Text = SupplierDAL.Instance.GetNameById(dt.Rows[i].ItemArray[5].ToString());
@@ -347,6 +346,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.txbMoneyToPayGoods.Text = control.txbMoneyToPay.Text;
             mainWindow.txbTotalMoneyGoods.Text = Total.ToString();
             mainWindow.txbDiscount.Text = (Total - long.Parse(control.txbMoneyToPay.Text)).ToString();
+
+            if (checkedItem != null) // dua lai mau xam
+            {
+                checkedItem.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                checkedItem.txbDateReceipt.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                checkedItem.txbImporter.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                checkedItem.txbSupplier.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                checkedItem.txbMoneyToPay.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+            }
+            // chuyen sang mau duoc chon
+            control.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbDateReceipt.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbImporter.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbSupplier.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbMoneyToPay.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            checkedItem = control;
         }
         public void LoadReceiptToView(MainWindow main)
         {
@@ -457,10 +472,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             receiptTemplate.txbIdStockReceipt.Text = wdImportGoods.txbIdReceipt.Text;
             receiptTemplate.txbDate.Text = wdImportGoods.txbDate.Text;
             receiptTemplate.txbSupplier.Text = wdImportGoods.cboSupplier.Text;
-            //receiptTemplate.txbImporter.Text = 1: current account
+            receiptTemplate.txbImporter.Text = CurrentAccount.Name;
             receiptTemplate.txbTotal.Text = wdImportGoods.txbTotalGoodsPrice.Text;
             receiptTemplate.txbDiscount.Text = wdImportGoods.btnDiscount.Content.ToString();
             receiptTemplate.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
+
+            List<Parameter> parameters = ParameterDAL.Instance.GetData();
+            receiptTemplate.txbStoreName.Text = parameters[1].Value;
+            receiptTemplate.txbStoreAddress.Text = parameters[2].Value;
+            receiptTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
 
             //Load
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
@@ -504,7 +524,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             StockReceipt stockReceipt = new StockReceipt(ConvertToID(wdImportGoods.txbIdReceipt.Text),
-                1, DateTime.Parse(wdImportGoods.txbDate.Text), long.Parse(wdImportGoods.txbMoneyToPay.Text),
+                CurrentAccount.IdAccount, DateTime.Parse(wdImportGoods.txbDate.Text), long.Parse(wdImportGoods.txbMoneyToPay.Text),
                 vndDiscount, selectedSupplier.Id);
             k = StockReceiptDAL.Instance.Insert(stockReceipt);
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
@@ -515,11 +535,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 StockReceiptInfo info = new StockReceiptInfo(stockReceipt.Id, ConvertToID(control.txbId.Text),
                     int.Parse(control.nsQuantity.Value.ToString()), long.Parse(control.txbImportPrice.Text));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
-                int quantity = GoodsDAL.Instance.GetQuantityById(ConvertToID(control.txbId.Text));
-                if (quantity != -1)
-                {
-                    k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), quantity + info.Quantity);
-                }
+                k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), info.Quantity);
             }
             if (k)
             {
@@ -540,6 +556,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.listReceiptControl.Add(receiptControl);
                 this.currentPage = 1;
                 LoadReceiptToView(mainWindow);
+
+                //Update tab sale
+                SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+                saleVM.Search(mainWindow);
+                saleVM.LoadDefault(mainWindow);
+                mainWindow.stkSelectedGoods.Children.Clear();
 
                 //Update tab supplier
                 SupplierViewModel supplierVM = (SupplierViewModel)mainWindow.grdSupplier.DataContext;

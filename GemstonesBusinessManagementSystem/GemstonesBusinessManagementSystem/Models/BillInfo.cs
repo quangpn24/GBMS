@@ -10,27 +10,24 @@ namespace GemstonesBusinessManagementSystem.Models
     {
         private int idBill;
         private int idGoods;
-        private double price;
         private int quantity;
-        private int status;
+        private long price;
 
         public int IdBill { get => idBill; set => idBill = value; }
         public int IdGoods { get => idGoods; set => idGoods = value; }
-        public double Price { get => price; set => price = value; }
         public int Quantity { get => quantity; set => quantity = value; }
-        public int Status { get => status; set => status = value; }
+        public long Price { get => price; set => price = value; }
 
         public BillInfo()
         {
-
         }
-        public BillInfo(int idBill, int idGoods, double price, int quantity, int status)
+
+        public BillInfo(int id, int idgoods, int qti, long pri)
         {
-            this.idBill = idBill;
-            this.idGoods = idGoods;
-            this.price = price;
-            this.quantity = quantity;
-            this.status = status;
+            this.idBill = id;
+            this.idGoods = idgoods;
+            this.quantity = qti;
+            this.price = pri;
         }
     }
 }

@@ -350,7 +350,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ClearView(window);
         }
 
-        void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
+        public void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
         {
             mainWindow.lbCountCustomer.Content = CustomerDAL.Instance.LoadData().Rows.Count.ToString();
             mainWindow.lbCountAllPrice.Content = CustomerDAL.Instance.CountPrice().ToString();

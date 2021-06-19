@@ -40,7 +40,10 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    res.Add(new Parameter(int.Parse(reader.GetString(0)), reader.GetString(1), reader.GetString(2)));
+                    string value = null;
+                    if (!reader.IsDBNull(2))
+                        value = reader.GetString(2);
+                    res.Add(new Parameter(int.Parse(reader.GetString(0)), reader.GetString(1), value));
                 }
                 return res;
             }

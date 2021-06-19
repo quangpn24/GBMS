@@ -53,7 +53,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 invoiceControl.txbSerial.Text = AddPrefix("HD", bills[i].IdBill);
                 invoiceControl.txbNameCustomer.Text = customer.CustomerName;
                 //invoiceControl.txbNameEmployee.Text = customer.CustomerName;
-                invoiceControl.txbPrice.Text = bills[i].TotalPrice.ToString();
+                invoiceControl.txbPrice.Text = bills[i].TotalMoney.ToString();
                 invoiceControl.IsHitTestVisible = true;
                 mainWindow.stkBill.Children.Add(invoiceControl);
             }
@@ -78,10 +78,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             checkedItem = invoiceControl;
             // hien thi thong tin
             main.txbIdBill.Text = invoiceControl.txbSerial.Text;
-            main.txbCreateDateBill.Text = bill.BillDate.ToShortDateString();
+            main.txbCreateDateBill.Text = bill.InvoiceDate.ToShortDateString();
             main.txbNameCustomerBill.Text = customer.CustomerName;
             main.txbPhoneCustomerBill.Text = customer.PhoneNumber;
-            main.txbTotalBill.Text = bill.TotalPrice.ToString();
+            main.txbTotalBill.Text = bill.TotalMoney.ToString();
             main.stkBillInfo.Children.Clear();
             //hien thi list billinfo
             for (int i = 0; i < billInfos.Count; i++)

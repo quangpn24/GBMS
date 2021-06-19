@@ -13,6 +13,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     class HomeViewModel : BaseViewModel
     {
+        public ICommand MouseLeaveCommand { get; set; }
+        public ICommand LogOutCommand { get; set; }
         public ICommand NavigateCommand { get; set; }
         public ICommand GetUidCommand { get; set; }
         public ICommand HiddenGridChangeInfoCommand { get; set; }
@@ -24,12 +26,35 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             NavigateCommand = new RelayCommand<MainWindow>((p) => true, (p) => Navigate(p));
             GetUidCommand = new RelayCommand<Button>((p) => true, (p) => Uid = p.Uid);
             HiddenGridChangeInfoCommand = new RelayCommand<MainWindow>(p => true, p => HiddenGridChangeInfo(p));
+            MouseLeaveCommand = new RelayCommand<Button>(p => true, p => MouseLeave(p));
+            LogOutCommand = new RelayCommand<MainWindow>(p => true, p => p.Close());
+            NavigateCommand = new RelayCommand<MainWindow>(p => true, p => Navigate(p));
+            GetUidCommand = new RelayCommand<Button>(p => true, p => { uid = p.Uid; Hover(p); });
+        }
+        void MouseLeave(Button btn)
+        {
+            if (btn.IsFocused)
+            {
+                return;
+            }
+            string fore = "#666666";
+            string back = "#FFFFFF";
+            btn.Foreground = (Brush)new BrushConverter().ConvertFrom(fore);
+            btn.Background = (Brush)new BrushConverter().ConvertFrom(back);
+        }
+        void Hover(Button btn)
+        {
+            string foreFocus = "#FFF5D577";
+            string backFocus = "#FF00329E";
+            btn.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
+            btn.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
         }
         public void Navigate(MainWindow window)
         {
             int index = int.Parse(Uid);
 
             window.grdHome.Visibility = Visibility.Collapsed;
+            window.grdSale.Visibility = Visibility.Collapsed;
             window.grdStock.Visibility = Visibility.Collapsed;
             window.grdEmployee.Visibility = Visibility.Collapsed;
             window.grdGoods.Visibility = Visibility.Collapsed;
@@ -88,6 +113,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //bán hàng
                 case 10:
                     window.txbTabName.Text = "Bán hàng";
+                    window.grdSale.Visibility = Visibility.Visible;
                     CloseExpander(window, 0);
                     window.btnStore.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnStore.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -188,10 +214,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //cài đặt
-                case 60:
-                    window.grdSetting.Visibility = Visibility.Visible;
+                case 6:
                     window.txbTabName.Text = "Cài đặt";
-                    CloseExpander(window, 4);
+                    window.grdSetting.Visibility = Visibility.Visible;
                     window.btnSetting.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnSetting.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;

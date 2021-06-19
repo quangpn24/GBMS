@@ -256,7 +256,6 @@
                                 <TextBox 
                                     x:Name="txtProfitPercentage"
                                     Cursor="Arrow"
-                                    MaxLength="2"
                                     HorizontalAlignment="Right"  
                                     materialDesign:HintAssist.Hint="Tính theo đơn vị %"
                                     Width="180" 

@@ -30,7 +30,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 OpenConnection();
 
-                string queryStr = "Select * from Employee";
+                string queryStr = "Select * from Employee where idEmployee != 0";
                 MySqlCommand cmd = new MySqlCommand(queryStr, conn);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 DataTable dataTable = new DataTable();
@@ -52,7 +52,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 OpenConnection();
 
-                string queryStr = "select * from Employee where isDeleted = false";
+                string queryStr = "select * from Employee where isDeleted = false and idEmployee != 0";
                 MySqlCommand cmd = new MySqlCommand(queryStr, conn);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 DataTable dt = new DataTable();
@@ -96,7 +96,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                     query = "update Employee set name=@name,gender=@gender,phonenumber=@phonenumber,address=@address," +
                         "dateofBirth=@dateofBirth,idPosition=@idPosition,startingdate=@startingdate,imageFile=@imageFile," +
                         "isDeleted=@isDeleted where idEmployee=" + employee.IdEmployee;
-
                 }
                 else
                 {
@@ -128,6 +127,10 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MessageBox.Show(e.Message.ToString());
                 return;
             }
+            finally
+            {
+                CloseConnection();
+            }
         }
         public bool Delete(string idEmployee)
         {
@@ -157,21 +160,27 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
+                MySqlDataReader reader = command.ExecuteReader();
+                reader.Read();
                 int idAccount = -1;
-                if (dt.Rows[0].ItemArray[8].ToString() != "")
+                int idPosition = 0;
+                byte[] imgArr = null;
+                if (!reader.IsDBNull(8))
                 {
-                    idAccount = int.Parse(dt.Rows[0].ItemArray[8].ToString());
+                    idAccount = int.Parse(reader.GetString(8));
                 }
-                Employee employee = new Employee(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
-                     dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(),
-                     dt.Rows[0].ItemArray[3].ToString(), dt.Rows[0].ItemArray[4].ToString(),
-                     DateTime.Parse(dt.Rows[0].ItemArray[5].ToString()),
-                     int.Parse(dt.Rows[0].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[0].ItemArray[7].ToString()),
-                     idAccount, Convert.FromBase64String(dt.Rows[0].ItemArray[9].ToString()));
+                if (!reader.IsDBNull(6))
+                {
+                    idPosition = int.Parse(reader.GetString(6));
+                }
+                if (!reader.IsDBNull(9))
+                {
+                    imgArr = Convert.FromBase64String(reader.GetString(9));
+                }
+                Employee employee = new Employee(int.Parse(reader.GetString(0)),reader.GetString(1),
+                    reader.GetString(2),reader.GetString(3), reader.GetString(4),
+                     DateTime.Parse(reader.GetString(5)), idPosition, DateTime.Parse(reader.GetString(7)),
+                     idAccount, imgArr);
                 return employee;
             }
             catch
@@ -210,7 +219,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"select * from Employee where name like  ""%" + name + "%\" and isDeleted = 0";
+                string queryString = @"select * from Employee where name like  ""%" + name + "%\" and isDeleted = 0 and idEmployee != 0";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
@@ -220,12 +229,17 @@ namespace GemstonesBusinessManagementSystem.DAL
                 adapter.Fill(dt);
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
+                    int idAccount = -1;
+                    if (dt.Rows[i].ItemArray[8].ToString() != "")
+                    {
+                        idAccount = int.Parse(dt.Rows[i].ItemArray[8].ToString());
+                    }
                     Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                         dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
                         dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
                         DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
                         int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
-                        int.Parse(dt.Rows[i].ItemArray[8].ToString()), Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
+                        idAccount, Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
                     employeeList.Add(employee);
                 }
                 return employeeList;
@@ -285,6 +299,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     return true;
                 }
+                return command.ExecuteNonQuery() == 1;
             }
             catch
             {
@@ -328,20 +343,70 @@ namespace GemstonesBusinessManagementSystem.DAL
             return employees;
         }
 
-        public string GetNameByIdAccount(string idAccount)
+        public Employee GetByIdAccount(string idAccount)
         {
             try
             {
                 OpenConnection();
-                string query = "select name from Employee where idAccount = " + idAccount;
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                MySqlDataReader reader = cmd.ExecuteReader();
+                string query = "select * from Employee where idAccount = " + idAccount;
+
+                MySqlCommand command = new MySqlCommand(query, conn);
+                command.ExecuteNonQuery();
+                MySqlDataReader reader = command.ExecuteReader();
                 reader.Read();
-                return reader.GetString(0);
+                int idPosition = 0;
+                byte[] imgArr = null;
+                if (!reader.IsDBNull(6))
+                {
+                    idPosition = int.Parse(reader.GetString(6));
+                }
+                if (!reader.IsDBNull(9))
+                {
+                    imgArr = Convert.FromBase64String(reader.GetString(9));
+                }
+                Employee employee = new Employee(int.Parse(reader.GetString(0)), reader.GetString(1),
+                    reader.GetString(2), reader.GetString(3), reader.GetString(4),
+                     DateTime.Parse(reader.GetString(5)), idPosition, DateTime.Parse(reader.GetString(7)),
+                     int.Parse(idAccount), imgArr);
+                return employee;
             }
             catch
             {
                 return null;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+        public void UpdateUserInfo(Employee employee)
+        {
+            try
+            {
+                OpenConnection();
+                string query = "update Employee set name=@name,gender=@gender,phonenumber=@phonenumber,address=@address," +
+                        "dateofBirth=@dateofBirth, imageFile=@imageFile where idEmployee=" + employee.IdEmployee;
+                
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@name", employee.Name);
+                cmd.Parameters.AddWithValue("@gender", employee.Gender);
+                cmd.Parameters.AddWithValue("@phoneNumber", employee.PhoneNumber);
+                cmd.Parameters.AddWithValue("@address", employee.Address);
+                cmd.Parameters.AddWithValue("@dateofBirth", employee.DateOfBirth);
+                cmd.Parameters.AddWithValue("@imageFile", Convert.ToBase64String(employee.ImageFile));
+
+                int row = cmd.ExecuteNonQuery();
+                if (row != 1)
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message.ToString());
+                return;
             }
             finally
             {

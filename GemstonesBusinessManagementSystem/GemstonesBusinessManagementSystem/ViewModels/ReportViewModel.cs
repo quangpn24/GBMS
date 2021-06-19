@@ -133,6 +133,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 else
                 {
                     main.icoDecreasing.Visibility = System.Windows.Visibility.Visible;
+                    percent = Math.Abs(percent);
                 }
             }
             IncreasingPercent = percent.ToString() + "%";

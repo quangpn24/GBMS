@@ -9,9 +9,16 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d" 
     x:Name="ucReceipt"
+    Style="{StaticResource MyUCHoverStyle}"
     DataContext="{StaticResource ImportGoodsVM}"
     Height="40" 
     Margin="0,0,0,2">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding SelectReceiptCommand}"
+                                   CommandParameter="{Binding ElementName=ucReceipt}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid
         x:Name="grdMain">
         <Grid.ColumnDefinitions>
@@ -40,33 +47,33 @@
             x:Name="txbId"
             Text="PN0001"
             FontSize="14"
+            FontWeight="SemiBold"
             Grid.Column="0"
-            Style="{StaticResource Text}"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbDateReceipt"
             Text="26/05/2021" 
             FontSize="14"
+            FontWeight="SemiBold"
             Grid.Column="1"
-            Style="{StaticResource Text}"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"/>
         <TextBlock 
             x:Name="txbImporter"
             Text="Nguyen van a" 
             FontSize="14"
+            FontWeight="SemiBold"
             Grid.Column="2"
-            Style="{StaticResource Text}"
             HorizontalAlignment="Left"
             VerticalAlignment="Center" 
             Margin="10,0,0,0"/>
         <TextBlock 
             x:Name="txbSupplier"
+            FontWeight="SemiBold"
             Text="Công ty vina" 
             FontSize="14"
             Grid.Column="3"
-            Style="{StaticResource Text}"
             HorizontalAlignment="Left"
             Margin="20, 0, 0, 0"
             VerticalAlignment="Center"/>
@@ -74,19 +81,10 @@
             x:Name="txbMoneyToPay"
             Text="70000000" 
             FontSize="14"
+            FontWeight="SemiBold"
             Grid.Column="4"
-            Style="{StaticResource Text}"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"/>
-        <Button 
-            Grid.ColumnSpan="6"
-            Command="{Binding SelectReceiptCommand}"
-            CommandParameter="{Binding ElementName=ucReceipt}"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            FocusVisualStyle="{x:Null}"
-            Style="{StaticResource MaterialDesignFlatButton}" 
-            Height="Auto"/>
         <Button 
             Grid.Column="5"
             x:Name="btnDeleteGoods"

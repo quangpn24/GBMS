@@ -306,7 +306,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "Update Goods set quantity = @quantity where idGoods = @id";
+                string query = "Update Goods set quantity = quantity + @quantity where idGoods = @id";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.Parameters.AddWithValue("@quantity", quantity);
@@ -315,27 +315,6 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch
             {
                 return false;
-            }
-            finally
-            {
-                CloseConnection();
-            }
-        }
-        public int GetQuantityById(int id)
-        {
-            try
-            {
-                OpenConnection();
-                string query = "select quantity from Goods where idGoods = @id";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-                return int.Parse(reader.GetString(0));
-            }
-            catch
-            {
-                return 0;
             }
             finally
             {

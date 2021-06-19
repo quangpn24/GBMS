@@ -4,8 +4,9 @@
     <viewmodels:GoodsViewModel x:Key="GoodsVM"/>
     <viewmodels:LoginViewModel x:Key="LoginVM"/>
     <viewmodels:SignUpViewModel x:Key="SignUpVM"/>
-    <viewmodels:EmployeeViewModel x:Key="EmployeeVM"/>
+    <viewmodels:EmployeeViewModel x:Key="EmployeeVM" />
     <viewmodels:HomeViewModel x:Key="HomeVM"/>
+    <viewmodels:SaleViewModel x:Key="SaleVM"/>
     <viewmodels:ServiceViewModel x:Key="ServiceVM" />
     <viewmodels:CustomerViewModel x:Key="CustomerVM"/>
     <viewmodels:BillViewModel x:Key="BillVM"/>
@@ -17,4 +18,5 @@
     <viewmodels:BillServiceViewModel x:Key="BillServiceVM" />
     <viewmodels:ReportViewModel x:Key="ReportVM" />
     <viewmodels:SettingViewModel x:Key="SettingVM"/>
+    <viewmodels:RoleViewModel x:Key="RoleVM" />
 </ResourceDictionary>

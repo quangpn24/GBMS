@@ -50,7 +50,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadStockCommand = new RelayCommand<MainWindow>((p) => true, (p) => LoadStockList(p, 0));
             FilterCommand = new RelayCommand<MainWindow>((p) => true, (p) => Filter(p));
             SetItsMonthCommand = new RelayCommand<MainWindow>((p) => true, (p) => SetItemSourceMonth(p));
-            SetItsYearCommand = new RelayCommand<MainWindow>((p) => true, (p) => { SetItemSourceYear(p); SetDefaultComboBox(p); });
+            SetItsYearCommand = new RelayCommand<MainWindow>((p) => true, (p) => SetItemSourceYear(p));
             PreviousPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToPreviousPage(p, --currentPage));
             NextPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToNextPage(p, ++currentPage));
         }
@@ -108,6 +108,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             itemSourceMonth.Clear();
 
+            if (selectedYear == null)
+            {
+                return;
+            }
             int currentYear = DateTime.Now.Year;
             int lastMonth = DateTime.Now.Month;
             if (int.Parse(selectedYear.Split(' ')[1]) != currentYear)
@@ -131,10 +135,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             itemSourceYear.Add(String.Format("Năm {0}", currentYear));
 
             window.cboYearStock.SelectedIndex = 2;
-        }
-        void SetDefaultComboBox(MainWindow window)
-        {
-
+            selectedYear = window.cboYearStock.SelectedValue.ToString();
         }
         void LoadStackPanel(int start, int end, List<Goods> list, ref StackPanel stackPanel)
         {

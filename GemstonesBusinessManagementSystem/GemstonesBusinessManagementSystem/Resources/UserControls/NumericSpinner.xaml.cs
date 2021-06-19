@@ -77,7 +77,6 @@ namespace GemstonesBusinessManagementSystem.Resources.UserControls
                 SetValue(ValueProperty, value);
                 ValueChanged(this, new EventArgs());
                 tb_main.Text = Value.ToString();
-
             }
         }
 

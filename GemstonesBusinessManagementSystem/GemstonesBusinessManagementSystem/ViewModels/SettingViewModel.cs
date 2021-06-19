@@ -26,6 +26,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //     4: Store Phone Number
         //     5: Store Email
         private List<Parameter> parameters = ParameterDAL.Instance.GetData();
+        private MainWindow main;
 
         private string prepaymentPercent;
         private string storeName;
@@ -67,7 +68,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         // Change user info & change password
         public ICommand SelectImageCommand { get; set; }
         public ICommand UpdateUserInfoCommand { get; set; }
-        public ICommand ExitCommand{ get; set; }
+        public ICommand ExitCommand { get; set; }
         public ICommand OpenPersonalInfoWindowCommand { get; set; }
         public ICommand ChangePasswordCommand { get; set; }
         public ICommand OpenChangePasswordWindowCommand { get; set; }
@@ -81,10 +82,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             Update_StoreInfoCommand = new RelayCommand<MainWindow>(p => true, p => UpdateStoreInfo(p));
             Undo_StoreInfoCommand = new RelayCommand<MainWindow>(p => true, p => UndoStoreInfo(p));
 
-            ClickAvatarCommand = new RelayCommand<MainWindow>(p => true, p => {
+            ClickAvatarCommand = new RelayCommand<MainWindow>(p => true, p =>
+            {
                 p.grdChangeInfo.Visibility = Visibility.Visible;
                 p.btnPersonalInfo.Focus();
-                });
+            });
             OpenPersonalInfoWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenPersonalInfoWindow(p));
             OpenChangePasswordWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenChangePasswordWindow(p));
 
@@ -97,6 +99,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void LoadDefault(MainWindow main)
         {
+            this.main = main;
             //Thông tin cửa hàng
             for (int i = 0; i < parameters.Count; i++)
             {
@@ -127,6 +130,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         main.txtEmail.SelectionStart = 0;
                         main.txtEmail.SelectionLength = Email.Length;
                         break;
+                    case 6:
+                        if (!string.IsNullOrEmpty(parameters[i].Value))
+                        {
+                            ImageBrush imageBrush = new ImageBrush();
+                            imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(Convert.FromBase64String(parameters[i].Value));
+                            main.grdSelectImage.Background = imageBrush;
+                            if (main.grdSelectImage.Children.Count > 1)
+                            {
+                                main.grdSelectImage.Children.Remove(main.grdSelectImage.Children[0]);
+                                main.grdSelectImage.Children.Remove(main.grdSelectImage.Children[1]);
+                            }
+                            //avatar
+                            main.imgStore.Source = imageBrush.ImageSource;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -151,13 +169,25 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             bool k2 = ParameterDAL.Instance.UpdateStoreInfo(3, StoreAddress);
             bool k3 = ParameterDAL.Instance.UpdateStoreInfo(4, PhoneNumber);
             bool k4 = ParameterDAL.Instance.UpdateStoreInfo(5, Email);
-            if (k1 && k2 && k3 && k4)
+            byte[] imgByteArr;
+            ImageBrush imageBrush = (ImageBrush)main.grdSelectImage.Background;
+            if (imageBrush == null)
+            {
+                MessageBox.Show("Vui lòng chọn ảnh!");
+                return;
+            }
+            imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
+
+            bool k5 = ParameterDAL.Instance.UpdateStoreInfo(6, Convert.ToBase64String(imgByteArr));
+            if (k1 && k2 && k3 && k4 && k5)
             {
                 parameters[1].Value = StoreName;
                 parameters[2].Value = StoreAddress;
                 parameters[3].Value = PhoneNumber;
                 parameters[4].Value = Email;
+                parameters[5].Value = Convert.ToBase64String(imgByteArr);
                 MessageBox.Show("Thành công!");
+                main.imgStore.Source = imageBrush.ImageSource;
             }
             else
             {
@@ -175,6 +205,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             StoreAddress = parameters[2].Value;
             PhoneNumber = parameters[3].Value;
             Email = parameters[4].Value;
+            if(!string.IsNullOrEmpty(parameters[5].Value))
+            {
+                ImageBrush imageBrush = new ImageBrush();
+                imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(Convert.FromBase64String(parameters[5].Value));
+                main.grdSelectImage.Background = imageBrush;
+                if (main.grdSelectImage.Children.Count > 1)
+                {
+                    main.grdSelectImage.Children.Remove(main.grdSelectImage.Children[0]);
+                    main.grdSelectImage.Children.Remove(main.grdSelectImage.Children[1]);
+                }
+            }    
         }
 
         //window user info
@@ -238,23 +279,35 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 gender = "Nam";
             else
                 gender = "Nữ";
-            Employee employee = EmployeeDAL.Instance.GetById("1");
+            Employee employee = EmployeeDAL.Instance.GetById(CurrentAccount.IdEmployee.ToString());
             employee.Name = Name;
             employee.DateOfBirth = DateTime.Parse(BirthDate);
             employee.Address = UserAddress;
             employee.PhoneNumber = UserPhoneNumber;
             employee.Gender = gender;
             employee.ImageFile = imgByteArr;
-            EmployeeDAL.Instance.InsertOrUpdate(employee, true);
+            EmployeeDAL.Instance.UpdateUserInfo(employee);
             MessageBox.Show("Thành công");
+            CurrentAccount.Name = Name;
+            CurrentAccount.ImageFile = imgByteArr;
+            main.txbUsername.Text = CurrentAccount.Name;
+            //update display
+            if (imageBrush.ImageSource != null)
+            {
+                main.imgAccount.Fill = imageBrush;
+            }
+            EmployeeViewModel employeeVM = (EmployeeViewModel)main.grdEmployee.DataContext;
+            employeeVM.Search(main);
+            ImportGoodsViewModel importVM = (ImportGoodsViewModel)main.grdImport.DataContext;
+            importVM.Init(main);
+
             window.Close();
         }
 
         void OpenPersonalInfoWindow(MainWindow main)
         {
             PersonalInfoWindow window = new PersonalInfoWindow();
-            //current account
-            Employee employee = EmployeeDAL.Instance.GetById("1");
+            Employee employee = EmployeeDAL.Instance.GetById(CurrentAccount.IdEmployee.ToString());
 
             ImageBrush imageBrush = new ImageBrush();
             imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
@@ -306,8 +359,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.pwbConfirmPassword.Focus();
                 return;
             }
-            //current account
-            if (MD5Hash(window.pwbPassword.Password) != "current account")
+            if (MD5Hash(window.pwbPassword.Password) != AccountDAL.Instance.GetPasswordById(CurrentAccount.IdAccount.ToString()))
             {
                 MessageBox.Show("Mật khẩu không đúng");
                 window.pwbPassword.Focus();

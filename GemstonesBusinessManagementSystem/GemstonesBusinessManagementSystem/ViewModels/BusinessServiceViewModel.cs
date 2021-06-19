@@ -14,8 +14,6 @@ using System.Windows.Input;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
-
-
     class BusinessServiceViewModel : BaseViewModel
     {
         private MainWindow mainWindow;
@@ -35,7 +33,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand DeleteBillServiceInfoDetailsCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand PayBillServiceCommand { get; set; }
-        //public ICommand CheckPaidMoneyCommand { get; set; }
+        public ICommand CheckPaidMoneyCommand { get; set; }
         public ICommand PickCustomerCommand { get; set; }
         //billservicetemplate
         public ICommand PrintBillServiceCommand { get; set; }
@@ -184,7 +182,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (isPaidMoney)
             {
                 int idBillService = BillServiceDAL.Instance.GetMaxId() + 1;
-                BillService billService = new BillService(idBillService, 1, DateTime.Now, totalMoney, totalPaidMoney, 1, 0);
+                BillService billService = new BillService(idBillService, CurrentAccount.IdAccount, DateTime.Now, totalMoney, totalPaidMoney, 1, 0);
                 if (TotalMoney != 0) // Kiểm tra xem có hàng hóa nào được chọn không
                 {
                     if (BillServiceDAL.Instance.Add(billService)) // Tạo hóa đơn mới
@@ -269,6 +267,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billServiceTemplate.txbName.Text = mainWindow.txbNameCustomer.Text;
             billServiceTemplate.txbAddress.Text = mainWindow.txbAddressCustomer.Text;
             billServiceTemplate.txbPhoneNumber.Text = mainWindow.txbPhoneCustomer.Text;
+            billServiceTemplate.txbEmployeeName.Text = CurrentAccount.Name;
             billServiceTemplate.txbId.Text = mainWindow.txbIdBillService.Text;
             billServiceTemplate.txbDate.Text = DateTime.Now.ToShortDateString();
             billServiceTemplate.txbTotal.Text = mainWindow.txbTotalBillService.Text;
