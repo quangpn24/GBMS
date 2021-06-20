@@ -27,7 +27,6 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="40"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
             Grid.ColumnSpan="9"
@@ -85,27 +84,5 @@
             Grid.Column="4"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"/>
-        <Button 
-            Grid.Column="5"
-            x:Name="btnDeleteGoods"
-            ToolTip="Xóa phiếu nhập" 
-            Height="30"
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            FontSize="16" 
-            VerticalAlignment="Center" 
-            FocusVisualStyle="{x:Null}"
-            Width="40"
-            HorizontalAlignment="Right" 
-            FontWeight="SemiBold" 
-            Command="{Binding DeleteReceiptCommand}"
-            CommandParameter="{Binding ElementName=ucReceipt}"
-            Padding="0" >
-            <materialDesign:PackIcon 
-                Kind="DeleteOutline" 
-                Height="24"
-                Width="24"
-                Foreground="{StaticResource Error}"/>
-        </Button>
     </Grid>
 </UserControl>

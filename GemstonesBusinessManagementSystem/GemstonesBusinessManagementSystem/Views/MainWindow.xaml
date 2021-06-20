@@ -2793,7 +2793,7 @@
             <Grid 
                 x:Name="grdImport"
                 Grid.Row="1"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource ImportGoodsVM}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
@@ -2964,7 +2964,6 @@
                                 <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock
                                 Grid.Column="0" 
@@ -3097,7 +3096,7 @@
                                 VerticalAlignment="Center" 
                                 BorderBrush="{DynamicResource Success}" 
                                 Padding="0" 
-                                Margin="130,0,0,0"/>
+                                Margin="100,0,0,0"/>
                         </StackPanel>
                         <Grid 
                             Margin="10 0"
@@ -5540,7 +5539,7 @@
                 x:Name="grdSetting" 
                 Margin="0"
                 Grid.Row="1"   
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource RoleVM}">
                 <TabControl 
                     x:Name="tcSetting"
@@ -5731,60 +5730,70 @@
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <Grid
-                            Grid.Column="0"
-                            Background="{StaticResource White}"
-                            Style="{StaticResource DropShadow}"
-                            Margin="10,10,20,20">
+                                Grid.Column="0"
+                                Background="{StaticResource White}"
+                                Style="{StaticResource DropShadow}"
+                                Margin="10,10,20,20">
                                 <TextBlock
-                                FontSize="24"
-                                FontWeight="SemiBold"
-                                Text="Dịch vụ" 
-                                Margin="20,10,0,0" 
-                                HorizontalAlignment="Left" 
-                                VerticalAlignment="Top"/>
-                                <Rectangle
-                                Fill="{StaticResource Light}"
-                                Height="3" 
-                                VerticalAlignment="Top" 
-                                Margin="0,50,0,0"/>
-                                <Grid 
-                                Margin="20,70,20,0"
-                                VerticalAlignment="Top"
-                                Height="40">
-                                    <Label 
-                                    Content="Tiền cọc tối thiểu(%)"
-                                    HorizontalAlignment="Left"
-                                    FontSize="18"
+                                    FontSize="24"
                                     FontWeight="SemiBold"
-                                    Foreground="{StaticResource Gray1}"
-                                    Height="32"
-                                    Margin="0"
-                                    VerticalAlignment="Center" />
+                                    Text="Dịch vụ" 
+                                    Margin="20,10,0,0" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top"/>
+                                <Rectangle
+                                    Fill="{StaticResource Light}"
+                                    Height="3" 
+                                    VerticalAlignment="Top" 
+                                    Margin="0,50,0,0"/>
+                                <Grid 
+                                    Margin="20,70,20,0"
+                                    VerticalAlignment="Top"
+                                    Height="40">
+                                    <Label 
+                                        Content="Tiền cọc tối thiểu(%)"
+                                        HorizontalAlignment="Left"
+                                        FontSize="18"
+                                        FontWeight="SemiBold"
+                                        Foreground="{StaticResource Gray1}"
+                                        Height="32"
+                                        Margin="0"
+                                        VerticalAlignment="Center" />
                                     <Rectangle 
-                                    HorizontalAlignment="Right"
-                                    Height="40"
-                                    Width="120"
-                                    RadiusY="6"
-                                    RadiusX="6"
-                                    Stroke="{StaticResource Light}"
-                                    Margin="0" />
+                                        HorizontalAlignment="Right"
+                                        Height="40"
+                                        Width="120"
+                                        RadiusY="6"
+                                        RadiusX="6"
+                                        Stroke="{StaticResource Light}"
+                                        Margin="0" />
                                     <TextBox 
-                                    x:Name="txtPrepayment"
-                                    Cursor="IBeam"
-                                    Text="{Binding PrepaymentPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    materialDesign:HintAssist.Hint="Tính theo %"
-                                    HorizontalAlignment="Right"
-                                    Height="40"
-                                    Width="100"
-                                    FontSize="14"
-                                    MaxLength="2"
-                                    BorderThickness="0"
-                                    MaxLines="1"
-                                    Foreground="{StaticResource Black1}"
-                                    Margin="0,0,10,0"
-                                    HorizontalContentAlignment="Left"
-                                    VerticalContentAlignment="Center"
-                                    FontWeight="SemiBold"/>
+                                        x:Name="txtPrepayment"
+                                        Cursor="IBeam"
+                                        Text="{Binding PrepaymentPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        materialDesign:HintAssist.Hint="Tính theo %"
+                                        HorizontalAlignment="Right"
+                                        Height="40"
+                                        Width="100"
+                                        FontSize="14"
+                                        BorderThickness="0"
+                                        MaxLines="1"
+                                        Foreground="{StaticResource Black1}"
+                                        Margin="0,0,10,0"
+                                        HorizontalContentAlignment="Left"
+                                        VerticalContentAlignment="Center"
+                                        FontWeight="SemiBold">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewTextInput" >
+                                                <ei:CallMethodAction TargetObject="{Binding }" 
+                                                 MethodName="NumberValidationTextBox" />
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="TextChanged">
+                                                <i:InvokeCommandAction Command="{Binding CheckRangeCommand}"
+                                                   CommandParameter="{Binding ElementName=txtPrepayment}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
                                 </Grid>
                                 <TextBlock
                                 FontSize="18"

@@ -88,7 +88,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SelectFilterCommand { get; set; }
         public ICommand SelectStartDateCommand { get; set; }
         public ICommand SelectEndDateCommand { get; set; }
-        public ICommand DeleteReceiptCommand { get; set; }
 
 
         //other
@@ -129,7 +128,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SelectFilterCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
             SelectStartDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
             SelectEndDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
-            DeleteReceiptCommand = new RelayCommand<ReceiptControl>(p => true, p => DeleteReceipt(p));
         }
 
         //Grid discount
@@ -169,9 +167,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 wdImportGoods.txtDiscount.Text = "0";
             }
+            if(isVND)
+            {
+                SeparateThousands(wdImportGoods.txtDiscount);
+            }    
             if (isVND & isTexboxVND)
             {
-                VndDiscount = long.Parse(wdImportGoods.txtDiscount.Text);
+                VndDiscount = ConvertToNumber(wdImportGoods.txtDiscount.Text);
                 if (VndDiscount > long.Parse(wdImportGoods.txbTotalGoodsPrice.Text))
                 {
                     wdImportGoods.txtDiscount.Text = wdImportGoods.txbTotalGoodsPrice.Text;
@@ -205,27 +207,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.txtDiscount.SelectionLength = window.txtDiscount.Text.Length;
         }
         //
-        void DeleteReceipt(ReceiptControl control)
-        {
-            if (StockReceiptInfoDAL.Instance.DeleteByIdReceipt(ConvertToIDString(control.txbId.Text))
-                && StockReceiptDAL.Instance.Delete(ConvertToIDString(control.txbId.Text)))
-            {
-                var result = MessageBox.Show("Bạn xác nhận muốn xóa phiếu nhập này?", "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Question);
-                if (result == MessageBoxResult.OK)
-                {
-                    mainWindow.stkReceipt.Children.Remove(control);
-                    listReceiptControl.Remove(control);
-                    listReceiptToView.Remove(control);
-                    ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
-                    reportVM.Init(mainWindow);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Lỗi không thể xóa");
-                return;
-            }
-        }
         void HandleFilter(MainWindow main)
         {
             //Gan lai list ban dau
@@ -239,6 +220,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 listReceiptToView = listReceiptToView.FindAll(x => x.txbSupplier.Text == selectedSupplier.Name);
                 currentPage = 1;
             }
+            if(main.dpkStartDate.SelectedDate > main.dpkEndDate.SelectedDate)
+            {
+                MessageBox.Show("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+                main.dpkStartDate.SelectedDate = null;
+                main.dpkEndDate.SelectedDate = null;
+                return;
+            }    
             bool cs = main.dpkStartDate.SelectedDate != null; // kiem tra ngay bat dau co null hay khong
             bool ce = main.dpkEndDate.SelectedDate != null; //kiem tra ngay ket thuc co null hay khong
             if (cs && ce)
@@ -548,7 +536,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 ReceiptControl receiptControl = new ReceiptControl();
                 receiptControl.txbId.Text = wdImportGoods.txbIdReceipt.Text;
                 receiptControl.txbDateReceipt.Text = wdImportGoods.txbDate.Text;
-                //receiptControl.txbImporter.Text = cureent account
+                receiptControl.txbImporter.Text = CurrentAccount.Name;
                 receiptControl.txbSupplier.Text = SelectedSupplier.Name;
                 receiptControl.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
                 this.listReceiptToView.Add(receiptControl);

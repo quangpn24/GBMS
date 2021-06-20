@@ -476,7 +476,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 List<long> salesRevenueThisWeek = new List<long>();
                 OpenConnection();
-                string query = "select week(invoiceDate, 1) as week, sum(totalMoney) from Bill where week(invoiceDate, 1) = week(now()) "
+                string query = "select week(invoiceDate, 1) as week, sum(totalMoney) from Bill where week(invoiceDate, 1) = week(now(), 1) "
                    + " group by week";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -500,7 +500,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 List<long> serviceRevenueToday = new List<long>();
                 OpenConnection();
-                string query = "select week(createdDate) as week, sum(total) from BillService where week(createdDate) = week(now()) "
+                string query = "select week(createdDate,1) as week, sum(total) from BillService where week(createdDate, 1) = week(now(), 1) "
                    + " group by week";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();

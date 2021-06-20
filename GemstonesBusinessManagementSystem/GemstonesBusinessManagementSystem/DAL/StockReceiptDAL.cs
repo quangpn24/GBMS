@@ -22,25 +22,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 return instance;
             }
         }
-        public bool Delete(string idReceipt)
-        {
-            try
-            {
-                OpenConnection();
-                string query = "Delete from StockReceipt where idStockReceipt = " + idReceipt;
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                int rs = cmd.ExecuteNonQuery();
-                return rs > 0;
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                CloseConnection();
-            }
-        }
         public bool Insert(StockReceipt stockReceipt)
         {
             try

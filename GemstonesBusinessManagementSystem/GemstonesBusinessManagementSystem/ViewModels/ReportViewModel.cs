@@ -106,7 +106,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void LoadDashBoard(MainWindow main)
         {
-            TodayRevenue = Converter.Instance.Nice(ReportDAL.Instance.GetTodayRevenue(), 1);
+            TodayRevenue = Converter.Instance.Nice(ReportDAL.Instance.GetTodayRevenue(), 2);
             TodaySpend = Converter.Instance.Nice(ReportDAL.Instance.GetTodaySpend(), 1);
             TodayBillQuantity = string.Format("{0:N0}", ReportDAL.Instance.GetTodayBillQuantity());
             long today_Revenue = ReportDAL.Instance.GetTodayRevenue();
@@ -341,6 +341,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (diff < 0)
                     diff += 7;
                 string starOftWeek = DateTime.Now.AddDays(-diff).Day.ToString();
+
                 NamePieChart = String.Format("Thống kê doanh thu bán hàng và dịch vụ tuần nay({0}-{1})", starOftWeek, DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 PieSeriesCollection = new SeriesCollection
                 {

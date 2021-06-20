@@ -41,6 +41,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand ExitCommand { get; set; }
         public ICommand SelectImageCommand { get; set; }
+        public ICommand SeparateThousandsCommand { get; set; }
 
 
         //open window
@@ -71,6 +72,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SaveCommand = new RelayCommand<AddGoodsWindow>(p => true, p => AddOrUpdate(p));
             ExitCommand = new RelayCommand<AddGoodsWindow>(p => true, p => p.Close());
             SelectImageCommand = new RelayCommand<Grid>(p => true, p => SelectImage(p));
+            SeparateThousandsCommand = new RelayCommand<TextBox>(p => true, p => SeparateThousands(p));
 
             AddGoodsCommand = new RelayCommand<MainWindow>(p => true, p => OpenAddGoodsWindow(p));
             EditGoodsCommand = new RelayCommand<GoodsControl>(p => true, p => OpenEditGoodsWindow(p));
@@ -389,6 +391,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 addGoodsWd.cboGoodsType.Focus();
                 return;
             }
+            if (string.IsNullOrEmpty(addGoodsWd.txtImportPrice.Text))
+            {
+                MessageBox.Show("Vui lòng nhập giá sản phẩm", "Error");
+                addGoodsWd.txtImportPrice.Focus();
+                return;
+            }
             byte[] imgByteArr;
 
             ImageBrush imageBrush = (ImageBrush)addGoodsWd.grdSelectImg.Background;
@@ -405,10 +413,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             Goods newGoods = new Goods(ConvertToID(addGoodsWd.txtIdGoods.Text), addGoodsWd.txtName.Text,
-                             long.Parse(addGoodsWd.txtImportPrice.Text), 0, selectedGoodsType.IdGoodsType, imgByteArr, false);
+                             ConvertToNumber(addGoodsWd.txtImportPrice.Text), 0, selectedGoodsType.IdGoodsType, imgByteArr, false);
             if (isUpdate)
             {
-                newGoods.ImportPrice = long.Parse(addGoodsWd.txtImportPrice.Text);
+                newGoods.ImportPrice = ConvertToNumber(addGoodsWd.txtImportPrice.Text);
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
             if(isUpdate)

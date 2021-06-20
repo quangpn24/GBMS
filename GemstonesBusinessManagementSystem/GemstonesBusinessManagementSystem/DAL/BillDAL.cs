@@ -106,7 +106,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 OpenConnection();
                 string start = startDate.ToString("yyyy-MM-dd");
-                string end = endDate.AddDays(1).ToString("yyyy-MM-dd");
+                string end = endDate.ToString("yyyy-MM-dd");
                 string query = string.Format("select * from Bill where invoiceDate >= '{0}' and invoiceDate <= '{1}';", start, end);
 
                 MySqlCommand command = new MySqlCommand(query, conn);

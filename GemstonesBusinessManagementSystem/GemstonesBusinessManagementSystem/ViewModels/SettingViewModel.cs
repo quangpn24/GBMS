@@ -59,12 +59,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         string imageFileName;
         //Command
         public ICommand LoadDefaultCommand { get; set; }
-        public ICommand EditCommand { get; set; }
         public ICommand Update_PrepaymentCommand { get; set; }
         public ICommand Undo_PrepaymentCommand { get; set; }
         public ICommand Update_StoreInfoCommand { get; set; }
         public ICommand Undo_StoreInfoCommand { get; set; }
         public ICommand ClickAvatarCommand { get; set; }
+        public ICommand CheckRangeCommand { get; set; }
         // Change user info & change password
         public ICommand SelectImageCommand { get; set; }
         public ICommand UpdateUserInfoCommand { get; set; }
@@ -81,6 +81,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             Undo_PrepaymentCommand = new RelayCommand<MainWindow>(p => true, p => UndoPrepayment(p));
             Update_StoreInfoCommand = new RelayCommand<MainWindow>(p => true, p => UpdateStoreInfo(p));
             Undo_StoreInfoCommand = new RelayCommand<MainWindow>(p => true, p => UndoStoreInfo(p));
+            CheckRangeCommand = new RelayCommand<TextBox>(p => true, p => CheckRange(p));
 
             ClickAvatarCommand = new RelayCommand<MainWindow>(p => true, p =>
             {
@@ -96,6 +97,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ExitCommand = new RelayCommand<Window>(p => true, p => p.Close());
 
             ChangePasswordCommand = new RelayCommand<ChangePasswordWindow>(p => true, p => ChangePassword(p));
+        }
+
+        void CheckRange(TextBox textBox)
+        {
+            if (string.IsNullOrEmpty(textBox.Text))
+            {
+                return;
+            }
+            if (int.Parse(textBox.Text) > 100)
+            {
+                textBox.Text = "100";
+            }
         }
         void LoadDefault(MainWindow main)
         {
@@ -153,6 +166,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         void UpdatePrepayment(MainWindow main)
         {
+            if (string.IsNullOrEmpty(PrepaymentPercent))
+            {
+                main.txtPrepayment.Focus();
+                return;
+            }
             if (ParameterDAL.Instance.UpdatePrepayment(PrepaymentPercent))
             {
                 parameters[0].Value = PrepaymentPercent;
@@ -165,10 +183,26 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void UpdateStoreInfo(MainWindow main)
         {
-            bool k1 = ParameterDAL.Instance.UpdateStoreInfo(2, StoreName);
-            bool k2 = ParameterDAL.Instance.UpdateStoreInfo(3, StoreAddress);
-            bool k3 = ParameterDAL.Instance.UpdateStoreInfo(4, PhoneNumber);
-            bool k4 = ParameterDAL.Instance.UpdateStoreInfo(5, Email);
+            if (string.IsNullOrEmpty(StoreName))
+            {
+                main.txtStoreName.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(StoreAddress))
+            {
+                main.txtStoreAddress.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(PhoneNumber))
+            {
+                main.txtStorePhoneNumber.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(Email))
+            {
+                main.txtEmail.Focus();
+                return;
+            }
             byte[] imgByteArr;
             ImageBrush imageBrush = (ImageBrush)main.grdSelectImage.Background;
             if (imageBrush == null)
@@ -178,6 +212,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
 
+            try
+            {
+                long temp = long.Parse(PhoneNumber);
+            }
+            catch
+            {
+                MessageBox.Show("SĐT không bao gồm chữ cái");
+                main.txtStorePhoneNumber.Focus();
+                PhoneNumber = null;
+                return;
+            }
+            bool k1 = ParameterDAL.Instance.UpdateStoreInfo(2, StoreName);
+            bool k2 = ParameterDAL.Instance.UpdateStoreInfo(3, StoreAddress);
+            bool k3 = ParameterDAL.Instance.UpdateStoreInfo(4, PhoneNumber);
+            bool k4 = ParameterDAL.Instance.UpdateStoreInfo(5, Email);
             bool k5 = ParameterDAL.Instance.UpdateStoreInfo(6, Convert.ToBase64String(imgByteArr));
             if (k1 && k2 && k3 && k4 && k5)
             {
@@ -274,6 +323,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
+            try
+            {
+                long temp = long.Parse(PhoneNumber);
+            }
+            catch
+            {
+                MessageBox.Show("SĐT không bao gồm chữ cái");
+                main.txtStorePhoneNumber.Focus();
+                PhoneNumber = null;
+                return;
+            }
             string gender;
             if (window.rdoMale.IsChecked.Value == true)
                 gender = "Nam";

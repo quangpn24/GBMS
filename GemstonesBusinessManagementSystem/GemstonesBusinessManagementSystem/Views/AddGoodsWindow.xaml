@@ -222,6 +222,16 @@
                     VerticalContentAlignment="Center"
                     FontWeight="SemiBold"
                     TabIndex="2">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewTextInput" >
+                            <ei:CallMethodAction TargetObject="{Binding }" 
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="TextChanged">
+                            <i:InvokeCommandAction Command="{Binding SeparateThousandsCommand}" 
+                                                   CommandParameter="{Binding ElementName=txtImportPrice}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </TextBox>
             </Grid>
         </Grid>

@@ -154,7 +154,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdAddSupplier.txtPhoneNumber.Focus();
                 return;
             }
-
+            try
+            {
+                long temp = long.Parse(wdAddSupplier.txtPhoneNumber.Text);
+            }
+            catch 
+            {
+                MessageBox.Show("Số điện thoại không bao gồm chữ cái!");
+                wdAddSupplier.txtPhoneNumber.Focus();
+                return;
+            }
             Supplier newSupplier = new Supplier(ConvertToID(wdAddSupplier.txtId.Text), wdAddSupplier.txtName.Text, wdAddSupplier.txtAddress.Text, wdAddSupplier.txtPhoneNumber.Text);
             if ((!isUpdate || wdAddSupplier.txtName.Text != oldSupplier) && SupplierDAL.Instance.IsExisted(wdAddSupplier.txtName.Text))
             {
