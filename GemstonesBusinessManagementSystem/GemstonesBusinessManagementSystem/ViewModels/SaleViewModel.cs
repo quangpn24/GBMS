@@ -146,6 +146,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     PrintPayment(mainWindow);
                 }
+
+                //Update tab home 
+                ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+                reportVM.Init(mainWindow);
             }
             else
             {
@@ -281,7 +285,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     control.txbName.Text = saleGoodsList[i].Name;
                     GoodsType type = GoodsTypeDAL.Instance.GetById(saleGoodsList[i].IdGoodsType);
                     double profitPercentage = type.ProfitPercentage;
-                    control.txbPrice.Text = Math.Round(saleGoodsList[i].ImportPrice * (1 + profitPercentage)).ToString();
+                    control.txbPrice.Text = Math.Ceiling(saleGoodsList[i].ImportPrice * (1 + profitPercentage)).ToString();
                     control.txbType.Text = type.Name;
                     control.txbUnit.Text = type.Unit;
 

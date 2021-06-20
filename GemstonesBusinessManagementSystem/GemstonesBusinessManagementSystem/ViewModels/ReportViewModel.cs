@@ -35,7 +35,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public string TodayBillQuantity { get => todayBillQuantity; set { todayBillQuantity = value; OnPropertyChanged(); } }
         private string increasingPercent;
         public string IncreasingPercent { get => increasingPercent; set { increasingPercent = value; OnPropertyChanged(); } }
-       
+
         //Column chart
         private Func<double, string> formatter;
         public Func<double, string> Formatter { get => formatter; set { formatter = value; OnPropertyChanged(); } }
@@ -56,7 +56,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public string NamePieChart { get => namePieChart; set { namePieChart = value; OnPropertyChanged(); } }
         private SeriesCollection pieSeriesCollection;
         public SeriesCollection PieSeriesCollection { get => pieSeriesCollection; set { pieSeriesCollection = value; OnPropertyChanged(); } }
-        
+
         public ICommand LoadReportCommand { get; set; }
         public ICommand SelectTimePieChartCommand { get; set; }
         public ICommand SelectPeriodCommand { get; set; }
@@ -84,8 +84,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             string currentMonth = DateTime.Now.Month.ToString();
             string lastMonth = (int.Parse(currentMonth) - 1).ToString();
             string currentYear = DateTime.Now.Year.ToString();
-            
 
+            main.cboSelectTimePie.SelectedIndex = -1;
+            main.cboSelectPeriod.SelectedIndex = -1;
+            main.cboSelectYear.SelectedIndex = -1;
+            main.cboSelectTime.SelectedIndex = -1;
             DispatcherTimer timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(1)
@@ -103,8 +106,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void LoadDashBoard(MainWindow main)
         {
-            TodayRevenue = string.Format("{0:N0}", ReportDAL.Instance.GetTodayRevenue());
-            TodaySpend = string.Format("{0:N0}", ReportDAL.Instance.GetTodaySpend());
+            TodayRevenue = Converter.Instance.Nice(ReportDAL.Instance.GetTodayRevenue(), 1);
+            TodaySpend = Converter.Instance.Nice(ReportDAL.Instance.GetTodaySpend(), 1);
             TodayBillQuantity = string.Format("{0:N0}", ReportDAL.Instance.GetTodayBillQuantity());
             long today_Revenue = ReportDAL.Instance.GetTodayRevenue();
             long yesterday_Revenue = ReportDAL.Instance.GetYesterdayRenvenue();
@@ -181,6 +184,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void SelectMonth(MainWindow main)
         {
             AxisXTitle = "Ngày";
+            labelPoint = chartPoint => Converter.Instance.Nice(chartPoint.Y, 1);
             if (main.cboSelectYear.SelectedIndex == -1)
                 return;
             if (main.cboSelectTime.SelectedIndex == -1)
@@ -197,19 +201,24 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         Title = "Chi tiêu",
                         Fill = (Brush)new BrushConverter().ConvertFrom("#FFF44336"),
                         Values = ReportDAL.Instance.GetSependByDay(month, year, Labels),
+                        DataLabels = true,
+                        LabelPoint = labelPoint,
                     },
                     new ColumnSeries
                     {
                         Title = "Doanh thu",
                         Fill = (Brush)new BrushConverter().ConvertFrom("#FF1976D2"),
                         Values = ReportDAL.Instance.GetRevenueByDay(month, year, Labels),
+                        DataLabels = true,
+                        LabelPoint = labelPoint,
                     }
                 };
-            Formatter = value => string.Format("{0:N0}", value);
+            Formatter = value => Converter.Instance.Nice(value, 1);
         }
         void ShowReportByMonth(MainWindow main)
         {
             AxisXTitle = "Tháng";
+            labelPoint = chartPoint => Converter.Instance.Nice(chartPoint.Y, 1);
             if (main.cboSelectYear.SelectedIndex == -1)
                 return;
             string year = main.cboSelectYear.SelectedItem.ToString().Split(' ')[1];
@@ -223,19 +232,24 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         Title = "Chi tiêu",
                         Fill = (Brush)new BrushConverter().ConvertFrom("#FFF44336"),
                         Values = ReportDAL.Instance.GetSependByMonth(year, Labels),
+                        DataLabels = true,
+                        LabelPoint = labelPoint,
                     },
                     new ColumnSeries
                     {
                         Title = "Doanh thu",
                         Fill = (Brush)new BrushConverter().ConvertFrom("#FF1976D2"),
                         Values = ReportDAL.Instance.GetRevenueByMonth(year, Labels),
+                        DataLabels = true,
+                        LabelPoint = labelPoint,
                     }
                 };
-            Formatter = value => string.Format("{0:N0}", value);
+            Formatter = value => Converter.Instance.Nice(value, 1);
         }
         void ShowReportByQuarter(MainWindow main)
         {
             AxisXTitle = "Quý";
+            labelPoint = chartPoint => Converter.Instance.Nice(chartPoint.Y, 1);
             if (main.cboSelectYear.SelectedIndex == -1)
                 return;
             string year = main.cboSelectYear.SelectedItem.ToString().Split(' ')[1];
@@ -249,15 +263,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         Title = "Chi tiêu",
                         Fill = (Brush)new BrushConverter().ConvertFrom("#FFF44336"),
                         Values = ReportDAL.Instance.GetSependByQuarter(year, Labels),
+                        DataLabels = true,
+                        LabelPoint = labelPoint,
                     },
                     new ColumnSeries
                     {
                         Title = "Doanh thu",
                         Fill = (Brush)new BrushConverter().ConvertFrom("#FF1976D2"),
                         Values = ReportDAL.Instance.GetRevenueByQuarter(year, Labels),
+                        DataLabels = true,
+                        LabelPoint = labelPoint,
                     }
                 };
-            Formatter = value => string.Format("{0:N0}", value);
+            Formatter = value => Converter.Instance.Nice(value, 1);
         }
         void SetItemSourceYear()
         {
@@ -277,12 +295,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 Goods goods = GoodsDAL.Instance.GetById(dt.Rows[i].ItemArray[0].ToString());
                 long importPrice = goods.ImportPrice;
                 double profitPercentage = GoodsTypeDAL.Instance.GetById(goods.IdGoodsType).ProfitPercentage;
-                long salePrice = importPrice % 100 == 0 ? (long)(importPrice * (1 + profitPercentage)) : (long)(importPrice * (1 + profitPercentage) + 1);
-               
+                long salePrice = (long)Math.Ceiling(importPrice * (1 + profitPercentage));
+
                 control.txbNumeralOrder.Text = (i + 1).ToString();
                 control.txbName.Text = goods.Name;
                 control.txbQuantity.Text = dt.Rows[i].ItemArray[1].ToString();
-                control.txbPrice.Text = string.Format("{0:N0}", salePrice);
+                control.txbPrice.Text = Converter.Instance.Nice(salePrice, 1);
 
                 main.stkBestSeller.Children.Add(control);
             }
@@ -290,7 +308,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         void SelectPeriodPieChart(MainWindow main)
         {
-            labelPoint = chartPoint => string.Format("{0:N0}", chartPoint.Y);
+            labelPoint = chartPoint => Converter.Instance.Nice(chartPoint.Y, 1);
             if (main.cboSelectTimePie.SelectedIndex == 0)
             {
                 NamePieChart = String.Format("Thống kê doanh thu bán hàng và dịch vụ hôm nay({0})", DateTime.Today.Date.ToString("dd/MM/yyyy"));
@@ -302,7 +320,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         Values = ReportDAL.Instance.GetSalesRevenueToday(),
                         Fill = (Brush)new BrushConverter().ConvertFrom("#FF00329E"),
                         DataLabels = true,
-                        FontSize = 16,
+                        FontSize = 14,
                         LabelPoint = labelPoint,
                     },
                     new PieSeries
@@ -311,14 +329,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         Values = ReportDAL.Instance.GetServiceRevenueToday(),
                         Fill = (Brush)new BrushConverter().ConvertFrom("#FF01B500"),
                         DataLabels = true,
-                        FontSize = 16,
+                        FontSize = 14,
                        LabelPoint = labelPoint,
                     },
                 };
             }
-            else if(main.cboSelectTimePie.SelectedIndex == 1)
+            else if (main.cboSelectTimePie.SelectedIndex == 1)
             {
-                NamePieChart = String.Format("Thống kê doanh thu bán hàng và dịch vụ tuần nay({0})", DateTime.Today.Date.ToString("MM/yyyy"));
+                var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+                var diff = DateTime.Now.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
+                if (diff < 0)
+                    diff += 7;
+                string starOftWeek = DateTime.Now.AddDays(-diff).Day.ToString();
+                NamePieChart = String.Format("Thống kê doanh thu bán hàng và dịch vụ tuần nay({0}-{1})", starOftWeek, DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 PieSeriesCollection = new SeriesCollection
                 {
                     new PieSeries

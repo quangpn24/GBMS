@@ -56,7 +56,7 @@
                         Foreground="{StaticResource Black1}"
                         Kind="KeyboardBackspace"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"  />
+                        VerticalAlignment="Center"/>
                 </Button>
                 <TextBlock 
                     Text="Nhập hàng" 

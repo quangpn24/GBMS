@@ -68,6 +68,49 @@ namespace GemstonesBusinessManagementSystem
             }
             return data;
         }
+        public string Nice(double x, int decimals)
+        {
+            string[] prefixes = { "f", "a", "p", "n", "μ", "m", string.Empty, "k", "tr", " tỷ", "T", "P", "E" };
+            //Check for special numbers and non-numbers
+            if (double.IsInfinity(x) || double.IsNaN(x) || x == 0 || decimals < 0)
+            {
+                return x.ToString();
+            }
+            // extract sign so we deal with positive numbers only
+            int sign = Math.Sign(x);
+            x = Math.Abs(x);
+            // get scientific exponent, 10^3, 10^6, ...
+            int sci = x == 0 ? 0 : (int)Math.Floor(Math.Log(x, 10) / 3) * 3;
+            // scale number to exponent found
+            x = x * Math.Pow(10, -sci);
+            // find number of digits to the left of the decimal
+            int dg = x == 0 ? 0 : (int)Math.Floor(Math.Log(x, 10)) + 1;
+            // adjust decimals to display
+            // format for the decimals
+            string fmt = new string('0', decimals);
+            if (sci == 0)
+            {
+                //no exponent
+                return string.Format("{0}{1:0." + fmt + "}",
+                    sign < 0 ? "-" : string.Empty,
+                    Math.Round(x, decimals));
+            }
+            // find index for prefix. every 3 of sci is a new index
+            int index = sci / 3 + 6;
+            if (index >= 0 && index < prefixes.Length)
+            {
+                // with prefix
+                return string.Format("{0}{1:0." + fmt + "}{2}",
+                    sign < 0 ? "-" : string.Empty,
+                    Math.Round(x, decimals),
+                    prefixes[index]);
+            }
+            // with 10^exp format
+            return string.Format("{0}{1:0." + fmt + "}·10^{2}",
+                sign < 0 ? "-" : string.Empty,
+                Math.Round(x, decimals),
+                sci);
+        }
 
     }
 }

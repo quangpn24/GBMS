@@ -371,14 +371,16 @@ namespace GemstonesBusinessManagementSystem.DAL
                 OpenConnection();
                 string query = string.Format("select sum(quantity) as sum1, date from " +
                     "(select count(*) as quantity ,  date(invoiceDate) as date from Bill where date(invoiceDate) = '{0}' " +
+                    "group by date " +
                     "union all " +
-                    "select count(*) as quantity, date(createdDate) as date from BillService where date(createdDate) = '{0}')" +
+                    "select count(*) as quantity, date(createdDate) as date from BillService where date(createdDate) = '{0}' " +
+                    "group by date)" +
                     " Expediture group by date ", DateTime.Today.Date.ToString("yyyy-MM-dd"));
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 int quantity = 0;
                 reader.Read();
-                if (!reader.IsDBNull(0))
+                if (reader.HasRows && !reader.IsDBNull(0))
                     quantity = int.Parse(reader.GetString(0));
                 return quantity;
             }

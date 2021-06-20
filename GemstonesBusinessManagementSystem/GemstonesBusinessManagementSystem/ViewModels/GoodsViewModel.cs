@@ -171,7 +171,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbImportPrice.Text = importPrice.ToString();
-                control.txbSalesPrice.Text = importPrice % 100 == 0 ? ((importPrice * (1 + profitPercentage))).ToString() : ((long)(importPrice * (1 + profitPercentage) + 1)).ToString();
+                control.txbSalesPrice.Text = Math.Ceiling(importPrice * (1 + profitPercentage)).ToString();
                 control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbGoodsType.Text = goodsType.Name;
                 control.txbUnit.Text = goodsType.Unit;
@@ -237,6 +237,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             main.cboSortGoods.SelectedIndex = indexSort;
             ImportGoodsViewModel importVM = (ImportGoodsViewModel)main.grdImport.DataContext;
             importVM.SetItemSource();
+
+            //Update tab home 
+            ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+            reportVM.Init(main);
+            //update sale
+            SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+            saleVM.Search(mainWindow);
+            saleVM.LoadDefault(mainWindow);
+            mainWindow.stkSelectedGoods.Children.Clear();
         }
         void OpenEditGoodsWindow(GoodsControl control)
         {
@@ -402,7 +411,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 newGoods.ImportPrice = long.Parse(addGoodsWd.txtImportPrice.Text);
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
-
+            if(isUpdate)
+            {
+                //Update tab home 
+                ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+                reportVM.Init(mainWindow); 
+                //update sale
+                SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+                saleVM.Search(mainWindow);
+                saleVM.LoadDefault(mainWindow);
+                mainWindow.stkSelectedGoods.Children.Clear();
+            }    
             int indexSort = mainWindow.cboSortGoods.SelectedIndex;
             int indexFilter = mainWindow.cboFilterType.SelectedIndex;
 

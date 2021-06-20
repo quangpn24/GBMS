@@ -205,7 +205,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             StoreAddress = parameters[2].Value;
             PhoneNumber = parameters[3].Value;
             Email = parameters[4].Value;
-            if(!string.IsNullOrEmpty(parameters[5].Value))
+            if (!string.IsNullOrEmpty(parameters[5].Value))
             {
                 ImageBrush imageBrush = new ImageBrush();
                 imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(Convert.FromBase64String(parameters[5].Value));
@@ -215,7 +215,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     main.grdSelectImage.Children.Remove(main.grdSelectImage.Children[0]);
                     main.grdSelectImage.Children.Remove(main.grdSelectImage.Children[1]);
                 }
-            }    
+            }
         }
 
         //window user info
@@ -310,12 +310,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             Employee employee = EmployeeDAL.Instance.GetById(CurrentAccount.IdEmployee.ToString());
 
             ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
-            window.grdSelectImage.Background = imageBrush;
-            if (window.grdSelectImage.Children.Count > 1)
+            if (employee.ImageFile != null)
             {
-                window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[0]);
-                window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[1]);
+                imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
+                window.grdSelectImage.Background = imageBrush;
+                if (window.grdSelectImage.Children.Count > 1)
+                {
+                    window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[0]);
+                    window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[1]);
+                }
             }
             Name = employee.Name;
             window.txtName.SelectionStart = 0;

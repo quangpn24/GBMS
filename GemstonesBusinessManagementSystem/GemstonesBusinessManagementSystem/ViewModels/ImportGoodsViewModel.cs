@@ -187,7 +187,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     wdImportGoods.txtDiscount.Text = "100";
                     percentDiscount = 100;
                 }
-                VndDiscount = long.Parse(Math.Round(percentDiscount * double.Parse(wdImportGoods.txbTotalGoodsPrice.Text) / 100).ToString());
+                VndDiscount = long.Parse(Math.Ceiling(percentDiscount * double.Parse(wdImportGoods.txbTotalGoodsPrice.Text) / 100).ToString());
             }
             MoneyToPay = TotalPrice - long.Parse(vndDiscount.ToString());
         }
@@ -544,7 +544,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     PrintReceipt(wdImportGoods);
                 }
-
                 //Add vao danh sach phieu nhap
                 ReceiptControl receiptControl = new ReceiptControl();
                 receiptControl.txbId.Text = wdImportGoods.txbIdReceipt.Text;
@@ -573,7 +572,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //Update tab home 
                 ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
                 reportVM.Init(mainWindow);
-                wdImportGoods.Close();
+
+                //Clean
+                selectedSupplier = null;
+                wdImportGoods.cboSupplier.Text = null;
+                wdImportGoods.txtSearch.Text = null;
+                TotalPrice = 0;
+                MoneyToPay = 0;
+                int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
+                if (idStockReceiptMax == -1)
+                {
+                    MessageBox.Show("Lỗi hệ thống!");
+                    return;
+                }
+                wdImportGoods.txbIdReceipt.Text = AddPrefix("PN", idStockReceiptMax + 1);
+                wdImportGoods.txbDate.Text = DateTime.Today.ToString("dd/MM/yyyy");
+                wdImportGoods.stkImportGoods.Children.Clear();
             }
             else
             {

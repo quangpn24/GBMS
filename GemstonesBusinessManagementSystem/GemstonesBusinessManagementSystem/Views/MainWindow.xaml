@@ -523,7 +523,7 @@
             </Grid>
             <Grid
                 x:Name="grdHome"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource ReportVM}"
                 Grid.Row="1"
                 Margin="0,20,0,0">
@@ -2793,7 +2793,7 @@
             <Grid 
                 x:Name="grdImport"
                 Grid.Row="1"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource ImportGoodsVM}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
@@ -6213,6 +6213,8 @@
                 </Button>
                 <Button
                     DataContext="{StaticResource HomeVM}"
+                    Command="{Binding LogOutCommand}"
+                    CommandParameter="{Binding ElementName=wdMain}"
                     Style="{StaticResource NavigationButton}" 
                     Padding="20,0,0,0"
                     Margin="0,20,0,5">
