@@ -523,7 +523,7 @@
             </Grid>
             <Grid
                 x:Name="grdHome"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource ReportVM}"
                 Grid.Row="1"
                 Margin="0,20,0,0">
@@ -2793,7 +2793,7 @@
             <Grid 
                 x:Name="grdImport"
                 Grid.Row="1"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource ImportGoodsVM}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
@@ -3063,12 +3063,12 @@
                             Margin="10,0,10,0" 
                             Orientation="Horizontal">
                             <materialDesign:PackIcon 
+                                Kind="FileDocumentBoxMultipleOutline"
                                 Foreground="{StaticResource Primary}"
-                                Kind="Receipt" 
-                                Width="30" 
-                                Height="30" 
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Center" />
+                                Width="32"
+                                Height="32"
+                                VerticalAlignment="Center" 
+                                Margin="20,0,0,0" />
                             <TextBlock 
                                 Text="Mã phiếu nhập hàng: "
                                 FontSize="22"

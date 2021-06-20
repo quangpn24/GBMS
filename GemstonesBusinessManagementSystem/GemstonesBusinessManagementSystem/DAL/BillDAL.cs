@@ -30,7 +30,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 OpenConnection();
                 string query = "insert into Bill (idBill,idAccount,invoiceDate,totalMoney,idCustomer,note) " +
                     "values(@idBill,@idAccount,@invoiceDate,@totalMoney,@idCustomer,@note)";
-                
+
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idBill", bill.IdBill);
                 cmd.Parameters.AddWithValue("@idAccount", bill.IdAccount);
@@ -83,19 +83,12 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlCommand command = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
                 Bill res;
-                if (string.IsNullOrEmpty(dt.Rows[0].ItemArray[1].ToString()))
-                {
-                    res = new Bill(int.Parse(idBill), 1, DateTime.Parse(dt.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dt.Rows[0].ItemArray[3].ToString()), int.Parse(dt.Rows[0].ItemArray[4].ToString()), dt.Rows[0].ItemArray[5].ToString());
-                }
-                else
-                {
-                    res = new Bill(int.Parse(idBill), int.Parse(dt.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dt.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dt.Rows[0].ItemArray[3].ToString()), int.Parse(dt.Rows[0].ItemArray[4].ToString()), dt.Rows[0].ItemArray[5].ToString());
-                }
+                res = new Bill(int.Parse(idBill), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
+                    long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
+
                 return res;
             }
             catch
@@ -107,7 +100,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
-        public List<Bill> GetByDate (DateTime startDate, DateTime endDate)
+        public List<Bill> GetByDate(DateTime startDate, DateTime endDate)
         {
             try
             {
@@ -118,18 +111,20 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 MySqlCommand command = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
 
-                List<Bill> billList = new List<Bill>();
-                for(int i = 0; i < dt.Rows.Count; i++)
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                List<Bill> res = new List<Bill>();
+                for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
-                    Bill bill = new Bill(int.Parse(dt.Rows[i].ItemArray[0].ToString()), int.Parse(dt.Rows[i].ItemArray[1].ToString()), 
-                        DateTime.Parse(dt.Rows[i].ItemArray[2].ToString()), long.Parse(dt.Rows[i].ItemArray[3].ToString()), 
-                        int.Parse(dt.Rows[i].ItemArray[4].ToString()), dt.Rows[i].ItemArray[5].ToString());
-                    billList.Add(bill);
+                    Bill temp;
+
+                    temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), int.Parse(dataTable.Rows[i].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[i].ItemArray[2].ToString()),
+                    long.Parse(dataTable.Rows[i].ItemArray[3].ToString()), int.Parse(dataTable.Rows[i].ItemArray[4].ToString()), dataTable.Rows[i].ItemArray[5].ToString());
+
+                    res.Add(temp);
                 }
-                return billList;
+                return res;
             }
             catch
             {
