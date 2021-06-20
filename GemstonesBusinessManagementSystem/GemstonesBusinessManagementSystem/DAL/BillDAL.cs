@@ -83,18 +83,18 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlCommand command = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
                 Bill res;
-                if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[1].ToString()))
+                if (string.IsNullOrEmpty(dt.Rows[0].ItemArray[1].ToString()))
                 {
-                    res = new Bill(int.Parse(idBill), 1, DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
+                    res = new Bill(int.Parse(idBill), 1, DateTime.Parse(dt.Rows[0].ItemArray[2].ToString()),
+                        long.Parse(dt.Rows[0].ItemArray[3].ToString()), int.Parse(dt.Rows[0].ItemArray[4].ToString()), dt.Rows[0].ItemArray[5].ToString());
                 }
                 else
                 {
-                    res = new Bill(int.Parse(idBill), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
+                    res = new Bill(int.Parse(idBill), int.Parse(dt.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dt.Rows[0].ItemArray[2].ToString()),
+                        long.Parse(dt.Rows[0].ItemArray[3].ToString()), int.Parse(dt.Rows[0].ItemArray[4].ToString()), dt.Rows[0].ItemArray[5].ToString());
                 }
                 return res;
             }
@@ -118,26 +118,18 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 MySqlCommand command = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
 
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                List<Bill> res = new List<Bill>();
-                for(int i = 0; i < dataTable.Rows.Count; i++)
+                List<Bill> billList = new List<Bill>();
+                for(int i = 0; i < dt.Rows.Count; i++)
                 {
-                    Bill temp;
-                    if (string.IsNullOrEmpty(dataTable.Rows[0].ItemArray[1].ToString()))
-                    {
-                        temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), 1, DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
-                    }               
-                    else
-                    {
-                        temp = new Bill(int.Parse(dataTable.Rows[i].ItemArray[0].ToString()), int.Parse(dataTable.Rows[0].ItemArray[1].ToString()), DateTime.Parse(dataTable.Rows[0].ItemArray[2].ToString()),
-                        long.Parse(dataTable.Rows[0].ItemArray[3].ToString()), int.Parse(dataTable.Rows[0].ItemArray[4].ToString()), dataTable.Rows[0].ItemArray[5].ToString());
-                    }
-                    res.Add(temp);
+                    Bill bill = new Bill(int.Parse(dt.Rows[i].ItemArray[0].ToString()), int.Parse(dt.Rows[i].ItemArray[1].ToString()), 
+                        DateTime.Parse(dt.Rows[i].ItemArray[2].ToString()), long.Parse(dt.Rows[i].ItemArray[3].ToString()), 
+                        int.Parse(dt.Rows[i].ItemArray[4].ToString()), dt.Rows[i].ItemArray[5].ToString());
+                    billList.Add(bill);
                 }
-                return res;
+                return billList;
             }
             catch
             {

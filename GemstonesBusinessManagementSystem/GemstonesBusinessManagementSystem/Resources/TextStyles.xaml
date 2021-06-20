@@ -23,6 +23,8 @@
     <Style x:Key="TextHeader" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource Secondary}"/>
         <Setter Property="FontSize" Value="18"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
     <Style x:Key="NavText" TargetType="{x:Type TextBlock}">

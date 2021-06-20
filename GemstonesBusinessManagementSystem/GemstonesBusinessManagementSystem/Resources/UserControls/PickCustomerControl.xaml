@@ -39,6 +39,9 @@
                 <ColumnDefinition Width="1.5*" />
             </Grid.ColumnDefinitions>
             <TextBlock 
+                x:Name="txbSpending"
+                Visibility="Hidden"/>
+            <TextBlock 
                 x:Name="txbId"
                 Grid.Column="0"
                 TextAlignment="Center"

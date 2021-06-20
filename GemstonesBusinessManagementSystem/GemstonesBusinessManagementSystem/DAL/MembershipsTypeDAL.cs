@@ -124,7 +124,8 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    MembershipsType type = new MembershipsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()), dt.Rows[i].ItemArray[1].ToString(), double.Parse(dt.Rows[i].ItemArray[2].ToString()));
+                    MembershipsType type = new MembershipsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
+                        dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()));
                     memberships.Add(type);
                 }
             }
@@ -169,7 +170,8 @@ namespace GemstonesBusinessManagementSystem.DAL
 
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
-                type = new MembershipsType(int.Parse(dt.Rows[0].ItemArray[0].ToString()), dt.Rows[0].ItemArray[1].ToString(), double.Parse(dt.Rows[0].ItemArray[2].ToString()));
+                type = new MembershipsType(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
+                    dt.Rows[0].ItemArray[1].ToString(), long.Parse(dt.Rows[0].ItemArray[2].ToString()));
             }
             catch
             {
@@ -196,6 +198,35 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch
             {
                 return 0;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public List<KeyValuePair<long, int>> GetSortedList()
+        {
+            try
+            {
+                OpenConnection();
+
+                string query = "select * from MembershipsType order by target desc";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dataReader);
+
+                List<KeyValuePair<long, int>> result = new List<KeyValuePair<long, int>>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    result.Add(new KeyValuePair<long, int>(long.Parse(dt.Rows[i].ItemArray[2].ToString()), 
+                        int.Parse(dt.Rows[i].ItemArray[0].ToString())));
+                }
+                return result;
+            }
+            catch
+            {
+                return new List<KeyValuePair<long, int>>();
             }
             finally
             {
