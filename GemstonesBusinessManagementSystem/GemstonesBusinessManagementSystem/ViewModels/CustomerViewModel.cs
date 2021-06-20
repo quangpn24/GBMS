@@ -145,6 +145,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             pickCustomerWindow.txbPhoneNumber.Text = pickCustomerControl.txbPhoneNumber.Text;
             pickCustomerWindow.txbIdNumber.Text = pickCustomerControl.txbIdNumber.Text;
             pickCustomerWindow.txbRank.Text = pickCustomerControl.txbRank.Text;
+            pickCustomerWindow.txbSpending.Text = pickCustomerControl.txbSpending.Text;
             pickCustomerControl.Focus();
         }
         public void LoadPickCustomerToView(Window window, int currentPage)
@@ -163,6 +164,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 ucCustomer.txbPhoneNumber.Text = customerList[i].PhoneNumber.ToString();
                 ucCustomer.txbIdNumber.Text = customerList[i].IdNumber.ToString();
                 ucCustomer.txbAddress.Text = customerList[i].Address.ToString();
+                ucCustomer.txbSpending.Text = customerList[i].TotalPrice.ToString();
                 pickCustomerWindow.stkCustomer.Children.Add(ucCustomer);
             }
 
@@ -322,7 +324,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
 
             MembershipsType membership = new MembershipsType(ConvertToID(window.txtId.Text), window.txtMembership.Text,
-                double.Parse(window.txtTarget.Text));
+                long.Parse(window.txtTarget.Text));
 
             MembershipsTypeDAL.Instance.InsertOrUpdate(membership, isEditingMembership);
             if (isEditingMembership)
@@ -350,16 +352,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ClearView(window);
         }
 
-        public void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
+        void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
         {
             mainWindow.lbCountCustomer.Content = CustomerDAL.Instance.LoadData().Rows.Count.ToString();
             mainWindow.lbCountAllPrice.Content = CustomerDAL.Instance.CountPrice().ToString();
             SetItemSource(mainWindow);
             LoadCustomerToView(mainWindow, 0);
         }
-        void LoadCustomerToView(MainWindow mainWindow, int currentPage)
+        public void LoadCustomerToView(MainWindow mainWindow, int currentPage)
         {
             this.mainWindow = mainWindow;
+            customerList = CustomerDAL.Instance.ConvertDBToList();
             mainWindow.stkCustomer.Children.Clear();
             int start = 0, end = 0;
             this.currentPage = currentPage;

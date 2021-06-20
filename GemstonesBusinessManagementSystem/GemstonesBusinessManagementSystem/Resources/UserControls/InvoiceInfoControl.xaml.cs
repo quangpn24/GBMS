@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace GemstonesBusinessManagementSystem.Resources.UserControls
 {
     /// <summary>
-    /// Interaction logic for InfoInvoiceControl.xaml
+    /// Interaction logic for InvoiceInfoControl.xaml
     /// </summary>
-    public partial class InfoInvoiceControl : UserControl
+    public partial class InvoiceInfoControl : UserControl
     {
-        public InfoInvoiceControl()
+        public InvoiceInfoControl()
         {
             InitializeComponent();
         }

@@ -40,6 +40,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private string customerPhoneNumber;
         private string customerClass;
         private string customerAddress;
+        private long customerSpending;
         private string idBill;
         private string invoiceDate;
         private long quantity = 0;
@@ -50,6 +51,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public string CustomerPhoneNumber { get => customerPhoneNumber; set { customerPhoneNumber = value; OnPropertyChanged(); } }
         public string CustomerClass { get => customerClass; set { customerClass = value; OnPropertyChanged(); } }
         public string CustomerAddress { get => customerAddress; set { customerAddress = value; OnPropertyChanged(); } }
+        public long CustomerSpending { get => customerSpending; set { customerSpending = value; OnPropertyChanged(); } }
         public string IdBill { get => idBill; set { idBill = value; OnPropertyChanged(); } }
         public string InvoiceDate { get => invoiceDate; set { invoiceDate = value; OnPropertyChanged(); } }
         public long Quantity { get => quantity; set { quantity = value; OnPropertyChanged(); } }
@@ -68,6 +70,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             DeleteCommand = new RelayCommand<SelectedGoodsControl>((p) => true, (p) => DeleteSelectedGoods(p));
             ChangeQuantityCommand = new RelayCommand<SelectedGoodsControl>((p) => true, (p) => ChangeQuantity(p));
+        }
+        void UpdateMembership(int idCustomer, long totalSpending)
+        {
+            CustomerDAL.Instance.UpdateTotalSpending(idCustomer, totalSpending);
+            List<KeyValuePair<long, int>> membershipList = MembershipsTypeDAL.Instance.GetSortedList();
+            foreach (var mem in membershipList)
+            {
+                if (totalSpending >= mem.Key)
+                {
+                    CustomerDAL.Instance.UpdateMembership(idCustomer, mem.Value);
+                    break;
+                }
+            }
         }
         void OnChangeQuantity()
         {
@@ -103,6 +118,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             CustomerAddress = pickCustomerWindow.txbAddress.Text;
             CustomerPhoneNumber = pickCustomerWindow.txbPhoneNumber.Text;
             CustomerClass = pickCustomerWindow.txbRank.Text;
+            CustomerSpending = long.Parse(pickCustomerWindow.txbSpending.Text);
         }
 
         private void CompletePayment(MainWindow window)
@@ -117,7 +133,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng chọn sản phẩm!");
                 return;
             }
-            Bill bill = new Bill(ConvertToID(window.txbIdBillSale.Text), CurrentAccount.IdAccount,
+            Bill bill = new Bill(ConvertToID(IdBill), CurrentAccount.IdAccount,
                 DateTime.Parse(InvoiceDate), Total, ConvertToID(IdCustomer),
                 window.txbSaleNote.Text);
             bool isSuccess = BillDAL.Instance.Insert(bill);
@@ -134,8 +150,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 int quantity = int.Parse(control.nmsQuantity.Text.ToString());
                 BillInfo billInfo = new BillInfo(bill.IdBill, ConvertToID(control.txbId.Text), quantity, long.Parse(control.txbPrice.Text));
                 BillInfoDAL.Instance.Insert(billInfo);
-
-                isSuccess = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), -quantity);
+                GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), -quantity);
             }
 
             if (isSuccess)
@@ -155,9 +170,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 MessageBox.Show("Thanh toán thất bại!");
             }
-            CustomerDAL.Instance.UpdateTotalSpending(ConvertToID(IdCustomer), Total);
+            UpdateMembership(ConvertToID(IdCustomer), CustomerSpending + Total);
             CustomerViewModel customerVM = (CustomerViewModel)mainWindow.grdCustomer.DataContext;
-            customerVM.Load(mainWindow);
+            customerVM.LoadCustomerToView(mainWindow, 0);
+
+            BillViewModel billVM = (BillViewModel)mainWindow.grdBill.DataContext;
+            billVM.LoadBill(mainWindow);
+
             mainWindow.stkSelectedGoods.Children.Clear();
             LoadDefault(mainWindow);
             Search(mainWindow);
@@ -225,6 +244,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void PickGoods(SaleGoodsControl control)
         {
+            if (int.Parse(control.txbQuantity.Text) == 0)
+            {
+                MessageBox.Show("Đã hết hàng!");
+                return;
+            }
             SelectedGoodsControl selectedControl = new SelectedGoodsControl();
 
             selectedControl.txbId.Text = AddPrefix("SP", int.Parse(control.txbId.Text));

@@ -558,9 +558,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //Update tab sale
                 SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+                mainWindow.stkSelectedGoods.Children.Clear();
                 saleVM.Search(mainWindow);
                 saleVM.LoadDefault(mainWindow);
-                mainWindow.stkSelectedGoods.Children.Clear();
 
                 //Update tab supplier
                 SupplierViewModel supplierVM = (SupplierViewModel)mainWindow.grdSupplier.DataContext;
