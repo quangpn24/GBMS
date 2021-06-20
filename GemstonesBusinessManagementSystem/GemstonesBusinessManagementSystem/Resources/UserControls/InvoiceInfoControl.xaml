@@ -40,9 +40,6 @@
             x:Name="txbUnit"
             Visibility="Hidden"/>
         <TextBlock 
-            x:Name="txbUnitPrice"
-            Visibility="Hidden"/>
-        <TextBlock 
             x:Name="txbNumber"
             Style="{StaticResource Text}"/>
         <TextBlock 
@@ -54,7 +51,7 @@
             Margin="10,0"
             HorizontalAlignment="Left" />
         <TextBlock 
-            x:Name="txbPrice"
+            x:Name="txbUnitPrice"
             Grid.Column="2"
             Style="{StaticResource Text}" />
         <TextBlock

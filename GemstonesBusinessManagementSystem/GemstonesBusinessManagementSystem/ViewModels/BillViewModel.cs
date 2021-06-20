@@ -54,7 +54,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PrintBillCommand = new RelayCommand<MainWindow>(p => true, p => Print(p));
         }
 
-        void LoadBill(MainWindow mainWindow)
+        public void LoadBill(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
             if (mainWindow.dpStartDateBill.SelectedDate == null || mainWindow.dpEndDateBill.SelectedDate == null)
@@ -104,6 +104,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             // hien thi thong tin
             IdBill = invoiceControl.txbId.Text;
             InvoiceDate = bill.InvoiceDate.ToShortDateString();
+            EmployeeName = EmployeeDAL.Instance.GetByIdAccount(bill.IdAccount.ToString()).Name;
             CustomerName = customer.CustomerName;
             CustomerPhoneNumber = customer.PhoneNumber;
             CustomerAddress = customer.Address;
@@ -114,16 +115,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 Goods goods = GoodsDAL.Instance.GetById(billInfos[i].IdGoods.ToString());
                 GoodsType type = GoodsTypeDAL.Instance.GetById(goods.IdGoodsType);
-                double profitPercentage = type.ProfitPercentage;
 
                 InvoiceInfoControl control = new InvoiceInfoControl();
                 control.txbNumber.Text = (i + 1).ToString();
                 control.txbName.Text = goods.Name;
-                control.txbUnitPrice.Text = Math.Round(goods.ImportPrice * (1 + profitPercentage)).ToString();
                 control.txbUnit.Text = type.Unit;
-                control.txbPrice.Text = billInfos[i].Price.ToString();
+                control.txbUnitPrice.Text = billInfos[i].Price.ToString();
                 control.txbQuantity.Text = billInfos[i].Quantity.ToString();
-                control.txbTotal.Text = (float.Parse(control.txbPrice.Text) * billInfos[i].Quantity).ToString();
+                control.txbTotal.Text = (long.Parse(control.txbUnitPrice.Text) * billInfos[i].Quantity).ToString();
 
                 mainWindow.stkBillInfo.Children.Add(control);
             }

@@ -133,7 +133,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng chọn sản phẩm!");
                 return;
             }
-            Bill bill = new Bill(ConvertToID(window.txbIdBillSale.Text), CurrentAccount.IdAccount,
+            Bill bill = new Bill(ConvertToID(IdBill), CurrentAccount.IdAccount,
                 DateTime.Parse(InvoiceDate), Total, ConvertToID(IdCustomer),
                 window.txbSaleNote.Text);
             bool isSuccess = BillDAL.Instance.Insert(bill);
@@ -150,8 +150,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 int quantity = int.Parse(control.nmsQuantity.Text.ToString());
                 BillInfo billInfo = new BillInfo(bill.IdBill, ConvertToID(control.txbId.Text), quantity, long.Parse(control.txbPrice.Text));
                 BillInfoDAL.Instance.Insert(billInfo);
-
-                isSuccess = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), -quantity);
+                GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), -quantity);
             }
 
             if (isSuccess)
@@ -170,6 +169,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             UpdateMembership(ConvertToID(IdCustomer), CustomerSpending + Total);
             CustomerViewModel customerVM = (CustomerViewModel)mainWindow.grdCustomer.DataContext;
             customerVM.LoadCustomerToView(mainWindow, 0);
+
+            BillViewModel billVM = (BillViewModel)mainWindow.grdBill.DataContext;
+            billVM.LoadBill(mainWindow);
+
             mainWindow.stkSelectedGoods.Children.Clear();
             LoadDefault(mainWindow);
             Search(mainWindow);

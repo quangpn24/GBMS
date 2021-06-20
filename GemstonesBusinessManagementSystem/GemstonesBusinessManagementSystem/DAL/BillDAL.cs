@@ -124,9 +124,9 @@ namespace GemstonesBusinessManagementSystem.DAL
                 List<Bill> billList = new List<Bill>();
                 for(int i = 0; i < dt.Rows.Count; i++)
                 {
-                    Bill bill = new Bill(int.Parse(dt.Rows[i].ItemArray[0].ToString()), int.Parse(dt.Rows[0].ItemArray[1].ToString()), 
-                        DateTime.Parse(dt.Rows[0].ItemArray[2].ToString()), long.Parse(dt.Rows[0].ItemArray[3].ToString()), 
-                        int.Parse(dt.Rows[0].ItemArray[4].ToString()), dt.Rows[0].ItemArray[5].ToString());
+                    Bill bill = new Bill(int.Parse(dt.Rows[i].ItemArray[0].ToString()), int.Parse(dt.Rows[i].ItemArray[1].ToString()), 
+                        DateTime.Parse(dt.Rows[i].ItemArray[2].ToString()), long.Parse(dt.Rows[i].ItemArray[3].ToString()), 
+                        int.Parse(dt.Rows[i].ItemArray[4].ToString()), dt.Rows[i].ItemArray[5].ToString());
                     billList.Add(bill);
                 }
                 return billList;

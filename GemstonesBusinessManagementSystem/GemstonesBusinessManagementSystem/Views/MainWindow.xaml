@@ -509,7 +509,7 @@
                 Margin="0"
                 Grid.Row="1"
                 DataContext="{StaticResource BusinessServiceVM}"
-                Visibility="Visible">
+                Visibility="Collapsed">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Loaded">
                         <i:InvokeCommandAction Command="{Binding LoadCommand}"
@@ -3539,7 +3539,8 @@
                                         Foreground="{StaticResource Primary}"
                                         FontSize="18"
                                         Width="180"
-                                        FontWeight="SemiBold" />
+                                        FontWeight="SemiBold" 
+                                        FlowDirection="RightToLeft" />
                                 </Grid>
                                 <Grid 
                                     Margin="0,15,0,0">
