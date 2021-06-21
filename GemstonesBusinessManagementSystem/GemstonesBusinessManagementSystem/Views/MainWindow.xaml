@@ -524,7 +524,7 @@
             </Grid>
             <Grid
                 x:Name="grdHome"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource ReportVM}"
                 Grid.Row="1"
                 Margin="0,20,0,0">
@@ -5541,7 +5541,7 @@
                 x:Name="grdSetting" 
                 Margin="0"
                 Grid.Row="1"   
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource RoleVM}">
                 <TabControl 
                     x:Name="tcSetting"
@@ -5981,7 +5981,6 @@
                                                 <TextBox.Text>
                                                     <Binding 
                                                         Path="StoreAddress"
-                                                        Mode="TwoWay"
                                                         UpdateSourceTrigger="PropertyChanged">
                                                         <Binding.ValidationRules>
                                                             <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ cửa hàng!" />
@@ -6038,6 +6037,16 @@
                                                         </Binding.ValidationRules>
                                                     </Binding>
                                                 </TextBox.Text>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="PreviewTextInput">
+                                                        <ei:CallMethodAction TargetObject="{Binding }"
+                                                                             MethodName="NumberValidationTextBox" />
+                                                    </i:EventTrigger>
+                                                    <i:EventTrigger EventName="PreviewKeyDown">
+                                                        <ei:CallMethodAction TargetObject="{Binding }"
+                                                                             MethodName="NumberValidationTextBox" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
                                             </TextBox>
                                         </Grid>
                                         <Grid 

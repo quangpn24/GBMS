@@ -308,7 +308,6 @@
                                     <TextBox.Text>
                                         <Binding 
                                             Path="ProfitPercentage"
-                                            Source="{StaticResource GoodsType}"
                                             UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
                                                 <vd:NumberValidation ErrorMessageNull="Nhập lợi nhuận!"

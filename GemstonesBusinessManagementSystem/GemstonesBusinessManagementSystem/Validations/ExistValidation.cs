@@ -65,6 +65,12 @@ namespace GemstonesBusinessManagementSystem.Validations
                         result = new ValidationResult(false, this.ErrorMessage);
                     }
                     break;
+                case "StandardDays":
+                    if (string.Compare(value.ToString(), "30") > 0)
+                    {
+                        result = new ValidationResult(false, this.ErrorMessage);
+                    }
+                    break;
                 default:
                     break;
             }

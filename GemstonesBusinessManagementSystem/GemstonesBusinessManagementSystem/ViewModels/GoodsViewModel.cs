@@ -29,8 +29,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private int currentPage; // trang dau tien la trang 1
         private string oldGoods;
 
-        private long importPrice;
-        public long ImportPrice { get => importPrice; set => importPrice = value; }
+        private string importPrice;
+        public string ImportPrice { get => importPrice; set => importPrice = value; }
 
         private GoodsType selectedGoodsType = new GoodsType();
         public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
@@ -140,16 +140,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     listTemp = listSearch.OrderByDescending(x => x.txbName.Text).ToList();
                     break;
                 case 2:
-                    listTemp = listSearch.OrderBy(x => long.Parse(x.txbSalesPrice.Text)).ToList();
+                    listTemp = listSearch.OrderBy(x => ConvertToNumber(x.txbSalesPrice.Text)).ToList();
                     break;
                 case 3:
-                    listTemp = listSearch.OrderByDescending(x => long.Parse(x.txbSalesPrice.Text)).ToList();
+                    listTemp = listSearch.OrderByDescending(x => ConvertToNumber(x.txbSalesPrice.Text)).ToList();
                     break;
                 case 4:
-                    listTemp = listSearch.OrderBy(x => long.Parse(x.txbImportPrice.Text)).ToList();
+                    listTemp = listSearch.OrderBy(x => ConvertToNumber(x.txbImportPrice.Text)).ToList();
                     break;
                 case 5:
-                    listTemp = listSearch.OrderByDescending(x => long.Parse(x.txbImportPrice.Text)).ToList();
+                    listTemp = listSearch.OrderByDescending(x => ConvertToNumber(x.txbImportPrice.Text)).ToList();
                     break;
                 default:
                     listTemp = listSearch.OrderBy(x => ConvertToID(x.txbId.Text)).ToList();
@@ -292,13 +292,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             isUpdate = false;
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
-            addGoodsWd.txtName.Text = "";
-            addGoodsWd.txtImportPrice.Text = "";
+            addGoodsWd.txtName.Text = null;
+            addGoodsWd.txtImportPrice.Text = null;
             int idMax = GoodsDAL.Instance.GetMaxId();
             if (idMax >= 0)
             {
                 addGoodsWd.txtIdGoods.Text = AddPrefix("SP", idMax + 1);
-                addGoodsWd.cboGoodsType.Text = "";
+                addGoodsWd.cboGoodsType.Text = null;
                 addGoodsWd.ShowDialog();
             }
             else

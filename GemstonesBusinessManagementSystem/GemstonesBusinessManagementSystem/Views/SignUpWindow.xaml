@@ -131,7 +131,8 @@
                             Source="{StaticResource Account}"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên đăng nhập!" />
+                                <vd:TextBoxValidation ErrorMessage="Chỉ sử dụng các chữ cái (a -> z, A->Z) hoặc chữ số (0 -> 9)"
+                                                      ErrorMessageNull="Vui lòng nhập tên đăng nhập!" />
                                 <vd:ExistValidation ElementName="UserName"
                                                     ErrorMessage="Tên đăng nhập đã tồn tại!" />
                             </Binding.ValidationRules>

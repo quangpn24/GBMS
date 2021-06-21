@@ -179,7 +179,6 @@
                     <TextBox.Text>
                         <Binding 
                             Path="Price"
-                            Mode="OneWayToSource"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <vd:NotNullValidation ErrorMessage="Vui lòng nhập đơn giá!" />

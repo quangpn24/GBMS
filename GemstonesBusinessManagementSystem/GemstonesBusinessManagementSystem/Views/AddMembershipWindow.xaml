@@ -182,7 +182,6 @@
                         <TextBox.Text>
                             <Binding 
                                 Path="Target"
-                                Source="{StaticResource MembershipType}"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NotNullValidation ErrorMessage="Vui lòng nhập chỉ tiêu!" />

@@ -252,7 +252,6 @@
                     <TextBox.Text>
                         <Binding 
                             Path="ImportPrice"
-                            Mode="OneWayToSource"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <vd:NotNullValidation ErrorMessage="Vui lòng nhập giá nhập!"/>

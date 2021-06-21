@@ -74,10 +74,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //Chỉ cho nhập số
         public void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
+
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+        public void NumberValidationTextBox(object sender, KeyEventArgs e)
+        {
 
+            e.Handled = e.Key == Key.Space;
+        }
         //Thêm tiền tố cho mã
         public string AddPrefix(string namePrefix, int id)
         {

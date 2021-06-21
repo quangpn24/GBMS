@@ -19,6 +19,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private bool isUpdate = false;
         private bool isActiveTab = true;
         private string oldType;
+        private string profitPercentage;
         private GoodsTypeWindow wdGoodsType;
         private GoodsTypeControl goodsTypeControl;
         Binding newBinding;
@@ -29,6 +30,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand ActivateCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public string ProfitPercentage { get => profitPercentage; set => profitPercentage = value; }
 
         public GoodsTypeViewModel()
         {
@@ -100,9 +102,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdGoodsType.txtName.SetBinding(TextBox.TextProperty, newBinding);
             }
             this.wdGoodsType.txtId.Text = AddPrefix("LS", idMax + 1);
-            this.wdGoodsType.txtName.Text = "";
-            this.wdGoodsType.txtProfitPercentage.Text = "";
-            this.wdGoodsType.txtUnit.Text = "";
+            this.wdGoodsType.txtName.Text = null;
+            this.wdGoodsType.txtProfitPercentage.Text = null;
+            this.wdGoodsType.txtUnit.Text = null;
             isUpdate = false;
         }
         void Inactivate(GoodsTypeWindow wdGoodsType)

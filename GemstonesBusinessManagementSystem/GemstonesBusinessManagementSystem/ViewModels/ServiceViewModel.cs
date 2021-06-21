@@ -23,8 +23,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private MainWindow mainWindow;
         private ServiceControl selectedUCService;
         List<Service> services = ServiceDAL.Instance.ConvertDBToList();
-        private long price;
-        public long Price { get => price; set => price = value; }
+        private string price;
+        public string Price { get => price; set => price = value; }
 
         //UC Service
         public ICommand OpenUpdateWindowCommand { get; set; }
@@ -233,8 +233,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             AddServiceWindow addServiceWindow = new AddServiceWindow();
             addServiceWindow.txtIdService.Text = AddPrefix("DV", (ServiceDAL.Instance.FindMaxId() + 1));
-            addServiceWindow.txtNameOfService.Text = "";
-            addServiceWindow.txtPriceOfService.Text = "";
+            addServiceWindow.txtNameOfService.Text = null;
+            addServiceWindow.txtPriceOfService.Text = null;
             addServiceWindow.ShowDialog();
         }
         public void ExportExcel()

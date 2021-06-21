@@ -34,6 +34,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private PickCustomerWindow pickCustomerWindow;
         private CustomerControl customerControl;
         Binding newBinding;
+        private string name;
+        private string phoneNumber;
+        private string idNumber;
+        private string address;
+        private string target;
+        public string Name { get => name; set { name = value; OnPropertyChanged(); } }
+        public string PhoneNumber { get => phoneNumber; set { phoneNumber = value; OnPropertyChanged(); } }
+        public string IdNumber { get => idNumber; set { idNumber = value; OnPropertyChanged(); } }
+        public string Address { get => address; set { address = value; OnPropertyChanged(); } }
+        public string Target { get => target; set { target = value; OnPropertyChanged("Target"); } }
 
         //CustomerWindow
         public ICommand LoadCustomerCommand { get; set; }
@@ -169,7 +179,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 ucCustomer.txbPhoneNumber.Text = customerList[i].PhoneNumber.ToString();
                 ucCustomer.txbIdNumber.Text = customerList[i].IdNumber.ToString();
                 ucCustomer.txbAddress.Text = customerList[i].Address.ToString();
-                ucCustomer.txbSpending.Text = customerList[i].TotalPrice.ToString();
+                ucCustomer.txbSpending.Text = SeparateThousands(customerList[i].TotalPrice.ToString());
                 ucCustomer.txbRank.Text = membershipsType.Membership;
                 pickCustomerWindow.stkCustomer.Children.Add(ucCustomer);
             }
@@ -259,15 +269,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             isEditingMembership = false;
             window.txtId.Text = AddPrefix("TV", (MembershipsTypeDAL.Instance.GetMaxId() + 1));
-            window.txtTarget.Clear();
-            window.txtMembership.Clear();
+            window.txtTarget.Text = null;
+            window.txtMembership.Text = null;
         }
         void OpenMembershipWindow(MainWindow mainWindow)
         {
             AddMembershipWindow window = new AddMembershipWindow();
             window.txtId.Text = AddPrefix("TV", (MembershipsTypeDAL.Instance.GetMaxId() + 1));
-            window.txtMembership.Clear();
-            window.txtTarget.Clear();
+            window.txtMembership.Text = null;
+            window.txtTarget.Text = null;
             window.ShowDialog();
             for (int i = 0; i < customerList.Count; i++)
             {
@@ -304,7 +314,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MembershipControl control = new MembershipControl();
                 control.txbId.Text = AddPrefix("TV", membershipType.IdMembershipsType);
                 control.txbMembership.Text = membershipType.Membership;
-                control.txbTarget.Text = membershipType.Target.ToString();
+                control.txbTarget.Text = SeparateThousands(membershipType.Target.ToString());
 
                 window.stkMembership.Children.Add(control);
             }
@@ -364,7 +374,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
 
             MembershipsType membership = new MembershipsType(ConvertToID(window.txtId.Text), window.txtMembership.Text,
-                long.Parse(window.txtTarget.Text));
+                ConvertToNumber(window.txtTarget.Text));
 
             MembershipsTypeDAL.Instance.InsertOrUpdate(membership, isEditingMembership);
             if (isEditingMembership)
@@ -380,7 +390,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MembershipControl control = new MembershipControl();
                 control.txbId.Text = window.txtId.Text;
                 control.txbMembership.Text = membership.Membership;
-                control.txbTarget.Text = membership.Target.ToString();
+                control.txbTarget.Text = SeparateThousands(membership.Target.ToString());
 
                 window.stkMembership.Children.Add(control);
             }
@@ -394,7 +404,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         public void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
         {
-            mainWindow.lbCountCustomer.Content = CustomerDAL.Instance.LoadData().Rows.Count.ToString();
+            mainWindow.lbCountCustomer.Content = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
             mainWindow.lbCountAllPrice.Content = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
             SetItemSource(mainWindow);
             LoadCustomerToView(mainWindow, 0);
@@ -507,11 +517,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     control.txbName.Text = customer.CustomerName.ToString();
                     control.txbPhone.Text = customer.PhoneNumber.ToString();
                     control.txbAddress.Text = customer.Address.ToString();
-                    control.txbAllPrice.Text = customer.TotalPrice.ToString();
+                    control.txbAllPrice.Text = SeparateThousands(customer.TotalPrice.ToString());
                     control.txbLevelCus.Text = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
-                    mainWindow.lbCountCustomer.Content = (int.Parse(mainWindow.lbCountCustomer.Content.ToString()) + 1).ToString();
+                    mainWindow.lbCountCustomer.Content = SeparateThousands((int.Parse(mainWindow.lbCountCustomer.Content.ToString()) + 1).ToString());
                 }
-                CustomerDAL.Instance.AddOrUpdate(customer, isEditing);
+                if (CustomerDAL.Instance.AddOrUpdate(customer, isEditing))
+                {
+                    MessageBox.Show("Thành công!");
+                }
+                else
+                {
+                    MessageBox.Show("Thất bại!");
+                }
 
                 int indexSort = mainWindow.cboSelectCustomerSort.SelectedIndex;
                 int indexFilter = mainWindow.cboSelectCustomerIdMembership.SelectedIndex;

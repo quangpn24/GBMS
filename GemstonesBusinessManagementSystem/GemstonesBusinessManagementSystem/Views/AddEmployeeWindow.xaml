@@ -137,7 +137,6 @@
                     <TextBox.Text>
                         <Binding 
                             Path="Name"
-                            Source="{StaticResource Employee}"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <vd:NotNullValidation ErrorMessage="Vui lòng nhập họ tên!" />
@@ -353,7 +352,6 @@
                     <TextBox.Text>
                         <Binding 
                             Path="Address"
-                            Source="{StaticResource Employee}"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ!" />
@@ -405,11 +403,14 @@
                         <i:EventTrigger EventName="PreviewTextInput" >
                             <ei:CallMethodAction TargetObject="{Binding }" MethodName="NumberValidationTextBox" />
                         </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewKeyDown">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <TextBox.Text>
                         <Binding 
                             Path="PhoneNumber"
-                            Source="{StaticResource Employee}"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />

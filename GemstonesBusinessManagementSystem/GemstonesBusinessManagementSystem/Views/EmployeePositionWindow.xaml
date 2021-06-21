@@ -166,8 +166,7 @@
                         VerticalContentAlignment="Center">
                         <TextBox.Text>
                             <Binding
-                                Path="SalaryBase"
-                                Mode="OneWayToSource"                                     
+                                Path="SalaryBase"                                  
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NotNullValidation ErrorMessage="Nhập lương cơ bản!" />
@@ -225,12 +224,13 @@
                         VerticalContentAlignment="Center">
                         <TextBox.Text>
                             <Binding 
-                                Path="StandardWorkDays"
-                                Source="{StaticResource Position}"
+                                Path="Standard"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NumberValidation ErrorMessageNull="Nhập số ngày công chuẩn!"
                                                          ErrorMessage="Vui lòng nhập giá trị số!" />
+                                    <vd:ExistValidation ElementName="StandardDays"
+                                                        ErrorMessage="Số ngày công chuẩn không lớn hơn 30 " />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -267,7 +267,6 @@
                         <TextBox.Text>
                             <Binding 
                                 Path="MoneyPerShift"
-                                Mode="OneWayToSource"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NotNullValidation ErrorMessage="Nhập tiền tăng ca!"/>
@@ -325,7 +324,6 @@
                         <TextBox.Text>
                             <Binding 
                                 Path="MoneyPerFault"
-                                Mode="OneWayToSource"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NotNullValidation ErrorMessage="Nhập tiền phạt!"/>

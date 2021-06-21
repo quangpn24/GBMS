@@ -53,6 +53,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         private int currentPage = 0;
         Binding newBinding;
+        private string standard;
 
         //Mainwindow
         private MainWindow mainWindow;
@@ -75,16 +76,23 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private ObservableCollection<EmployeePosition> itsAddEmpPosition = new ObservableCollection<EmployeePosition>();
         public ObservableCollection<EmployeePosition> ItsAddEmpPosition { get => itsAddEmpPosition; set { itsAddEmpPosition = value; OnPropertyChanged(); } }
 
-        public long SalaryBase { get => salaryBase; set => salaryBase = value; }
-        public long MoneyPerShift { get => moneyPerShift; set => moneyPerShift = value; }
-        public long MoneyPerFault { get => moneyPerFault; set => moneyPerFault = value; }
+        public string SalaryBase { get => salaryBase; set => salaryBase = value; }
+        public string MoneyPerShift { get => moneyPerShift; set => moneyPerShift = value; }
+        public string MoneyPerFault { get => moneyPerFault; set => moneyPerFault = value; }
+        public string Standard { get => standard; set => standard = value; }
+        public string Address { get => address; set => address = value; }
+        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
+        public string Name { get => name; set => name = value; }
 
         public string imageName;
         public bool isEditing = false;
         private string oldPosition;
-        private long salaryBase;
-        private long moneyPerShift;
-        private long moneyPerFault;
+        private string salaryBase;
+        private string moneyPerShift;
+        private string moneyPerFault;
+        private string address;
+        private string phoneNumber;
+        private string name;
 
         public EmployeeViewModel()
         {
@@ -128,11 +136,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             isEditingPosition = false;
             window.txtId.Text = AddPrefix("CV", (EmployeePositionDAL.Instance.GetMaxId() + 1));
-            window.txtPosition.Text = "";
-            window.txtSalaryBase.Clear();
-            window.txtStandardWorkDays.Clear();
-            window.txtOvertime.Clear();
-            window.txtFault.Clear();
+            window.txtPosition.Text = null;
+            window.txtSalaryBase.Text = null;
+            window.txtStandardWorkDays.Text = null;
+            window.txtOvertime.Text = null;
+            window.txtFault.Text = null;
         }
         void ViewPosition(EmployeePositionControl control)
         {
@@ -252,6 +260,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.txtPosition.Focus();
                 return;
             }
+            if (string.Compare(window.txtStandardWorkDays.Text, "30") > 0)
+            {
+                MessageBox.Show("Số ngày công chuẩn không >30");
+                window.txtStandardWorkDays.Focus();
+                return;
+            }
             EmployeePosition position = new EmployeePosition(ConvertToID(window.txtId.Text), window.txtPosition.Text,
                 ConvertToNumber(window.txtSalaryBase.Text), ConvertToNumber(window.txtOvertime.Text),
                 ConvertToNumber(window.txtFault.Text), int.Parse(window.txtStandardWorkDays.Text));
@@ -299,6 +313,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             EmployeePositionWindow window = new EmployeePositionWindow();
             window.txtId.Text = AddPrefix("CV", (EmployeePositionDAL.Instance.GetMaxId() + 1));
+            window.txtPosition.Text = null;
+            window.txtOvertime.Text = null;
+            window.txtFault.Text = null;
+            window.txtSalaryBase.Text = null;
+            window.txtStandardWorkDays.Text = null;
             window.ShowDialog();
         }
 
@@ -607,9 +626,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             isEditing = false;
             AddEmployeeWindow addEmployeeWindow = new AddEmployeeWindow();
             addEmployeeWindow.txtId.Text = AddPrefix("NV", (EmployeeDAL.Instance.GetMaxId() + 1));
-            addEmployeeWindow.txtName.Text = "";
-            addEmployeeWindow.txtAddress.Text = "";
-            addEmployeeWindow.txtPhoneNumber.Text = "";
+            addEmployeeWindow.txtName.Text = null;
+            addEmployeeWindow.txtAddress.Text = null;
+            addEmployeeWindow.txtPhoneNumber.Text = null;
             addEmployeeWindow.cboPosition.SelectedIndex = -1;
             addEmployeeWindow.ShowDialog();
         }

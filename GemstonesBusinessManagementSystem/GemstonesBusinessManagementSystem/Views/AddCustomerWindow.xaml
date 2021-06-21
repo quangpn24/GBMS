@@ -98,8 +98,7 @@
                     VerticalContentAlignment="Center">
                     <TextBox.Text>
                         <Binding 
-                            Path="CustomerName"
-                            Source="{StaticResource Customer}"
+                            Path="Name"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên khách hàng!" />
@@ -161,6 +160,10 @@
                         <i:EventTrigger EventName="PreviewTextInput" >
                             <ei:CallMethodAction TargetObject="{Binding }" MethodName="NumberValidationTextBox" />
                         </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewKeyDown">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </TextBox>
             </Grid>
@@ -214,6 +217,10 @@
                     </TextBox.Text>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewTextInput">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewKeyDown">
                             <ei:CallMethodAction TargetObject="{Binding }"
                                                  MethodName="NumberValidationTextBox" />
                         </i:EventTrigger>

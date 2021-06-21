@@ -429,7 +429,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ImportGoodsWindow newWindow = new ImportGoodsWindow();
             TotalPrice = "0";
             MoneyToPay = "0";
-            main.Hide();
+            //main.Hide();
             int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
             if (idStockReceiptMax == -1)
             {
@@ -445,7 +445,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             HomeViewModel homeVM = (HomeViewModel)main.DataContext;
             homeVM.Uid = "21";
             homeVM.Navigate(main);
-            main.ShowDialog();
+            //main.ShowDialog();
         }
 
         void LostFocusSearchBar(ImportGoodsWindow wdImportGoods)
@@ -625,8 +625,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             importControl.txbName.Text = control.txbName.Text;
             importControl.txbUnit.Text = goodsType.Unit;
             importControl.txbGoodsType.Text = goodsType.Name;
-            importControl.txbImportPrice.Text = control.txbImportPrice.Text;
-            importControl.txbTotalPrice.Text = control.txbImportPrice.Text;
+            importControl.txbImportPrice.Text = SeparateThousands(control.txbImportPrice.Text);
+            importControl.txbTotalPrice.Text = SeparateThousands(control.txbImportPrice.Text);
 
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
             {
@@ -748,8 +748,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     control.imgGoods.Source = Converter.Instance.ConvertByteToBitmapImage(tmp);
                     control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                     control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
-                    control.txbImportPrice.Text = dt.Rows[i].ItemArray[2].ToString();
-                    control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
+                    control.txbImportPrice.Text = SeparateThousands(dt.Rows[i].ItemArray[2].ToString());
+                    control.txbQuantity.Text = SeparateThousands(dt.Rows[i].ItemArray[3].ToString());
                     wdImportGoods.stkSearchResult.Children.Add(control);
                 }
             }
