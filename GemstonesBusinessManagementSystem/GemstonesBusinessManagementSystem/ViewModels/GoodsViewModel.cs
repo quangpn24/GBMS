@@ -329,8 +329,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             table.Columns.Add("Loại sản phẩm", typeof(string));
             table.Columns.Add("Số lượng", typeof(int));
             table.Columns.Add("Đơn vị tính", typeof(string));
-            table.Columns.Add("Giá mua", typeof(long));
-            table.Columns.Add("Giá bán", typeof(long));
+            table.Columns.Add("Giá mua", typeof(string));
+            table.Columns.Add("Giá bán", typeof(string));
 
 
             for (int i = 0; i < listControlToView.Count; i++)

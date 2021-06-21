@@ -293,7 +293,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             table.Columns.Add("Địa chỉ", typeof(string));
             table.Columns.Add("Số điện thoại", typeof(string));
             table.Columns.Add("Số đơn hàng", typeof(int));
-            table.Columns.Add("Tổng tiền", typeof(long));
+            table.Columns.Add("Tổng tiền", typeof(string));
 
             for (int i = 0; i < ListSupplierToView.Count; i++)
             {
