@@ -226,6 +226,29 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public bool IsHaveDeliveried(string idBillService)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "SELECT * FROM BillServiceInfo WHERE idBillService=@idBillService AND status=1;";
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.Parameters.AddWithValue("@idBillService", idBillService);
+                int rs = command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+                return dataTable.Rows.Count > 0;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
         public string CalculateRestMoney(string idBillService)
         {
             try

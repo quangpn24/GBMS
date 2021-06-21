@@ -346,8 +346,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             employee.PhoneNumber = UserPhoneNumber;
             employee.Gender = gender;
             employee.ImageFile = imgByteArr;
-            EmployeeDAL.Instance.UpdateUserInfo(employee);
-            MessageBox.Show("Thành công");
+            if (EmployeeDAL.Instance.UpdateUserInfo(employee))
+            {
+                MessageBox.Show("Thành công!");
+            }
+            else
+            {
+                MessageBox.Show("Thất bại!");
+            }
             CurrentAccount.Name = Name;
             CurrentAccount.ImageFile = imgByteArr;
             main.txbUsername.Text = CurrentAccount.Name;

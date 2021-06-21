@@ -1,4 +1,4 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using GemstonesBusinessManagementSystem.DAL;
 using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
@@ -11,6 +11,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -28,6 +29,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private int currentPage; // trang dau tien la trang 1
         private string oldGoods;
 
+        private long importPrice;
+        public long ImportPrice { get => importPrice; set => importPrice = value; }
+
         private GoodsType selectedGoodsType = new GoodsType();
         public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
         private GoodsType selectedGoodsType_Filter = new GoodsType();
@@ -42,7 +46,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand ExitCommand { get; set; }
         public ICommand SelectImageCommand { get; set; }
         public ICommand SeparateThousandsCommand { get; set; }
-
 
         //open window
         public ICommand AddGoodsCommand { get; set; }
@@ -71,6 +74,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             SaveCommand = new RelayCommand<AddGoodsWindow>(p => true, p => AddOrUpdate(p));
             ExitCommand = new RelayCommand<AddGoodsWindow>(p => true, p => p.Close());
+            SeparateThousandsCommand = new RelayCommand<TextBox>((parameter) => true, (parameter) => SeparateThousands(parameter));
             SelectImageCommand = new RelayCommand<Grid>(p => true, p => SelectImage(p));
             SeparateThousandsCommand = new RelayCommand<TextBox>(p => true, p => SeparateThousands(p));
 
@@ -172,8 +176,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
-                control.txbImportPrice.Text = importPrice.ToString();
-                control.txbSalesPrice.Text = Math.Ceiling(importPrice * (1 + profitPercentage)).ToString();
+                control.txbImportPrice.Text = SeparateThousands(importPrice.ToString());
+                control.txbSalesPrice.Text = SeparateThousands(Math.Ceiling(importPrice * (1 + profitPercentage)).ToString());
                 control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbGoodsType.Text = goodsType.Name;
                 control.txbUnit.Text = goodsType.Unit;
@@ -224,7 +228,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 GoodsType type = new GoodsType(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                     dt.Rows[i].ItemArray[1].ToString(), double.Parse(dt.Rows[0].ItemArray[2].ToString()),
-                    dt.Rows[0].ItemArray[3].ToString(), true );
+                    dt.Rows[0].ItemArray[3].ToString(), true);
                 itemSourceGoodsType_Filter.Add(type);
                 itemSourceGoodsType.Add(type);
             }
@@ -255,6 +259,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             goodsControl = control;
             oldGoods = control.txbName.Text;
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
+            Binding binding = BindingOperations.GetBinding(addGoodsWd.txtName, TextBox.TextProperty);
+            binding.ValidationRules.Clear();
             Goods goods = GoodsDAL.Instance.GetById(control.txbId.Text.Remove(0, 2));
             addGoodsWd.txtIdGoods.Text = control.txbId.Text;
 
@@ -286,6 +292,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             isUpdate = false;
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
+            addGoodsWd.txtName.Text = "";
+            addGoodsWd.txtImportPrice.Text = "";
             int idMax = GoodsDAL.Instance.GetMaxId();
             if (idMax >= 0)
             {
@@ -307,7 +315,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     listSearch.Remove(control);
                     listControlToView.Remove(control);
-                    if(listControlToView.Count <= (this.currentPage - 1) * 10)
+                    if (listControlToView.Count <= (this.currentPage - 1) * 10)
                         LoadListGoods(mainWindow, --currentPage);
                     else
                     {
@@ -337,7 +345,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 GoodsControl control = listControlToView[i];
                 table.Rows.Add(control.txbId.Text, control.txbName.Text, control.txbGoodsType.Text,
-                    control.txbQuantity.Text,control.txbUnit.Text, control.txbImportPrice.Text, 
+                    control.txbQuantity.Text, control.txbUnit.Text, control.txbImportPrice.Text,
                     control.txbSalesPrice.Text);
             }
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -419,17 +427,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 newGoods.ImportPrice = ConvertToNumber(addGoodsWd.txtImportPrice.Text);
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
-            if(isUpdate)
+            if (isUpdate)
             {
                 //Update tab home 
                 ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
-                reportVM.Init(mainWindow); 
+                reportVM.Init(mainWindow);
                 //update sale
                 SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
                 saleVM.Search(mainWindow);
                 saleVM.LoadDefault(mainWindow);
                 mainWindow.stkSelectedGoods.Children.Clear();
-            }    
+            }
             int indexSort = mainWindow.cboSortGoods.SelectedIndex;
             int indexFilter = mainWindow.cboFilterType.SelectedIndex;
 

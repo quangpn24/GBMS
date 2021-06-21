@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -523,7 +524,7 @@
             </Grid>
             <Grid
                 x:Name="grdHome"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource ReportVM}"
                 Grid.Row="1"
                 Margin="0,20,0,0">
@@ -5076,6 +5077,7 @@
                                 <ColumnDefinition Width="1.5*" />
                                 <ColumnDefinition Width="1.5*" />
                                 <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="10" />
                             </Grid.ColumnDefinitions>
                             <TextBlock 
@@ -5539,7 +5541,7 @@
                 x:Name="grdSetting" 
                 Margin="0"
                 Grid.Row="1"   
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource RoleVM}">
                 <TabControl 
                     x:Name="tcSetting"
@@ -5914,7 +5916,7 @@
                                                 Cursor="IBeam"
                                                 materialDesign:HintAssist.Hint="Tên cửa hàng"
                                                 HorizontalAlignment="Right"
-                                                Text="{Binding StoreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                                 MinHeight="40"
                                                 Width="300"
                                                 TextWrapping="Wrap"
@@ -5925,7 +5927,19 @@
                                                 Margin="0,0,10,0"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="Center"
-                                                FontWeight="SemiBold"/>
+                                                FontWeight="SemiBold">
+                                                <TextBox.Text>
+                                                    <Binding
+                                                        Path="StoreName"
+                                                        Mode="TwoWay"
+                                                        UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <vd:NotNullValidation 
+                                                                ErrorMessage="Vui lòng nhập tên cửa hàng!" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                         <Grid 
                                             Margin="20,20,20,0"
@@ -5952,18 +5966,29 @@
                                                 Cursor="IBeam"
                                                 materialDesign:HintAssist.Hint="Địa chỉ"
                                                 HorizontalAlignment="Right"
-                                                Text="{Binding StoreAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 MinHeight="40"
                                                 Width="300"
                                                 FontSize="14"
                                                 TextWrapping="Wrap"
                                                 BorderThickness="0"
                                                 MaxLines="1"
+                                                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                                 Foreground="{StaticResource Black1}"
                                                 Margin="0,0,10,0"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="Center"
-                                                FontWeight="SemiBold"/>
+                                                FontWeight="SemiBold">
+                                                <TextBox.Text>
+                                                    <Binding 
+                                                        Path="StoreAddress"
+                                                        Mode="TwoWay"
+                                                        UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ cửa hàng!" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                         <Grid 
                                             Margin="20,20,20,0"
@@ -5990,19 +6015,30 @@
                                                 x:Name="txtStorePhoneNumber"
                                                 Cursor="IBeam"
                                                 materialDesign:HintAssist.Hint="Số điện thoại"
-                                                Text="{Binding PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Height="40"
                                                 Width="300"
                                                 FontSize="14"
                                                 MaxLength="11"
                                                 BorderThickness="0"
                                                 MaxLines="1"
+                                                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                                 Foreground="{StaticResource Black1}"
                                                 Margin="0,0,10,0"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="Center"
                                                 FontWeight="SemiBold" 
-                                                HorizontalAlignment="Right"/>
+                                                HorizontalAlignment="Right">
+                                                <TextBox.Text>
+                                                    <Binding
+                                                        Path="PhoneNumber"
+                                                        Mode="TwoWay"                                                         
+                                                        UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                         <Grid 
                                             Margin="20,20,20,10"
@@ -6030,17 +6066,28 @@
                                                 Cursor="IBeam"
                                                 materialDesign:HintAssist.Hint="Email"
                                                 HorizontalAlignment="Right"
-                                                Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Height="40"
                                                 Width="300"
                                                 FontSize="14"
                                                 BorderThickness="0"
                                                 MaxLines="1"
+                                                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                                 Foreground="{StaticResource Black1}"
                                                 Margin="0,0,10,0"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="Center"
-                                                FontWeight="SemiBold"/>
+                                                FontWeight="SemiBold">
+                                                <TextBox.Text>
+                                                    <Binding 
+                                                        Path="Email"
+                                                        Mode="TwoWay"                                           
+                                                        UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <vd:NotNullValidation ErrorMessage="Vui lòng nhập email cửa hàng!" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                     <Button 

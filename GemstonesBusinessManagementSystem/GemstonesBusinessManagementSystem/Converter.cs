@@ -111,6 +111,5 @@ namespace GemstonesBusinessManagementSystem
                 Math.Round(x, decimals),
                 sci);
         }
-
     }
 }

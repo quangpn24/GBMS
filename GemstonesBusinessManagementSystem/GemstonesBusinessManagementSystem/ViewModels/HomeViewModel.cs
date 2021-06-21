@@ -1,4 +1,5 @@
-﻿using GemstonesBusinessManagementSystem.Views;
+﻿using GemstonesBusinessManagementSystem.DAL;
+using GemstonesBusinessManagementSystem.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,6 +107,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case 0:
                     window.txbTabName.Text = "Trang chủ";
                     window.grdHome.Visibility = Visibility.Visible;
+                    ReportViewModel reportViewModel = window.grdHome.DataContext as ReportViewModel;
+                    reportViewModel.Init(window);
                     window.btnHome.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnHome.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
@@ -150,6 +153,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case 30:
                     window.txbTabName.Text = "Danh sách nhà cung cấp";
                     window.grdSupplier.Visibility = Visibility.Visible;
+                    SupplierViewModel supplierViewModel = window.grdSupplier.DataContext as SupplierViewModel;
+                    supplierViewModel.Init(window);
                     CloseExpander(window, 2);
                     window.btnSupplier.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnSupplier.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -158,6 +163,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case 31:
                     window.grdCustomer.Visibility = Visibility.Visible;
                     window.txbTabName.Text = "Danh sách khách hàng";
+                    CustomerViewModel customerViewModel = window.grdCustomer.DataContext as CustomerViewModel;
+                    customerViewModel.customerList = CustomerDAL.Instance.ConvertDBToList();
+                    customerViewModel.Load(window);
                     CloseExpander(window, 2);
                     window.btnCustomer.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnCustomer.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);

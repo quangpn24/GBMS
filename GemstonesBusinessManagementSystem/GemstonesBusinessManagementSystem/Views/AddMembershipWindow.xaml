@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei ="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
@@ -106,10 +107,25 @@
                         BorderThickness="0" 
                         MaxLines="1"
                         TabIndex="1"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         Foreground="{StaticResource Gray1}" 
                         Margin="0,0,10,0" 
                         HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center">
+                        <TextBox.Text>
+                            <Binding 
+                                Path="Membership"
+                                Source="{StaticResource MembershipType}"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập hạng thành viên!" />
+                                    <vd:ExistValidation 
+                                        ElementName="Membership"
+                                        ErrorMessage="Hạng thành viên đã tồn tại" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </Grid>
                 <Grid 
                     Margin="0,0,0,20" 
@@ -134,7 +150,8 @@
                         Width="230" 
                         RadiusY="6" 
                         RadiusX="6"
-                        Stroke="{StaticResource Gray2}" Grid.ColumnSpan="2" />
+                        Stroke="{StaticResource Gray2}" 
+                        Grid.ColumnSpan="2" />
                     <TextBox 
                         x:Name="txtTarget"
                         materialDesign:HintAssist.Hint="Chỉ tiêu"
@@ -146,10 +163,33 @@
                         BorderThickness="0" 
                         MaxLines="1"
                         TabIndex="2"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         Foreground="{StaticResource Gray1}" 
                         Margin="0,0,10,0" 
                         HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+                        VerticalContentAlignment="Center" 
+                        Grid.ColumnSpan="2">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewTextInput">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding SeparateThousandsCommand}"
+                                                       CommandParameter="{Binding ElementName=txtTarget}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <TextBox.Text>
+                            <Binding 
+                                Path="Target"
+                                Source="{StaticResource MembershipType}"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập chỉ tiêu!" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </Grid>
             </StackPanel>
             <StackPanel 

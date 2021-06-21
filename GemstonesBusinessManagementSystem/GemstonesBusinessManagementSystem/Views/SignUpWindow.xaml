@@ -2,6 +2,7 @@
         x:Class="GemstonesBusinessManagementSystem.Views.SignUpWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
@@ -124,7 +125,18 @@
                     CaretBrush="{StaticResource Primary}" 
                     FontWeight="Medium" 
                     Padding="2,0,0,0" Foreground="{DynamicResource Gray1}">
-
+                    <TextBox.Text>
+                        <Binding 
+                            Path="Username"
+                            Source="{StaticResource Account}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên đăng nhập!" />
+                                <vd:ExistValidation ElementName="UserName"
+                                                    ErrorMessage="Tên đăng nhập đã tồn tại!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
 
             </Grid>

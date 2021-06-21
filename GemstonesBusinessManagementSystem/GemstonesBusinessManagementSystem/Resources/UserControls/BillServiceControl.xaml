@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
     DataContext="{StaticResource BillServiceVM}"
@@ -30,6 +31,7 @@
             <ColumnDefinition Width="1.5*" />
             <ColumnDefinition Width="1.5*" />
             <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
         <TextBlock 
             x:Name="txbId"
@@ -54,6 +56,8 @@
             FontSize="16"
             FontWeight="SemiBold"
             Foreground="#FF4F4F4F" />
+        <TextBlock x:Name="txbIdCustomer"
+                   Visibility="Hidden" />
         <TextBlock
             x:Name="txbTotal"
             Grid.Column="2"
@@ -88,5 +92,28 @@
             VerticalAlignment="Center"
             FontSize="16"
             FontWeight="SemiBold" />
+        <Button 
+            x:Name="btnDeleteBillService"
+            Grid.Column="5"
+                Command="{Binding DeleteBillServiceCommand}"
+            CommandParameter="{Binding ElementName=ucBillService}"
+            Style="{StaticResource MaterialDesignRaisedButton}"
+            ToolTip="Xóa phiếu dịch vụ"
+            Height="30"
+            Background="{x:Null}"
+            BorderBrush="{x:Null}"
+            Foreground="{StaticResource Error}"
+            VerticalAlignment="Center"
+            FocusVisualStyle="{x:Null}"
+            HorizontalAlignment="Right"
+            Padding="0"
+            Margin="0">
+            <materialDesign:PackIcon Kind="DeleteOutline"
+                                     Height="Auto"
+                                     Width="Auto"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch" />
+        </Button>
+
     </Grid>
 </UserControl>

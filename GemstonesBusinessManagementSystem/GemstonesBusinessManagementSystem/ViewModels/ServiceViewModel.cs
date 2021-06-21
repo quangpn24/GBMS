@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
@@ -21,6 +23,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private MainWindow mainWindow;
         private ServiceControl selectedUCService;
         List<Service> services = ServiceDAL.Instance.ConvertDBToList();
+        private long price;
+        public long Price { get => price; set => price = value; }
 
         //UC Service
         public ICommand OpenUpdateWindowCommand { get; set; }
@@ -39,6 +43,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //AddService Window
         public ICommand AddServiceCommand { get; set; }
         public ICommand ExitCommand { get; set; }
+        public ICommand SeparateThousandsCommand { get; set; }
+
         public ServiceViewModel()
         {
             //UC Service  - AddService Window
@@ -56,12 +62,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             RestoreServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => RestoreService(parameter));
             FilterServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => FilterService(parameter));
             SortServiceCommand = new RelayCommand<MainWindow>((parameter) => true, (parameter) => SortService(parameter));
+            SeparateThousandsCommand = new RelayCommand<TextBox>((parameter) => true, (parameter) => SeparateThousands(parameter));
+
         }
         //UC Service  - AddService Window
         public void OpenUpdateWindow(ServiceControl uCService)
         {
             selectedUCService = uCService;
             AddServiceWindow addService = new AddServiceWindow();
+            Binding binding = BindingOperations.GetBinding(addService.txtNameOfService, TextBox.TextProperty);
+            binding.ValidationRules.Clear();
             addService.txtIdService.Text = uCService.txbSerial.Text;
             oldName = addService.txtNameOfService.Text = uCService.txbName.Text;
             addService.txtPriceOfService.Text = uCService.txbPrice.Text;
@@ -78,7 +88,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (!ServiceDAL.Instance.IsExisted(addServiceWindow.txtNameOfService.Text)) // kiểm tra tên dịch vụ mới
                     {
-                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
+                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, ConvertToNumber(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.Add(service))
                         {
                             MessageBox.Show("Thành công!");
@@ -112,7 +122,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (!(ServiceDAL.Instance.IsExisted(addServiceWindow.txtNameOfService.Text) && oldName != addServiceWindow.txtNameOfService.Text))
                     {
-                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, long.Parse(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
+                        Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, ConvertToNumber(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.Update(service))
                         {
                             addServiceWindow.Close();
@@ -197,7 +207,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 ServiceControl uCService = new ServiceControl();
                 uCService.txbSerial.Text = AddPrefix("DV", services[i].IdService);
                 uCService.txbName.Text = services[i].Name;
-                uCService.txbPrice.Text = services[i].Price.ToString();
+                uCService.txbPrice.Text = SeparateThousands(services[i].Price.ToString());
                 uCService.txbStatus.Text = services[i].IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                 mainWindow.stkService.Children.Add(uCService);
             }
@@ -223,6 +233,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             AddServiceWindow addServiceWindow = new AddServiceWindow();
             addServiceWindow.txtIdService.Text = AddPrefix("DV", (ServiceDAL.Instance.FindMaxId() + 1));
+            addServiceWindow.txtNameOfService.Text = "";
+            addServiceWindow.txtPriceOfService.Text = "";
             addServiceWindow.ShowDialog();
         }
         public void ExportExcel()

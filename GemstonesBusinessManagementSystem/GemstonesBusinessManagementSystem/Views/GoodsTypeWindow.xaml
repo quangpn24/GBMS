@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
         xmlns:i ="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -197,8 +198,23 @@
                                     Height="40" 
                                     HorizontalContentAlignment="Left"
                                     VerticalContentAlignment="Center" 
-                                    VerticalAlignment="Center" 
-                                    FontWeight="SemiBold" />
+                                    VerticalAlignment="Center"
+                                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                                    FontWeight="SemiBold" >
+                                    <TextBox.Text>
+                                        <Binding 
+                                            Path="Name"
+                                            Source="{StaticResource GoodsType}"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên loại sản phẩm!" />
+                                                <vd:ExistValidation
+                                                    ElementName="GoodsTypeName"
+                                                    ErrorMessage="Tên loại sản phẩm đã tồn tại!" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
                             </Grid>
                             <Grid 
                                 Margin="20,20,20,0"
@@ -229,11 +245,23 @@
                                     BorderThickness="0" 
                                     MaxLines="1"
                                     Margin="0,0,10,0" 
+                                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                     Height="40" 
                                     HorizontalContentAlignment="Left"
                                     VerticalContentAlignment="Center" 
                                     VerticalAlignment="Center" 
-                                    FontWeight="SemiBold" />
+                                    FontWeight="SemiBold" >
+                                    <TextBox.Text>
+                                        <Binding 
+                                            Path="Unit"
+                                            Source="{StaticResource GoodsType}"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập đơn vị tính!" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
                             </Grid>
                             <Grid 
                                 Margin="20,20,20,0"
@@ -267,7 +295,8 @@
                                     Margin="0,0,10,0" 
                                     Height="40" 
                                     HorizontalContentAlignment="Left"
-                                    VerticalContentAlignment="Center" 
+                                    VerticalContentAlignment="Center"
+                                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                     VerticalAlignment="Center" 
                                     FontWeight="SemiBold" >
                                     <i:Interaction.Triggers>
@@ -276,6 +305,17 @@
                                                  MethodName="NumberValidationTextBox" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
+                                    <TextBox.Text>
+                                        <Binding 
+                                            Path="ProfitPercentage"
+                                            Source="{StaticResource GoodsType}"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <vd:NumberValidation ErrorMessageNull="Nhập lợi nhuận!"
+                                                                     ErrorMessage="Vui lòng nhập giá trị số!" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
                                 </TextBox>
                             </Grid>
                         </StackPanel>

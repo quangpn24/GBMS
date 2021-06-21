@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
     mc:Ignorable="d"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -104,12 +105,19 @@
                     Margin="0,0,10,0"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     FontWeight="SemiBold">
                     <TextBox.Text>
                         <Binding 
                             Path="Name"
-                            UpdateSourceTrigger="PropertyChanged"
-                            Mode="OneWayToSource">
+                            Source="{StaticResource Service}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên dịch vụ!" />
+                                <vd:ExistValidation 
+                                    ElementName="ServiceName"
+                                    ErrorMessage="Dịch vụ đã tồn tại" />
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
@@ -171,8 +179,11 @@
                     <TextBox.Text>
                         <Binding 
                             Path="Price"
-                            UpdateSourceTrigger="PropertyChanged"
-                            Mode="OneWayToSource">
+                            Mode="OneWayToSource"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập đơn giá!" />
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>

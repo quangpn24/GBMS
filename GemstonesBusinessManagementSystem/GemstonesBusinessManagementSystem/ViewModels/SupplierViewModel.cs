@@ -90,10 +90,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 switch (main.cboSortSupplier.SelectedIndex)
                 {
                     case 0:
-                        ListSupplierToView = ListSupplierToView.OrderBy(x => long.Parse(x.txbTotal.Text)).ToList();
+                        ListSupplierToView = ListSupplierToView.OrderBy(x => ConvertToNumber(x.txbTotal.Text)).ToList();
                         break;
                     case 1:
-                        ListSupplierToView = ListSupplierToView.OrderByDescending(x => long.Parse(x.txbTotal.Text)).ToList();
+                        ListSupplierToView = ListSupplierToView.OrderByDescending(x => ConvertToNumber(x.txbTotal.Text)).ToList();
                         break;
                     default:
                         break;
@@ -158,7 +158,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 long temp = long.Parse(wdAddSupplier.txtPhoneNumber.Text);
             }
-            catch 
+            catch
             {
                 MessageBox.Show("Số điện thoại không bao gồm chữ cái!");
                 wdAddSupplier.txtPhoneNumber.Focus();
@@ -229,7 +229,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void Init(MainWindow main)
         {
             this.mainWindow = main;
-            main.stkSupplier.Children.Clear(); 
+            main.stkSupplier.Children.Clear();
             ListSupplierToView.Clear();
             currentPage = 1;
             DataTable dt = SupplierDAL.Instance.GetAll();
@@ -242,12 +242,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbAddress.Text = dt.Rows[i].ItemArray[2].ToString().ToString();
                 control.txbPhoneNumber.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbNumOfReceipts.Text = StockReceiptDAL.Instance.NumOfReceiptsBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString();
-                control.txbTotal.Text = StockReceiptDAL.Instance.SumMoneyBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString();
-                total += long.Parse(control.txbTotal.Text);
+                control.txbTotal.Text = SeparateThousands(StockReceiptDAL.Instance.SumMoneyBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString());
+                total += ConvertToNumber(control.txbTotal.Text);
                 ListSupplierToView.Add(control);
             }
             main.txbSupplierQuantity.Text = ListSupplierToView.Count.ToString();
-            main.txbTotalSpentToSupplier.Text = total.ToString();
+            main.txbTotalSpentToSupplier.Text = SeparateThousands(total.ToString());
             LoadSupplierToView(main);
         }
         public void LoadSupplierToView(MainWindow main)

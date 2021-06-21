@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei ="http://schemas.microsoft.com/expression/2010/interactions"
@@ -90,10 +91,22 @@
                     BorderThickness="0" 
                     MaxLines="1"
                     TabIndex="0"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     Foreground="{StaticResource Gray1}" 
                     Margin="0,0,10,0" 
                     HorizontalContentAlignment="Left" 
-                    VerticalContentAlignment="Center"/>
+                    VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding 
+                            Path="CustomerName"
+                            Source="{StaticResource Customer}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên khách hàng!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </Grid>
             <Grid 
                 Margin="0,20,0,0" 
@@ -126,6 +139,7 @@
                     BorderThickness="0"
                     MaxLines="1" 
                     TabIndex="6"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     Foreground="{StaticResource Gray1}"
                     Padding="0" 
                     Margin="0,0,10,0" 
@@ -133,6 +147,16 @@
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding 
+                            Path="PhoneNumber"
+                            Source="{StaticResource Customer}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewTextInput" >
                             <ei:CallMethodAction TargetObject="{Binding }" MethodName="NumberValidationTextBox" />
@@ -160,29 +184,41 @@
                     RadiusY="6"
                     RadiusX="6" 
                     Stroke="{StaticResource Gray2}" />
-                <TextBox
-                    x:Name="txtCMND"
-                    materialDesign:HintAssist.Hint="CMND" 
-                    HorizontalAlignment="Right" 
-                    Width="210"
-                    Height="40"
-                    FontSize="14" 
-                    BorderThickness="0" 
-                    MaxLines="1" 
-                    TabIndex="6"
-                    MaxLength="11"
-                    Foreground="{StaticResource Gray1}"
-                    Padding="0"  
-                    Margin="0,0,10,0" 
-                    Cursor="IBeam"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Left" 
-                    VerticalContentAlignment="Center"/>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewTextInput" >
-                        <ei:CallMethodAction TargetObject="{Binding }" MethodName="NumberValidationTextBox" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                <TextBox x:Name="txtCMND"
+                         materialDesign:HintAssist.Hint="CMND"
+                         HorizontalAlignment="Right"
+                         Width="210"
+                         Height="40"
+                         FontSize="14"
+                         BorderThickness="0"
+                         MaxLines="1"
+                         TabIndex="6"
+                         MaxLength="11"
+                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                         Foreground="{StaticResource Gray1}"
+                         Padding="0"
+                         Margin="0,0,10,0"
+                         Cursor="IBeam"
+                         VerticalAlignment="Center"
+                         HorizontalContentAlignment="Left"
+                         VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding
+                            Path="IdNumber"
+                            Source="{StaticResource Customer}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập chứng minh nhân dân!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewTextInput">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
             </Grid>
             <Grid 
                 Margin="0,20,0,0"
@@ -213,13 +249,25 @@
                     BorderThickness="0" 
                     MaxLines="1" 
                     TabIndex="6"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     Foreground="{StaticResource Gray1}"
                     Padding="0"  
                     Margin="0,0,10,0" 
                     Cursor="IBeam"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Left" 
-                    VerticalContentAlignment="Center" />
+                    VerticalContentAlignment="Center" >
+                    <TextBox.Text>
+                        <Binding 
+                            Path="Address"
+                            Source="{StaticResource Customer}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </Grid>
             <StackPanel 
                 Margin="0,30,0,0" 
