@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
         xmlns:i ="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei ="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         mc:Ignorable="d"
-        Title="GoodsTypeWindow"
+        Title="Nhập hàng"
         Height="800"
         WindowStartupLocation="CenterScreen"
         DataContext="{StaticResource ImportGoodsVM}"
@@ -17,13 +18,12 @@
         Width="1500">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
-            <i:InvokeCommandAction Command="{Binding HidenGridDiscountCommand}"
+            <i:InvokeCommandAction Command="{Binding HiddenGridDiscountCommand}"
                                        CommandParameter="{Binding ElementName=wdImportGoods}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid
         x:Name="grdImportGoods"
-        Grid.Row="1" 
         Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -57,7 +57,7 @@
                         Foreground="{StaticResource Black1}"
                         Kind="KeyboardBackspace"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"  />
+                        VerticalAlignment="Center"/>
                 </Button>
                 <TextBlock 
                     Text="Nhập hàng" 
@@ -528,7 +528,7 @@
             Margin="0,0,200,0">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="LostFocus">
-                    <i:InvokeCommandAction Command="{Binding HidenGridDiscountCommand}"
+                    <i:InvokeCommandAction Command="{Binding HiddenGridDiscountCommand}"
                                        CommandParameter="{Binding ElementName=wdImportGoods}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
@@ -560,6 +560,10 @@
                 HorizontalContentAlignment="Right" 
                 Padding="0,4,5,4">
                 <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewTextInput" >
+                        <ei:CallMethodAction TargetObject="{Binding }" 
+                                                 MethodName="NumberValidationTextBox" />
+                    </i:EventTrigger>
                     <i:EventTrigger EventName="TextChanged">
                         <i:InvokeCommandAction Command="{Binding ChangeDiscountCommand}"
                                                CommandParameter="{Binding ElementName=wdImportGoods}"/>

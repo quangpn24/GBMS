@@ -14,8 +14,6 @@ using System.Windows.Input;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
-
-
     class BusinessServiceViewModel : BaseViewModel
     {
         private MainWindow mainWindow;
@@ -187,7 +185,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Vui lòng chọn khách hàng!");
                 return;
             }
-            isPaidMoney = CheckPaidMoney(mainWindow);
+            double prepaymentPercent = double.Parse(ParameterDAL.Instance.GetPrepayment().Value) / 100;
+            isPaidMoney = CheckPaidMoney(mainWindow, prepaymentPercent);
             isOver = IsOverMoney(mainWindow);
             if (isOver)
             {
@@ -225,6 +224,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         customerVM.LoadCustomerToView(mainWindow, 0);
                         mainWindow.stkPickedService.Children.Clear();
                         TotalMoney = TotalPaidMoney = TotalServices = 0;
+                        //Update tab home
+                        ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+                        reportVM.Init(mainWindow);
                     }
                     else
                     {
@@ -238,17 +240,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                MessageBox.Show("Vui lòng nhập tiền đặt cọc >= 50% tiền thanh toán trong từng dịch vụ!");
+                MessageBox.Show(string.Format("Vui lòng nhập tiền đặt cọc >= {0}% tiền thanh toán trong từng dịch vụ!", prepaymentPercent * 100));
             }
         }
-        public bool CheckPaidMoney(MainWindow mainWindow)
+        public bool CheckPaidMoney(MainWindow mainWindow, double prepaymentPercent)
         {
             for (int i = 0; i < mainWindow.stkPickedService.Children.Count; i++)
             {
                 SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
                 if (!String.IsNullOrEmpty(temp.txtPaidMoney.Text))
                 {
-                    if (double.Parse(temp.txtPaidMoney.Text) / double.Parse(temp.txtTotal.Text) < 0.5)
+                    if (double.Parse(temp.txtPaidMoney.Text) / double.Parse(temp.txtTotal.Text) < prepaymentPercent)
                     {
                         return false;
                     }
@@ -282,6 +284,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billServiceTemplate.txbName.Text = mainWindow.txbNameCustomer.Text;
             billServiceTemplate.txbAddress.Text = mainWindow.txbAddressCustomer.Text;
             billServiceTemplate.txbPhoneNumber.Text = mainWindow.txbPhoneCustomer.Text;
+            billServiceTemplate.txbEmployeeName.Text = CurrentAccount.Name;
             billServiceTemplate.txbId.Text = mainWindow.txbIdBillService.Text;
             billServiceTemplate.txbDate.Text = DateTime.Now.ToShortDateString();
             billServiceTemplate.txbTotal.Text = mainWindow.txbTotalBillService.Text;

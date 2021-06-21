@@ -47,7 +47,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
-
         public DataTable GetByIdReceipt(int idReceipt)
         {
             try
@@ -75,7 +74,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "select sum(importPrice) from StockReceiptInfo where idStockReceipt = " + idReceipt;
+                string query = "select sum(importPrice*quantity) from StockReceiptInfo where idStockReceipt = " + idReceipt;
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();

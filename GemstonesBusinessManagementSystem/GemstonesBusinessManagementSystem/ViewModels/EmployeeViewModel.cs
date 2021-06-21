@@ -556,7 +556,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             mainWindow.cboFilterPosition.SelectedIndex = i;
         }
-        void Search(MainWindow mainWindow)
+        public void Search(MainWindow mainWindow)
         {
             mainWindow.cboSortEmployee.SelectedIndex = -1;
             mainWindow.cboFilterPosition.SelectedIndex = -1;

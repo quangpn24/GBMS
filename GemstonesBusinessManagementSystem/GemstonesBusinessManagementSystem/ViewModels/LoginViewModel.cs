@@ -91,15 +91,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MainWindow main = new MainWindow();
                 CurrentAccount.IdAccount = acc.IdAccount;
                 CurrentAccount.Type = acc.Type;
-                if (acc.Type != 0)
+                Employee employee = EmployeeDAL.Instance.GetByIdAccount(acc.IdAccount.ToString());
+                CurrentAccount.IdEmployee = employee.IdEmployee;
+                CurrentAccount.Name = employee.Name;
+                CurrentAccount.ImageFile = employee.ImageFile;
+                CurrentAccount.IdPosition = employee.IdPosition;
+                DisplayInfo(main);
+                if (CurrentAccount.IdPosition != 0) // admin
                 {
-                    Employee employee = EmployeeDAL.Instance.GetByIdAccount(acc.IdAccount.ToString());
                     CurrentAccount.PositionDetails = PositionDetailDAL.Instance.GetListByPosition(employee.IdPosition);
-                    CurrentAccount.IdEmployee = employee.IdEmployee;
-                    CurrentAccount.Name = employee.Name;
-                    CurrentAccount.ImageFile = employee.ImageFile;
-                    CurrentAccount.IdPosition = employee.IdPosition;
-                    DisplayInfo(main);
                     SetRole(main);
                 }
                 parameter.Hide();

@@ -61,6 +61,12 @@
     <Reference Include="K4os.Hash.xxHash, Version=1.0.6.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
       <HintPath>..\packages\K4os.Hash.xxHash.1.0.6\lib\net46\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.0.0\lib\net452\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -149,16 +155,19 @@
     <Compile Include="DAL\GoodsDAL.cs" />
     <Compile Include="DAL\GoodsTypeDAL.cs" />
     <Compile Include="DAL\MembershipsTypeDAL.cs" />
+    <Compile Include="DAL\ParameterDAL.cs" />
+    <Compile Include="DAL\ReportDAL.cs" />
     <Compile Include="DAL\PermissionDAL.cs" />
     <Compile Include="DAL\PositionDetailDAL.cs" />
-    <Compile Include="Models\EmployeePosition.cs" />
-    <Compile Include="Models\MembershipsType.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Authorizations.cs" />
     <Compile Include="Models\BillInfo.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Bill.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeePosition.cs" />
+    <Compile Include="Models\MembershipsType.cs" />
+    <Compile Include="Models\Parameter.cs" />
     <Compile Include="Models\Goods.cs" />
     <Compile Include="Models\GoodsType.cs" />
     <Compile Include="Models\Permission.cs" />
@@ -182,6 +191,9 @@
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Resources\Template\StockReceiptTemplate.xaml.cs">
       <DependentUpon>StockReceiptTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UserControls\BestSellerControl.xaml.cs">
+      <DependentUpon>BestSellerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserControls\PermissionControl.xaml.cs">
       <DependentUpon>PermissionControl.xaml</DependentUpon>
@@ -282,6 +294,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\ReportViewModel.cs" />
+    <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
     <Compile Include="ViewModels\SaleViewModel.cs" />
     <Compile Include="ViewModels\StockViewModel.cs" />
@@ -301,6 +315,12 @@
     </Compile>
     <Compile Include="Views\AddSupplierWindow.xaml.cs">
       <DependentUpon>AddSupplierWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChangePasswordWindow.xaml.cs">
+      <DependentUpon>ChangePasswordWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PersonalInfoWindow.xaml.cs">
+      <DependentUpon>PersonalInfoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ForgotPasswordWindow.xaml.cs">
       <DependentUpon>ForgotPasswordWindow.xaml</DependentUpon>
@@ -363,8 +383,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\TextStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\BillInfoControl.xaml">
       <SubType>Designer</SubType>
@@ -379,6 +399,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\UserControls\CustomerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\UserControls\BestSellerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -497,6 +521,14 @@
     <Page Include="Views\AddCustomerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ChangePasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PersonalInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ForgotPasswordWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

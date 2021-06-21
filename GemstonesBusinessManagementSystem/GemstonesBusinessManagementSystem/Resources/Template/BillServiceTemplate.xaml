@@ -221,7 +221,6 @@
                     <TextBlock 
                         x:Name="txbEmployeeName"
                         TextWrapping="Wrap"
-                        Text="QuangPn"
                         FontWeight="SemiBold"
                         Margin="0"
                         Foreground="{DynamicResource Gray1}"

@@ -26,6 +26,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private string imageFileName;
         private MainWindow mainWindow;
         private int currentPage; // trang dau tien la trang 1
+        private string oldGoods;
 
         private GoodsType selectedGoodsType = new GoodsType();
         public GoodsType SelectedGoodsType { get => selectedGoodsType; set { selectedGoodsType = value; OnPropertyChanged("SelectedGoodsType"); } }
@@ -40,6 +41,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand ExitCommand { get; set; }
         public ICommand SelectImageCommand { get; set; }
+        public ICommand SeparateThousandsCommand { get; set; }
 
 
         //open window
@@ -70,6 +72,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SaveCommand = new RelayCommand<AddGoodsWindow>(p => true, p => AddOrUpdate(p));
             ExitCommand = new RelayCommand<AddGoodsWindow>(p => true, p => p.Close());
             SelectImageCommand = new RelayCommand<Grid>(p => true, p => SelectImage(p));
+            SeparateThousandsCommand = new RelayCommand<TextBox>(p => true, p => SeparateThousands(p));
 
             AddGoodsCommand = new RelayCommand<MainWindow>(p => true, p => OpenAddGoodsWindow(p));
             EditGoodsCommand = new RelayCommand<GoodsControl>(p => true, p => OpenEditGoodsWindow(p));
@@ -170,7 +173,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbImportPrice.Text = importPrice.ToString();
-                control.txbSalesPrice.Text = importPrice % 100 == 0 ? ((importPrice * (1 + profitPercentage))).ToString() : ((long)(importPrice * (1 + profitPercentage) + 1)).ToString();
+                control.txbSalesPrice.Text = Math.Ceiling(importPrice * (1 + profitPercentage)).ToString();
                 control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbGoodsType.Text = goodsType.Name;
                 control.txbUnit.Text = goodsType.Unit;
@@ -234,11 +237,23 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int indexSort = main.cboSortGoods.SelectedIndex;
             SearchGoods(main);
             main.cboSortGoods.SelectedIndex = indexSort;
+            ImportGoodsViewModel importVM = (ImportGoodsViewModel)main.grdImport.DataContext;
+            importVM.SetItemSource();
+
+            //Update tab home 
+            ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+            reportVM.Init(main);
+            //update sale
+            SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+            saleVM.Search(mainWindow);
+            saleVM.LoadDefault(mainWindow);
+            mainWindow.stkSelectedGoods.Children.Clear();
         }
         void OpenEditGoodsWindow(GoodsControl control)
         {
             isUpdate = true;
             goodsControl = control;
+            oldGoods = control.txbName.Text;
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             Goods goods = GoodsDAL.Instance.GetById(control.txbId.Text.Remove(0, 2));
             addGoodsWd.txtIdGoods.Text = control.txbId.Text;
@@ -264,7 +279,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void OpenImportGoodsWindow(MainWindow main)
         {
-            
+            ImportGoodsViewModel importVM = (ImportGoodsViewModel)main.grdImport.DataContext;
+            importVM.OpenImportGoodsWindow(main);
         }
         void OpenAddGoodsWindow(MainWindow wdMain)
         {
@@ -313,8 +329,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             table.Columns.Add("Loại sản phẩm", typeof(string));
             table.Columns.Add("Số lượng", typeof(int));
             table.Columns.Add("Đơn vị tính", typeof(string));
-            table.Columns.Add("Giá mua", typeof(long));
-            table.Columns.Add("Giá bán", typeof(long));
+            table.Columns.Add("Giá mua", typeof(string));
+            table.Columns.Add("Giá bán", typeof(string));
 
 
             for (int i = 0; i < listControlToView.Count; i++)
@@ -375,6 +391,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 addGoodsWd.cboGoodsType.Focus();
                 return;
             }
+            if (string.IsNullOrEmpty(addGoodsWd.txtImportPrice.Text))
+            {
+                MessageBox.Show("Vui lòng nhập giá sản phẩm", "Error");
+                addGoodsWd.txtImportPrice.Focus();
+                return;
+            }
             byte[] imgByteArr;
 
             ImageBrush imageBrush = (ImageBrush)addGoodsWd.grdSelectImg.Background;
@@ -384,16 +406,30 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
-
+            if ((!isUpdate || addGoodsWd.txtName.Text != oldGoods) && GoodsDAL.Instance.IsExisted(addGoodsWd.txtName.Text))
+            {
+                MessageBox.Show("Sản phẩm đã tồn tại!");
+                addGoodsWd.txtName.Focus();
+                return;
+            }
             Goods newGoods = new Goods(ConvertToID(addGoodsWd.txtIdGoods.Text), addGoodsWd.txtName.Text,
-                             long.Parse(addGoodsWd.txtImportPrice.Text), 0, selectedGoodsType.IdGoodsType, imgByteArr, false);
+                             ConvertToNumber(addGoodsWd.txtImportPrice.Text), 0, selectedGoodsType.IdGoodsType, imgByteArr, false);
             if (isUpdate)
             {
-                newGoods.ImportPrice = long.Parse(addGoodsWd.txtImportPrice.Text);
-                newGoods.Quantity = int.Parse(goodsControl.txbQuantity.Text);
+                newGoods.ImportPrice = ConvertToNumber(addGoodsWd.txtImportPrice.Text);
             }
             GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
-
+            if(isUpdate)
+            {
+                //Update tab home 
+                ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+                reportVM.Init(mainWindow); 
+                //update sale
+                SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+                saleVM.Search(mainWindow);
+                saleVM.LoadDefault(mainWindow);
+                mainWindow.stkSelectedGoods.Children.Clear();
+            }    
             int indexSort = mainWindow.cboSortGoods.SelectedIndex;
             int indexFilter = mainWindow.cboFilterType.SelectedIndex;
 

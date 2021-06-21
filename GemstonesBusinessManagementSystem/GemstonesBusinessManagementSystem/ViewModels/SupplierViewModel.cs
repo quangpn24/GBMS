@@ -154,7 +154,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdAddSupplier.txtPhoneNumber.Focus();
                 return;
             }
-
+            try
+            {
+                long temp = long.Parse(wdAddSupplier.txtPhoneNumber.Text);
+            }
+            catch 
+            {
+                MessageBox.Show("Số điện thoại không bao gồm chữ cái!");
+                wdAddSupplier.txtPhoneNumber.Focus();
+                return;
+            }
             Supplier newSupplier = new Supplier(ConvertToID(wdAddSupplier.txtId.Text), wdAddSupplier.txtName.Text, wdAddSupplier.txtAddress.Text, wdAddSupplier.txtPhoneNumber.Text);
             if ((!isUpdate || wdAddSupplier.txtName.Text != oldSupplier) && SupplierDAL.Instance.IsExisted(wdAddSupplier.txtName.Text))
             {
@@ -208,8 +217,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 SupplierControl control = new SupplierControl();
                 control.txbId.Text = AddPrefix("NC", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
-                //control.txbImporter.Text = EmployeeDAL.Instance.GetNameByIdAccount(dt.Rows[i].ItemArray[1].ToString());
-                //Chua lam current account nen tam de id nha
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbAddress.Text = dt.Rows[i].ItemArray[2].ToString().ToString();
                 control.txbPhoneNumber.Text = dt.Rows[i].ItemArray[3].ToString();
@@ -231,8 +238,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 SupplierControl control = new SupplierControl();
                 control.txbId.Text = AddPrefix("NC", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
-                //control.txbImporter.Text = EmployeeDAL.Instance.GetNameByIdAccount(dt.Rows[i].ItemArray[1].ToString());
-                //Chua lam current account nen tam de id nha
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbAddress.Text = dt.Rows[i].ItemArray[2].ToString().ToString();
                 control.txbPhoneNumber.Text = dt.Rows[i].ItemArray[3].ToString();
@@ -288,7 +293,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             table.Columns.Add("Địa chỉ", typeof(string));
             table.Columns.Add("Số điện thoại", typeof(string));
             table.Columns.Add("Số đơn hàng", typeof(int));
-            table.Columns.Add("Tổng tiền", typeof(long));
+            table.Columns.Add("Tổng tiền", typeof(string));
 
             for (int i = 0; i < ListSupplierToView.Count; i++)
             {

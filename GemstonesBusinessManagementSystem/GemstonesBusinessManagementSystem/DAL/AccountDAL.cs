@@ -44,17 +44,6 @@ namespace GemstonesBusinessManagementSystem.DAL
         {
 
         }
-        public bool LoginAdmin()
-        {
-            //passWord = Encryptor.Instance.Encrypt(passWord);
-            Account account = new Account();          
-            string query = string.Format("select * from Account where idAccount = '{0}', username = '{1}', password = '{2}', type = '{3}'",
-                account.IdAccount, account.Username, account.Password, account.Type);
-            
-            DataTable result = new DataTable();
-            
-            return result.Rows.Count > 0;
-        }
         public List<Account> ConvertDBToList()
         {
             DataTable dt = new DataTable();
@@ -210,5 +199,25 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
         }
 
+        public string GetPasswordById(string id)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "select password from Account where idAccount = " + id;
+                MySqlCommand cmd = new MySqlCommand(queryString, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return reader.GetString(0);
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }

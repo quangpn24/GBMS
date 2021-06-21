@@ -22,6 +22,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     class ImportGoodsViewModel : BaseViewModel
     {
+        private ReceiptControl checkedItem;
         private long totalPrice = 0;
         public long TotalPrice { get => totalPrice; set { totalPrice = value; OnPropertyChanged(); } }
         private long moneyToPay = 0;
@@ -92,7 +93,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //other
         public ICommand BackCommand { get; set; }
         public ICommand SelectionChangedGoodsTypeCommand { get; set; } // cboGoodsType
-        public ICommand HidenGridDiscountCommand { get; set; }
+        public ICommand HiddenGridDiscountCommand { get; set; }
         public ImportGoodsViewModel()
         {
             SelectGoodsCommand = new RelayCommand<SearchGoodsControl>(p => true, p => SelectGoodsResult(p));
@@ -113,7 +114,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             SelectionChangedGoodsTypeCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => SelectGoodsType(p));
             BackCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => p.Close());
-            HidenGridDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => HidenGridDiscount(p));
+            HiddenGridDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => HiddenGridDiscount(p));
 
 
             LoadReceiptCommand = new RelayCommand<MainWindow>(p => true, p => Init(p));
@@ -135,7 +136,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.grdDiscount.Visibility = Visibility.Visible;
             window.txtDiscount.Focus();
         }
-        void HidenGridDiscount(ImportGoodsWindow window)
+        void HiddenGridDiscount(ImportGoodsWindow window)
         {
             if (!window.grdDiscount.IsMouseOver)
             {
@@ -166,9 +167,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 wdImportGoods.txtDiscount.Text = "0";
             }
+            if(isVND)
+            {
+                SeparateThousands(wdImportGoods.txtDiscount);
+            }    
             if (isVND & isTexboxVND)
             {
-                VndDiscount = long.Parse(wdImportGoods.txtDiscount.Text);
+                VndDiscount = ConvertToNumber(wdImportGoods.txtDiscount.Text);
                 if (VndDiscount > long.Parse(wdImportGoods.txbTotalGoodsPrice.Text))
                 {
                     wdImportGoods.txtDiscount.Text = wdImportGoods.txbTotalGoodsPrice.Text;
@@ -184,7 +189,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     wdImportGoods.txtDiscount.Text = "100";
                     percentDiscount = 100;
                 }
-                VndDiscount = long.Parse(Math.Round(percentDiscount * double.Parse(wdImportGoods.txbTotalGoodsPrice.Text) / 100).ToString());
+                VndDiscount = long.Parse(Math.Ceiling(percentDiscount * double.Parse(wdImportGoods.txbTotalGoodsPrice.Text) / 100).ToString());
             }
             MoneyToPay = TotalPrice - long.Parse(vndDiscount.ToString());
         }
@@ -202,7 +207,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.txtDiscount.SelectionLength = window.txtDiscount.Text.Length;
         }
         //
-
         void HandleFilter(MainWindow main)
         {
             //Gan lai list ban dau
@@ -216,6 +220,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 listReceiptToView = listReceiptToView.FindAll(x => x.txbSupplier.Text == selectedSupplier.Name);
                 currentPage = 1;
             }
+            if(main.dpkStartDate.SelectedDate > main.dpkEndDate.SelectedDate)
+            {
+                MessageBox.Show("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+                main.dpkStartDate.SelectedDate = null;
+                main.dpkEndDate.SelectedDate = null;
+                return;
+            }    
             bool cs = main.dpkStartDate.SelectedDate != null; // kiem tra ngay bat dau co null hay khong
             bool ce = main.dpkEndDate.SelectedDate != null; //kiem tra ngay ket thuc co null hay khong
             if (cs && ce)
@@ -238,9 +249,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 ReceiptControl control = new ReceiptControl();
                 control.txbId.Text = AddPrefix("PN", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
-                //control.txbImporter.Text = EmployeeDAL.Instance.GetNameByIdAccount(dt.Rows[i].ItemArray[1].ToString());
-                //Chua lam current account nen tam de id nha
-                control.txbImporter.Text = dt.Rows[i].ItemArray[1].ToString();
+                control.txbImporter.Text = CurrentAccount.Name;
                 control.txbDateReceipt.Text = DateTime.Parse(dt.Rows[i].ItemArray[2].ToString()).ToString("dd/MM/yyyy");
                 control.txbMoneyToPay.Text = dt.Rows[i].ItemArray[3].ToString();
                 control.txbSupplier.Text = SupplierDAL.Instance.GetNameById(dt.Rows[i].ItemArray[5].ToString());
@@ -325,6 +334,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.txbMoneyToPayGoods.Text = control.txbMoneyToPay.Text;
             mainWindow.txbTotalMoneyGoods.Text = Total.ToString();
             mainWindow.txbDiscount.Text = (Total - long.Parse(control.txbMoneyToPay.Text)).ToString();
+
+            if (checkedItem != null) // dua lai mau xam
+            {
+                checkedItem.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                checkedItem.txbDateReceipt.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                checkedItem.txbImporter.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                checkedItem.txbSupplier.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                checkedItem.txbMoneyToPay.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+            }
+            // chuyen sang mau duoc chon
+            control.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbDateReceipt.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbImporter.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbSupplier.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbMoneyToPay.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            checkedItem = control;
         }
         public void LoadReceiptToView(MainWindow main)
         {
@@ -414,7 +439,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.wdImportGoods = newWindow;
             newWindow.ShowDialog();
             HandleFilter(mainWindow);
-            main.Show();
+            HomeViewModel homeVM = (HomeViewModel)main.DataContext;
+            homeVM.Uid = "21";
+            homeVM.Navigate(main);
+            main.ShowDialog();
         }
 
         void LostFocusSearchBar(ImportGoodsWindow wdImportGoods)
@@ -426,17 +454,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             wdImportGoods.txtSearch.SelectionStart = 0;
             wdImportGoods.txtSearch.SelectionLength = this.wdImportGoods.txtSearch.Text.Length;
         }
-
         void PrintReceipt(ImportGoodsWindow wdImportGoods)
         {
             StockReceiptTemplate receiptTemplate = new StockReceiptTemplate();
             receiptTemplate.txbIdStockReceipt.Text = wdImportGoods.txbIdReceipt.Text;
             receiptTemplate.txbDate.Text = wdImportGoods.txbDate.Text;
             receiptTemplate.txbSupplier.Text = wdImportGoods.cboSupplier.Text;
-            //receiptTemplate.txbImporter.Text = 1: current account
+            receiptTemplate.txbImporter.Text = CurrentAccount.Name;
             receiptTemplate.txbTotal.Text = wdImportGoods.txbTotalGoodsPrice.Text;
             receiptTemplate.txbDiscount.Text = wdImportGoods.btnDiscount.Content.ToString();
             receiptTemplate.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
+
+            List<Parameter> parameters = ParameterDAL.Instance.GetData();
+            receiptTemplate.txbStoreName.Text = parameters[1].Value;
+            receiptTemplate.txbStoreAddress.Text = parameters[2].Value;
+            receiptTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
 
             //Load
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
@@ -500,12 +532,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     PrintReceipt(wdImportGoods);
                 }
-
                 //Add vao danh sach phieu nhap
                 ReceiptControl receiptControl = new ReceiptControl();
                 receiptControl.txbId.Text = wdImportGoods.txbIdReceipt.Text;
                 receiptControl.txbDateReceipt.Text = wdImportGoods.txbDate.Text;
-                //receiptControl.txbImporter.Text = cureent account
+                receiptControl.txbImporter.Text = CurrentAccount.Name;
                 receiptControl.txbSupplier.Text = SelectedSupplier.Name;
                 receiptControl.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
                 this.listReceiptToView.Add(receiptControl);
@@ -525,7 +556,26 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 mainWindow.txbTotalSpentToSupplier.Text = (long.Parse(mainWindow.txbTotalSpentToSupplier.Text) + long.Parse(wdImportGoods.txbMoneyToPay.Text)).ToString();
                 TotalPrice = 0;
                 MoneyToPay = 0;
-                wdImportGoods.Close();
+
+                //Update tab home 
+                ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
+                reportVM.Init(mainWindow);
+
+                //Clean
+                selectedSupplier = null;
+                wdImportGoods.cboSupplier.Text = null;
+                wdImportGoods.txtSearch.Text = null;
+                TotalPrice = 0;
+                MoneyToPay = 0;
+                int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
+                if (idStockReceiptMax == -1)
+                {
+                    MessageBox.Show("Lỗi hệ thống!");
+                    return;
+                }
+                wdImportGoods.txbIdReceipt.Text = AddPrefix("PN", idStockReceiptMax + 1);
+                wdImportGoods.txbDate.Text = DateTime.Today.ToString("dd/MM/yyyy");
+                wdImportGoods.stkImportGoods.Children.Clear();
             }
             else
             {
@@ -699,6 +749,5 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdImportGoods.txbNoResult.Visibility = Visibility.Visible;
             }
         }
-
     }
 }

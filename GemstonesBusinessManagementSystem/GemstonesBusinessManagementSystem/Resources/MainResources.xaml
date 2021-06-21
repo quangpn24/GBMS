@@ -16,5 +16,7 @@
     <viewmodels:StockViewModel x:Key="StockVM" />
     <viewmodels:SupplierViewModel x:Key="SupplierVM" />
     <viewmodels:BillServiceViewModel x:Key="BillServiceVM" />
+    <viewmodels:ReportViewModel x:Key="ReportVM" />
+    <viewmodels:SettingViewModel x:Key="SettingVM"/>
     <viewmodels:RoleViewModel x:Key="RoleVM" />
 </ResourceDictionary>

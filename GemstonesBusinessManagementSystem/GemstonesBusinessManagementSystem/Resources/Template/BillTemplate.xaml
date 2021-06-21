@@ -427,14 +427,14 @@
                     FontWeight="Black" 
                     Foreground="{DynamicResource Black2}"/>
                 <TextBlock 
-                    x:Name="txbName"
+                    x:Name="txbStoreName"
                     TextWrapping="Wrap" 
                     Text="Cửa hàng" 
                     FontWeight="Bold" 
                     Margin="0,2,0,0" 
                     Foreground="{DynamicResource Black1}"/>
                 <TextBlock 
-                    x:Name="txbAddress"
+                    x:Name="txbStoreAddress"
                     TextTrimming="WordEllipsis"
                     TextWrapping="Wrap" 
                     FontWeight="SemiBold"
@@ -442,7 +442,7 @@
                     Foreground="{DynamicResource Black2}" 
                     MaxHeight="48" />
                 <TextBlock 
-                    x:Name="txbPhoneNumber"
+                    x:Name="txbStorePhoneNumber"
                     TextWrapping="Wrap" 
                     FontWeight="SemiBold"
                     Margin="0"

@@ -27,13 +27,13 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "insert into StockReceipt(idStockReceipt, idAccount, dateTimeStockReceipt, total, discount, idSupplier) "
-                    + "values(@idStockReceipt,@idAccount, str_to_date(@dateTimeStockReceipt,'%d/%m/%Y'), @total, @discount, @idSupplier)";
+                string query = "insert into StockReceipt(idStockReceipt, idAccount, receiptDate, total, discount, idSupplier) "
+                    + "values(@idStockReceipt,@idAccount, str_to_date(@receiptDate,'%d/%m/%Y'), @total, @discount, @idSupplier)";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 string s = stockReceipt.Date.ToString("dd/MM/yyyy");
                 cmd.Parameters.AddWithValue("@idStockReceipt", stockReceipt.Id.ToString());
                 cmd.Parameters.AddWithValue("@idAccount", stockReceipt.IdAccount.ToString());
-                cmd.Parameters.AddWithValue("@dateTimeStockReceipt", s);
+                cmd.Parameters.AddWithValue("@receiptDate", s);
                 cmd.Parameters.AddWithValue("@total", stockReceipt.TotalMoney.ToString());
                 cmd.Parameters.AddWithValue("@discount", stockReceipt.Discount.ToString());
                 cmd.Parameters.AddWithValue("@idSupplier", stockReceipt.IdSupplier.ToString());
@@ -149,8 +149,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string queryStr = String.Format("select idGoods, sum(quantity) " +
                     "from stockreceipt join stockreceiptinfo " +
                     "on stockreceipt.idStockReceipt = stockreceiptinfo.idStockReceipt " +
-                    "where year(dateTimeStockReceipt) < {0} or " +
-                    "(year(dateTimeStockReceipt) = {0} and month(dateTimeStockReceipt) < {1}) " +
+                    "where year(receiptDate) < {0} or " +
+                    "(year(receiptDate) = {0} and month(receiptDate) < {1}) " +
                     "and idGoods in (select idGoods from goods) " +
                     "group by idGoods", year, month);
 
@@ -159,7 +159,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     queryStr = String.Format("select idGoods, sum(quantity) " +
                         "from stockreceipt join stockreceiptinfo " +
                         "on stockreceipt.idStockReceipt = stockreceiptinfo.idStockReceipt " +
-                        "where year(dateTimeStockReceipt) < {0} " +
+                        "where year(receiptDate) < {0} " +
                         "and idGoods in (select idGoods from goods) " +
                         "group by idGoods", year);
                 }
@@ -196,7 +196,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string queryStr = String.Format("select idGoods, sum(quantity) " +
                     "from stockreceipt join stockreceiptinfo " +
                     "on stockreceipt.idStockReceipt = stockreceiptinfo.idStockReceipt " +
-                    "where year(dateTimeStockReceipt) = {0} and month(dateTimeStockReceipt) = {1} " +
+                    "where year(receiptDate) = {0} and month(receiptDate) = {1} " +
                     "and idGoods in (select idGoods from goods) " +
                     "group by idGoods", year, month);
                 MySqlCommand cmd = new MySqlCommand(queryStr, conn);

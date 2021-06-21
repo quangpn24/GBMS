@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
         xmlns:i ="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei ="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         mc:Ignorable="d"
@@ -256,7 +257,6 @@
                                 <TextBox 
                                     x:Name="txtProfitPercentage"
                                     Cursor="Arrow"
-                                    MaxLength="2"
                                     HorizontalAlignment="Right"  
                                     materialDesign:HintAssist.Hint="Tính theo đơn vị %"
                                     Width="180" 
@@ -269,7 +269,14 @@
                                     HorizontalContentAlignment="Left"
                                     VerticalContentAlignment="Center" 
                                     VerticalAlignment="Center" 
-                                    FontWeight="SemiBold" />
+                                    FontWeight="SemiBold" >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewTextInput" >
+                                            <ei:CallMethodAction TargetObject="{Binding }" 
+                                                 MethodName="NumberValidationTextBox" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
                             </Grid>
                         </StackPanel>
                         <StackPanel 

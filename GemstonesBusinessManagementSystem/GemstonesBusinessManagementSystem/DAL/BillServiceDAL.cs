@@ -90,7 +90,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 OpenConnection();
                 string start = startDate.ToString("yyyy-MM-dd");
-                string end = endDate.AddDays(1).ToString("yyyy-MM-dd");
+                string end = endDate.ToString("yyyy-MM-dd");
                 string queryString = String.Format("SELECT * FROM BillService WHERE createdDate >= '{0}' and createdDate<='{1}';  ", start, end);
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
