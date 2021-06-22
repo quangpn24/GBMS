@@ -244,6 +244,10 @@
                             <ei:CallMethodAction TargetObject="{Binding }"
                                                  MethodName="NumberValidationTextBox" />
                         </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewKeyDown">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
                         <i:EventTrigger EventName="TextChanged">
                             <i:InvokeCommandAction Command="{Binding SeparateThousandsCommand}"
                                                    CommandParameter="{Binding ElementName=txtImportPrice}" />

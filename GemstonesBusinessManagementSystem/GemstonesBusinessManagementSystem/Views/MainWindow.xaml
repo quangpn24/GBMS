@@ -44,9 +44,9 @@
                 Height="50" 
                 VerticalAlignment="Top"/>
             <TextBlock
+                x:Name="txbStoreName"
                 DataContext="{StaticResource SettingVM}"
                 Style="{StaticResource HeadingText2}" 
-                Text="{Binding StoreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                 HorizontalAlignment="Center" 
                 Margin="0,100,0,0" 
                 VerticalAlignment="Top"/>
@@ -369,7 +369,7 @@
                                 Command="{Binding NavigateCommand}"
                                 CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
-                                Content="Phiếu" >
+                                Content="Phiếu dịch vụ" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
@@ -524,7 +524,7 @@
             </Grid>
             <Grid
                 x:Name="grdHome"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource ReportVM}"
                 Grid.Row="1"
                 Margin="0,20,0,0">
@@ -4834,83 +4834,49 @@
                         Grid.RowSpan="3"
                         Panel.ZIndex="-1" />
                 </Grid>
-                <Grid 
-                    Grid.Row="2">
-                    <!--<TextBlock 
-                        Text="Rows per page:"
-                        Margin="20,0,0,0"
-                        FontSize="12"
-                        TextAlignment="Justify"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left"
-                        Foreground="{DynamicResource Gray2}">
-                    </TextBlock>
-                    <ComboBox 
-                        x:Name="cboRowsPerPage"
-                        materialDesign:ComboBoxAssist.ClassicMode="true"
-                        FontSize="12"
-                        FontWeight="Medium"
-                        BorderBrush="{DynamicResource Gray2}"
-                        Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                        Background="#FFFFFF"
-                        materialDesign:HintAssist.Hint="Number"
-                        Width="120"
-                        Height="40"
-                        HorizontalAlignment="Left"
-                        HorizontalContentAlignment="Left"
-                        VerticalContentAlignment="Center"
-                        Padding="3,0,0,0"
-                        TabIndex="1"
-                        Margin="140,0,0,0">
-                    </ComboBox>-->
-                    <TextBlock x:Name="txtNumberOfItems"
-                               Text="1-10 of 100 items"
-                               Margin="0,0,200,0"
-                               FontSize="12"
-                               TextAlignment="Justify"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Right"
-                               Foreground="{DynamicResource Gray2}"/>
-                    <Button 
-                        x:Name="btnPreviousPage"
-                        Command="{Binding GoToPreviousPageCommand}"
-                        CommandParameter="{Binding ElementName=wdMain}"
-                        ToolTip="Trang trước"
-                        Margin="0,0,100,0"
-                        Background="{x:Null}"
-                        BorderBrush="{x:Null}"
-                        Height="Auto"
+                <Grid Grid.Row="2">
+                    <StackPanel 
+                        Grid.Row="3"
+                        Orientation="Horizontal"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        IsTabStop="False">
-                        <materialDesign:PackIcon 
-                            x:Name="icnBack"
-                            Kind="ChevronLeft"
-                            Margin="0,0,0,0"
-                            Width="30"
-                            Height="20"
-                            Foreground="{DynamicResource Gray2}" />
-                    </Button>
-                    <Button 
-                        x:Name="btnNextPage"
-                        ToolTip="Trang kế tiếp"
-                        Command="{Binding GoToNextPageCommand}"
-                        CommandParameter="{Binding ElementName=wdMain}"
-                        Margin="0,0,50,0"
-                        Background="{x:Null}"
-                        BorderBrush="{x:Null}"
-                        Height="Auto"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right"
-                        IsTabStop="False">
-                        <materialDesign:PackIcon
-                            x:Name="icnNext"
-                            Kind="ChevronRight"
-                            Margin="0,0,0,0"
-                            Width="30"
-                            Height="20"
-                            Foreground="{DynamicResource Gray2}" />
-                    </Button>
+                        Margin="0,0,20,0">
+                        <TextBlock 
+                            x:Name="txtNumOfService"
+                            Text="x trong y mặt hàng"
+                            Margin="0,0,40,0"
+                            FontSize="14"
+                            TextAlignment="Justify"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Foreground="{DynamicResource Black2}" />
+                        <Button 
+                            x:Name="btnPrePageService"
+                            Margin="8,0"
+                            ToolTip="Trang trước"
+                            Command="{Binding GoToPreviousPageCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronLeft"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                        </Button>
+                        <Button 
+                            x:Name="btnNextPageService"
+                            Margin="8,0,0,0"
+                            ToolTip="Trang tiếp theo"
+                            Command="{Binding GoToNextPageCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronRight"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </Grid>
             <Grid 
@@ -5541,7 +5507,7 @@
                 x:Name="grdSetting" 
                 Margin="0"
                 Grid.Row="1"   
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource RoleVM}">
                 <TabControl 
                     x:Name="tcSetting"

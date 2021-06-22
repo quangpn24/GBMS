@@ -540,13 +540,13 @@
                                        CommandParameter="{Binding ElementName=wdImportGoods}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            <TextBlock
-                FontSize="18"
-                FontWeight="SemiBold"
-                Text="Giảm giá" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-                Margin="10,0,0,0"/>
+            <TextBlock FontSize="18"
+                       FontWeight="SemiBold"
+                       Text="Giảm giá"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Margin="10,0,0,0">
+            </TextBlock>
             <Rectangle 
                 Fill="{StaticResource Gray}"
                 Height="3"
@@ -571,6 +571,10 @@
                     <i:EventTrigger EventName="PreviewTextInput" >
                         <ei:CallMethodAction TargetObject="{Binding }" 
                                                  MethodName="NumberValidationTextBox" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewKeyDown">
+                        <ei:CallMethodAction TargetObject="{Binding }"
+                                             MethodName="NumberValidationTextBox" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="TextChanged">
                         <i:InvokeCommandAction Command="{Binding ChangeDiscountCommand}"

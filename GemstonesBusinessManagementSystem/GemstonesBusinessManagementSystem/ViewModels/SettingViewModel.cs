@@ -126,6 +126,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     case 2:
                         StoreName = parameters[i].Value;
                         main.txtStoreName.Text = StoreName;
+                        main.txbStoreName.Text = StoreName;
                         main.txtStoreName.SelectionStart = 0;
                         main.txtStoreName.SelectionLength = StoreName.Length;
                         break;
@@ -238,6 +239,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 parameters[5].Value = Convert.ToBase64String(imgByteArr);
                 MessageBox.Show("Thành công!");
                 main.imgStore.Source = imageBrush.ImageSource;
+                main.txbStoreName.Text = parameters[1].Value;
             }
             else
             {
@@ -251,10 +253,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void UndoStoreInfo(MainWindow main)
         {
-            StoreName = parameters[1].Value;
-            StoreAddress = parameters[2].Value;
-            PhoneNumber = parameters[3].Value;
-            Email = parameters[4].Value;
+            main.txtStoreName.Text = parameters[1].Value;
+            main.txtStoreAddress.Text = parameters[2].Value;
+            main.txtStorePhoneNumber.Text = parameters[3].Value;
+            main.txtEmail.Text = parameters[4].Value;
             if (!string.IsNullOrEmpty(parameters[5].Value))
             {
                 ImageBrush imageBrush = new ImageBrush();

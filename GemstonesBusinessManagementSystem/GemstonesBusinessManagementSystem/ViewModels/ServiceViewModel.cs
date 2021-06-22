@@ -272,15 +272,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void LoadInfoOfPage(ref int start, ref int end)
         {
-            mainWindow.btnPreviousPage.IsEnabled = currentPage == 0 ? false : true;
-            mainWindow.btnNextPage.IsEnabled = currentPage == (services.Count - 1) / 10 ? false : true;
+            mainWindow.btnPrePageService.IsEnabled = currentPage == 0 ? false : true;
+            mainWindow.btnNextPageService.IsEnabled = currentPage == (services.Count - 1) / 10 ? false : true;
 
             start = currentPage * 10;
             end = (currentPage + 1) * 10;
             if (currentPage == services.Count / 10)
                 end = services.Count;
 
-            mainWindow.txtNumberOfItems.Text = String.Format("{0} - {1} of {2} items", start == end ? 0 : start + 1, end, services.Count);
+            mainWindow.txtNumOfService.Text = String.Format("Trang {0} trên {1} trang", currentPage+1, (services.Count-1) / 10 + 1);
         }
         public void FilterService(MainWindow mainWindow)
         {

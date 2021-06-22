@@ -178,6 +178,10 @@
                                 <i:InvokeCommandAction Command="{Binding SeparateThousandsCommand}"
                                                        CommandParameter="{Binding ElementName=txtTarget}" />
                             </i:EventTrigger>
+                            <i:EventTrigger EventName="PreviewKeyDown">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <TextBox.Text>
                             <Binding 
