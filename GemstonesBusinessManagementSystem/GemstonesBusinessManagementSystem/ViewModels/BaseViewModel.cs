@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Markup;
+using System.Xml;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -41,6 +46,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 tmp += a;
             }
+
             return long.Parse(tmp);
         }
         //Chuyển sang dạng 0,000,000
@@ -54,13 +60,29 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 txt.Select(txt.Text.Length, 0);
             }
         }
+        public string SeparateThousands(String text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
+                ulong valueBefore = ulong.Parse(ConvertToNumber(text).ToString(), System.Globalization.NumberStyles.AllowThousands);
+                string res = String.Format(culture, "{0:N0}", valueBefore);
+                return res;
+            }
+            return "";
+        }
         //Chỉ cho nhập số
         public void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
+
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+        public void NumberValidationTextBox(object sender, KeyEventArgs e)
+        {
 
+            e.Handled = e.Key == Key.Space;
+        }
         //Thêm tiền tố cho mã
         public string AddPrefix(string namePrefix, int id)
         {
@@ -80,6 +102,102 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public int ConvertToID(string input)
         {
             return int.Parse(input.Remove(0, 2));
+        }
+        public BindingBase CloneBinding(BindingBase bindingBase, object source)
+        {
+            var binding = bindingBase as Binding;
+            if (binding != null)
+            {
+                var result = new Binding
+                {
+                    Source = source,
+                    AsyncState = binding.AsyncState,
+                    BindingGroupName = binding.BindingGroupName,
+                    BindsDirectlyToSource = binding.BindsDirectlyToSource,
+                    Converter = binding.Converter,
+                    ConverterCulture = binding.ConverterCulture,
+                    ConverterParameter = binding.ConverterParameter,
+                    //ElementName = binding.ElementName,
+                    FallbackValue = binding.FallbackValue,
+                    IsAsync = binding.IsAsync,
+                    Mode = binding.Mode,
+                    NotifyOnSourceUpdated = binding.NotifyOnSourceUpdated,
+                    NotifyOnTargetUpdated = binding.NotifyOnTargetUpdated,
+                    NotifyOnValidationError = binding.NotifyOnValidationError,
+                    Path = binding.Path,
+                    //RelativeSource = binding.RelativeSource,
+                    StringFormat = binding.StringFormat,
+                    TargetNullValue = binding.TargetNullValue,
+                    UpdateSourceExceptionFilter = binding.UpdateSourceExceptionFilter,
+                    UpdateSourceTrigger = binding.UpdateSourceTrigger,
+                    ValidatesOnDataErrors = binding.ValidatesOnDataErrors,
+                    ValidatesOnExceptions = binding.ValidatesOnExceptions,
+                    XPath = binding.XPath,
+                };
+
+                foreach (var validationRule in binding.ValidationRules)
+                {
+                    result.ValidationRules.Add(validationRule);
+                }
+
+                return result;
+            }
+
+            var multiBinding = bindingBase as MultiBinding;
+            if (multiBinding != null)
+            {
+                var result = new MultiBinding
+                {
+                    BindingGroupName = multiBinding.BindingGroupName,
+                    Converter = multiBinding.Converter,
+                    ConverterCulture = multiBinding.ConverterCulture,
+                    ConverterParameter = multiBinding.ConverterParameter,
+                    FallbackValue = multiBinding.FallbackValue,
+                    Mode = multiBinding.Mode,
+                    NotifyOnSourceUpdated = multiBinding.NotifyOnSourceUpdated,
+                    NotifyOnTargetUpdated = multiBinding.NotifyOnTargetUpdated,
+                    NotifyOnValidationError = multiBinding.NotifyOnValidationError,
+                    StringFormat = multiBinding.StringFormat,
+                    TargetNullValue = multiBinding.TargetNullValue,
+                    UpdateSourceExceptionFilter = multiBinding.UpdateSourceExceptionFilter,
+                    UpdateSourceTrigger = multiBinding.UpdateSourceTrigger,
+                    ValidatesOnDataErrors = multiBinding.ValidatesOnDataErrors,
+                    ValidatesOnExceptions = multiBinding.ValidatesOnDataErrors,
+                };
+
+                foreach (var validationRule in multiBinding.ValidationRules)
+                {
+                    result.ValidationRules.Add(validationRule);
+                }
+
+                foreach (var childBinding in multiBinding.Bindings)
+                {
+                    result.Bindings.Add(CloneBinding(childBinding, source));
+                }
+
+                return result;
+            }
+
+            var priorityBinding = bindingBase as PriorityBinding;
+            if (priorityBinding != null)
+            {
+                var result = new PriorityBinding
+                {
+                    BindingGroupName = priorityBinding.BindingGroupName,
+                    FallbackValue = priorityBinding.FallbackValue,
+                    StringFormat = priorityBinding.StringFormat,
+                    TargetNullValue = priorityBinding.TargetNullValue,
+                };
+
+                foreach (var childBinding in priorityBinding.Bindings)
+                {
+                    result.Bindings.Add(CloneBinding(childBinding, source));
+                }
+
+                return result;
+            }
+
+            throw new NotSupportedException("Failed to clone binding");
         }
     }
 }

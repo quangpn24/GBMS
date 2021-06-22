@@ -202,12 +202,12 @@ namespace GemstonesBusinessManagementSystem.DAL
                 if (!isUpdating)
                 {
                     queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber,totalPrice, idMembership, address)" +
-                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalPrice, 0, @address);";
+                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalPrice, @idMembership  , @address);";
                 }
                 else
                 {
                     queryString = "update Customer set customerName = @customerName, phoneNumber=@phoneNumber, idNumber=@idNumber," +
-                        "totalPrice=@totalPrice, address=@address where idCustomer = @idCustomer";
+                        "totalPrice=@totalPrice, address=@address,idMembership=@idMembership where idCustomer = @idCustomer";
                 }
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer);
@@ -215,11 +215,11 @@ namespace GemstonesBusinessManagementSystem.DAL
                 command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber);
                 command.Parameters.AddWithValue("@idNumber", customer.IdNumber);
                 command.Parameters.AddWithValue("@totalPrice", customer.TotalPrice);
+                command.Parameters.AddWithValue("@idMembership", customer.IdMembership);
                 command.Parameters.AddWithValue("@address", customer.Address);
                 int rs = command.ExecuteNonQuery();
                 if (rs == 1)
                 {
-                    MessageBox.Show("Thành công!!!", "Thông báo");
                     return true;
                 }
                 else

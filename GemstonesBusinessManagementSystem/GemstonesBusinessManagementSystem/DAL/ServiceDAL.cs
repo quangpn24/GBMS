@@ -364,5 +364,34 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public bool IsExistServiceName(string serviceName)
+        {
+            try
+            {
+                OpenConnection();
+                string query = @"select * from Service where name = '" + serviceName + "'";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                if (dt.Rows.Count == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return true;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
     }
 }

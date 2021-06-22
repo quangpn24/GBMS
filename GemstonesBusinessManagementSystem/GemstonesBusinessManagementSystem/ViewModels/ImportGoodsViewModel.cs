@@ -24,15 +24,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     {
         private ReceiptControl checkedItem;
         private long totalPrice = 0;
-        public long TotalPrice { get => totalPrice; set { totalPrice = value; OnPropertyChanged(); } }
+        public string TotalPrice { get => SeparateThousands(totalPrice.ToString()); set { totalPrice = ConvertToNumber(value); OnPropertyChanged(); } }
         private long moneyToPay = 0;
-        public long MoneyToPay { get => moneyToPay; set { moneyToPay = value; OnPropertyChanged(); } }
+        public string MoneyToPay { get => SeparateThousands(moneyToPay.ToString()); set { moneyToPay = ConvertToNumber(value); OnPropertyChanged(); } }
 
         private bool isVND = true;
         private bool isTexboxVND = true;
         private double percentDiscount = 0;
         private long vndDiscount = 0;
-        public long VndDiscount { get => vndDiscount; set { vndDiscount = value; OnPropertyChanged(); } }
+        public string VndDiscount { get => SeparateThousands(vndDiscount.ToString()); set { vndDiscount = ConvertToNumber(value); OnPropertyChanged(); } }
 
         private ImportGoodsWindow wdImportGoods;
         //Main window (manager receipt)
@@ -167,19 +167,20 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 wdImportGoods.txtDiscount.Text = "0";
             }
-            if(isVND)
+            if (isVND)
             {
                 SeparateThousands(wdImportGoods.txtDiscount);
-            }    
+            }
             if (isVND & isTexboxVND)
             {
-                VndDiscount = ConvertToNumber(wdImportGoods.txtDiscount.Text);
-                if (VndDiscount > long.Parse(wdImportGoods.txbTotalGoodsPrice.Text))
+                vndDiscount = ConvertToNumber(wdImportGoods.txtDiscount.Text);
+                if (vndDiscount > ConvertToNumber(wdImportGoods.txbTotalGoodsPrice.Text))
                 {
                     wdImportGoods.txtDiscount.Text = wdImportGoods.txbTotalGoodsPrice.Text;
-                    VndDiscount = long.Parse(wdImportGoods.txbTotalGoodsPrice.Text);
+                    vndDiscount = ConvertToNumber(wdImportGoods.txbTotalGoodsPrice.Text);
                 }
-                percentDiscount = Math.Round(VndDiscount / double.Parse(wdImportGoods.txbTotalGoodsPrice.Text) * 100, 2);
+                percentDiscount = Math.Round(vndDiscount / (double)ConvertToNumber(wdImportGoods.txbTotalGoodsPrice.Text) * 100, 2);
+                VndDiscount = vndDiscount.ToString();
             }
             else if (!isVND && !isTexboxVND)
             {
@@ -189,9 +190,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     wdImportGoods.txtDiscount.Text = "100";
                     percentDiscount = 100;
                 }
-                VndDiscount = long.Parse(Math.Ceiling(percentDiscount * double.Parse(wdImportGoods.txbTotalGoodsPrice.Text) / 100).ToString());
+                vndDiscount = long.Parse(Math.Ceiling(percentDiscount * (double)ConvertToNumber(wdImportGoods.txbTotalGoodsPrice.Text) / 100).ToString());
+                VndDiscount = vndDiscount.ToString();
             }
-            MoneyToPay = TotalPrice - long.Parse(vndDiscount.ToString());
+            moneyToPay = totalPrice - ConvertToNumber(vndDiscount.ToString());
+            MoneyToPay = moneyToPay.ToString();
         }
         void GotFocusDiscount(ImportGoodsWindow window)
         {
@@ -220,13 +223,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 listReceiptToView = listReceiptToView.FindAll(x => x.txbSupplier.Text == selectedSupplier.Name);
                 currentPage = 1;
             }
-            if(main.dpkStartDate.SelectedDate > main.dpkEndDate.SelectedDate)
+            if (main.dpkStartDate.SelectedDate > main.dpkEndDate.SelectedDate)
             {
                 MessageBox.Show("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
                 main.dpkStartDate.SelectedDate = null;
                 main.dpkEndDate.SelectedDate = null;
                 return;
-            }    
+            }
             bool cs = main.dpkStartDate.SelectedDate != null; // kiem tra ngay bat dau co null hay khong
             bool ce = main.dpkEndDate.SelectedDate != null; //kiem tra ngay ket thuc co null hay khong
             if (cs && ce)
@@ -251,7 +254,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbId.Text = AddPrefix("PN", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
                 control.txbImporter.Text = CurrentAccount.Name;
                 control.txbDateReceipt.Text = DateTime.Parse(dt.Rows[i].ItemArray[2].ToString()).ToString("dd/MM/yyyy");
-                control.txbMoneyToPay.Text = dt.Rows[i].ItemArray[3].ToString();
+                control.txbMoneyToPay.Text = SeparateThousands(dt.Rows[i].ItemArray[3].ToString());
                 control.txbSupplier.Text = SupplierDAL.Instance.GetNameById(dt.Rows[i].ItemArray[5].ToString());
                 listReceiptControl.Add(control);
                 listReceiptToView.Add(control);
@@ -321,9 +324,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 receiptDetailControl.txbName.Text = goods.Name;
                 receiptDetailControl.txbGoodsType.Text = type.Name;
                 receiptDetailControl.txbUnit.Text = type.Unit;
-                receiptDetailControl.txbImportPrice.Text = goods.ImportPrice.ToString();
+                receiptDetailControl.txbImportPrice.Text = SeparateThousands(goods.ImportPrice.ToString());
                 receiptDetailControl.txbQuantity.Text = dt.Rows[i].ItemArray[2].ToString();
-                receiptDetailControl.txbTotalPrice.Text = (goods.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString())).ToString();
+                receiptDetailControl.txbTotalPrice.Text = SeparateThousands((goods.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString())).ToString());
                 mainWindow.stkReceiptDetail.Children.Add(receiptDetailControl);
                 Total += goods.ImportPrice * int.Parse(dt.Rows[i].ItemArray[2].ToString());
             }
@@ -332,8 +335,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.txbImporter.Text = control.txbImporter.Text;
             mainWindow.txbSupplier.Text = control.txbSupplier.Text;
             mainWindow.txbMoneyToPayGoods.Text = control.txbMoneyToPay.Text;
-            mainWindow.txbTotalMoneyGoods.Text = Total.ToString();
-            mainWindow.txbDiscount.Text = (Total - long.Parse(control.txbMoneyToPay.Text)).ToString();
+            mainWindow.txbTotalMoneyGoods.Text = SeparateThousands(Total.ToString());
+            mainWindow.txbDiscount.Text = SeparateThousands((Total - ConvertToNumber(control.txbMoneyToPay.Text)).ToString());
 
             if (checkedItem != null) // dua lai mau xam
             {
@@ -424,9 +427,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SelectedSupplier = null;
             selectedGoodsType = null;
             ImportGoodsWindow newWindow = new ImportGoodsWindow();
-            TotalPrice = 0;
-            MoneyToPay = 0;
-            main.Hide();
+            TotalPrice = "0";
+            MoneyToPay = "0";
+            //main.Hide();
             int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
             if (idStockReceiptMax == -1)
             {
@@ -442,7 +445,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             HomeViewModel homeVM = (HomeViewModel)main.DataContext;
             homeVM.Uid = "21";
             homeVM.Navigate(main);
-            main.ShowDialog();
+            //main.ShowDialog();
         }
 
         void LostFocusSearchBar(ImportGoodsWindow wdImportGoods)
@@ -512,7 +515,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             StockReceipt stockReceipt = new StockReceipt(ConvertToID(wdImportGoods.txbIdReceipt.Text),
-                CurrentAccount.IdAccount, DateTime.Parse(wdImportGoods.txbDate.Text), long.Parse(wdImportGoods.txbMoneyToPay.Text),
+                CurrentAccount.IdAccount, DateTime.Parse(wdImportGoods.txbDate.Text), ConvertToNumber(wdImportGoods.txbMoneyToPay.Text),
                 vndDiscount, selectedSupplier.Id);
             k = StockReceiptDAL.Instance.Insert(stockReceipt);
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
@@ -521,7 +524,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 ImportGoodsControl control = (ImportGoodsControl)wdImportGoods.stkImportGoods.Children[i];
                 StockReceiptInfo info = new StockReceiptInfo(stockReceipt.Id, ConvertToID(control.txbId.Text),
-                    int.Parse(control.nsQuantity.Value.ToString()), long.Parse(control.txbImportPrice.Text));
+                    int.Parse(control.nsQuantity.Value.ToString()), ConvertToNumber(control.txbImportPrice.Text));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
                 k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), info.Quantity);
             }
@@ -553,20 +556,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //Update tab supplier
                 SupplierViewModel supplierVM = (SupplierViewModel)mainWindow.grdSupplier.DataContext;
                 supplierVM.Search(mainWindow);
-                mainWindow.txbTotalSpentToSupplier.Text = (long.Parse(mainWindow.txbTotalSpentToSupplier.Text) + long.Parse(wdImportGoods.txbMoneyToPay.Text)).ToString();
-                TotalPrice = 0;
-                MoneyToPay = 0;
-
-                //Update tab home 
-                ReportViewModel reportVM = (ReportViewModel)mainWindow.grdHome.DataContext;
-                reportVM.Init(mainWindow);
+                mainWindow.txbTotalSpentToSupplier.Text = SeparateThousands((ConvertToNumber(mainWindow.txbTotalSpentToSupplier.Text) + ConvertToNumber(wdImportGoods.txbMoneyToPay.Text)).ToString());
+                TotalPrice = "0";
+                MoneyToPay = "0";
 
                 //Clean
                 selectedSupplier = null;
                 wdImportGoods.cboSupplier.Text = null;
                 wdImportGoods.txtSearch.Text = null;
-                TotalPrice = 0;
-                MoneyToPay = 0;
+                TotalPrice = "0";
+                MoneyToPay = "0";
                 int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
                 if (idStockReceiptMax == -1)
                 {
@@ -584,15 +583,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void ChangeQuantity(ImportGoodsControl control)
         {
-            TotalPrice -= long.Parse(control.txbTotalPrice.Text);
-            control.txbTotalPrice.Text = (int.Parse(control.txbImportPrice.Text) * control.nsQuantity.Value).ToString();
-            TotalPrice += long.Parse(control.txbTotalPrice.Text);
-            MoneyToPay = this.totalPrice - VndDiscount;
-            if (MoneyToPay < 0)
+            totalPrice -= ConvertToNumber(control.txbTotalPrice.Text);
+            control.txbTotalPrice.Text = SeparateThousands((ConvertToNumber(control.txbImportPrice.Text) * control.nsQuantity.Value).ToString());
+            totalPrice += ConvertToNumber(control.txbTotalPrice.Text);
+            moneyToPay = this.totalPrice - vndDiscount;
+            if (moneyToPay < 0)
             {
-                MoneyToPay = 0;
-                VndDiscount = TotalPrice;
+                moneyToPay = 0;
+                vndDiscount = totalPrice;
             }
+            TotalPrice = totalPrice.ToString();
+            MoneyToPay = moneyToPay.ToString();
+            VndDiscount = vndDiscount.ToString();
         }
         void DeleteSelected(ImportGoodsControl control)
         {
@@ -602,13 +604,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 ((ImportGoodsControl)wdImportGoods.stkImportGoods.Children[i - 1]).txbNumericalOder.Text = i.ToString();
             }
-            TotalPrice -= long.Parse(control.txbTotalPrice.Text);
-            MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
-            if (MoneyToPay < 0)
+            totalPrice -= ConvertToNumber(control.txbTotalPrice.Text);
+            moneyToPay = this.totalPrice - ConvertToNumber(wdImportGoods.btnDiscount.Content.ToString());
+            if (moneyToPay < 0)
             {
-                MoneyToPay = 0;
-                VndDiscount = TotalPrice;
+                moneyToPay = 0;
+                vndDiscount = totalPrice;
             }
+            TotalPrice = totalPrice.ToString();
+            VndDiscount = vndDiscount.ToString();
+            MoneyToPay = moneyToPay.ToString();
         }
         void SelectGoodsResult(SearchGoodsControl control)
         {
@@ -620,8 +625,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             importControl.txbName.Text = control.txbName.Text;
             importControl.txbUnit.Text = goodsType.Unit;
             importControl.txbGoodsType.Text = goodsType.Name;
-            importControl.txbImportPrice.Text = control.txbImportPrice.Text;
-            importControl.txbTotalPrice.Text = control.txbImportPrice.Text;
+            importControl.txbImportPrice.Text = SeparateThousands(control.txbImportPrice.Text);
+            importControl.txbTotalPrice.Text = SeparateThousands(control.txbImportPrice.Text);
 
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
             {
@@ -633,8 +638,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
             this.wdImportGoods.stkImportGoods.Children.Add(importControl);
-            TotalPrice += long.Parse(control.txbImportPrice.Text);
-            MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
+            totalPrice += ConvertToNumber(control.txbImportPrice.Text);
+            moneyToPay = this.totalPrice - ConvertToNumber(wdImportGoods.btnDiscount.Content.ToString());
+            TotalPrice = totalPrice.ToString();
+            MoneyToPay = moneyToPay.ToString();
         }
         void SelectGoodsType(ImportGoodsWindow wdImportGoods)
         {
@@ -651,7 +658,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbUnit.Text = selectedGoodsType.Unit;
                 control.txbGoodsType.Text = selectedGoodsType.Name;
-                control.txbImportPrice.Text = dt.Rows[i].ItemArray[2].ToString();
+                control.txbImportPrice.Text = SeparateThousands(dt.Rows[i].ItemArray[2].ToString());
                 control.txbTotalPrice.Text = control.txbImportPrice.Text;
                 for (int j = 0; j < wdImportGoods.stkImportGoods.Children.Count; j++)
                 {
@@ -666,8 +673,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (!isExist)
                 {
                     wdImportGoods.stkImportGoods.Children.Add(control);
-                    TotalPrice += long.Parse(control.txbTotalPrice.Text);
-                    MoneyToPay = this.totalPrice - long.Parse(wdImportGoods.btnDiscount.Content.ToString());
+                    totalPrice += ConvertToNumber(control.txbTotalPrice.Text);
+                    moneyToPay = this.totalPrice - ConvertToNumber(wdImportGoods.btnDiscount.Content.ToString());
+                    TotalPrice = totalPrice.ToString();
+                    MoneyToPay = moneyToPay.ToString();
                 }
             }
             if (dt.Rows.Count == 0)
@@ -739,8 +748,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     control.imgGoods.Source = Converter.Instance.ConvertByteToBitmapImage(tmp);
                     control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                     control.txbId.Text = AddPrefix("SP", int.Parse(dt.Rows[i].ItemArray[0].ToString()));
-                    control.txbImportPrice.Text = dt.Rows[i].ItemArray[2].ToString();
-                    control.txbQuantity.Text = dt.Rows[i].ItemArray[3].ToString();
+                    control.txbImportPrice.Text = SeparateThousands(dt.Rows[i].ItemArray[2].ToString());
+                    control.txbQuantity.Text = SeparateThousands(dt.Rows[i].ItemArray[3].ToString());
                     wdImportGoods.stkSearchResult.Children.Add(control);
                 }
             }

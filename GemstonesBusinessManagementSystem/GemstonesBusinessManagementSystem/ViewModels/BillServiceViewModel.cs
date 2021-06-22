@@ -23,12 +23,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand PickBillServiceCommand { get; set; }
         public ICommand ConfirmDeliveriedCommand { get; set; }
         public ICommand PrintBillServiceCommand { get; set; }
+        public ICommand DeleteBillServiceCommand { get; set; }
         public BillServiceViewModel()
         {
             LoadBillServicesCommand = new RelayCommand<MainWindow>((p) => true, (p) => LoadBillServices(p));
             PickBillServiceCommand = new RelayCommand<BillServiceControl>((p) => true, (p) => PickBillService(p));
             ConfirmDeliveriedCommand = new RelayCommand<BillServiceTemplateControl>((p) => true, (p) => ConfirmDeliveried(p));
             PrintBillServiceCommand = new RelayCommand<MainWindow>((p) => true, (p) => PrintBillService(p));
+            DeleteBillServiceCommand = new RelayCommand<BillServiceControl>((p) => true, (p) => DeleteBillService(p));
         }
         public void LoadBillServices(MainWindow mainWindow)
         {
@@ -49,9 +51,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 Customer customer = CustomerDAL.Instance.FindById(billServices[i].IdCustomer.ToString());
                 BillServiceControl billServiceControl = new BillServiceControl();
                 billServiceControl.txbId.Text = AddPrefix("PD", billServices[i].IdBillService);
+                billServiceControl.txbIdCustomer.Text = customer.IdCustomer.ToString();
                 billServiceControl.txbNameCustomer.Text = customer.CustomerName;
-                billServiceControl.txbTotal.Text = billServices[i].Total.ToString();
-                billServiceControl.txbRest.Text = BillServiceInfoDAL.Instance.CalculateRestMoney(billServices[i].IdBillService.ToString());
+                billServiceControl.txbTotal.Text = SeparateThousands(billServices[i].Total.ToString());
+                billServiceControl.txbRest.Text = SeparateThousands(BillServiceInfoDAL.Instance.CalculateRestMoney(billServices[i].IdBillService.ToString()));
                 if (billServices[i].Status == 1)
                 {
                     billServiceControl.txbStatus.Text = "Đã giao";
@@ -60,6 +63,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 else
                 {
                     billServiceControl.txbStatus.Text = "Chưa giao";
+                }
+                if (BillServiceInfoDAL.Instance.IsHaveDeliveried(billServices[i].IdBillService.ToString()))
+                {
+                    billServiceControl.btnDeleteBillService.Visibility = Visibility.Hidden;
                 }
                 billServiceControl.IsHitTestVisible = true;
                 mainWindow.stkBillService.Children.Add(billServiceControl);
@@ -101,8 +108,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             main.txbCreateDateBS.Text = billService.CreatedDate.ToShortDateString();
             main.txbNameCustomerBS.Text = customer.CustomerName;
             main.txbPhoneCustomerBS.Text = customer.PhoneNumber;
-            main.txbTotalBS.Text = billService.Total.ToString();
-            main.txbTotalPaidBS.Text = billService.TotalPaidMoney.ToString();
+            main.txbTotalBS.Text = SeparateThousands(billService.Total.ToString());
+            main.txbTotalPaidBS.Text = SeparateThousands(billService.TotalPaidMoney.ToString());
             main.txbRestBS.Text = billServiceControl.txbRest.Text;
             main.stkBillServiceInfo.Children.Clear();
             for (int i = 0; i < billServiceInfos.Count; i++)   //Hiển thị list BillServiceInfo
@@ -112,11 +119,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceTemplateControl.txbNumber.Text = (i + 1).ToString();
                 billServiceTemplateControl.txbIdService.Text = billServiceInfos[i].IdService.ToString();
                 billServiceTemplateControl.txbName.Text = service.Name;
-                billServiceTemplateControl.txbPrice.Text = billServiceInfos[i].Price.ToString();
-                billServiceTemplateControl.txbCalculateMoney.Text = (billServiceInfos[i].Price + billServiceInfos[i].Tips).ToString();
-                billServiceTemplateControl.txbPaidMoney.Text = billServiceInfos[i].PaidMoney.ToString();
+                billServiceTemplateControl.txbPrice.Text = SeparateThousands(billServiceInfos[i].Price.ToString());
+                billServiceTemplateControl.txbCalculateMoney.Text = SeparateThousands((billServiceInfos[i].Price + billServiceInfos[i].Tips).ToString());
+                billServiceTemplateControl.txbPaidMoney.Text = SeparateThousands(billServiceInfos[i].PaidMoney.ToString());
                 billServiceTemplateControl.txbQuantity.Text = billServiceInfos[i].Quantity.ToString();
-                billServiceTemplateControl.txbTotal.Text = (float.Parse(billServiceTemplateControl.txbCalculateMoney.Text) * billServiceInfos[i].Quantity).ToString();
+                billServiceTemplateControl.txbTotal.Text = SeparateThousands((ConvertToNumber(billServiceTemplateControl.txbCalculateMoney.Text) * billServiceInfos[i].Quantity).ToString());
                 if (billServiceInfos[i].Status == 1)  // Đã giao thì bỏ button swap và chuyển màu sang success
                 {
                     if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
@@ -131,7 +138,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    billServiceTemplateControl.txbRest.Text = (float.Parse(billServiceTemplateControl.txbTotal.Text) - billServiceInfos[i].PaidMoney).ToString();
+                    billServiceTemplateControl.txbRest.Text = SeparateThousands((ConvertToNumber(billServiceTemplateControl.txbTotal.Text) - billServiceInfos[i].PaidMoney).ToString());
                     billServiceTemplateControl.txbStatus.Text = "Chưa giao";
                 }
                 main.stkBillServiceInfo.Children.Add(billServiceTemplateControl);
@@ -146,10 +153,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //billServiceInfo.PaidMoney = (billServiceInfo.Price + billServiceInfo.Tips) * billServiceInfo.Quantity;
             if (BillServiceInfoDAL.Instance.Update(billServiceInfo))
             {
+                Customer customer = CustomerDAL.Instance.FindById(checkedItem.txbIdCustomer.Text);
+                UpdateMembership(customer, ConvertToNumber(billServiceTemplateControl.txbRest.Text));
                 if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
                 {
                     billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
                 }
+                checkedItem.btnDeleteBillService.Visibility = Visibility.Hidden;
                 checkedItem.txbRest.Text = main.txbRestBS.Text = (double.Parse(main.txbRestBS.Text) - double.Parse(billServiceTemplateControl.txbRest.Text)).ToString();
                 billServiceTemplateControl.txbRest.Text = "0";
                 billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
@@ -192,5 +202,54 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 main.btnPrintBS.Visibility = Visibility.Visible;
             }
         }
+        void UpdateMembership(Customer customer, long paidMoney)
+        {
+            var totalSpending = customer.TotalPrice + paidMoney;
+            CustomerDAL.Instance.UpdateTotalSpending(customer.IdCustomer, totalSpending);
+            List<KeyValuePair<long, int>> membershipList = MembershipsTypeDAL.Instance.GetSortedList();
+            foreach (var mem in membershipList)
+            {
+                if (totalSpending >= mem.Key)
+                {
+                    CustomerDAL.Instance.UpdateMembership(customer.IdCustomer, mem.Value);
+                    break;
+                }
+            }
+        }
+        public void DeleteBillService(BillServiceControl billServiceControl)
+        {
+            var result = MessageBox.Show("Xác nhận xóa phiếu dịch vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                if (BillServiceInfoDAL.Instance.DeleteByIdBillService(ConvertToIDString(billServiceControl.txbId.Text)))
+                {
+                    if (BillServiceDAL.Instance.Delete(ConvertToIDString(billServiceControl.txbId.Text)))
+                    {
+                        Customer customer = CustomerDAL.Instance.FindById(billServiceControl.txbIdCustomer.Text);
+                        customer.TotalPrice -= ConvertToNumber(billServiceControl.txbTotal.Text);
+                        customer.TotalPrice += ConvertToNumber(billServiceControl.txbRest.Text);
+                        //CustomerDAL.Instance.AddOrUpdate(customer, true);
+                        UpdateMembership(customer, 0);
+                        if (billServiceControl == checkedItem)
+                        {
+                            main.stkBillServiceInfo.Children.Clear();
+                            main.txbNameCustomerBS.Text = "";
+                            main.txbIdBillServiceBS.Text = "";
+                            main.txbCreateDateBS.Text = "";
+                            main.txbPhoneCustomerBS.Text = "";
+                            main.txbTotalPaidBS.Text = "";
+                            main.txbTotalBS.Text = "";
+                            main.txbRestBS.Text = "";
+
+                        }
+                        main.stkBillService.Children.Remove(billServiceControl);
+                        MessageBox.Show("Xóa phiếu dịch vụ thành công");
+                    }
+
+                }
+            }
+        }
+
     }
 }
+

@@ -45,7 +45,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public string EmployeeName { get => employeeName; set { employeeName = value; OnPropertyChanged(); } }
         public string InvoiceDate { get => invoiceDate; set { invoiceDate = value; OnPropertyChanged(); } }
         public long Quantity { get => quantity; set { quantity = value; OnPropertyChanged(); } }
-        public long Total { get => total; set { total = value; OnPropertyChanged(); } }
+        public string Total { get => SeparateThousands(total.ToString()); set { total = ConvertToNumber(value); OnPropertyChanged(); } }
 
         public BillViewModel()
         {
@@ -78,7 +78,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 invoiceControl.txbId.Text = AddPrefix("HD", billList[i].IdBill);
                 invoiceControl.txbCustomerName.Text = customer.CustomerName;
                 invoiceControl.txbEmployeeName.Text = employee.Name;
-                invoiceControl.txbPrice.Text = billList[i].TotalMoney.ToString();
+                invoiceControl.txbPrice.Text = SeparateThousands(billList[i].TotalMoney.ToString());
 
                 mainWindow.stkBill.Children.Add(invoiceControl);
             }
@@ -108,8 +108,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             CustomerName = customer.CustomerName;
             CustomerPhoneNumber = customer.PhoneNumber;
             CustomerAddress = customer.Address;
-            Total = bill.TotalMoney;
-
+            total = bill.TotalMoney;
+            Total = total.ToString();
             mainWindow.stkBillInfo.Children.Clear();
             for (int i = 0; i < billInfos.Count; i++)
             {
@@ -120,9 +120,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbNumber.Text = (i + 1).ToString();
                 control.txbName.Text = goods.Name;
                 control.txbUnit.Text = type.Unit;
-                control.txbUnitPrice.Text = billInfos[i].Price.ToString();
+                control.txbUnitPrice.Text = SeparateThousands(billInfos[i].Price.ToString());
                 control.txbQuantity.Text = billInfos[i].Quantity.ToString();
-                control.txbTotal.Text = (long.Parse(control.txbUnitPrice.Text) * billInfos[i].Quantity).ToString();
+                control.txbTotal.Text = SeparateThousands((ConvertToNumber(control.txbUnitPrice.Text) * billInfos[i].Quantity).ToString());
 
                 mainWindow.stkBillInfo.Children.Add(control);
             }

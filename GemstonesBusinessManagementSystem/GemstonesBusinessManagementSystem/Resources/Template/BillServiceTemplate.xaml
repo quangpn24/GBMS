@@ -358,10 +358,18 @@
                     TextAlignment="Center"
                     FontSize="13" />
             </Grid>
-            <StackPanel 
-                Margin="30,40,30,3"
-                x:Name="stkBillServiceInfo">
-            </StackPanel>
+            <ScrollViewer 
+                x:Name="scvBillService"
+                Grid.Row="3"
+                HorizontalScrollBarVisibility="Disabled"
+                Margin="30,40,30,0"
+                Style="{StaticResource FavsScrollViewer}"
+                VerticalScrollBarVisibility="Auto">
+                <StackPanel 
+                    Margin="0"
+                    x:Name="stkBillServiceInfo">
+                </StackPanel>
+            </ScrollViewer>
             <Border 
                 BorderBrush="{DynamicResource Primary}"
                 BorderThickness="2"

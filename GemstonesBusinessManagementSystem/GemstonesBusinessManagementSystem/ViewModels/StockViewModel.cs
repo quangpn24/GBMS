@@ -183,10 +183,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 int endStock = earlyStock + inStock - outStock;
 
-                control.txbEarlyStock.Text = earlyStock.ToString();
-                control.txbInStock.Text = inStock.ToString();
-                control.txbOutStock.Text = outStock.ToString();
-                control.txbEndStock.Text = endStock.ToString();
+                control.txbEarlyStock.Text = SeparateThousands(earlyStock.ToString());
+                control.txbInStock.Text = SeparateThousands(inStock.ToString());
+                control.txbOutStock.Text = SeparateThousands(outStock.ToString());
+                control.txbEndStock.Text = SeparateThousands(endStock.ToString());
 
                 stackPanel.Children.Add(control);
             }

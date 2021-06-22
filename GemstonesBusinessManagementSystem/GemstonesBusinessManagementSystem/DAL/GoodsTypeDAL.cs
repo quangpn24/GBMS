@@ -274,5 +274,34 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public bool IsExistGoodsTypeName(string goodsTypeName)
+        {
+            try
+            {
+                OpenConnection();
+                string query = @"select * from GoodsType where name = '" + goodsTypeName + "'";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                if (dt.Rows.Count == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return true;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
     }
 }

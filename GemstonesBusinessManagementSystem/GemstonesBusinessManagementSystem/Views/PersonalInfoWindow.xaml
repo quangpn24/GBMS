@@ -1,17 +1,21 @@
-﻿<Window x:Class="GemstonesBusinessManagementSystem.Views.PersonalInfoWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d"
-        Title="Thông tin cá nhân" 
-        Height="450"
-        x:Name="wdUserInfo"
-        WindowStartupLocation="CenterScreen"
-        DataContext="{StaticResource SettingVM}"
-        Width="700">
+﻿<Window 
+    x:Class="GemstonesBusinessManagementSystem.Views.PersonalInfoWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    mc:Ignorable="d"
+    Title="Thông tin cá nhân" 
+    Height="450"
+    x:Name="wdUserInfo"
+    WindowStartupLocation="CenterScreen"
+    DataContext="{StaticResource SettingVM}"
+    Width="700">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid  
@@ -76,7 +80,7 @@
                         Stroke="{StaticResource Gray2}" />
                     <TextBox 
                         x:Name="txtName"
-                        Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         materialDesign:HintAssist.Hint="Họ và tên"
                         HorizontalAlignment="Right"
                         Cursor="IBeam"
@@ -89,7 +93,18 @@
                         Foreground="{StaticResource Gray1}" 
                         Margin="0,0,10,0" 
                         HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center">
+                        <TextBox.Text>
+                            <Binding 
+                                Path="Name"
+                                Mode="OneWayToSource"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập họ và tên!" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </Grid>
                 <Grid 
                     Margin="0,20,0,0"
@@ -192,7 +207,6 @@
                         Stroke="{StaticResource Gray2}" />
                     <TextBox
                         x:Name="txtAddress"
-                        Text="{Binding UserAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         materialDesign:HintAssist.Hint="Địa chỉ" 
                         HorizontalAlignment="Right" 
                         Width="210"
@@ -202,13 +216,25 @@
                         BorderThickness="0" 
                         MaxLines="1" 
                         TabIndex="6"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         Foreground="{StaticResource Gray1}"
                         Padding="0"  
                         Margin="0,0,10,0" 
                         Cursor="IBeam"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center">
+                        <TextBox.Text>
+                            <Binding
+                                Path= "UserAddress"
+                                Mode="OneWayToSource"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ!" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </Grid>
                 <Grid 
                     Margin="0,20,0,0" 
@@ -232,7 +258,7 @@
                         Stroke="{StaticResource Gray2}" />
                     <TextBox 
                         x:Name="txtPhoneNumber"
-                        Text="{Binding UserPhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         materialDesign:HintAssist.Hint="Số điện thoại" 
                         HorizontalAlignment="Right" 
                         MaxLength="11"
@@ -248,7 +274,28 @@
                         Cursor="IBeam"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Left"
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center">
+                        <TextBox.Text>
+                            <Binding 
+                                Path="UserPhoneNumber"
+                                Mode="OneWayToSource"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewTextInput">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="PreviewKeyDown">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                 </Grid>
                 <StackPanel 
                     Margin="0,30,0,0" 
@@ -281,7 +328,19 @@
                         materialDesign:ButtonAssist.CornerRadius="2"
                         ToolTip="Thêm nhân viên" 
                         Content="Cập nhật"
-                        HorizontalAlignment="Left"/>
+                        HorizontalAlignment="Left">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                          Mode="TwoWay">
+                                <Binding ElementName="txtName"
+                                         Path="(Validation.HasError)" />
+                                <Binding ElementName="txtAddress"
+                                         Path="(Validation.HasError)" />
+                                <Binding ElementName="txtPhoneNumber"
+                                         Path="(Validation.HasError)" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Grid>

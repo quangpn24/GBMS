@@ -177,8 +177,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     imgArr = Convert.FromBase64String(reader.GetString(9));
                 }
-                Employee employee = new Employee(int.Parse(reader.GetString(0)),reader.GetString(1),
-                    reader.GetString(2),reader.GetString(3), reader.GetString(4),
+                Employee employee = new Employee(int.Parse(reader.GetString(0)), reader.GetString(1),
+                    reader.GetString(2), reader.GetString(3), reader.GetString(4),
                      DateTime.Parse(reader.GetString(5)), idPosition, DateTime.Parse(reader.GetString(7)),
                      idAccount, imgArr);
                 return employee;
@@ -289,16 +289,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlCommand command = new MySqlCommand(query, conn);
                 command.Parameters.AddWithValue("@idAccount", idAccount.ToString());
                 command.Parameters.AddWithValue("@idEmployee", idEmployee.ToString());
-
-                int result = command.ExecuteNonQuery();
-                if (result != 1)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
                 return command.ExecuteNonQuery() == 1;
             }
             catch
@@ -380,14 +370,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
         }
 
-        public void UpdateUserInfo(Employee employee)
+        public bool UpdateUserInfo(Employee employee)
         {
             try
             {
                 OpenConnection();
                 string query = "update Employee set name=@name,gender=@gender,phonenumber=@phonenumber,address=@address," +
                         "dateofBirth=@dateofBirth, imageFile=@imageFile where idEmployee=" + employee.IdEmployee;
-                
+
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
                 cmd.Parameters.AddWithValue("@name", employee.Name);
@@ -402,11 +392,15 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     throw new Exception();
                 }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message.ToString());
-                return;
+                return false;
             }
             finally
             {

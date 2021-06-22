@@ -67,16 +67,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.password = MD5Hash(this.Password);
         }
         public void EncodingConfirmPassword(PasswordBox parameter)
-        {  
+        {
             this.passwordConfirm = parameter.Password;
             this.passwordConfirm = MD5Hash(this.passwordConfirm);
         }
 
         public void SetItemSourcEmployee()
         {
-            itemSourceEmployee.Clear();     
+            itemSourceEmployee.Clear();
             List<Employee> employees = EmployeeDAL.Instance.GetEmployeeNonAccount();
-            foreach(var employee in employees)
+            foreach (var employee in employees)
             {
                 itemSourceEmployee.Add(employee);
             }
@@ -135,7 +135,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public void SignUp(SignUpWindow parameter)
         {
             isSignUp = false;
-            if(parameter == null)
+            if (parameter == null)
             {
                 return;
             }
@@ -149,14 +149,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //check loai nhan vien
             if (string.IsNullOrEmpty(parameter.cboSelectEmployee.Text))
             {
-                parameter.pwbKey.Focus();
+                parameter.cboSelectEmployee.Focus();
                 parameter.cboSelectEmployee.Text = "";
                 return;
             }
             //check username
             if (string.IsNullOrEmpty(parameter.txtUsername.Text) || AccountDAL.Instance.IsExistUsername(parameter.txtUsername.Text))
             {
-                parameter.pwbKey.Focus();
+                parameter.txtUsername.Focus();
                 parameter.txtUsername.Text = "";
                 return;
             }
@@ -164,14 +164,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (string.IsNullOrEmpty(parameter.pwbPassword.Password))
             {
                 MessageBox.Show("Vui lòng nhập mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                parameter.pwbKey.Focus();
+                parameter.pwbPassword.Focus();
                 return;
             }
             //check password confirm
             if (string.IsNullOrEmpty(parameter.pwbPasswordConfirm.Password))
             {
                 MessageBox.Show("Vui lòng xác thực mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                parameter.pwbKey.Focus();
+                parameter.pwbPasswordConfirm.Focus();
                 return;
             }
 
@@ -188,7 +188,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             int idAccount = AccountDAL.Instance.GetNewID();
-            if(idAccount != -1)
+            if (idAccount != -1)
             {
                 Account newAccount = new Account(idAccount, parameter.txtUsername.Text.ToString(), password, 1);
                 isSignUp = AccountDAL.Instance.AddintoDB(newAccount);

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
 namespace GemstonesBusinessManagementSystem
@@ -111,6 +112,5 @@ namespace GemstonesBusinessManagementSystem
                 Math.Round(x, decimals),
                 sci);
         }
-
     }
 }

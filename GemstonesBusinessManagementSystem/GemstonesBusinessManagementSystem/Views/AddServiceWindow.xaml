@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
     mc:Ignorable="d"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -104,12 +105,20 @@
                     Margin="0,0,10,0"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    FontWeight="SemiBold">
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                    FontWeight="SemiBold"
+                    TabIndex="0">
                     <TextBox.Text>
                         <Binding 
                             Path="Name"
-                            UpdateSourceTrigger="PropertyChanged"
-                            Mode="OneWayToSource">
+                            Source="{StaticResource Service}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên dịch vụ!" />
+                                <vd:ExistValidation 
+                                    ElementName="ServiceName"
+                                    ErrorMessage="Dịch vụ đã tồn tại" />
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
@@ -153,13 +162,19 @@
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     FontWeight="SemiBold"
-                    BorderBrush="{DynamicResource Gray1}">
+                    BorderBrush="{DynamicResource Gray1}"
+                    TabIndex="1">
                     <i:Interaction.Triggers>
                         <i:EventTrigger 
                             EventName="PreviewTextInput">
                             <ei:CallMethodAction 
                                 TargetObject="{Binding }"
                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
+                        <i:EventTrigger 
+                            EventName="PreviewKeyDown">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
                         </i:EventTrigger>
                         <i:EventTrigger 
                             EventName="TextChanged">
@@ -171,8 +186,10 @@
                     <TextBox.Text>
                         <Binding 
                             Path="Price"
-                            UpdateSourceTrigger="PropertyChanged"
-                            Mode="OneWayToSource">
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập đơn giá!" />
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
@@ -203,7 +220,7 @@
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     Padding="3,0,0,0"
-                    TabIndex="1"
+                    TabIndex="2"
                     Margin="0"
                     VerticalAlignment="Center"
                     Foreground="{DynamicResource Gray1}"
@@ -238,7 +255,17 @@
                 Content="Lưu"
                 FontSize="18"
                 VerticalAlignment="Center"
-                Padding="0" />
+                Padding="0" >
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                  Mode="TwoWay">
+                        <Binding ElementName="txtNameOfService"
+                                 Path="(Validation.HasError)" />
+                        <Binding ElementName="txtPriceOfService"
+                                 Path="(Validation.HasError)" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
             <Button 
                 x:Name="btnCancel"
                 Style="{StaticResource MaterialDesignRaisedButton}"

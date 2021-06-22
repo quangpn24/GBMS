@@ -219,7 +219,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 List<KeyValuePair<long, int>> result = new List<KeyValuePair<long, int>>();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    result.Add(new KeyValuePair<long, int>(long.Parse(dt.Rows[i].ItemArray[2].ToString()), 
+                    result.Add(new KeyValuePair<long, int>(long.Parse(dt.Rows[i].ItemArray[2].ToString()),
                         int.Parse(dt.Rows[i].ItemArray[0].ToString())));
                 }
                 return result;
@@ -227,6 +227,28 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch
             {
                 return new List<KeyValuePair<long, int>>();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public bool IsExistMembership(string membership)
+        {
+            try
+            {
+                OpenConnection();
+
+                string query = String.Format("select * from MembershipsType where membership='{0}'", membership);
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dataReader);
+                return dt.Rows.Count > 0;
+            }
+            catch
+            {
+                return false;
             }
             finally
             {

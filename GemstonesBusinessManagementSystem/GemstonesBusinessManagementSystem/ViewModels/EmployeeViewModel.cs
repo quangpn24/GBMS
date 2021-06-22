@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -29,6 +30,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand LoadPositionCommand { get; set; }
         public ICommand AddPositionCommand { get; set; }
         public ICommand OpenPositionWindowCommand { get; set; }
+        public ICommand SeparateThousandsCommand { get; set; }
 
         //EmployeeControl
         public ICommand EditCommand { get; set; }
@@ -50,6 +52,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand LoadCommand { get; set; }
 
         private int currentPage = 0;
+        Binding newBinding;
+        private string standard;
 
         //Mainwindow
         private MainWindow mainWindow;
@@ -72,9 +76,23 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private ObservableCollection<EmployeePosition> itsAddEmpPosition = new ObservableCollection<EmployeePosition>();
         public ObservableCollection<EmployeePosition> ItsAddEmpPosition { get => itsAddEmpPosition; set { itsAddEmpPosition = value; OnPropertyChanged(); } }
 
+        public string SalaryBase { get => salaryBase; set => salaryBase = value; }
+        public string MoneyPerShift { get => moneyPerShift; set => moneyPerShift = value; }
+        public string MoneyPerFault { get => moneyPerFault; set => moneyPerFault = value; }
+        public string Standard { get => standard; set => standard = value; }
+        public string Address { get => address; set => address = value; }
+        public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
+        public string Name { get => name; set => name = value; }
+
         public string imageName;
         public bool isEditing = false;
         private string oldPosition;
+        private string salaryBase;
+        private string moneyPerShift;
+        private string moneyPerFault;
+        private string address;
+        private string phoneNumber;
+        private string name;
 
         public EmployeeViewModel()
         {
@@ -87,6 +105,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadPositionCommand = new RelayCommand<EmployeePositionWindow>((p) => true, (p) => LoadPosition(p));
             AddPositionCommand = new RelayCommand<EmployeePositionWindow>((p) => true, (p) => AddOrUpdatePosition(p));
             OpenPositionWindowCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenPositionWindow(p));
+            SeparateThousandsCommand = new RelayCommand<TextBox>((parameter) => true, (parameter) => SeparateThousands(parameter));
 
             //EmployeeControl
             EditCommand = new RelayCommand<EmployeeControl>((p) => true, (p) => OpenEditWindow(p));
@@ -111,16 +130,26 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         //EmployeePositionControl
         void ClearView(EmployeePositionWindow window)
         {
+            if (newBinding != null)
+            {
+                window.txtPosition.SetBinding(TextBox.TextProperty, newBinding);
+            }
             isEditingPosition = false;
             window.txtId.Text = AddPrefix("CV", (EmployeePositionDAL.Instance.GetMaxId() + 1));
-            window.txtPosition.Clear();
-            window.txtSalaryBase.Clear();
-            window.txtStandardWorkDays.Clear();
-            window.txtOvertime.Clear();
-            window.txtFault.Clear();
+            window.txtPosition.Text = null;
+            window.txtSalaryBase.Text = null;
+            window.txtStandardWorkDays.Text = null;
+            window.txtOvertime.Text = null;
+            window.txtFault.Text = null;
         }
         void ViewPosition(EmployeePositionControl control)
         {
+            Binding binding = BindingOperations.GetBinding(employeePositionWindow.txtPosition, TextBox.TextProperty);
+            if (binding != null)
+            {
+                newBinding = CloneBinding(binding as BindingBase, binding.Source) as Binding;
+            }
+            BindingOperations.ClearBinding(employeePositionWindow.txtPosition, TextBox.TextProperty);
             oldPosition = control.txbPosition.Text;
             empPosControl = control;
             isEditingPosition = true;
@@ -183,7 +212,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 EmployeePositionControl control = new EmployeePositionControl();
                 control.txbId.Text = AddPrefix("CV", position.IdEmployeePosition);
                 control.txbPosition.Text = position.Position;
-                control.txbSalaryBase.Text = position.SalaryBase.ToString();
+                control.txbSalaryBase.Text = SeparateThousands(position.SalaryBase.ToString());
                 control.txbShift.Text = position.MoneyPerShift.ToString();
                 control.txbFault.Text = position.MoneyPerFault.ToString();
                 control.txbWorkdays.Text = position.StandardWorkDays.ToString();
@@ -231,9 +260,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.txtPosition.Focus();
                 return;
             }
+            if (string.Compare(window.txtStandardWorkDays.Text, "30") > 0)
+            {
+                MessageBox.Show("Số ngày công chuẩn không >30");
+                window.txtStandardWorkDays.Focus();
+                return;
+            }
             EmployeePosition position = new EmployeePosition(ConvertToID(window.txtId.Text), window.txtPosition.Text,
-                long.Parse(window.txtSalaryBase.Text), long.Parse(window.txtOvertime.Text),
-                long.Parse(window.txtFault.Text), int.Parse(window.txtStandardWorkDays.Text));
+                ConvertToNumber(window.txtSalaryBase.Text), ConvertToNumber(window.txtOvertime.Text),
+                ConvertToNumber(window.txtFault.Text), int.Parse(window.txtStandardWorkDays.Text));
 
             EmployeePositionDAL.Instance.InsertOrUpdate(position, isEditingPosition);
             if (isEditingPosition)
@@ -254,7 +289,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 EmployeePositionControl control = new EmployeePositionControl();
                 control.txbId.Text = window.txtId.Text;
                 control.txbPosition.Text = position.Position;
-                control.txbSalaryBase.Text = position.SalaryBase.ToString();
+                control.txbSalaryBase.Text = SeparateThousands(position.SalaryBase.ToString());
                 control.txbShift.Text = position.MoneyPerShift.ToString();
                 control.txbFault.Text = position.MoneyPerFault.ToString();
                 control.txbWorkdays.Text = position.StandardWorkDays.ToString();
@@ -278,6 +313,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             EmployeePositionWindow window = new EmployeePositionWindow();
             window.txtId.Text = AddPrefix("CV", (EmployeePositionDAL.Instance.GetMaxId() + 1));
+            window.txtPosition.Text = null;
+            window.txtOvertime.Text = null;
+            window.txtFault.Text = null;
+            window.txtSalaryBase.Text = null;
+            window.txtStandardWorkDays.Text = null;
             window.ShowDialog();
         }
 
@@ -475,7 +515,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 };
                 if (imageBrush.ImageSource != null)
                 {
-                     mainWindow.imgAccount.Fill = imageBrush;
+                    mainWindow.imgAccount.Fill = imageBrush;
                 }
 
                 EmployeeControl control = new EmployeeControl();
@@ -586,6 +626,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             isEditing = false;
             AddEmployeeWindow addEmployeeWindow = new AddEmployeeWindow();
             addEmployeeWindow.txtId.Text = AddPrefix("NV", (EmployeeDAL.Instance.GetMaxId() + 1));
+            addEmployeeWindow.txtName.Text = null;
+            addEmployeeWindow.txtAddress.Text = null;
+            addEmployeeWindow.txtPhoneNumber.Text = null;
+            addEmployeeWindow.cboPosition.SelectedIndex = -1;
             addEmployeeWindow.ShowDialog();
         }
         void LoadEmployeeList(MainWindow main, int curPage)
@@ -600,9 +644,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             for (int i = start; i < end; i++)
             {
                 EmployeeControl employeeControl = new EmployeeControl();
+                EmployeePosition employeePosition = EmployeePositionDAL.Instance.GetById(employeeList[i].IdPosition);
                 employeeControl.txbId.Text = AddPrefix("NV", employeeList[i].IdEmployee);
                 employeeControl.txbName.Text = employeeList[i].Name.ToString();
-                employeeControl.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employeeList[i].IdPosition).Position;
+                employeeControl.txbPosition.Text = employeePosition.Position;
+                employeeControl.txbTotalSalary.Text = SeparateThousands(employeePosition.SalaryBase.ToString());
                 employeeControl.txbPhoneNumber.Text = employeeList[i].PhoneNumber.ToString();
                 employeeControl.txbAddress.Text = employeeList[i].Address.ToString();
 

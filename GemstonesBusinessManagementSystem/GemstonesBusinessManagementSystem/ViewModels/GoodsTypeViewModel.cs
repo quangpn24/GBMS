@@ -9,6 +9,8 @@ using GemstonesBusinessManagementSystem.DAL;
 using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using System.Windows;
+using System.Windows.Data;
+using System.Windows.Controls;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -17,8 +19,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private bool isUpdate = false;
         private bool isActiveTab = true;
         private string oldType;
+        private string profitPercentage;
         private GoodsTypeWindow wdGoodsType;
         private GoodsTypeControl goodsTypeControl;
+        Binding newBinding;
         public ICommand LoadCommand { get; set; }
         public ICommand SelectionChangedTabItemCommand { get; set; }
         public ICommand SelectedGoodsTypeCommand { get; set; }
@@ -26,6 +30,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand ActivateCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public string ProfitPercentage { get => profitPercentage; set => profitPercentage = value; }
 
         public GoodsTypeViewModel()
         {
@@ -92,10 +97,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Lỗi hệ thống");
                 return;
             }
+            if (newBinding != null)
+            {
+                wdGoodsType.txtName.SetBinding(TextBox.TextProperty, newBinding);
+            }
             this.wdGoodsType.txtId.Text = AddPrefix("LS", idMax + 1);
-            this.wdGoodsType.txtName.Text = "";
-            this.wdGoodsType.txtProfitPercentage.Text = "";
-            this.wdGoodsType.txtUnit.Text = "";
+            this.wdGoodsType.txtName.Text = null;
+            this.wdGoodsType.txtProfitPercentage.Text = null;
+            this.wdGoodsType.txtUnit.Text = null;
             isUpdate = false;
         }
         void Inactivate(GoodsTypeWindow wdGoodsType)
@@ -146,6 +155,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (isActiveTab) //  to edit
             {
+                Binding binding = BindingOperations.GetBinding(this.wdGoodsType.txtName, TextBox.TextProperty);
+                if (binding != null)
+                {
+                    newBinding = CloneBinding(binding as BindingBase, binding.Source) as Binding;
+                }
+
+                BindingOperations.ClearBinding(this.wdGoodsType.txtName, TextBox.TextProperty);
                 isUpdate = true;
                 this.goodsTypeControl = control;
                 oldType = goodsTypeControl.txbName.Text;
@@ -155,6 +171,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.wdGoodsType.txtName.Text = control.txbName.Text;
                 this.wdGoodsType.txtProfitPercentage.Text = control.txbProfitPercentage.Text.Remove(control.txbProfitPercentage.Text.Length - 1, 1);
                 this.wdGoodsType.txtUnit.Text = control.txbUnit.Text;
+
             }
             else // to inactivate or activate
             {

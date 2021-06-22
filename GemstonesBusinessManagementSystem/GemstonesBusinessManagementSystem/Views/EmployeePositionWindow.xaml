@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ei ="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
@@ -106,10 +107,25 @@
                         BorderThickness="0" 
                         MaxLines="1"
                         TabIndex="1"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         Foreground="{StaticResource Gray1}" 
                         Margin="0,0,10,0" 
                         HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center">
+                        <TextBox.Text>
+                            <Binding
+                                Path="Position"
+                                Source="{StaticResource Position}"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên chức vụ!" />
+                                    <vd:ExistValidation
+                                        ElementName="PositionEmployee"
+                                        ErrorMessage="Chức vụ đã tồn tại" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                 </Grid>
                 <Grid 
                     Margin="0,0,0,20" 
@@ -141,11 +157,37 @@
                         FontSize="14" 
                         BorderThickness="0" 
                         MaxLines="1"
+                        MaxLength="11"
                         TabIndex="2"
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         Foreground="{StaticResource Gray1}" 
                         Margin="0,0,10,0" 
                         HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center">
+                        <TextBox.Text>
+                            <Binding
+                                Path="SalaryBase"                                  
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Nhập lương cơ bản!" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewTextInput">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="PreviewKeyDown">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding SeparateThousandsCommand}"
+                                                       CommandParameter="{Binding ElementName=txtSalaryBase}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                 </Grid>
                 <Grid 
                     Margin="0,0,0,20" 
@@ -178,10 +220,39 @@
                         TabIndex="3"
                         BorderThickness="0" 
                         MaxLines="1"
+                        MaxLength="2"
                         Foreground="{StaticResource Gray1}" 
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         Margin="0,0,10,0" 
                         HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center">
+                        <TextBox.Text>
+                            <Binding 
+                                Path="Standard"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NumberValidation ErrorMessageNull="Nhập số ngày công chuẩn!"
+                                                         ErrorMessage="Vui lòng nhập giá trị số!" />
+                                    <vd:ExistValidation ElementName="StandardDays"
+                                                        ErrorMessage="Số ngày công chuẩn không lớn hơn 30 " />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewTextInput">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="PreviewKeyDown">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding SeparateThousandsCommand}"
+                                                       CommandParameter="{Binding ElementName=txtStandardWorkDays}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                 </Grid>
                 <Grid 
                     Margin="0,0,0,20" 
@@ -200,6 +271,7 @@
                         x:Name="txtOvertime"
                         MaxLength="10"
                         Foreground="{StaticResource Gray1}" 
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         VerticalAlignment="Center" 
                         VerticalContentAlignment="Bottom" 
                         HorizontalContentAlignment="Right" 
@@ -209,7 +281,31 @@
                         Width="145" 
                         TabIndex="4" 
                         FontWeight="SemiBold"
-                        Height="30" />
+                        Height="30" >
+                        <TextBox.Text>
+                            <Binding 
+                                Path="MoneyPerShift"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Nhập tiền tăng ca!"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewTextInput">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding SeparateThousandsCommand}"
+                                                       CommandParameter="{Binding ElementName=txtOvertime}" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="PreviewKeyDown">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                     <Label 
                         Content="VND / Ca"
                         HorizontalAlignment="Right"
@@ -236,6 +332,7 @@
                         x:Name="txtFault"
                         MaxLength="10"
                         Foreground="{StaticResource Gray1}" 
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                         VerticalAlignment="Center" 
                         VerticalContentAlignment="Bottom" 
                         HorizontalContentAlignment="Right" 
@@ -245,7 +342,31 @@
                         Width="145" 
                         TabIndex="5" 
                         FontWeight="SemiBold"
-                        Height="30" />
+                        Height="30" >
+                        <TextBox.Text>
+                            <Binding 
+                                Path="MoneyPerFault"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <vd:NotNullValidation ErrorMessage="Nhập tiền phạt!"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewTextInput">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding SeparateThousandsCommand}"
+                                                       CommandParameter="{Binding ElementName=txtFault}" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="PreviewKeyDown">
+                                <ei:CallMethodAction TargetObject="{Binding }"
+                                                     MethodName="NumberValidationTextBox" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                     <Label 
                         Content="VND / Lỗi"
                         HorizontalAlignment="Right"
@@ -272,7 +393,23 @@
                     IsDefault="True"
                     Height="40"
                     FontSize="18"
-                    Width="100"/>
+                    Width="100">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                      Mode="TwoWay">
+                            <Binding ElementName="txtPosition"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtSalaryBase"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtStandardWorkDays"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtOvertime"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtFault"
+                                     Path="(Validation.HasError)" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
                 <Button
                     Content="Hủy"
                     ToolTip="Hủy thay đổi"

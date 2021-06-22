@@ -125,6 +125,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         break;
                     case 2:
                         StoreName = parameters[i].Value;
+                        main.txtStoreName.Text = StoreName;
+                        main.txbStoreName.Text = StoreName;
                         main.txtStoreName.SelectionStart = 0;
                         main.txtStoreName.SelectionLength = StoreName.Length;
                         break;
@@ -237,6 +239,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 parameters[5].Value = Convert.ToBase64String(imgByteArr);
                 MessageBox.Show("Thành công!");
                 main.imgStore.Source = imageBrush.ImageSource;
+                main.txbStoreName.Text = parameters[1].Value;
             }
             else
             {
@@ -250,10 +253,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void UndoStoreInfo(MainWindow main)
         {
-            StoreName = parameters[1].Value;
-            StoreAddress = parameters[2].Value;
-            PhoneNumber = parameters[3].Value;
-            Email = parameters[4].Value;
+            main.txtStoreName.Text = parameters[1].Value;
+            main.txtStoreAddress.Text = parameters[2].Value;
+            main.txtStorePhoneNumber.Text = parameters[3].Value;
+            main.txtEmail.Text = parameters[4].Value;
             if (!string.IsNullOrEmpty(parameters[5].Value))
             {
                 ImageBrush imageBrush = new ImageBrush();
@@ -346,8 +349,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             employee.PhoneNumber = UserPhoneNumber;
             employee.Gender = gender;
             employee.ImageFile = imgByteArr;
-            EmployeeDAL.Instance.UpdateUserInfo(employee);
-            MessageBox.Show("Thành công");
+            if (EmployeeDAL.Instance.UpdateUserInfo(employee))
+            {
+                MessageBox.Show("Thành công!");
+            }
+            else
+            {
+                MessageBox.Show("Thất bại!");
+            }
             CurrentAccount.Name = Name;
             CurrentAccount.ImageFile = imgByteArr;
             main.txbUsername.Text = CurrentAccount.Name;
@@ -380,16 +389,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[1]);
                 }
             }
-            Name = employee.Name;
+            window.txtName.Text = employee.Name;
             window.txtName.SelectionStart = 0;
             window.txtName.SelectionLength = Name.Length;
-            UserAddress = employee.Address;
+            window.txtAddress.Text = employee.Address;
             window.txtAddress.SelectionStart = 0;
             window.txtAddress.SelectionLength = UserAddress.Length;
-            UserPhoneNumber = employee.PhoneNumber;
+            window.txtPhoneNumber.Text = employee.PhoneNumber;
             window.txtPhoneNumber.SelectionStart = 0;
             window.txtPhoneNumber.SelectionLength = UserPhoneNumber.Length;
-            BirthDate = employee.DateOfBirth.ToString();
+            window.dpBirthDate.SelectedDate = employee.DateOfBirth;
             if (employee.Gender == "Nam")
             {
                 window.rdoMale.IsChecked = true;

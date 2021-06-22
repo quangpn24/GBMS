@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -43,9 +44,9 @@
                 Height="50" 
                 VerticalAlignment="Top"/>
             <TextBlock
+                x:Name="txbStoreName"
                 DataContext="{StaticResource SettingVM}"
                 Style="{StaticResource HeadingText2}" 
-                Text="{Binding StoreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                 HorizontalAlignment="Center" 
                 Margin="0,100,0,0" 
                 VerticalAlignment="Top"/>
@@ -368,7 +369,7 @@
                                 Command="{Binding NavigateCommand}"
                                 CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
-                                Content="Phiếu" >
+                                Content="Phiếu dịch vụ" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
@@ -523,7 +524,7 @@
             </Grid>
             <Grid
                 x:Name="grdHome"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource ReportVM}"
                 Grid.Row="1"
                 Margin="0,20,0,0">
@@ -4833,83 +4834,49 @@
                         Grid.RowSpan="3"
                         Panel.ZIndex="-1" />
                 </Grid>
-                <Grid 
-                    Grid.Row="2">
-                    <!--<TextBlock 
-                        Text="Rows per page:"
-                        Margin="20,0,0,0"
-                        FontSize="12"
-                        TextAlignment="Justify"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left"
-                        Foreground="{DynamicResource Gray2}">
-                    </TextBlock>
-                    <ComboBox 
-                        x:Name="cboRowsPerPage"
-                        materialDesign:ComboBoxAssist.ClassicMode="true"
-                        FontSize="12"
-                        FontWeight="Medium"
-                        BorderBrush="{DynamicResource Gray2}"
-                        Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                        Background="#FFFFFF"
-                        materialDesign:HintAssist.Hint="Number"
-                        Width="120"
-                        Height="40"
-                        HorizontalAlignment="Left"
-                        HorizontalContentAlignment="Left"
-                        VerticalContentAlignment="Center"
-                        Padding="3,0,0,0"
-                        TabIndex="1"
-                        Margin="140,0,0,0">
-                    </ComboBox>-->
-                    <TextBlock x:Name="txtNumberOfItems"
-                               Text="1-10 of 100 items"
-                               Margin="0,0,200,0"
-                               FontSize="12"
-                               TextAlignment="Justify"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Right"
-                               Foreground="{DynamicResource Gray2}"/>
-                    <Button 
-                        x:Name="btnPreviousPage"
-                        Command="{Binding GoToPreviousPageCommand}"
-                        CommandParameter="{Binding ElementName=wdMain}"
-                        ToolTip="Trang trước"
-                        Margin="0,0,100,0"
-                        Background="{x:Null}"
-                        BorderBrush="{x:Null}"
-                        Height="Auto"
+                <Grid Grid.Row="2">
+                    <StackPanel 
+                        Grid.Row="3"
+                        Orientation="Horizontal"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        IsTabStop="False">
-                        <materialDesign:PackIcon 
-                            x:Name="icnBack"
-                            Kind="ChevronLeft"
-                            Margin="0,0,0,0"
-                            Width="30"
-                            Height="20"
-                            Foreground="{DynamicResource Gray2}" />
-                    </Button>
-                    <Button 
-                        x:Name="btnNextPage"
-                        ToolTip="Trang kế tiếp"
-                        Command="{Binding GoToNextPageCommand}"
-                        CommandParameter="{Binding ElementName=wdMain}"
-                        Margin="0,0,50,0"
-                        Background="{x:Null}"
-                        BorderBrush="{x:Null}"
-                        Height="Auto"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right"
-                        IsTabStop="False">
-                        <materialDesign:PackIcon
-                            x:Name="icnNext"
-                            Kind="ChevronRight"
-                            Margin="0,0,0,0"
-                            Width="30"
-                            Height="20"
-                            Foreground="{DynamicResource Gray2}" />
-                    </Button>
+                        Margin="0,0,20,0">
+                        <TextBlock 
+                            x:Name="txtNumOfService"
+                            Text="x trong y mặt hàng"
+                            Margin="0,0,40,0"
+                            FontSize="14"
+                            TextAlignment="Justify"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Foreground="{DynamicResource Black2}" />
+                        <Button 
+                            x:Name="btnPrePageService"
+                            Margin="8,0"
+                            ToolTip="Trang trước"
+                            Command="{Binding GoToPreviousPageCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronLeft"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center" />
+                        </Button>
+                        <Button 
+                            x:Name="btnNextPageService"
+                            Margin="8,0,0,0"
+                            ToolTip="Trang tiếp theo"
+                            Command="{Binding GoToNextPageCommand}"
+                            CommandParameter="{Binding ElementName=wdMain}">
+                            <materialDesign:PackIcon 
+                                Width="26"
+                                Height="28"
+                                Kind="ChevronRight"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </Grid>
             <Grid 
@@ -5076,6 +5043,7 @@
                                 <ColumnDefinition Width="1.5*" />
                                 <ColumnDefinition Width="1.5*" />
                                 <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="20" />
                                 <ColumnDefinition Width="10" />
                             </Grid.ColumnDefinitions>
                             <TextBlock 
@@ -5539,7 +5507,7 @@
                 x:Name="grdSetting" 
                 Margin="0"
                 Grid.Row="1"   
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource RoleVM}">
                 <TabControl 
                     x:Name="tcSetting"
@@ -5914,7 +5882,7 @@
                                                 Cursor="IBeam"
                                                 materialDesign:HintAssist.Hint="Tên cửa hàng"
                                                 HorizontalAlignment="Right"
-                                                Text="{Binding StoreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                                 MinHeight="40"
                                                 Width="300"
                                                 TextWrapping="Wrap"
@@ -5925,7 +5893,19 @@
                                                 Margin="0,0,10,0"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="Center"
-                                                FontWeight="SemiBold"/>
+                                                FontWeight="SemiBold">
+                                                <TextBox.Text>
+                                                    <Binding
+                                                        Path="StoreName"
+                                                        Mode="OneWayToSource"
+                                                        UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <vd:NotNullValidation 
+                                                                ErrorMessage="Vui lòng nhập tên cửa hàng!" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                         <Grid 
                                             Margin="20,20,20,0"
@@ -5952,18 +5932,28 @@
                                                 Cursor="IBeam"
                                                 materialDesign:HintAssist.Hint="Địa chỉ"
                                                 HorizontalAlignment="Right"
-                                                Text="{Binding StoreAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 MinHeight="40"
                                                 Width="300"
                                                 FontSize="14"
                                                 TextWrapping="Wrap"
                                                 BorderThickness="0"
                                                 MaxLines="1"
+                                                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                                 Foreground="{StaticResource Black1}"
                                                 Margin="0,0,10,0"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="Center"
-                                                FontWeight="SemiBold"/>
+                                                FontWeight="SemiBold">
+                                                <TextBox.Text>
+                                                    <Binding 
+                                                        Path="StoreAddress"
+                                                        UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ cửa hàng!" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                         <Grid 
                                             Margin="20,20,20,0"
@@ -5990,19 +5980,40 @@
                                                 x:Name="txtStorePhoneNumber"
                                                 Cursor="IBeam"
                                                 materialDesign:HintAssist.Hint="Số điện thoại"
-                                                Text="{Binding PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Height="40"
                                                 Width="300"
                                                 FontSize="14"
                                                 MaxLength="11"
                                                 BorderThickness="0"
                                                 MaxLines="1"
+                                                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                                 Foreground="{StaticResource Black1}"
                                                 Margin="0,0,10,0"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="Center"
                                                 FontWeight="SemiBold" 
-                                                HorizontalAlignment="Right"/>
+                                                HorizontalAlignment="Right">
+                                                <TextBox.Text>
+                                                    <Binding
+                                                        Path="PhoneNumber"
+                                                        Mode="TwoWay"                                                         
+                                                        UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="PreviewTextInput">
+                                                        <ei:CallMethodAction TargetObject="{Binding }"
+                                                                             MethodName="NumberValidationTextBox" />
+                                                    </i:EventTrigger>
+                                                    <i:EventTrigger EventName="PreviewKeyDown">
+                                                        <ei:CallMethodAction TargetObject="{Binding }"
+                                                                             MethodName="NumberValidationTextBox" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </TextBox>
                                         </Grid>
                                         <Grid 
                                             Margin="20,20,20,10"
@@ -6030,17 +6041,28 @@
                                                 Cursor="IBeam"
                                                 materialDesign:HintAssist.Hint="Email"
                                                 HorizontalAlignment="Right"
-                                                Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Height="40"
                                                 Width="300"
                                                 FontSize="14"
                                                 BorderThickness="0"
                                                 MaxLines="1"
+                                                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                                                 Foreground="{StaticResource Black1}"
                                                 Margin="0,0,10,0"
                                                 HorizontalContentAlignment="Left"
                                                 VerticalContentAlignment="Center"
-                                                FontWeight="SemiBold"/>
+                                                FontWeight="SemiBold">
+                                                <TextBox.Text>
+                                                    <Binding 
+                                                        Path="Email"
+                                                        Mode="TwoWay"                                           
+                                                        UpdateSourceTrigger="PropertyChanged">
+                                                        <Binding.ValidationRules>
+                                                            <vd:NotNullValidation ErrorMessage="Vui lòng nhập email cửa hàng!" />
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                     <Button 
@@ -6056,7 +6078,21 @@
                                         FocusVisualStyle="{x:Null}"
                                         Foreground="{StaticResource Secondary}"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Bottom" />
+                                        VerticalAlignment="Bottom" >
+                                        <Button.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                                          Mode="TwoWay">
+                                                <Binding ElementName="txtStoreName"
+                                                         Path="(Validation.HasError)" />
+                                                <Binding ElementName="txtStoreAddress"
+                                                         Path="(Validation.HasError)" />
+                                                <Binding ElementName="txtStorePhoneNumber"
+                                                         Path="(Validation.HasError)" />
+                                                <Binding ElementName="txtStoreEmail"
+                                                         Path="(Validation.HasError)" />
+                                            </MultiBinding>
+                                        </Button.IsEnabled>
+                                    </Button>
                                     <Button 
                                         Content="Hoàn tác"
                                         Height="45"

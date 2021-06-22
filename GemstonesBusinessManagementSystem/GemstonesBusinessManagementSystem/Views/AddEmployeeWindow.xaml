@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei ="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
@@ -129,9 +130,20 @@
                     MaxLines="1"
                     TabIndex="0"
                     Foreground="{StaticResource Gray1}" 
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     Margin="0,0,10,0" 
                     HorizontalContentAlignment="Left" 
-                    VerticalContentAlignment="Center"/>
+                    VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding 
+                            Path="Name"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập họ tên!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </Grid>
             <Grid 
                 Margin="0,20,0,0"
@@ -246,11 +258,13 @@
                     TabIndex="4"
                     FontSize="14"
                     Foreground="{StaticResource Gray1}" 
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center">
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="CalendarClosed" >
-                            <ei:CallMethodAction TargetObject="{Binding }" MethodName="SetPickedDay" />
+                        <i:EventTrigger EventName="CalendarClosed">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="SetPickedDay" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </DatePicker>
@@ -286,11 +300,13 @@
                     TabIndex="5"
                     FontSize="14" 
                     Foreground="{StaticResource Gray1}" 
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     HorizontalContentAlignment="Left" 
                     VerticalContentAlignment="Center">
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="CalendarClosed" >
-                            <ei:CallMethodAction TargetObject="{Binding }" MethodName="SetPickedDay" />
+                        <i:EventTrigger EventName="CalendarClosed">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="SetPickedDay" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </DatePicker>
@@ -330,8 +346,19 @@
                     Margin="0,0,10,0" 
                     Cursor="IBeam"
                     VerticalAlignment="Center"
-                    HorizontalContentAlignment="Left" 
-                    VerticalContentAlignment="Center"/>
+                    HorizontalContentAlignment="Left"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                    VerticalContentAlignment="Center">
+                    <TextBox.Text>
+                        <Binding 
+                            Path="Address"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </Grid>
             <Grid 
                 Margin="0,20,0,0" 
@@ -370,12 +397,26 @@
                     Cursor="IBeam"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Left"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     VerticalContentAlignment="Center">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewTextInput" >
                             <ei:CallMethodAction TargetObject="{Binding }" MethodName="NumberValidationTextBox" />
                         </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewKeyDown">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
                     </i:Interaction.Triggers>
+                    <TextBox.Text>
+                        <Binding 
+                            Path="PhoneNumber"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
             </Grid>
             <StackPanel 
@@ -409,7 +450,19 @@
                     materialDesign:ButtonAssist.CornerRadius="2"
                     ToolTip="Thêm nhân viên" 
                     Content="Lưu"
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Left">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                      Mode="TwoWay">
+                            <Binding ElementName="txtName"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtAddress"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtPhoneNumber"
+                                     Path="(Validation.HasError)" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
             </StackPanel>
         </StackPanel>
     </Grid>

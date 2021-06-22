@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
     mc:Ignorable="d"
@@ -100,16 +101,21 @@
                     BorderThickness="0"
                     MaxLines="1"
                     Padding="0"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     Foreground="{StaticResource Black1}"
                     Margin="0,0,10,0"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    FontWeight="SemiBold">
+                    FontWeight="SemiBold"
+                    VerticalAlignment="Bottom">
                     <TextBox.Text>
                         <Binding 
                             Path="Name"
-                            UpdateSourceTrigger="PropertyChanged"
-                            Mode="OneWayToSource">
+                            Source="{StaticResource Supplier}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên nhà cung cấp!" />
+                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
@@ -147,12 +153,24 @@
                     BorderThickness="0"
                     MaxLines="1"
                     Padding="0"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     Foreground="{DynamicResource Black1}"
                     Margin="0,0,10,0"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     FontWeight="SemiBold"
-                    BorderBrush="{DynamicResource Gray1}"/>
+                    BorderBrush="{DynamicResource Gray1}">
+                    <TextBox.Text>
+                        <Binding 
+                            Path="Address"
+                            Source="{StaticResource Supplier}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ nhà cung cấp!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </Grid>
             <Grid 
                 Margin="0,180,0,0"
@@ -188,12 +206,34 @@
                     MaxLines="1"
                     MaxLength="11"
                     Padding="0"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     Foreground="{DynamicResource Black1}"
                     Margin="0,0,10,0"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     FontWeight="SemiBold"
-                    BorderBrush="{DynamicResource Gray1}"/>
+                    BorderBrush="{DynamicResource Gray1}">
+                    <TextBox.Text>
+                        <Binding
+                            Path="PhoneNumber"
+                            Source="{StaticResource Supplier}"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewTextInput">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewKeyDown">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                 MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
             </Grid>
         </Grid>
         <Grid 
@@ -217,7 +257,19 @@
                 Content="Lưu"
                 FontSize="18"
                 VerticalAlignment="Center"
-                Padding="0" />
+                Padding="0">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                  Mode="TwoWay">
+                        <Binding ElementName="txtName"
+                                 Path="(Validation.HasError)" />
+                        <Binding ElementName="txtAddress"
+                                 Path="(Validation.HasError)" />
+                        <Binding ElementName="txtPhoneNumber"
+                                 Path="(Validation.HasError)" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
             <Button 
                 x:Name="btnCancel"
                 Style="{StaticResource MaterialDesignRaisedButton}"
