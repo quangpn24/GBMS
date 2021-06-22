@@ -207,6 +207,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             newWindow.txtId.Text = AddPrefix("NC", idMax + 1);
+            newWindow.txtAddress.Text = null;
+            newWindow.txtName.Text = null;
+            newWindow.txtPhoneNumber.Text = null;
             newWindow.ShowDialog();
         }
         public void Search(MainWindow main)

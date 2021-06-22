@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:models="clr-namespace:GemstonesBusinessManagementSystem.Models"
+                    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem"
                     xmlns:viewmodels="clr-namespace:GemstonesBusinessManagementSystem.ViewModels">
     
     <viewmodels:GoodsViewModel x:Key="GoodsVM"/>
@@ -43,4 +44,5 @@
     <models:MembershipsType x:Key="MembershipType" />
     <models:Customer x:Key="Customer" />
     <models:Supplier x:Key="Supplier" />
+    <local:InverseAndBooleansToBooleanConverter x:Key="InverseAndBooleansToBooleanConverter" />
 </ResourceDictionary>

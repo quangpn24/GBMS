@@ -5931,7 +5931,7 @@
                                                 <TextBox.Text>
                                                     <Binding
                                                         Path="StoreName"
-                                                        Mode="TwoWay"
+                                                        Mode="OneWayToSource"
                                                         UpdateSourceTrigger="PropertyChanged">
                                                         <Binding.ValidationRules>
                                                             <vd:NotNullValidation 
@@ -6112,7 +6112,21 @@
                                         FocusVisualStyle="{x:Null}"
                                         Foreground="{StaticResource Secondary}"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Bottom" />
+                                        VerticalAlignment="Bottom" >
+                                        <Button.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                                          Mode="TwoWay">
+                                                <Binding ElementName="txtStoreName"
+                                                         Path="(Validation.HasError)" />
+                                                <Binding ElementName="txtStoreAddress"
+                                                         Path="(Validation.HasError)" />
+                                                <Binding ElementName="txtStorePhoneNumber"
+                                                         Path="(Validation.HasError)" />
+                                                <Binding ElementName="txtStoreEmail"
+                                                         Path="(Validation.HasError)" />
+                                            </MultiBinding>
+                                        </Button.IsEnabled>
+                                    </Button>
                                     <Button 
                                         Content="Hoàn tác"
                                         Height="45"

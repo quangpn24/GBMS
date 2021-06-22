@@ -341,7 +341,19 @@
                                 VerticalAlignment="Center"
                                 Padding="0"
                                 Background="{StaticResource Success}" 
-                                IsTabStop="False" />
+                                IsTabStop="False">
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                                  Mode="TwoWay">
+                                        <Binding ElementName="txtName"
+                                                 Path="(Validation.HasError)" />
+                                        <Binding ElementName="txtUnit"
+                                                 Path="(Validation.HasError)" />
+                                        <Binding ElementName="txtProfitPercentage"
+                                                 Path="(Validation.HasError)" />
+                                    </MultiBinding>
+                                </Button.IsEnabled>
+                            </Button>
                             <Button
                                 x:Name="btnCancel"
                                 Height="40" 

@@ -111,25 +111,24 @@
                     Height="30" 
                     VerticalAlignment="Bottom"
                     Foreground="{StaticResource Gray1}"/>
-                <TextBox
-                    x:Name="txtUsername"
-                    materialDesign:HintAssist.Hint="Tên đăng nhập" 
-                    Width="220"
-                    Height="50" 
-                    HorizontalAlignment="Right" 
-                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    FontSize="18" 
-                    BorderBrush="{StaticResource Primary}" 
-                    TabIndex="2" 
-                    VerticalAlignment="Center" 
-                    CaretBrush="{StaticResource Primary}" 
-                    FontWeight="Medium" 
-                    Padding="2,0,0,0" Foreground="{DynamicResource Gray1}">
+                <TextBox x:Name="txtUsername"
+                         materialDesign:HintAssist.Hint="Tên đăng nhập"
+                         Width="220"
+                         Height="50"
+                         HorizontalAlignment="Right"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         FontSize="18"
+                         BorderBrush="{StaticResource Primary}"
+                         TabIndex="2"
+                         VerticalAlignment="Center"
+                         CaretBrush="{StaticResource Primary}"
+                         FontWeight="Medium"
+                         Padding="2,0,0,0"
+                         Foreground="{DynamicResource Gray1}">
                     <TextBox.Text>
-                        <Binding 
-                            Path="Username"
-                            Source="{StaticResource Account}"
-                            UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Username"
+                                 Source="{StaticResource Account}"
+                                 UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <vd:TextBoxValidation ErrorMessage="Chỉ sử dụng các chữ cái (a -> z, A->Z) hoặc chữ số (0 -> 9)"
                                                       ErrorMessageNull="Vui lòng nhập tên đăng nhập!" />
@@ -139,7 +138,6 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-
             </Grid>
             <Grid
                 Width="270" 
@@ -273,6 +271,13 @@
             Margin="0,490,0,0" 
             HorizontalAlignment="Center" 
             BorderThickness="0">
+            <Button.IsEnabled>
+                <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                              Mode="TwoWay">
+                    <Binding ElementName="txtUsername"
+                             Path="(Validation.HasError)" />
+                </MultiBinding>
+            </Button.IsEnabled>
         </Button>
         <Button
              x:Name="btnLogin" 

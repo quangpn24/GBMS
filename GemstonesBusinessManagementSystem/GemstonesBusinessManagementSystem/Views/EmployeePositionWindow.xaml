@@ -367,7 +367,23 @@
                     IsDefault="True"
                     Height="40"
                     FontSize="18"
-                    Width="100"/>
+                    Width="100">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                      Mode="TwoWay">
+                            <Binding ElementName="txtPosition"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtSalaryBase"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtStandardWorkDays"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtOvertime"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtFault"
+                                     Path="(Validation.HasError)" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
                 <Button
                     Content="Hủy"
                     ToolTip="Hủy thay đổi"

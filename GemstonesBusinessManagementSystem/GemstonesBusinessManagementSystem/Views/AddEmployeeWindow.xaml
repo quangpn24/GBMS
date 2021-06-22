@@ -450,7 +450,19 @@
                     materialDesign:ButtonAssist.CornerRadius="2"
                     ToolTip="Thêm nhân viên" 
                     Content="Lưu"
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Left">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                      Mode="TwoWay">
+                            <Binding ElementName="txtName"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtAddress"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtPhoneNumber"
+                                     Path="(Validation.HasError)" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
             </StackPanel>
         </StackPanel>
     </Grid>

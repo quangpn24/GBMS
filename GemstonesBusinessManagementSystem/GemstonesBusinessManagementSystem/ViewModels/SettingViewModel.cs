@@ -125,6 +125,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         break;
                     case 2:
                         StoreName = parameters[i].Value;
+                        main.txtStoreName.Text = StoreName;
                         main.txtStoreName.SelectionStart = 0;
                         main.txtStoreName.SelectionLength = StoreName.Length;
                         break;
@@ -386,16 +387,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[1]);
                 }
             }
-            Name = employee.Name;
+            window.txtName.Text = employee.Name;
             window.txtName.SelectionStart = 0;
             window.txtName.SelectionLength = Name.Length;
-            UserAddress = employee.Address;
+            window.txtAddress.Text = employee.Address;
             window.txtAddress.SelectionStart = 0;
             window.txtAddress.SelectionLength = UserAddress.Length;
-            UserPhoneNumber = employee.PhoneNumber;
+            window.txtPhoneNumber.Text = employee.PhoneNumber;
             window.txtPhoneNumber.SelectionStart = 0;
             window.txtPhoneNumber.SelectionLength = UserPhoneNumber.Length;
-            BirthDate = employee.DateOfBirth.ToString();
+            window.dpBirthDate.SelectedDate = employee.DateOfBirth;
             if (employee.Gender == "Nam")
             {
                 window.rdoMale.IsChecked = true;

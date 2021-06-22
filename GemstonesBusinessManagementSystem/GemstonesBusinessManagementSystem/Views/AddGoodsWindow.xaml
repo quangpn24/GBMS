@@ -284,7 +284,17 @@
                 VerticalAlignment="Center"
                 Padding="0"
                 Background="{StaticResource Success}" 
-                IsTabStop="False" />
+                IsTabStop="False">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                  Mode="TwoWay">
+                        <Binding ElementName="txtName"
+                                 Path="(Validation.HasError)" />
+                        <Binding ElementName="txtImportPrice"
+                                 Path="(Validation.HasError)" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
             <Button
                 x:Name="btnCancel"
                 Command="{Binding ExitCommand}"

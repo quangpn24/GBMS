@@ -97,7 +97,7 @@
                         <TextBox.Text>
                             <Binding 
                                 Path="Name"
-                                Mode="TwoWay"
+                                Mode="OneWayToSource"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NotNullValidation ErrorMessage="Vui lòng nhập họ và tên!" />
@@ -227,7 +227,7 @@
                         <TextBox.Text>
                             <Binding
                                 Path= "UserAddress"
-                                Mode="TwoWay"
+                                Mode="OneWayToSource"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ!" />
@@ -278,7 +278,7 @@
                         <TextBox.Text>
                             <Binding 
                                 Path="UserPhoneNumber"
-                                Mode="TwoWay"
+                                Mode="OneWayToSource"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
@@ -328,7 +328,19 @@
                         materialDesign:ButtonAssist.CornerRadius="2"
                         ToolTip="Thêm nhân viên" 
                         Content="Cập nhật"
-                        HorizontalAlignment="Left"/>
+                        HorizontalAlignment="Left">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                          Mode="TwoWay">
+                                <Binding ElementName="txtName"
+                                         Path="(Validation.HasError)" />
+                                <Binding ElementName="txtAddress"
+                                         Path="(Validation.HasError)" />
+                                <Binding ElementName="txtPhoneNumber"
+                                         Path="(Validation.HasError)" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Grid>

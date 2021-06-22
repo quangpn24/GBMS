@@ -159,6 +159,7 @@
     <Compile Include="DAL\ReportDAL.cs" />
     <Compile Include="DAL\PermissionDAL.cs" />
     <Compile Include="DAL\PositionDetailDAL.cs" />
+    <Compile Include="InverseAndBooleansToBooleanConverter.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Authorizations.cs" />
     <Compile Include="Models\BillInfo.cs" />

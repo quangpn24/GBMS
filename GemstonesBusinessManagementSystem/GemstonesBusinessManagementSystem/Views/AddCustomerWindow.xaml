@@ -295,19 +295,33 @@
                     materialDesign:ButtonAssist.CornerRadius="2"
                     HorizontalAlignment="Right" 
                     Margin="0,0,20,0"/>
-                <Button
+                <Button 
                     x:Name="btnSave"
                     IsDefault="True"
                     Style="{StaticResource GreenButton}"
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=wdAddCustomer}"
-                    Height="40" 
+                    Height="40"
                     Width="100"
                     TabIndex="9"
                     materialDesign:ButtonAssist.CornerRadius="2"
-                    ToolTip="Thêm nhân viên" 
+                    ToolTip="Thêm nhân viên"
                     Content="Lưu"
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Left">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                      Mode="TwoWay">
+                            <Binding ElementName="txtName"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtAddress"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtPhoneNumber"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtCMND"
+                                     Path="(Validation.HasError)" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
             </StackPanel>
         </StackPanel>
         

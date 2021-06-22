@@ -323,6 +323,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             AddCustomerWindow addCustomerWindow = new AddCustomerWindow();
             addCustomerWindow.txtId.Text = AddPrefix("KH", (CustomerDAL.Instance.GetMaxId() + 1));
+            addCustomerWindow.txtAddress.Text = null;
+            addCustomerWindow.txtCMND.Text = null;
+            addCustomerWindow.txtName.Text = null;
+            addCustomerWindow.txtPhoneNumber.Text = null;
             addCustomerWindow.ShowDialog();
         }
         void OpenEditWindow(CustomerControl control)

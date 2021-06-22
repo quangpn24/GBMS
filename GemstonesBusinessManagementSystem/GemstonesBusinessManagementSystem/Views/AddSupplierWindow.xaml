@@ -257,7 +257,19 @@
                 Content="Lưu"
                 FontSize="18"
                 VerticalAlignment="Center"
-                Padding="0" />
+                Padding="0">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                  Mode="TwoWay">
+                        <Binding ElementName="txtName"
+                                 Path="(Validation.HasError)" />
+                        <Binding ElementName="txtAddress"
+                                 Path="(Validation.HasError)" />
+                        <Binding ElementName="txtPhoneNumber"
+                                 Path="(Validation.HasError)" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
             <Button 
                 x:Name="btnCancel"
                 Style="{StaticResource MaterialDesignRaisedButton}"
