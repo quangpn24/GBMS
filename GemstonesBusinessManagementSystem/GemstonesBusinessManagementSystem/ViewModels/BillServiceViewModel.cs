@@ -41,7 +41,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (mainWindow.dpStartDateBS.SelectedDate > mainWindow.dpEndDateBS.SelectedDate)
             {
-                MessageBox.Show("Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc!");
+                CustomMessageBox.Show("Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             main.stkBillService.Children.Clear();
@@ -153,6 +153,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //billServiceInfo.PaidMoney = (billServiceInfo.Price + billServiceInfo.Tips) * billServiceInfo.Quantity;
             if (BillServiceInfoDAL.Instance.Update(billServiceInfo))
             {
+                CustomMessageBox.Show("Cập nhật giao hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 Customer customer = CustomerDAL.Instance.FindById(checkedItem.txbIdCustomer.Text);
                 UpdateMembership(customer, ConvertToNumber(billServiceTemplateControl.txbRest.Text));
                 if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
@@ -182,7 +183,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                MessageBox.Show("Cập nhật thất bại!");
+                CustomMessageBox.Show("Cập nhật thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             //billServiceTemplateControl.icStatus.Kind = MaterialDesignThemes.Wpf.PackIconKind.TickCircleOutline;
             //billServiceTemplateControl.btnSwapStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
@@ -218,7 +219,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void DeleteBillService(BillServiceControl billServiceControl)
         {
-            var result = MessageBox.Show("Xác nhận xóa phiếu dịch vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = CustomMessageBox.Show("Xác nhận xóa phiếu dịch vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 if (BillServiceInfoDAL.Instance.DeleteByIdBillService(ConvertToIDString(billServiceControl.txbId.Text)))
@@ -243,7 +244,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                         }
                         main.stkBillService.Children.Remove(billServiceControl);
-                        MessageBox.Show("Xóa phiếu dịch vụ thành công");
+                        CustomMessageBox.Show("Xóa phiếu dịch vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     }
 
                 }

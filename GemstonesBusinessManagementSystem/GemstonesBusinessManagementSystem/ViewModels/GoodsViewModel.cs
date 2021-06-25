@@ -308,8 +308,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void Delete(GoodsControl control)
         {
-            var result = MessageBox.Show("Bạn có chắc chắn muốn xóa?", "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information);
-            if (result == MessageBoxResult.OK)
+            var result = CustomMessageBox.Show("Bạn có chắc chắn muốn xóa?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
             {
                 if (GoodsDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
                 {
@@ -324,7 +324,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Xóa không thành công!!!", "Error");
+                    CustomMessageBox.Show("Xóa không thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             }
@@ -359,7 +359,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     workbook.Worksheets.Add(table, "Danh sách hàng hóa");
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
-                MessageBox.Show("Xuất danh sách thành công!");
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
         }
         public void SelectImage(Grid parameter)
@@ -389,19 +389,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(addGoodsWd.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên sản phẩm", "Error");
+                CustomMessageBox.Show("Vui lòng nhập tên sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 addGoodsWd.txtName.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(addGoodsWd.cboGoodsType.Text))
             {
-                MessageBox.Show("Vui lòng chọn loại sản phẩm", "Error");
+                CustomMessageBox.Show("Vui lòng chọn loại sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 addGoodsWd.cboGoodsType.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(addGoodsWd.txtImportPrice.Text))
             {
-                MessageBox.Show("Vui lòng nhập giá sản phẩm", "Error");
+                CustomMessageBox.Show("Vui lòng nhập giá sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 addGoodsWd.txtImportPrice.Focus();
                 return;
             }
@@ -410,13 +410,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ImageBrush imageBrush = (ImageBrush)addGoodsWd.grdSelectImg.Background;
             if (imageBrush == null)
             {
-                MessageBox.Show("Vui lòng chọn ảnh!");
+                CustomMessageBox.Show("Vui lòng chọn ảnh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
             if ((!isUpdate || addGoodsWd.txtName.Text != oldGoods) && GoodsDAL.Instance.IsExisted(addGoodsWd.txtName.Text))
             {
-                MessageBox.Show("Sản phẩm đã tồn tại!");
+                CustomMessageBox.Show("Sản phẩm đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 addGoodsWd.txtName.Focus();
                 return;
             }
@@ -426,7 +426,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 newGoods.ImportPrice = ConvertToNumber(addGoodsWd.txtImportPrice.Text);
             }
-            GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
+            if(GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate))
+            {
+                CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            else
+            {
+                CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             if (isUpdate)
             {
                 //Update tab home 

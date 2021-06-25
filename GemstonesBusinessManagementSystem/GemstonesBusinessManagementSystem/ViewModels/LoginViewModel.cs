@@ -64,13 +64,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             if (string.IsNullOrEmpty(parameter.txtUsername.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên đăng nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Vui lòng nhập tên đăng nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.txtUsername.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(parameter.txtPassword.Password))
             {
-                MessageBox.Show("Vui lòng nhập tên đăng nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Vui lòng nhập tên đăng nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.txtPassword.Focus();
                 return;
             }
@@ -102,13 +102,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     CurrentAccount.PositionDetails = PositionDetailDAL.Instance.GetListByPosition(employee.IdPosition);
                     SetRole(main);
                 }
+                parameter.txtPassword.Password = null;
                 parameter.Hide();
                 main.ShowDialog();
                 parameter.Show();
             }
             else
             {
-                MessageBox.Show("Tên đăng nhập hoặc mật khẩu không chính xác!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Tên đăng nhập hoặc mật khẩu không chính xác!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public void OpenSignUpWindow(Window parameter)
