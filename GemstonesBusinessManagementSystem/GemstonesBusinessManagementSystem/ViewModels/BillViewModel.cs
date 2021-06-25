@@ -85,6 +85,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void PickBill(InvoiceControl invoiceControl)
         {
+            mainWindow.btnPrintBill.IsEnabled = true;
             Bill bill = BillDAL.Instance.GetBill(ConvertToIDString(invoiceControl.txbId.Text));
             Customer customer = CustomerDAL.Instance.FindById(bill.IdCustomer.ToString());
             List<BillInfo> billInfos = BillInfoDAL.Instance.GetBillInfos(bill.IdBill.ToString());

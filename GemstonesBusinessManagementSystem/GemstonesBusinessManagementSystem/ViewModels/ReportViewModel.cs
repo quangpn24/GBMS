@@ -132,10 +132,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (percent >= 0)
                 {
                     main.icoIncreasing.Visibility = System.Windows.Visibility.Visible;
+                    main.txbIncreasingPercent.Foreground = (Brush)new BrushConverter().ConvertFrom("#1BA345");
                 }
                 else
                 {
                     main.icoDecreasing.Visibility = System.Windows.Visibility.Visible;
+                    main.txbIncreasingPercent.Foreground = (Brush)new BrushConverter().ConvertFrom("#DE3E44");
                     percent = Math.Abs(percent);
                 }
             }
@@ -311,7 +313,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             labelPoint = chartPoint => Converter.Instance.Nice(chartPoint.Y, 1);
             if (main.cboSelectTimePie.SelectedIndex == 0)
             {
-                NamePieChart = String.Format("Thống kê doanh thu bán hàng và dịch vụ hôm nay({0})", DateTime.Today.Date.ToString("dd/MM/yyyy"));
+                NamePieChart = String.Format("Thống kê doanh thu hôm nay({0})", DateTime.Today.Date.ToString("dd/MM/yyyy"));
                 PieSeriesCollection = new SeriesCollection
                 {
                     new PieSeries
@@ -342,7 +344,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     diff += 7;
                 string starOftWeek = DateTime.Now.AddDays(-diff).Day.ToString();
 
-                NamePieChart = String.Format("Thống kê doanh thu bán hàng và dịch vụ tuần nay({0}-{1})", starOftWeek, DateTime.Now.Date.ToString("dd/MM/yyyy"));
+                NamePieChart = String.Format("Thống kê doanh thu tuần nay({0}-{1})", starOftWeek, DateTime.Now.Date.ToString("dd/MM/yyyy"));
                 PieSeriesCollection = new SeriesCollection
                 {
                     new PieSeries
@@ -367,7 +369,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                NamePieChart = String.Format("Thống kê doanh thu bán hàng và dịch vụ tháng nay({0})", DateTime.Today.Date.ToString("MM/yyyy"));
+                NamePieChart = String.Format("Thống kê doanh thu tháng nay({0})", DateTime.Today.Date.ToString("MM/yyyy"));
                 PieSeriesCollection = new SeriesCollection
                 {
                     new PieSeries

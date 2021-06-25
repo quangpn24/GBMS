@@ -18,96 +18,49 @@
     Background="{StaticResource White}"
     WindowStartupLocation="CenterScreen"
     ResizeMode="CanMinimize">
-    <Grid 
-        Margin="0">
-        <Grid 
+    <Grid>
+        <StackPanel 
             HorizontalAlignment="Left"
             Height="240"
             Margin="40,40,0,0"
             VerticalAlignment="Top"
             Width="420">
-            <Grid 
-                Margin="0"
-                VerticalAlignment="Top"
-                Width="420"
-                Height="40">
+            <Grid>
                 <Label 
                     Content="Mã NCC"
-                    HorizontalAlignment="Left"
-                    FontSize="18"
-                    FontWeight="SemiBold"
-                    Foreground="{StaticResource Gray1}"
-                    Height="32"
-                    Margin="0"
-                    VerticalAlignment="Center" />
+                    Style="{StaticResource LabelText}"/>
                 <Rectangle 
                     Width="230"
                     Height="40"
-                    RadiusY="6"
-                    RadiusX="6"
-                    Margin="0"
-                    Stroke="{StaticResource Light}"
+                    RadiusY="4"
+                    RadiusX="4"
+                    Stroke="{StaticResource Gray2}"
                     HorizontalAlignment="Right" />
                 <TextBox
                     x:Name="txtId"
+                    Style="{StaticResource TextBox}"
                     IsReadOnly="True"
                     IsTabStop="False"
-                    Cursor="Arrow"
-                    materialDesign:HintAssist.Hint="Mã tự động"
-                    HorizontalAlignment="Right"
-                    Width="210"
-                    FontSize="14"
-                    BorderThickness="0"
-                    MaxLines="1"
-                    Padding="0"
-                    Foreground="{StaticResource Black1}"
-                    Margin="0,0,10,0"
-                    Height="40"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontWeight="SemiBold" />
+                    materialDesign:HintAssist.Hint="Mã tự động"/>
             </Grid>
             <Grid 
-                Margin="0,60,0,0"
-                VerticalAlignment="Top"
-                Width="420"
-                Height="40">
+                Margin="0,20,0,0">
                 <Label 
                     Content="Tên NCC"
-                    HorizontalAlignment="Left"
-                    FontSize="18"
-                    FontWeight="SemiBold"
-                    Foreground="{StaticResource Gray1}"
-                    Height="32"
-                    Margin="0"
-                    VerticalAlignment="Center" />
+                    Style="{StaticResource LabelText}"/>
                 <Rectangle 
                     HorizontalAlignment="Right"
                     Height="40"
                     Width="230"
-                    RadiusY="6"
-                    RadiusX="6"
-                    Stroke="{StaticResource Light}"
-                    Margin="0" />
+                    RadiusY="4"
+                    RadiusX="4"
+                    Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtName"
-                    Cursor="IBeam"
+                    Style="{StaticResource TextBox}"
+                    TabIndex="0"
                     materialDesign:HintAssist.Hint="Tên nhà cung cấp"
-                    HorizontalAlignment="Right"
-                    Height="40"
-                    Width="210"
-                    FontSize="14"
-                    BorderThickness="0"
-                    MaxLines="1"
-                    Padding="0"
-                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                    Foreground="{StaticResource Black1}"
-                    Margin="0,0,10,0"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    FontWeight="SemiBold"
-                    VerticalAlignment="Bottom">
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                     <TextBox.Text>
                         <Binding 
                             Path="Name"
@@ -121,45 +74,23 @@
                 </TextBox>
             </Grid>
             <Grid 
-                Margin="0,120,0,0"
-                VerticalAlignment="Top"
-                Width="420"
-                Height="40">
+                Margin="0,20,0,0">
                 <Label 
                     Content="Địa chỉ"
-                    HorizontalAlignment="Left"
-                    FontSize="18"
-                    FontWeight="SemiBold"
-                    Foreground="{StaticResource Gray1}"
-                    Height="32"
-                    Margin="0"
-                    VerticalAlignment="Center" />
+                    Style="{StaticResource LabelText}" />
                 <Rectangle 
                     HorizontalAlignment="Right"
                     Height="40"
                     Width="230"
-                    RadiusY="6"
-                    RadiusX="6"
-                    Stroke="{StaticResource Light}"
-                    Margin="0" />
+                    RadiusY="4"
+                    RadiusX="4"
+                    Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtAddress"
-                    Cursor="IBeam"
+                    Style="{StaticResource TextBox}"
                     materialDesign:HintAssist.Hint="Địa chỉ"
-                    HorizontalAlignment="Right"
-                    Height="40"
-                    Width="210"
-                    FontSize="14"
-                    BorderThickness="0"
-                    MaxLines="1"
-                    Padding="0"
-                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                    Foreground="{DynamicResource Black1}"
-                    Margin="0,0,10,0"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    FontWeight="SemiBold"
-                    BorderBrush="{DynamicResource Gray1}">
+                    TabIndex="1"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                     <TextBox.Text>
                         <Binding 
                             Path="Address"
@@ -173,46 +104,24 @@
                 </TextBox>
             </Grid>
             <Grid 
-                Margin="0,180,0,0"
-                VerticalAlignment="Top"
-                Width="420"
-                Height="40">
+                Margin="0,20,0,0">
                 <Label 
                     Content="Số điện thoại"
-                    HorizontalAlignment="Left"
-                    FontSize="18"
-                    FontWeight="SemiBold"
-                    Foreground="{StaticResource Gray1}"
-                    Height="32"
-                    Margin="0"
-                    VerticalAlignment="Center" />
+                    Style="{StaticResource LabelText}"/>
                 <Rectangle 
                     HorizontalAlignment="Right"
                     Height="40"
                     Width="230"
-                    RadiusY="6"
-                    RadiusX="6"
-                    Stroke="{StaticResource Light}"
-                    Margin="0"/>
+                    RadiusY="4"
+                    RadiusX="4"
+                    Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtPhoneNumber"
-                    Cursor="IBeam"
+                    Style="{StaticResource TextBox}"
                     materialDesign:HintAssist.Hint="Số điện thoại"
-                    HorizontalAlignment="Right"
-                    Height="40"
-                    Width="210"
-                    FontSize="14"
-                    BorderThickness="0"
-                    MaxLines="1"
                     MaxLength="11"
-                    Padding="0"
-                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                    Foreground="{DynamicResource Black1}"
-                    Margin="0,0,10,0"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    FontWeight="SemiBold"
-                    BorderBrush="{DynamicResource Gray1}">
+                    TabIndex="2"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                     <TextBox.Text>
                         <Binding
                             Path="PhoneNumber"
@@ -235,10 +144,10 @@
                     </i:Interaction.Triggers>
                 </TextBox>
             </Grid>
-        </Grid>
+        </StackPanel>
         <Grid 
-            Margin="0,300,34,0"
-            VerticalAlignment="Top"
+            Margin="0,0,34,30"
+            VerticalAlignment="Bottom"
             Height="40"
             Width="220"
             HorizontalAlignment="Right">
@@ -248,16 +157,11 @@
                 Style="{StaticResource GreenButton}"
                 Command="{Binding SaveCommnad}"
                 CommandParameter="{Binding ElementName=wdAddSupplier}"
-                Height="40"
                 Width="100"
+                TabIndex="3"
                 ToolTip="Lưu thông tin"
-                Margin="0"
                 HorizontalAlignment="Left"
-                FocusVisualStyle="{x:Null}"
-                Content="Lưu"
-                FontSize="18"
-                VerticalAlignment="Center"
-                Padding="0">
+                Content="Lưu">
                 <Button.IsEnabled>
                     <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
                                   Mode="TwoWay">
@@ -272,21 +176,14 @@
             </Button>
             <Button 
                 x:Name="btnCancel"
-                Style="{StaticResource MaterialDesignRaisedButton}"
+                Style="{StaticResource CancelButton}"
                 Command="{Binding ExitCommand}"
                 CommandParameter="{Binding ElementName=wdAddSupplier}"
-                Height="40"
                 Width="100"
+                TabIndex="4"
                 ToolTip="Thoát"
-                Background="{StaticResource Gray2}"
-                BorderBrush="{StaticResource Gray3}"
-                Margin="0"
                 HorizontalAlignment="Right"
-                FocusVisualStyle="{x:Null}"
-                Content="Bỏ qua"
-                FontSize="18"
-                VerticalAlignment="Center"
-                Padding="0" />
+                Content="Bỏ qua"/>
         </Grid>
     </Grid>
 </Window>

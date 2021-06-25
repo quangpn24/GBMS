@@ -126,14 +126,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceTemplateControl.txbTotal.Text = SeparateThousands((ConvertToNumber(billServiceTemplateControl.txbCalculateMoney.Text) * billServiceInfos[i].Quantity).ToString());
                 if (billServiceInfos[i].Status == 1)  // Đã giao thì bỏ button swap và chuyển màu sang success
                 {
-                    if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
-                    {
-                        billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
-                    }
                     billServiceTemplateControl.txbDeliveryDate.Text = billServiceInfos[i].DeliveryDate.ToShortDateString();
                     billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
                     billServiceTemplateControl.txbStatus.Text = "Đã giao";
-                    billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
                     billServiceTemplateControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
                 }
                 else
@@ -143,7 +138,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 main.stkBillServiceInfo.Children.Add(billServiceTemplateControl);
             }
-            main.btnPrintBS.Visibility = Visibility.Visible;
+            main.btnPrintBS.IsEnabled = true;
         }
         public void ConfirmDeliveried(BillServiceTemplateControl billServiceTemplateControl)
         {
@@ -155,14 +150,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 Customer customer = CustomerDAL.Instance.FindById(checkedItem.txbIdCustomer.Text);
                 UpdateMembership(customer, ConvertToNumber(billServiceTemplateControl.txbRest.Text));
-                if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
-                {
-                    billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
-                }
                 checkedItem.btnDeleteBillService.Visibility = Visibility.Hidden;
                 checkedItem.txbRest.Text = main.txbRestBS.Text = (double.Parse(main.txbRestBS.Text) - double.Parse(billServiceTemplateControl.txbRest.Text)).ToString();
                 billServiceTemplateControl.txbRest.Text = "0";
-                billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
                 billServiceTemplateControl.txbStatus.Text = "Đã giao";
                 billServiceTemplateControl.txbDeliveryDate.Text = DateTime.Now.ToShortDateString();
                 billServiceTemplateControl.btnSwapStatus.IsHitTestVisible = false;
@@ -199,7 +189,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             finally
             {
-                main.btnPrintBS.Visibility = Visibility.Visible;
+                main.btnPrintBS.IsEnabled = true;
             }
         }
         void UpdateMembership(Customer customer, long paidMoney)

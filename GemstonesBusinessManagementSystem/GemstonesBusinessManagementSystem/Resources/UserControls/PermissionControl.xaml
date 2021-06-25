@@ -12,7 +12,7 @@
     DataContext="{StaticResource RoleVM}"
     Name="ucPermission"
     Height="50">
-    <Grid Background="White" Height="50" >
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition />
@@ -34,24 +34,14 @@
             x:FieldModifier="public"
             Style="{StaticResource Text}"
             Grid.Column="1"
+            MaxWidth="400"
+            TextTrimming="CharacterEllipsis"
             HorizontalAlignment="Left" 
-            TextWrapping="Wrap" 
-            Text="Quan ly" 
-            VerticalAlignment="Center" 
             Margin="20,0,0,0" />
         <Rectangle 
             Grid.ColumnSpan="6"           
             Fill="{StaticResource Light}" 
             Height="2"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="5"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>

@@ -10,170 +10,114 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    Height="50"
+    Height="45"
     DataContext="{StaticResource BillServiceVM}"
     Margin="0,0,0,0">
-    <Border 
-        BorderBrush="{StaticResource Light}"
-        BorderThickness="1">
-        <Grid 
-            x:Name="grdMain"
-            Background="White">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.6*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="20" />
-            </Grid.ColumnDefinitions>
-            <TextBlock 
-                x:Name="txbIdService"
-                Visibility="Hidden"/>
-            <TextBlock
-                x:Name="txbNumber"
-                Grid.Column="0"
-                Text="STT"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13"/>
-            <TextBlock
-                x:Name="txbName"
-                Grid.Column="1"
-                Text="Loại dịch vụ"
-                HorizontalAlignment="Left"
-                Margin="10,0,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                FontSize="13" />
-            <TextBlock 
-                x:Name="txbPrice"
-                Grid.Column="2"
-                Text="Đơn giá dịch vụ"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13" />
-            <TextBlock 
-                x:Name="txbCalculateMoney"
-                Text="Đơn giá được tính"
-                Grid.Column="3"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13" />
-            <TextBlock 
-                x:Name="txbQuantity"
-                Grid.Column="4"
-                Text="Số lượng"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13" />
-            <TextBlock 
-                x:Name="txbTotal"
-                Text="Thành tiền"
-                Grid.Column="5"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13" />
-            <TextBlock 
-                x:Name="txbPaidMoney"
-                Text="Trả trước"
-                Grid.Column="6"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13" />
-            <TextBlock 
-                x:Name="txbRest"
-                Text="0"
-                Grid.Column="7"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13" />
-            <TextBlock 
-                x:Name="txbDeliveryDate"
-                Grid.Column="8"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13" />
-            <TextBlock 
-                x:Name="txbStatus"
-                Text="Tình trạng"
-                Grid.Column="9"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource Black1}"
-                TextAlignment="Center"
-                FontSize="13" />
-            <Button 
-                x:Name="btnSwapStatus"
-                Grid.Column="10"
-                Command="{Binding ConfirmDeliveriedCommand}"
-                CommandParameter="{Binding ElementName=ucBillServiceInfo}"
-                Style="{StaticResource MaterialDesignRaisedButton}"
-                ToolTip="Xác nhận đã giao"
-                Height="30"
-                Background="{x:Null}"
-                BorderBrush="{x:Null}"
-                Foreground="{DynamicResource Error}"
-                FocusVisualStyle="{x:Null}"
-                Padding="0"
-                Margin="0">
-                <materialDesign:PackIcon 
-                    x:Name="icStatus"
-                    Kind="SwapHorizontalCircleOutline"
-                    Height="24"
-                    Width="24"
-                    HorizontalAlignment="Center" />
-            </Button>
-        </Grid>
-    </Border>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="11"           
+            Fill="{StaticResource Light}" 
+            Height="2"
+            VerticalAlignment="Bottom"/>
+        <TextBlock 
+            x:Name="txbIdService"
+            Visibility="Hidden"/>
+        <TextBlock
+            x:Name="txbNumber"
+            Style="{StaticResource Text}"
+            Grid.Column="0"
+            Text="1"
+            FontSize="12"/>
+        <TextBlock
+            x:Name="txbName"
+            Style="{StaticResource Text}"
+            Grid.Column="1"
+            Text="Loại dịch vụ"
+            HorizontalAlignment="Left"
+            Margin="10,0,0,0"
+            FontSize="12" />
+        <TextBlock 
+            x:Name="txbPrice"
+            Style="{StaticResource Text}"
+            Grid.Column="2"
+            Text="100.000.000"
+            FontSize="12" />
+        <TextBlock 
+            x:Name="txbCalculateMoney"
+            Style="{StaticResource Text}"
+            Text="100.000.000"
+            Grid.Column="3"
+            FontSize="12" />
+        <TextBlock 
+            x:Name="txbQuantity"
+            Style="{StaticResource Text}"
+            Grid.Column="4"
+            Text="100"
+            FontSize="12" />
+        <TextBlock 
+            x:Name="txbTotal"
+            Style="{StaticResource Text}"
+            Text="100.000.000"
+            Grid.Column="5"
+            FontSize="12" />
+        <TextBlock 
+            x:Name="txbPaidMoney"
+            Style="{StaticResource Text}"
+            Text="100.000.000"
+            Grid.Column="6"
+            FontSize="12" />
+        <TextBlock 
+            x:Name="txbRest"
+            Style="{StaticResource Text}"
+            Text="100.000.000"
+            Grid.Column="7"
+            FontSize="12" />
+        <TextBlock 
+            x:Name="txbDeliveryDate"
+            Style="{StaticResource Text}"
+            Text="12/12/1211"
+            Grid.Column="8"
+            FontSize="12" />
+        <TextBlock 
+            x:Name="txbStatus"
+            Style="{StaticResource Text}"
+            Text="Tình trạng"
+            Grid.Column="9"
+            FontSize="12" />
+        <Button 
+            x:Name="btnSwapStatus"
+            Grid.Column="10"
+            Command="{Binding ConfirmDeliveriedCommand}"
+            CommandParameter="{Binding ElementName=ucBillServiceInfo}"
+            Style="{StaticResource MaterialDesignRaisedButton}"
+            ToolTip="Xác nhận đã giao"
+            Height="30"
+            Background="{x:Null}"
+            BorderBrush="{x:Null}"
+            Foreground="{DynamicResource Error}"
+            FocusVisualStyle="{x:Null}"
+            Padding="0"
+            Margin="0">
+            <materialDesign:PackIcon 
+                x:Name="icStatus"
+                Kind="SwapHorizontalCircleOutline"
+                Height="24"
+                Width="24"
+                HorizontalAlignment="Center" />
+        </Button>
+    </Grid>
 </UserControl>

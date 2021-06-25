@@ -10,8 +10,7 @@
     mc:Ignorable="d" 
     x:Name="ucDisplayGoods"
     DataContext="{StaticResource GoodsVM}"
-    Height="40" 
-    Margin="0,0,0,2">
+    Height="45">
     <Grid
         x:Name="grdMain">
         <Grid.ColumnDefinitions>
@@ -23,102 +22,65 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
             Grid.ColumnSpan="9"
             Fill="{StaticResource Light}"
             Height="1"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="8"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
         <TextBlock 
             x:Name="txbId"
             Text="Mã SP"
             Grid.Column="0"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbName"
             Text="Tên sản phẩm" 
             Grid.Column="1"
-             Style="{StaticResource Text}"
+            MaxWidth="260"
+            TextTrimming="CharacterEllipsis"
+            Style="{StaticResource Text}"
             HorizontalAlignment="Left" 
-            Margin="20,0,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Margin="20,0,0,0"/>
         <TextBlock 
             x:Name="txbGoodsType"
             Text="Loại sản phẩm" 
             Grid.Column="2"
+            MaxWidth="180"
+            TextTrimming="CharacterEllipsis"
             Style="{StaticResource Text}"
             HorizontalAlignment="Left" 
-            Margin="10,0,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Margin="10,0,0,0"/>
         <TextBlock 
             x:Name="txbUnit"
             Text="Đơn vị tính" 
             Grid.Column="3"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbQuantity"
             Text="Số lượng" 
             Grid.Column="4"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbImportPrice"
             Text="Giá nhập" 
             Grid.Column="5"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbSalesPrice"
             Text="Giá bán ra" 
             Grid.Column="6"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <Button 
             Grid.Column="7"
             x:Name="btnEditGoods"
             ToolTip="Sửa thông tin"
+            Style="{StaticResource TransperantButton}"
             Command="{Binding EditGoodsCommand}"
             CommandParameter="{Binding ElementName=ucDisplayGoods}"
             Height="30"
-            Margin="0,0,50,0" 
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            FontSize="16" 
-            VerticalAlignment="Center" 
-            FocusVisualStyle="{x:Null}"
-            Width="40"
-            HorizontalAlignment="Right" 
-            Padding="0"
-            FontWeight="SemiBold">
+            Margin="0,0,40,0" 
+            Width="30">
             <materialDesign:PackIcon
                 Kind="SquareEditOutline" 
                 Width="24"
@@ -129,20 +91,14 @@
         <Button 
             Grid.Column="7"
             x:Name="btnDeleteGoods"
+            Style="{StaticResource TransperantButton}"
             ToolTip="Xóa mặt hàng" 
             Height="30"
-            Margin="0,0,10,0" 
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            FontSize="16" 
-            VerticalAlignment="Center" 
-            FocusVisualStyle="{x:Null}"
-            Width="40"
+            Margin="0,0,15,0" 
+            Width="30"
             HorizontalAlignment="Right" 
-            FontWeight="SemiBold" 
             Command="{Binding DeleteGoodsCommand}"
-            CommandParameter="{Binding ElementName=ucDisplayGoods}"
-            Padding="0" >
+            CommandParameter="{Binding ElementName=ucDisplayGoods}">
             <materialDesign:PackIcon 
                 Kind="DeleteOutline" 
                 Height="24"

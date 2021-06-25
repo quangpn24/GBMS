@@ -145,19 +145,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void SelectVND(ImportGoodsWindow window)
         {
-            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#D14040");
-            window.btnVND.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#D14040");
-            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
-            window.btnPercent.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
+            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#1BA345");
+            window.btnVND.Foreground = (Brush)new BrushConverter().ConvertFrom("#FFFFFF");
+            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#9098B1");
+            window.btnPercent.Foreground = (Brush)new BrushConverter().ConvertFrom("#263238");
             isVND = true;
             window.txtDiscount.Text = VndDiscount.ToString();
         }
         void SelectPercent(ImportGoodsWindow window)
         {
-            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
-            window.btnVND.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
-            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#d14040");
-            window.btnPercent.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#d14040");
+            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#9098B1");
+            window.btnVND.Foreground = (Brush)new BrushConverter().ConvertFrom("#263238");
+            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#1BA345");
+            window.btnPercent.Foreground = (Brush)new BrushConverter().ConvertFrom("#FFFFFF");
             isVND = false;
             window.txtDiscount.Text = percentDiscount.ToString();
         }
@@ -322,7 +322,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 GoodsType type = GoodsTypeDAL.Instance.GetById(goods.IdGoodsType);
                 receiptDetailControl.txbId.Text = AddPrefix("SP", goods.IdGoods);
                 receiptDetailControl.txbName.Text = goods.Name;
-                receiptDetailControl.txbGoodsType.Text = type.Name;
                 receiptDetailControl.txbUnit.Text = type.Unit;
                 receiptDetailControl.txbImportPrice.Text = SeparateThousands(goods.ImportPrice.ToString());
                 receiptDetailControl.txbQuantity.Text = dt.Rows[i].ItemArray[2].ToString();

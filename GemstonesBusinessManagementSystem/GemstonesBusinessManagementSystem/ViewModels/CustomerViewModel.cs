@@ -408,8 +408,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         public void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
         {
-            mainWindow.lbCountCustomer.Content = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
-            mainWindow.lbCountAllPrice.Content = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
+            mainWindow.txbCountCustomer.Text = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
+            mainWindow.txbCountAllPrice.Text = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
             SetItemSource(mainWindow);
             LoadCustomerToView(mainWindow, 0);
         }
@@ -523,7 +523,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     control.txbAddress.Text = customer.Address.ToString();
                     control.txbAllPrice.Text = SeparateThousands(customer.TotalPrice.ToString());
                     control.txbLevelCus.Text = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
-                    mainWindow.lbCountCustomer.Content = SeparateThousands((int.Parse(mainWindow.lbCountCustomer.Content.ToString()) + 1).ToString());
+                    mainWindow.txbCountCustomer.Text = SeparateThousands((int.Parse(mainWindow.txbCountCustomer.Text.ToString()) + 1).ToString());
                 }
                 if (CustomerDAL.Instance.AddOrUpdate(customer, isEditing))
                 {
@@ -541,7 +541,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 mainWindow.cboSelectCustomerSort.SelectedIndex = indexSort;
                 mainWindow.cboSelectCustomerIdMembership.SelectedIndex = indexFilter;
 
-                mainWindow.lbCountAllPrice.Content = CustomerDAL.Instance.CountPrice().ToString();
+                mainWindow.txbCountAllPrice.Text = CustomerDAL.Instance.CountPrice().ToString();
 
                 addCustomerWindow.Close();
             }

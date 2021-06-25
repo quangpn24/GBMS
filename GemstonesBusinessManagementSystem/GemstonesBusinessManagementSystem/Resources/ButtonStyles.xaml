@@ -12,7 +12,7 @@
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="Height" Value="45"/>
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="4"/>
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="2"/>
         <Setter Property="Padding" Value="16,4,16,6"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -52,10 +52,10 @@
         <Setter Property="Foreground" Value="{DynamicResource White}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="BorderThickness" Value="2"/>
-        <Setter Property="Height" Value="45"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="FontSize" Value="18"/>
         <Setter Property="Padding" Value="16,4,16,6"/>
-        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="4"/>
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="2"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource Success}"/>
@@ -102,10 +102,10 @@
         <Setter Property="Foreground" Value="{DynamicResource White}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="BorderThickness" Value="2"/>
-        <Setter Property="Height" Value="45"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="FontSize" Value="18"/>
         <Setter Property="Padding" Value="16,4,16,6"/>
-        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="4"/>
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="2"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource Gray}"/>
@@ -192,12 +192,11 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
     <Style x:Key="HoverContentButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton }">
         <Setter Property="Background" Value="{x:Null}" />
         <Setter Property="BorderBrush" Value="{x:Null}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Right" />
         <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="0" />
@@ -212,5 +211,14 @@
                 <Setter Property="Background" Value="{x:Null}" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+    <Style x:Key="TransperantButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton }">
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="0" />
+        <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
     </Style>
 </ResourceDictionary>

@@ -82,6 +82,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void LoadServicesToView(List<Service> services, MainWindow mainWindow)
         {
+            int idBillService = BillServiceDAL.Instance.GetMaxId() + 1;
+            mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService);
+            mainWindow.txbDateBillService.Text = DateTime.Today.ToString("dd-MM-yyyy");
             mainWindow.wrpSaleService.Children.Clear();
             foreach (var service in services)
             {
@@ -197,8 +200,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (isPaidMoney)
             {
-                int idBillService = BillServiceDAL.Instance.GetMaxId() + 1;
-                BillService billService = new BillService(idBillService, CurrentAccount.IdAccount, DateTime.Now, totalMoney, totalPaidMoney, ConvertToID(mainWindow.txbIdCustomer.Text), 0);
+                BillService billService = new BillService(ConvertToID(mainWindow.txbIdBillService.Text), CurrentAccount.IdAccount, DateTime.Now, totalMoney, totalPaidMoney, ConvertToID(mainWindow.txbIdCustomer.Text), 0);
                 Customer customer = CustomerDAL.Instance.FindById(billService.IdCustomer.ToString());
                 if (totalMoney != 0) // Kiểm tra xem có hàng hóa nào được chọn không
                 {
@@ -213,13 +215,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                                 paidMoney = double.Parse(temp.txtPaidMoney.Text);
                             if (!String.IsNullOrEmpty(temp.txtTips.Text))
                                 tips = double.Parse(temp.txtTips.Text);
-                            BillServiceInfo billServiceInfo = new BillServiceInfo(idBillService, ConvertToID(temp.txbSerial.Text), double.Parse(temp.txbPrice.Text), tips, Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
+                            BillServiceInfo billServiceInfo = new BillServiceInfo(ConvertToID(mainWindow.txbIdBillService.Text), ConvertToID(temp.txbSerial.Text), double.Parse(temp.txbPrice.Text), tips, Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
                             BillServiceInfoDAL.Instance.Insert(billServiceInfo);
                             customer.TotalPrice += Convert.ToInt64(billService.TotalPaidMoney);
                             //UpdateMembership(customer);
                             //CustomerDAL.Instance.AddOrUpdate(customer, true);
                         }
-                        mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService);
 
                         var result = MessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (result == MessageBoxResult.Yes)
@@ -236,6 +237,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         mainWindow.txbNameCustomer.Text = "";
                         mainWindow.txbAddressCustomer.Text = "";
                         mainWindow.txbPhoneCustomer.Text = "";
+                        mainWindow.txbClassCustomer.Text = "";
                     }
                     else
                     {
@@ -295,7 +297,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billServiceTemplate.txbPhoneNumber.Text = mainWindow.txbPhoneCustomer.Text;
             billServiceTemplate.txbEmployeeName.Text = CurrentAccount.Name;
             billServiceTemplate.txbId.Text = mainWindow.txbIdBillService.Text;
-            billServiceTemplate.txbDate.Text = DateTime.Now.ToShortDateString();
+            billServiceTemplate.txbDate.Text = mainWindow.txbDateBillService.Text;
             billServiceTemplate.txbTotal.Text = mainWindow.txbTotalBillService.Text;
             billServiceTemplate.txbTotalPaid.Text = mainWindow.txbTotalPaidBillService.Text;
             billServiceTemplate.txbRest.Text = SeparateThousands((double.Parse(mainWindow.txbTotalBillService.Text) - double.Parse(mainWindow.txbTotalPaidBillService.Text)).ToString());
@@ -319,7 +321,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceTemplateControl.txbDeliveryDate.Text = "";
                 billServiceTemplateControl.txbStatus.Text = "Chưa giao";
                 billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
-                billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
                 billServiceTemplate.stkBillServiceInfo.Children.Add(billServiceTemplateControl);
             }
             billServiceTemplate.ShowDialog();
@@ -333,6 +334,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.txbNameCustomer.Text = pickCustomerWindow.txbName.Text;
             mainWindow.txbAddressCustomer.Text = pickCustomerWindow.txbAddress.Text;
             mainWindow.txbPhoneCustomer.Text = pickCustomerWindow.txbPhoneNumber.Text;
+            mainWindow.txbClassCustomer.Text = pickCustomerWindow.txbRank.Text;
             if (!String.IsNullOrEmpty(pickCustomerWindow.txbSpending.Text))
             {
                 totalSpending = ConvertToNumber(pickCustomerWindow.txbSpending.Text);

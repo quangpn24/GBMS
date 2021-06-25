@@ -21,9 +21,7 @@
                                    CommandParameter="{Binding ElementName=ucInvoice}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid
-        x:Name="grdMain"
-        Margin="0">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80" />
             <ColumnDefinition />
@@ -43,6 +41,8 @@
         <TextBlock 
             x:Name="txbCustomerName"
             Grid.Column="1"
+            MaxWidth="130"
+            TextTrimming="CharacterEllipsis"
             Style="{StaticResource Text}"
             Margin="10,0,0,0" 
             HorizontalAlignment="Left"/>

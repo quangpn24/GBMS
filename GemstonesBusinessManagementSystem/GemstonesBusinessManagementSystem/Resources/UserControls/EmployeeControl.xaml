@@ -12,84 +12,61 @@
     DataContext="{StaticResource EmployeeVM}"
     Name="ucEmployee"
     Height="45">
-    <Grid Height="45" >
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <TextBlock 
             x:Name="txbId"
             Grid.Column="0"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap" 
-            Text="NV001" 
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbName"
             Style="{StaticResource Text}"
             Grid.Column="1"
-            Text="Phan Ngoc Quang"
+            MaxWidth="220"
+            TextTrimming="CharacterEllipsis"
             HorizontalAlignment="Left" 
-            Margin="20,0,0,0"
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" />
+            Margin="20,0,0,0" />
         <TextBlock 
             x:Name="txbPosition"
             Style="{StaticResource Text}"
             Grid.Column="2"
-            HorizontalAlignment="Left" 
-            TextWrapping="Wrap" 
-            Text="Quan ly" 
-            VerticalAlignment="Center" />
+            MaxWidth="180"
+            TextTrimming="CharacterEllipsis"/>
         <TextBlock 
             x:Name="txbPhoneNumber"
             Style="{StaticResource Text}"
-            Grid.Column="3"
-            HorizontalAlignment="Center" 
-            TextWrapping="Wrap" 
-            Text="0123456789" 
-            VerticalAlignment="Center" />
+            Grid.Column="3"/>
         <TextBlock 
             x:Name="txbAddress"
             Style="{StaticResource Text}"
             Grid.Column="4"
-            HorizontalAlignment="Center" 
-            TextWrapping="Wrap" 
-            Text="Địa chỉ" 
-            VerticalAlignment="Center" />
+            MaxWidth="220"
+            TextTrimming="CharacterEllipsis"/>
         <TextBlock 
             x:Name="txbTotalSalary"
             Style="{StaticResource Text}"
-            Grid.Column="5"
-            HorizontalAlignment="Center" 
-            Text="10.000.000"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Grid.Column="5"/>
         <StackPanel
             Orientation="Horizontal"
-            Grid.Column="6">
+            Grid.Column="6" 
+            HorizontalAlignment="Center">
             <Button 
                 x:Name="btnEditEmployee"
+                Style="{StaticResource TransperantButton}"
                 Command="{Binding EditCommand}"
                 CommandParameter="{Binding ElementName=ucEmployee}"
-                Style="{StaticResource MaterialDesignRaisedButton}"
                 ToolTip="Sửa thông tin"
                 Height="30"
-                Background="{x:Null}" 
-                BorderBrush="{x:Null}" 
                 Foreground="{DynamicResource Primary}" 
-                VerticalAlignment="Center" 
-                FocusVisualStyle="{x:Null}"
-                HorizontalAlignment="Right" 
-                Padding="0" 
-                Margin="10,0">
+                Margin="0,0,10,0">
                 <materialDesign:PackIcon 
                     Kind="SquareEditOutline" 
                     Width="24"
@@ -97,18 +74,13 @@
             </Button>
             <Button 
                 x:Name="btnDeleteEmployee"
+                Style="{StaticResource TransperantButton}"
                 Command="{Binding DeleteCommand}"
                 CommandParameter="{Binding ElementName=ucEmployee}"
-                Style="{StaticResource MaterialDesignRaisedButton}"
                 ToolTip="Xóa nhân viên" 
                 Height="30"
-                Background="{x:Null}" 
-                BorderBrush="{x:Null}" 
                 Foreground="{StaticResource Error}" 
-                VerticalAlignment="Center" 
-                FocusVisualStyle="{x:Null}"
-                HorizontalAlignment="Right" 
-                Padding="0" Margin="10,0">
+                Margin="10,0,0,0">
                 <materialDesign:PackIcon 
                     Kind="DeleteOutline" 
                     Height="24"
@@ -120,14 +92,5 @@
             Fill="{StaticResource Light}" 
             Height="2"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="6"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>

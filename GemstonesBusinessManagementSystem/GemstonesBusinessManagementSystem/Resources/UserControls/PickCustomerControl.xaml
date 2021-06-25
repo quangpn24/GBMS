@@ -22,89 +22,56 @@
                                    CommandParameter="{Binding ElementName=ucCustomer}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Border
-        BorderBrush="{StaticResource Light}"
-        BorderThickness="2">
-        <Grid 
-            x:Name="grdMain"
-            Margin="0"
-            Background="White"
-            Focusable="True">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="2.5*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="1.5*" />
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="1.5*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock 
-                x:Name="txbSpending"
-                Visibility="Hidden"/>
-            <TextBlock 
-                x:Name="txbId"
-                Grid.Column="0"
-                TextAlignment="Center"
-                Text="Mã KH"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                FontWeight="Medium"
-                HorizontalAlignment="Center" />
-            <TextBlock 
-                x:Name="txbName"
-                Text="Họ tên"
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                Margin="20,0,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                FontWeight="Medium" />
-            <TextBlock 
-                x:Name="txbPhoneNumber"
-                Grid.Column="2"
-                HorizontalAlignment="Center"
-                Margin="0"
-                Text="SĐT"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />
-            <TextBlock
-                x:Name="txbIdNumber"
-                Grid.Column="3"
-                Text="CMND"
-                HorizontalAlignment="Center"
-                Margin="0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium"/>
-            <TextBlock 
-                x:Name="txbAddress"
-                Grid.Column="4"
-                HorizontalAlignment="Center"
-                Margin="0"
-                Text="Địa chỉ"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />
-            <TextBlock 
-                x:Name="txbRank"
-                Grid.Column="5"
-                HorizontalAlignment="Center"
-                Margin="0"
-                Text="Hạng KH"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />
-        </Grid>
-    </Border>
+    <Grid 
+        x:Name="grdMain"
+        Focusable="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="2.5*" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="110" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="140" />
+        </Grid.ColumnDefinitions>
+        <TextBlock 
+            x:Name="txbSpending"
+            Visibility="Hidden"/>
+        <TextBlock 
+            x:Name="txbId"
+            Grid.Column="0"
+            Style="{StaticResource Text}"/>
+        <TextBlock 
+            x:Name="txbName"
+            Grid.Column="1"
+            Style="{StaticResource Text}"
+            MaxWidth="150"
+            TextTrimming="WordEllipsis"
+            HorizontalAlignment="Left"
+            Margin="20,0,0,0" />
+        <TextBlock 
+            x:Name="txbPhoneNumber"
+            Grid.Column="2"
+            Style="{StaticResource Text}"/>
+        <TextBlock
+            x:Name="txbIdNumber"
+            Grid.Column="3"
+            Style="{StaticResource Text}"/>
+        <TextBlock 
+            x:Name="txbAddress"
+            Grid.Column="4"
+            Style="{StaticResource Text}"
+            MaxWidth="200"
+            TextTrimming="CharacterEllipsis"/>
+        <TextBlock 
+            x:Name="txbRank"
+            Grid.Column="5"
+            Style="{StaticResource Text}"
+            MaxWidth="120"
+            TextTrimming="WordEllipsis"/>
+        <Rectangle 
+            Grid.ColumnSpan="6"           
+            Fill="{StaticResource Light}" 
+            Height="2"
+            VerticalAlignment="Bottom"/>
+    </Grid>
 </UserControl>
