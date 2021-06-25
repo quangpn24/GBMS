@@ -4,9 +4,12 @@ using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
 using Microsoft.Win32;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -122,7 +125,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PreviousPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToPreviousPage(p, --currentPage));
             NextPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToNextPage(p, ++currentPage));
             SearchCommand = new RelayCommand<MainWindow>((p) => true, (p) => Search(p));
-            ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel());
+            ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel(p));
             OpenAddWindowCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenAddWindow(p));
             LoadCommand = new RelayCommand<MainWindow>((p) => true, (p) => { LoadEmployeeList(p, 0); SetItemSource(); });
         }
@@ -576,21 +579,127 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             currentPage = 0;
             LoadEmployeeList(mainWindow, currentPage);
         }
-        void ExportExcel()
+        public void ExportExcel(MainWindow main)
         {
+            string filePath = "";
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Excel |*.xlsx"
             };
-            if ((bool)saveFileDialog.ShowDialog())
+            if (saveFileDialog.ShowDialog() == true)
             {
-                using (XLWorkbook workbook = new XLWorkbook())
-                {
-                    workbook.Worksheets.Add(EmployeeDAL.Instance.GetDatatable(), "Danh sách nhân viên");
-                    workbook.SaveAs(saveFileDialog.FileName);
-                }
-                MessageBox.Show("Xuất danh sách thành công!");
+                filePath = saveFileDialog.FileName;
             }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách nhân viên";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSNCC";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 30;
+                    ws.Column(3).Width = 20;
+                    ws.Column(4).Width = 30;
+                    ws.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(5).Width = 30;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 30;
+                    ws.Column(7).Width = 30;
+                    ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(8).Width = 30;
+                    ws.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(9).Width = 30;
+                    ws.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Tên nhân viên", "Chức vụ", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Ngày vào làm", "Lương" };
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách nhân viên";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu 
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+                    currentPage = 0;
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < employeeList.Count; i++)
+                    {
+                        Employee employee = employeeList[i];
+                        EmployeePosition employeePosition = EmployeePositionDAL.Instance.GetById(employeeList[i].IdPosition);
+                        ws.Row(rowIndex).Height = 15;
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":I" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.Name;
+                        ws.Cells[rowIndex, colIndex++].Value = employeePosition.Position;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.Gender;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.DateOfBirth;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.PhoneNumber;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.Address;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.StartingDate;
+                        ws.Cells[rowIndex, colIndex++].Value = SeparateThousands(employeePosition.SalaryBase.ToString());
+                        if(i % 10 == 9)
+                        {
+                            GoToNextPage(mainWindow, currentPage);
+                        }    
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                MessageBox.Show("Xuất excel thành công!");
+            }
+            catch
+            {
+                MessageBox.Show("Có lỗi khi lưu file!");
+            }
+
         }
         void OpenAddWindow(MainWindow mainWindow)
         {

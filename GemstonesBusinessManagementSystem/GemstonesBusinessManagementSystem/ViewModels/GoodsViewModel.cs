@@ -4,10 +4,13 @@ using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
 using Microsoft.Win32;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -327,38 +330,117 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
         }
-        void ExportExcel(MainWindow wdMain)
+        public void ExportExcel(MainWindow main)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Mã SP", typeof(string));
-            table.Columns.Add("Tên sản phẩm", typeof(string));
-            table.Columns.Add("Loại sản phẩm", typeof(string));
-            table.Columns.Add("Số lượng", typeof(int));
-            table.Columns.Add("Đơn vị tính", typeof(string));
-            table.Columns.Add("Giá mua", typeof(string));
-            table.Columns.Add("Giá bán", typeof(string));
-
-
-            for (int i = 0; i < listControlToView.Count; i++)
-            {
-                GoodsControl control = listControlToView[i];
-                table.Rows.Add(control.txbId.Text, control.txbName.Text, control.txbGoodsType.Text,
-                    control.txbQuantity.Text, control.txbUnit.Text, control.txbImportPrice.Text,
-                    control.txbSalesPrice.Text);
-            }
+            string filePath = "";
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Excel |*.xlsx"
             };
-            if ((bool)saveFileDialog.ShowDialog())
+            if (saveFileDialog.ShowDialog() == true)
             {
-                using (XLWorkbook workbook = new XLWorkbook())
-                {
-                    workbook.Worksheets.Add(table, "Danh sách hàng hóa");
-                    workbook.SaveAs(saveFileDialog.FileName);
-                }
-                MessageBox.Show("Xuất danh sách thành công!");
+                filePath = saveFileDialog.FileName;
             }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách sản phẩm";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSNCC";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 30;
+                    ws.Column(3).Width = 30;
+                    ws.Column(4).Width = 20;
+                    ws.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(5).Width = 20;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 30;
+                    ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(7).Width = 30;
+                    ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Tên sản phẩm", "Loại sản phẩm", "Đơn vị tính", "Tồn kho", "Giá mua", "Giá bán" };
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách sản phẩm";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu 
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < listControlToView.Count; i++)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        GoodsControl control = listControlToView[i];
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":G" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbName.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbGoodsType.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbUnit.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbQuantity.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbImportPrice.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbSalesPrice.Text;
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                MessageBox.Show("Xuất excel thành công!");
+            }
+            catch
+            {
+                MessageBox.Show("Có lỗi khi lưu file!");
+            }
+
         }
         public void SelectImage(Image parameter)
         {

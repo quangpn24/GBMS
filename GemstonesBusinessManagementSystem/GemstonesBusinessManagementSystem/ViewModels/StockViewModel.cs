@@ -4,10 +4,13 @@ using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
 using Microsoft.Win32;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,48 +58,128 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             NextPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToNextPage(p, ++currentPage));
         }
 
-        void ExportExcel()
+        public void ExportExcel()
         {
-            if (selectedYear == null || selectedMonth == null)
-            {
-                MessageBox.Show("Vui lòng chọn thời gian!");
-                return;
-            }
-            DataTable table = new DataTable();
-            table.Columns.Add("Mã SP", typeof(string));
-            table.Columns.Add("Tên sản phẩm", typeof(string));
-            table.Columns.Add("Loại sản phẩm", typeof(string));
-            table.Columns.Add("Tồn đầu", typeof(int));
-            table.Columns.Add("Mua vào", typeof(int));
-            table.Columns.Add("Bán ra", typeof(int));
-            table.Columns.Add("Tồn cuối", typeof(int));
-            table.Columns.Add("Đơn vị tính", typeof(string));
-
-            List<Goods> listGoods = GoodsDAL.Instance.GetList();
-            int numOfItems = listGoods.Count;
-            StackPanel stackPanel = new StackPanel();
-            LoadStackPanel(0, numOfItems, listGoods, ref stackPanel);
-
-            for (int i = 0; i < numOfItems; i++)
-            {
-                StockControl control = (StockControl)stackPanel.Children[i];
-                table.Rows.Add(control.txbId.Text, control.txbName.Text, control.txbType.Text,
-                    control.txbEarlyStock.Text, control.txbInStock.Text, control.txbOutStock.Text,
-                    control.txbEndStock.Text, control.txbUnit.Text);
-            }
+            string filePath = "";
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Excel |*.xlsx"
             };
-            if ((bool)saveFileDialog.ShowDialog())
+            if (saveFileDialog.ShowDialog() == true)
             {
-                using (XLWorkbook workbook = new XLWorkbook())
-                {
-                    workbook.Worksheets.Add(table, "Báo cáo tồn kho");
-                    workbook.SaveAs(saveFileDialog.FileName);
-                }
-                MessageBox.Show("Xuất danh sách thành công!");
+                filePath = saveFileDialog.FileName;
             }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    int month = int.Parse(selectedMonth.Split(' ')[1]);
+                    int year = int.Parse(selectedYear.Split(' ')[1]);
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = string.Format("Danh sách tồn kho tháng {0}/{1}", month, year);
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSTK";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 30;
+                    ws.Column(3).Width = 30;
+                    ws.Column(4).Width = 20;
+                    ws.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(5).Width = 20;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 20;
+                    ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(7).Width = 20;
+                    ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(8).Width = 20;
+                    ws.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Tên sản phẩm", "Loại sản phẩm", "Tồn đầu", "Mua vào", "Bán ra", "Tồn cuối", "Đơn vị tính" };
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = string.Format("Danh sách tồn kho tháng {0}/{1}", month, year);
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu thành gray
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+
+                    // lấy ra danh sách nhà cung cấp
+                    currentPage = 0;
+                    for (int i = 0; i < goodsList.Count; i++)
+                    {
+                        StockControl control = (StockControl)mainWindow.stkStock.Children[i % 10];
+                        ws.Row(rowIndex).Height = 15;
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":H" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbName.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbType.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbEarlyStock.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbInStock.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbOutStock.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbEndStock.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbUnit.Text;
+
+                        if (i % 10 == 9)
+                        {
+                            GoToNextPage(mainWindow, currentPage);
+                        }
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                MessageBox.Show("Xuất excel thành công!");
+            }
+            catch
+            {
+                MessageBox.Show("Có lỗi khi lưu file!");
+            }
+
         }
         public void Search(MainWindow window)
         {

@@ -199,5 +199,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+
+        
     }
 }

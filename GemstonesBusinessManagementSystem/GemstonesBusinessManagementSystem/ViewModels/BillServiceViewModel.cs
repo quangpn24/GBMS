@@ -3,6 +3,9 @@ using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.Template;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
+using Microsoft.Win32;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +31,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand ConfirmDeliveriedCommand { get; set; }
         public ICommand PrintBillServiceCommand { get; set; }
         public ICommand DeleteBillServiceCommand { get; set; }
+        public ICommand ExportExcelCommand { get; set; }
         public BillServiceViewModel()
         {
             LoadBillServicesCommand = new RelayCommand<MainWindow>((p) => true, (p) => LoadBillServices(p));
@@ -35,6 +39,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ConfirmDeliveriedCommand = new RelayCommand<BillServiceTemplateControl>((p) => true, (p) => ConfirmDeliveried(p));
             PrintBillServiceCommand = new RelayCommand<MainWindow>((p) => true, (p) => PrintBillService(p));
             DeleteBillServiceCommand = new RelayCommand<BillServiceControl>((p) => true, (p) => DeleteBillService(p));
+            ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel(p));
         }
         public void LoadBillServices(MainWindow mainWindow)
         {
@@ -321,6 +326,124 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             return pageContent;
         }
 
+        public void ExportExcel(MainWindow main)
+        {
+            string filePath = "";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Excel |*.xlsx"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                filePath = saveFileDialog.FileName;
+            }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách phiếu dịch vụ";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSPDV";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 20;
+                    ws.Column(2).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(3).Width = 30;
+                    ws.Column(4).Width = 30;
+                    ws.Column(5).Width = 20;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 30;
+                    ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(7).Width = 20;
+                    ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(8).Width = 20;
+                    ws.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(9).Width = 20;
+                    ws.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Mã phiếu", "Khách hàng", "Người lập", "Ngày lập", "Tổng tiền","Trả trước","Còn lại", "Trạng thái"};
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách phiếu dịch vụ";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu 
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < main.stkBillService.Children.Count; i++)
+                    {
+                        BillServiceControl control = (BillServiceControl)main.stkBillService.Children[i];
+                        ws.Row(rowIndex).Height = 15;
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":I" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+                        BillService billService = BillServiceDAL.Instance.GetBillService(ConvertToIDString(control.txbId.Text));
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbId.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbNameCustomer.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = EmployeeDAL.Instance.GetByIdAccount(billService.IdAccount.ToString()).Name;
+                        ws.Cells[rowIndex, colIndex++].Value = billService.CreatedDate.ToString();
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbTotal.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = SeparateThousands(billService.TotalPaidMoney.ToString());
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbRest.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbStatus.Text;
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                MessageBox.Show("Xuất excel thành công!");
+            }
+            catch
+            {
+                MessageBox.Show("Có lỗi khi lưu file!");
+            }
+
+        }
     }
 }
 
