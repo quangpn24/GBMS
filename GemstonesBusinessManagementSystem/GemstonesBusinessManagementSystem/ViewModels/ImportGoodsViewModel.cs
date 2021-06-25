@@ -526,6 +526,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     int.Parse(control.nsQuantity.Value.ToString()), ConvertToNumber(control.txbImportPrice.Text));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
                 k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), info.Quantity);
+
+                SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+                saleVM.LoadSaleGoods(mainWindow);
             }
             if (k)
             {

@@ -295,7 +295,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             CustomerClass = "";
             CustomerAddress = "";
         }
-        void LoadSaleGoods(MainWindow window)
+        public void LoadSaleGoods(MainWindow window)
         {
             mainWindow = window;
             mainWindow.wrpSaleGoods.Children.Clear();
