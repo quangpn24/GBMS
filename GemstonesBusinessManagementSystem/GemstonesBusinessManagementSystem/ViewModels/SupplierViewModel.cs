@@ -132,6 +132,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             newWindow.txtPhoneNumber.Text = control.txbPhoneNumber.Text;
             oldSupplier = control.txbName.Text;
             supplierControl = control;
+            newWindow.Title = "Sửa thông tin nhà cung cấp";
+            newWindow.btnSave.Content = "Cập nhật";
             newWindow.ShowDialog();
         }
         void AddOrUpdate(AddSupplierWindow wdAddSupplier)

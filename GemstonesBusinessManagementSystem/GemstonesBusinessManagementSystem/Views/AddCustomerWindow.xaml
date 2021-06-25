@@ -197,7 +197,7 @@
                     BorderThickness="0"
                     MaxLines="1"
                     TabIndex="6"
-                    MaxLength="11"
+                    MaxLength="12"
                     Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
                     Foreground="{StaticResource Gray1}"
                     Padding="0"

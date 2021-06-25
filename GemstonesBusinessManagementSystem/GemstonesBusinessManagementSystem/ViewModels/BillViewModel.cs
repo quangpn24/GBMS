@@ -17,6 +17,10 @@ using System.Windows.Media;
 using System.Data;
 using GemstonesBusinessManagementSystem.Resources.Template;
 using System.Printing;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.IO;
+using System.Xml;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -85,6 +89,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void PickBill(InvoiceControl invoiceControl)
         {
+            mainWindow.btnPrintBill.Visibility = Visibility.Visible;
             Bill bill = BillDAL.Instance.GetBill(ConvertToIDString(invoiceControl.txbId.Text));
             Customer customer = CustomerDAL.Instance.FindById(bill.IdCustomer.ToString());
             List<BillInfo> billInfos = BillInfoDAL.Instance.GetBillInfos(bill.IdBill.ToString());
@@ -139,7 +144,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billTemplate.txbTotal.Text = Total.ToString();
             billTemplate.txbEmployeeName.Text = EmployeeName;
 
+            List<Parameter> parameters = ParameterDAL.Instance.GetData();
+            billTemplate.txbStoreName.Text = parameters[1].Value;
+            billTemplate.txbStoreAddress.Text = parameters[2].Value;
+            billTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
             int numOfItems = mainWindow.stkBillInfo.Children.Count;
+
+            //print
+            PrintDialog pd = new PrintDialog();
+            if (pd.ShowDialog() != true) return;
+            FixedDocument document = new FixedDocument();
+            PageContent temp;
             for (int i = 0; i < numOfItems; i++)
             {
                 InvoiceInfoControl control = (InvoiceInfoControl)mainWindow.stkBillInfo.Children[i];
@@ -152,21 +167,40 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billInfoControl.txbTotal.Text = control.txbTotal.Text;
 
                 billTemplate.stkBillInfo.Children.Add(billInfoControl);
-            }
-            try
-            {
-                PrintDialog printDialog = new PrintDialog();
-                printDialog.PrintTicket.PageMediaSize = new PageMediaSize(PageMediaSizeName.ISOA5);
 
-                if (printDialog.ShowDialog() == true)
+                document.DocumentPaginator.PageSize = new Size(billTemplate.grdPrint.ActualWidth, billTemplate.grdPrint.ActualHeight);
+                if (billTemplate.stkBillInfo.Children.Count == 10 || i == numOfItems - 1)
                 {
-                    printDialog.PrintVisual(billTemplate.grdPrint, IdBill);
+                    billTemplate.grdPrint.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    billTemplate.grdPrint.Arrange(new Rect(0, 0, billTemplate.grdPrint.DesiredSize.Width, billTemplate.grdPrint.DesiredSize.Height));
+                    temp = ConvertToPage(billTemplate.grdPrint);
+                    document.Pages.Add(temp);
+                    billTemplate.stkBillInfo.Children.Clear();
                 }
             }
-            catch
-            {
 
-            }
+            pd.PrintDocument(document.DocumentPaginator, "My first document");
+        }
+        public PageContent ConvertToPage(Grid grid)
+        {
+            FixedPage page = new FixedPage();
+            page.Width = grid.ActualWidth;
+            page.Height = grid.ActualHeight;
+            string gridXaml = XamlWriter.Save(grid);
+            gridXaml = gridXaml.Replace("Name=\"txbOrderNum\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbUnitPrice\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbName\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbQuantity\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbUnit\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbTotal\"", "");
+            StringReader stringReader = new StringReader(gridXaml);
+            XmlReader xmlReader = XmlReader.Create(stringReader);
+            Grid newGrid = (Grid)XamlReader.Load(xmlReader);
+
+            page.Children.Add(newGrid);
+            PageContent pageContent = new PageContent();
+            ((IAddChild)pageContent).AddChild(page);
+            return pageContent;
         }
     }
 }

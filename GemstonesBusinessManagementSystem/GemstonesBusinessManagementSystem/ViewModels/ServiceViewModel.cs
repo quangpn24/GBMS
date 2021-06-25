@@ -77,6 +77,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addService.txtPriceOfService.Text = uCService.txbPrice.Text;
             addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 1 : 0; // kiểm tra isActived
             addService.Title = "Sửa thông tin dịch vụ";
+            addService.btnSave.Content = "Cập nhật";
             addService.ShowDialog();
         }
         public void AddService(AddServiceWindow addServiceWindow)
@@ -110,7 +111,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         }
                         else
                         {
-                            MessageBox.Show("Thất bại!");
+                            MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     else
@@ -147,7 +148,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         }
                         else
                         {
-                            MessageBox.Show("Thất bại!");
+                            MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     else
@@ -174,7 +175,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Xóa thất bại!");
+                    MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             int start = 0, end = 0;

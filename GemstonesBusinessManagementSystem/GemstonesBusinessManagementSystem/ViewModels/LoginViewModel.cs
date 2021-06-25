@@ -70,7 +70,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (string.IsNullOrEmpty(parameter.txtPassword.Password))
             {
-                MessageBox.Show("Vui lòng nhập tên đăng nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Vui lòng nhập mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 parameter.txtPassword.Focus();
                 return;
             }

@@ -17,6 +17,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using ClosedXML.Excel;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Xml;
+using System.IO;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -67,7 +71,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         //bill
         public ICommand PayBillCommand { get; set; }
-        public ICommand PrintReceiptCommand { get; set; }
 
         //Grid discount
         public ICommand CustomDiscountCommand { get; set; }
@@ -100,8 +103,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             DeleteCommand = new RelayCommand<ImportGoodsControl>(p => true, p => DeleteSelected(p));
             ChangeQuantityCommand = new RelayCommand<ImportGoodsControl>(p => true, p => ChangeQuantity(p));
 
-            PrintReceiptCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => PrintReceipt(p));
-            PayBillCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => PayBill(p));
+            PayBillCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => PayReceipt(p));
             CustomDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => VisibleGridDiscount(p));
             SelectPercentDiscountCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => SelectPercent(p));
             SelectVNDCommand = new RelayCommand<ImportGoodsWindow>(p => true, p => SelectVND(p));
@@ -123,7 +125,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             NextPageCommand = new RelayCommand<MainWindow>(p => true, p => GoToNextPage(p));
             ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
             SelectReceiptCommand = new RelayCommand<ReceiptControl>(p => true, p => SelectReceipt(p));
-            PrintReceiptInfoCommand = new RelayCommand<MainWindow>(p => true, p => PrintReceiptInfo(p));
+            PrintReceiptInfoCommand = new RelayCommand<MainWindow>(p => true, p => PrintReceipt(p));
             CancelCommand = new RelayCommand<MainWindow>(p => true, p => Cancel(p));
             SelectFilterCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
             SelectStartDateCommand = new RelayCommand<MainWindow>(p => true, p => HandleFilter(p));
@@ -266,17 +268,47 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadReceiptToView(main);
         }
 
-        void PrintReceiptInfo(MainWindow main)
+        public PageContent ConvertToPage(Grid grid)
+        {
+            FixedPage page = new FixedPage();
+            page.Width = grid.ActualWidth; ;
+            page.Height = grid.ActualHeight;
+            string gridXaml = XamlWriter.Save(grid);
+            gridXaml = gridXaml.Replace("Name=\"txbNumericalOder\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbName\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbUnit\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbImportPrice\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbQuantity\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbTotalPrice\"", "");
+            StringReader stringReader = new StringReader(gridXaml);
+            XmlReader xmlReader = XmlReader.Create(stringReader);
+            Grid newGrid = (Grid)XamlReader.Load(xmlReader);
+
+            page.Children.Add(newGrid);
+            PageContent pageContent = new PageContent();
+            ((IAddChild)pageContent).AddChild(page);
+            return pageContent;
+        }
+        //After pay receipt 
+        void PrintReceipt(ImportGoodsWindow wdImportGoods)
         {
             StockReceiptTemplate receiptTemplate = new StockReceiptTemplate();
-            receiptTemplate.txbIdStockReceipt.Text = main.txbIdReceipt.Text;
-            receiptTemplate.txbDate.Text = main.txbDateReceipt.Text;
-            receiptTemplate.txbImporter.Text = main.txbImporter.Text;
-            receiptTemplate.txbSupplier.Text = main.txbSupplier.Text;
-            receiptTemplate.txbTotal.Text = main.txbTotalMoneyGoods.Text;
-            receiptTemplate.txbDiscount.Text = main.txbDiscount.Text;
-            receiptTemplate.txbMoneyToPay.Text = main.txbMoneyToPayGoods.Text;
+            receiptTemplate.txbIdStockReceipt.Text = wdImportGoods.txbIdReceipt.Text;
+            receiptTemplate.txbDate.Text = wdImportGoods.txbDate.Text;
+            receiptTemplate.txbSupplier.Text = selectedSupplier.Name;
+            receiptTemplate.txbImporter.Text = CurrentAccount.Name;
+            receiptTemplate.txbTotal.Text = wdImportGoods.txbTotalGoodsPrice.Text;
+            receiptTemplate.txbDiscount.Text = wdImportGoods.btnDiscount.Content.ToString();
+            receiptTemplate.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
 
+            List<Parameter> parameters = ParameterDAL.Instance.GetData();
+            receiptTemplate.txbStoreName.Text = parameters[1].Value;
+            receiptTemplate.txbStoreAddress.Text = parameters[2].Value;
+            receiptTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
+            PrintDialog pd = new PrintDialog();
+            if (pd.ShowDialog() != true) return;
+            FixedDocument document = new FixedDocument();
+            PageContent temp;
             //Load
             for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
             {
@@ -289,21 +321,65 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 infoReceiptControl.txbImportPrice.Text = importControl.txbImportPrice.Text;
                 infoReceiptControl.txbTotalPrice.Text = importControl.txbTotalPrice.Text;
                 receiptTemplate.stkStockReceiptInfo.Children.Add(infoReceiptControl);
-            }
-            try
-            {
-                PrintDialog printDialog = new PrintDialog();
-                if (printDialog.ShowDialog() == true)
+                //print 
+                document.DocumentPaginator.PageSize = new Size(receiptTemplate.grdPrint.ActualWidth, receiptTemplate.grdPrint.ActualHeight);
+                if (receiptTemplate.stkStockReceiptInfo.Children.Count == 10 || i == wdImportGoods.stkImportGoods.Children.Count - 1)
                 {
-                    receiptTemplate.btnPrint.Visibility = Visibility.Hidden;
-                    printDialog.PrintVisual(receiptTemplate.grdPrint, "Stock receipt");
+                    receiptTemplate.grdPrint.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    receiptTemplate.grdPrint.Arrange(new Rect(0, 0, receiptTemplate.grdPrint.DesiredSize.Width, receiptTemplate.grdPrint.DesiredSize.Height));
+                    temp = ConvertToPage(receiptTemplate.grdPrint);
+                    document.Pages.Add(temp);
+                    receiptTemplate.stkStockReceiptInfo.Children.Clear();
                 }
             }
-            finally
-            {
-                receiptTemplate.btnPrint.Visibility = Visibility.Visible;
-            }
+                pd.PrintDocument(document.DocumentPaginator, "My first document");
         }
+        // View receipt detail
+        void PrintReceipt(MainWindow main)
+        {
+            StockReceiptTemplate receiptTemplate = new StockReceiptTemplate();
+            receiptTemplate.txbIdStockReceipt.Text = main.txbIdReceipt.Text;
+            receiptTemplate.txbDate.Text = main.txbDateReceipt.Text;
+            receiptTemplate.txbSupplier.Text = main.txbSupplier.Text;
+            receiptTemplate.txbImporter.Text = main.txbImporter.Text;
+            receiptTemplate.txbTotal.Text = main.txbTotalMoneyGoods.Text;
+            receiptTemplate.txbDiscount.Text = main.txbDiscount.Text;
+            receiptTemplate.txbMoneyToPay.Text = main.txbMoneyToPayGoods.Text;
+
+            List<Parameter> parameters = ParameterDAL.Instance.GetData();
+            receiptTemplate.txbStoreName.Text = parameters[1].Value;
+            receiptTemplate.txbStoreAddress.Text = parameters[2].Value;
+            receiptTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
+            PrintDialog pd = new PrintDialog();
+            if (pd.ShowDialog() != true) return;
+            FixedDocument document = new FixedDocument();
+            PageContent temp;
+            //Load
+            for (int i = 0; i < main.stkReceiptDetail.Children.Count; i++)
+            {
+                ReceiptDetailControl receiptDetailControl = (ReceiptDetailControl)main.stkReceiptDetail.Children[i];
+                StockReceiptInfoControl infoReceiptControl = new StockReceiptInfoControl();
+                infoReceiptControl.txbNumericalOder.Text = (i + 1).ToString();
+                infoReceiptControl.txbName.Text = receiptDetailControl.txbName.Text;
+                infoReceiptControl.txbUnit.Text = receiptDetailControl.txbUnit.Text;
+                infoReceiptControl.txbQuantity.Text = receiptDetailControl.txbQuantity.Text;
+                infoReceiptControl.txbImportPrice.Text = receiptDetailControl.txbImportPrice.Text;
+                infoReceiptControl.txbTotalPrice.Text = receiptDetailControl.txbTotalPrice.Text;
+                receiptTemplate.stkStockReceiptInfo.Children.Add(infoReceiptControl);
+                //print 
+                document.DocumentPaginator.PageSize = new Size(receiptTemplate.grdPrint.ActualWidth, receiptTemplate.grdPrint.ActualHeight);
+                if (receiptTemplate.stkStockReceiptInfo.Children.Count == 10 || i == main.stkReceiptDetail.Children.Count - 1)
+                {
+                    receiptTemplate.grdPrint.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    receiptTemplate.grdPrint.Arrange(new Rect(0, 0, receiptTemplate.grdPrint.DesiredSize.Width, receiptTemplate.grdPrint.DesiredSize.Height));
+                    temp = ConvertToPage(receiptTemplate.grdPrint);
+                    document.Pages.Add(temp);
+                    receiptTemplate.stkStockReceiptInfo.Children.Clear();
+                }
+            }
+            pd.PrintDocument(document.DocumentPaginator, "My first document");
+        }
+
         public void Cancel(MainWindow main)
         {
             main.cboSupplier.SelectedIndex = -1;
@@ -395,18 +471,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             table.Columns.Add("Ngày nhập", typeof(string));
             table.Columns.Add("Người nhập", typeof(string));
             table.Columns.Add("Nhà cung cấp", typeof(string));
-            table.Columns.Add("Tổng tiền", typeof(long));
+            table.Columns.Add("Tổng tiền", typeof(string));
             table.Columns.Add("Giảm giá", typeof(string));
-            table.Columns.Add("Thanh toán", typeof(long));
+            table.Columns.Add("Thanh toán", typeof(string));
 
 
             for (int i = 0; i < listReceiptToView.Count; i++)
             {
                 ReceiptControl control = listReceiptToView[i];
                 long totalMoneyGoods = StockReceiptInfoDAL.Instance.SumMoneyByIdReceipt(ConvertToIDString(control.txbId.Text));
-                string discount = (totalMoneyGoods - long.Parse(control.txbMoneyToPay.Text)).ToString();
+                string discount = string.Format("{0:N0}", totalMoneyGoods - ConvertToNumber(control.txbMoneyToPay.Text));
                 table.Rows.Add(control.txbId.Text, control.txbDateReceipt.Text, control.txbImporter.Text,
-                    control.txbSupplier.Text, totalMoneyGoods.ToString(), discount, control.txbMoneyToPay.Text);
+                    control.txbSupplier.Text, string.Format("{0:N0}", totalMoneyGoods), discount, control.txbMoneyToPay.Text);
             }
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
@@ -429,7 +505,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ImportGoodsWindow newWindow = new ImportGoodsWindow();
             TotalPrice = "0";
             MoneyToPay = "0";
-            //main.Hide();
             int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
             if (idStockReceiptMax == -1)
             {
@@ -445,7 +520,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             HomeViewModel homeVM = (HomeViewModel)main.DataContext;
             homeVM.Uid = "21";
             homeVM.Navigate(main);
-            //main.ShowDialog();
         }
 
         void LostFocusSearchBar(ImportGoodsWindow wdImportGoods)
@@ -457,50 +531,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             wdImportGoods.txtSearch.SelectionStart = 0;
             wdImportGoods.txtSearch.SelectionLength = this.wdImportGoods.txtSearch.Text.Length;
         }
-        void PrintReceipt(ImportGoodsWindow wdImportGoods)
-        {
-            StockReceiptTemplate receiptTemplate = new StockReceiptTemplate();
-            receiptTemplate.txbIdStockReceipt.Text = wdImportGoods.txbIdReceipt.Text;
-            receiptTemplate.txbDate.Text = wdImportGoods.txbDate.Text;
-            receiptTemplate.txbSupplier.Text = wdImportGoods.cboSupplier.Text;
-            receiptTemplate.txbImporter.Text = CurrentAccount.Name;
-            receiptTemplate.txbTotal.Text = wdImportGoods.txbTotalGoodsPrice.Text;
-            receiptTemplate.txbDiscount.Text = wdImportGoods.btnDiscount.Content.ToString();
-            receiptTemplate.txbMoneyToPay.Text = wdImportGoods.txbMoneyToPay.Text;
-
-            List<Parameter> parameters = ParameterDAL.Instance.GetData();
-            receiptTemplate.txbStoreName.Text = parameters[1].Value;
-            receiptTemplate.txbStoreAddress.Text = parameters[2].Value;
-            receiptTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
-
-            //Load
-            for (int i = 0; i < wdImportGoods.stkImportGoods.Children.Count; i++)
-            {
-                ImportGoodsControl importControl = (ImportGoodsControl)wdImportGoods.stkImportGoods.Children[i];
-                StockReceiptInfoControl infoReceiptControl = new StockReceiptInfoControl();
-                infoReceiptControl.txbNumericalOder.Text = (i + 1).ToString();
-                infoReceiptControl.txbName.Text = importControl.txbName.Text;
-                infoReceiptControl.txbUnit.Text = importControl.txbUnit.Text;
-                infoReceiptControl.txbQuantity.Text = importControl.nsQuantity.Value.ToString();
-                infoReceiptControl.txbImportPrice.Text = importControl.txbImportPrice.Text;
-                infoReceiptControl.txbTotalPrice.Text = importControl.txbTotalPrice.Text;
-                receiptTemplate.stkStockReceiptInfo.Children.Add(infoReceiptControl);
-            }
-            try
-            {
-                PrintDialog printDialog = new PrintDialog();
-                if (printDialog.ShowDialog() == true)
-                {
-                    receiptTemplate.btnPrint.Visibility = Visibility.Hidden;
-                    printDialog.PrintVisual(receiptTemplate.grdPrint, "Stock receipt");
-                }
-            }
-            finally
-            {
-                receiptTemplate.btnPrint.Visibility = Visibility.Visible;
-            }
-        }
-        void PayBill(ImportGoodsWindow wdImportGoods)
+        void PayReceipt(ImportGoodsWindow wdImportGoods)
         {
             bool k;
             if (wdImportGoods.stkImportGoods.Children.Count == 0)
@@ -547,7 +578,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.currentPage = 1;
                 LoadReceiptToView(mainWindow);
 
-                //Update tab sale
+                //Load tab sale
                 SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
                 mainWindow.stkSelectedGoods.Children.Clear();
                 saleVM.Search(mainWindow);
@@ -559,6 +590,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 mainWindow.txbTotalSpentToSupplier.Text = SeparateThousands((ConvertToNumber(mainWindow.txbTotalSpentToSupplier.Text) + ConvertToNumber(wdImportGoods.txbMoneyToPay.Text)).ToString());
                 TotalPrice = "0";
                 MoneyToPay = "0";
+
+                //Load stock
+                StockViewModel stockVM = (StockViewModel)mainWindow.grdStock.DataContext;
+                stockVM.Search(mainWindow);
 
                 //Clean
                 selectedSupplier = null;

@@ -234,7 +234,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Xoá thất bại");
+                        MessageBox.Show("Xóa thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -254,6 +254,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             isEditingMembership = true;
             addMembershipWindow.txbTitle.Text = "Sửa hạng thành viên";
             addMembershipWindow.txtId.Text = control.txbId.Text;
+            addMembershipWindow.btnSave.Content = "Cập nhật";
 
             addMembershipWindow.txtMembership.Text = control.txbMembership.Text;
             addMembershipWindow.txtMembership.SelectionStart = control.txbMembership.Text.Length;
@@ -353,6 +354,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             addCustomerWindow.btnSave.ToolTip = "Cập nhật thông tin khách hàng";
             addCustomerWindow.Title = "Cập nhật thông tin khách hàng";
+            addCustomerWindow.btnSave.Content = "Cập nhật";
             addCustomerWindow.ShowDialog();
         }
 
@@ -508,7 +510,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (CheckData(addCustomerWindow))// kiem tra du lieu dau vao
             {
                 Customer customer = new Customer(ConvertToID(addCustomerWindow.txtId.Text), addCustomerWindow.txtName.Text, (addCustomerWindow.txtPhoneNumber.Text), addCustomerWindow.txtAddress.Text,
-                    (addCustomerWindow.txtCMND.Text), 0, 1);
+                    (addCustomerWindow.txtCMND.Text), 0, 0);
 
                 if (isEditing)
                 {
@@ -527,11 +529,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 if (CustomerDAL.Instance.AddOrUpdate(customer, isEditing))
                 {
-                    MessageBox.Show("Thành công!");
+                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Thất bại!");
+                    MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 int indexSort = mainWindow.cboSelectCustomerSort.SelectedIndex;

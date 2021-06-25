@@ -106,7 +106,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void LoadDashBoard(MainWindow main)
         {
-            TodayRevenue = Converter.Instance.Nice(ReportDAL.Instance.GetTodayRevenue(), 2);
+
+            TodayRevenue = Converter.Instance.Nice(ReportDAL.Instance.GetTodayRevenue(), 1);
             TodaySpend = Converter.Instance.Nice(ReportDAL.Instance.GetTodaySpend(), 1);
             TodayBillQuantity = string.Format("{0:N0}", ReportDAL.Instance.GetTodayBillQuantity());
             long today_Revenue = ReportDAL.Instance.GetTodayRevenue();
@@ -300,7 +301,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbNumeralOrder.Text = (i + 1).ToString();
                 control.txbName.Text = goods.Name;
                 control.txbQuantity.Text = dt.Rows[i].ItemArray[1].ToString();
-                control.txbPrice.Text = Converter.Instance.Nice(salePrice, 1);
+                control.txbPrice.Text = string.Format("{0:N0}", salePrice);
 
                 main.stkBestSeller.Children.Add(control);
             }

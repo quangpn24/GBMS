@@ -98,7 +98,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Xuất danh sách thành công!");
             }
         }
-        void Search(MainWindow window)
+        public void Search(MainWindow window)
         {
             string nameSearching = mainWindow.txtSearchStock.Text.ToLower();
             goodsList = GoodsDAL.Instance.FindByName(nameSearching);
@@ -191,7 +191,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 stackPanel.Children.Add(control);
             }
         }
-        void LoadStockList(MainWindow window, int curPage)
+        public void LoadStockList(MainWindow window, int curPage)
         {
             mainWindow = window;
             mainWindow.stkStock.Children.Clear();

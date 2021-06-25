@@ -11,6 +11,7 @@ using GemstonesBusinessManagementSystem.Resources.UserControls;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -153,6 +154,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void SelectGoodsType(GoodsTypeControl control)
         {
+            if (goodsTypeControl != null) // dua lai mau xam
+            {
+                goodsTypeControl.txbId.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbName.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbProfitPercentage.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbUnit.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+            }
+            // chuyen sang mau duoc chon
+            control.txbId.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");   
+            control.txbName.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbProfitPercentage.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            control.txbUnit.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");
             if (isActiveTab) //  to edit
             {
                 Binding binding = BindingOperations.GetBinding(this.wdGoodsType.txtName, TextBox.TextProperty);
@@ -166,7 +179,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.goodsTypeControl = control;
                 oldType = goodsTypeControl.txbName.Text;
                 this.wdGoodsType.txbTitle.Text = "Sửa thông tin";
-                this.wdGoodsType.btnSave.Content = "Sửa";
+                this.wdGoodsType.btnSave.Content = "Cập nhật";
                 this.wdGoodsType.txtId.Text = control.txbId.Text;
                 this.wdGoodsType.txtName.Text = control.txbName.Text;
                 this.wdGoodsType.txtProfitPercentage.Text = control.txbProfitPercentage.Text.Remove(control.txbProfitPercentage.Text.Length - 1, 1);
@@ -178,6 +191,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 isUpdate = false;
                 this.goodsTypeControl = control;
             }
+
+          
         }
         void SelectedTabItem(GoodsTypeWindow wdGoodsType)
         {

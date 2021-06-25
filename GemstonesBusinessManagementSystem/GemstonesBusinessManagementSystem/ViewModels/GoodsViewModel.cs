@@ -75,7 +75,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SaveCommand = new RelayCommand<AddGoodsWindow>(p => true, p => AddOrUpdate(p));
             ExitCommand = new RelayCommand<AddGoodsWindow>(p => true, p => p.Close());
             SeparateThousandsCommand = new RelayCommand<TextBox>((parameter) => true, (parameter) => SeparateThousands(parameter));
-            SelectImageCommand = new RelayCommand<Grid>(p => true, p => SelectImage(p));
+            SelectImageCommand = new RelayCommand<Image>(p => true, p => SelectImage(p));
             SeparateThousandsCommand = new RelayCommand<TextBox>(p => true, p => SeparateThousands(p));
 
             AddGoodsCommand = new RelayCommand<MainWindow>(p => true, p => OpenAddGoodsWindow(p));
@@ -272,15 +272,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             ImageBrush imageBrush = new ImageBrush();
             imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(goods.ImageFile);
-            addGoodsWd.grdSelectImg.Background = imageBrush;
-            if (addGoodsWd.grdSelectImg.Children.Count > 1)
-            {
-                addGoodsWd.grdSelectImg.Children.Remove(addGoodsWd.grdSelectImg.Children[0]);
-                addGoodsWd.grdSelectImg.Children.Remove(addGoodsWd.grdSelectImg.Children[1]);
-            }
+            addGoodsWd.imgGoods.Source = imageBrush.ImageSource;
             addGoodsWd.txtImportPrice.Text = control.txbImportPrice.Text;
             addGoodsWd.txtImportPrice.SelectionStart = addGoodsWd.txtImportPrice.Text.Length;
             addGoodsWd.txtImportPrice.SelectionLength = 0;
+            addGoodsWd.Title = "Cập nhật thông tin sản phẩm";
+            addGoodsWd.btnSave.Content = "Cập nhật";
             addGoodsWd.ShowDialog();
         }
         void OpenImportGoodsWindow(MainWindow main)
@@ -294,6 +291,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             addGoodsWd.txtName.Text = null;
             addGoodsWd.txtImportPrice.Text = null;
+            addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("/Resources/Images/goods.png", UriKind.Relative));
             int idMax = GoodsDAL.Instance.GetMaxId();
             if (idMax >= 0)
             {
@@ -362,7 +360,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 MessageBox.Show("Xuất danh sách thành công!");
             }
         }
-        public void SelectImage(Grid parameter)
+        public void SelectImage(Image parameter)
         {
             OpenFileDialog op = new OpenFileDialog();
             op.Title = "Select a picture";
@@ -377,12 +375,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 bitmap.UriSource = new Uri(imageFileName);
                 bitmap.EndInit();
                 imageBrush.ImageSource = bitmap;
-                parameter.Background = imageBrush;
-                if (parameter.Children.Count > 1)
-                {
-                    parameter.Children.Remove(parameter.Children[0]);
-                    parameter.Children.Remove(parameter.Children[1]);
-                }
+                parameter.Source = imageBrush.ImageSource;
             }
         }
         void AddOrUpdate(AddGoodsWindow addGoodsWd)
@@ -407,13 +400,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             byte[] imgByteArr;
 
-            ImageBrush imageBrush = (ImageBrush)addGoodsWd.grdSelectImg.Background;
-            if (imageBrush == null)
-            {
-                MessageBox.Show("Vui lòng chọn ảnh!");
-                return;
-            }
-            imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
+            imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)addGoodsWd.imgGoods.Source);
             if ((!isUpdate || addGoodsWd.txtName.Text != oldGoods) && GoodsDAL.Instance.IsExisted(addGoodsWd.txtName.Text))
             {
                 MessageBox.Show("Sản phẩm đã tồn tại!");

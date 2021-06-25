@@ -20,11 +20,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     class SettingViewModel : BaseViewModel
     {
-        // id 1: Prepayment PerCent
-        //     2: Store Name
-        //     3: Store Address
-        //     4: Store Phone Number
-        //     5: Store Email
+        // id 1: PrepaymentPerCent
+        //     2: StoreName
+        //     3: StoreAddress
+        //     4: StorePhone Number
+        //     5: StoreEmail
+        //     6: StoreAvatar
         private List<Parameter> parameters = ParameterDAL.Instance.GetData();
         private MainWindow main;
 
@@ -176,11 +177,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (ParameterDAL.Instance.UpdatePrepayment(PrepaymentPercent))
             {
                 parameters[0].Value = PrepaymentPercent;
-                MessageBox.Show("Thành công!");
+                MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("Thất bại!");
+                MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         void UpdateStoreInfo(MainWindow main)
@@ -237,13 +238,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 parameters[3].Value = PhoneNumber;
                 parameters[4].Value = Email;
                 parameters[5].Value = Convert.ToBase64String(imgByteArr);
-                MessageBox.Show("Thành công!");
+                MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 main.imgStore.Source = imageBrush.ImageSource;
                 main.txbStoreName.Text = parameters[1].Value;
             }
             else
             {
-                MessageBox.Show("Thất bại!");
+                MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -299,22 +300,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(Name))
             {
-                MessageBox.Show("Nhập tên");
+                MessageBox.Show("Vui lòng nhập tên");
                 return;
             }
             if (string.IsNullOrEmpty(BirthDate))
             {
-                MessageBox.Show("Nhập ngày sinh");
+                MessageBox.Show("Vui lòng nhập ngày sinh");
                 return;
             }
             if (string.IsNullOrEmpty(UserAddress))
             {
-                MessageBox.Show("Nhập địa chỉ");
+                MessageBox.Show("Vui lòng nhập địa chỉ");
                 return;
             }
             if (string.IsNullOrEmpty(UserPhoneNumber))
             {
-                MessageBox.Show("Nhập số điện thoại");
+                MessageBox.Show("Vui lòng nhập số điện thoại");
                 return;
             }
             byte[] imgByteArr;
@@ -351,11 +352,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             employee.ImageFile = imgByteArr;
             if (EmployeeDAL.Instance.UpdateUserInfo(employee))
             {
-                MessageBox.Show("Thành công!");
+                MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("Thất bại!");
+                MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             CurrentAccount.Name = Name;
             CurrentAccount.ImageFile = imgByteArr;
@@ -446,7 +447,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             AccountDAL.Instance.UpdatePasswordByUsername("admin", MD5Hash(window.pwbNewPassword.Password));
-            MessageBox.Show("Thành công");
+            MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             window.Close();
         }
         void OpenChangePasswordWindow(MainWindow main)

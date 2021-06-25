@@ -524,7 +524,7 @@
             </Grid>
             <Grid
                 x:Name="grdHome"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource ReportVM}"
                 Grid.Row="1"
                 Margin="0,20,0,0">
@@ -2202,6 +2202,9 @@
                         Width="140"/>
                     <Button
                         x:Name="btnSwitchImportStock"
+                        DataContext="{StaticResource GoodsVM}"
+                        Command="{Binding OpenImportGoodsCommand}"
+                        CommandParameter="{Binding ElementName=wdMain}"
                         Style="{StaticResource GreenButton}"
                         Uid="21"
                         Content="Nhập kho"
@@ -3050,6 +3053,7 @@
                     </Grid>
                     <Grid
                         Grid.Column="1"
+                        x:Name="grdPrintImport"
                         Background="{StaticResource White}"
                         Style="{StaticResource DropShadow}"
                         Margin="0,0,10,10">
@@ -3853,11 +3857,13 @@
                                 FontWeight="Bold" />
                         </StackPanel>
                         <Button
+                            x:Name="btnPrintBill"
                             Content="In hoá đơn"
                             Style="{StaticResource PrimaryButton}" 
                             Command="{Binding PrintBillCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
                             Height="35" 
+                            Visibility="Collapsed"
                             HorizontalAlignment="Right" 
                             Margin="0,0,20,0"/>
                         <Grid
@@ -4882,7 +4888,7 @@
             <Grid 
                 x:Name="grdBillService"
                 Grid.Row="1"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource BillServiceVM}"
                 Margin="10,0,0,0">
                 <Grid.ColumnDefinitions>

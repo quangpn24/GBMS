@@ -112,7 +112,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             DeleteCommand = new RelayCommand<EmployeeControl>((p) => true, (p) => HandleDelete(p));
 
             //AddEmployeeWindow
-            SelectImageCommand = new RelayCommand<Grid>((p) => true, (p) => HandleSelectImage(p));
+            SelectImageCommand = new RelayCommand<AddEmployeeWindow>((p) => true, (p) => HandleSelectImage(p));
             SaveCommand = new RelayCommand<AddEmployeeWindow>((p) => true, (p) => HandleAddOrUpdate(p));
             ExitCommand = new RelayCommand<AddEmployeeWindow>((p) => true, (p) => p.Close());
 
@@ -193,7 +193,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Xoá thất bại");
+                        MessageBox.Show("Xóa thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -350,14 +350,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.dpWorkDate.SelectedDate = DateTime.Parse(employee.StartingDate.ToString());
             ImageBrush imageBrush = new ImageBrush();
             imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
-            addEmployeeWindow.grdSelectImage.Background = imageBrush;
-            if (addEmployeeWindow.grdSelectImage.Children.Count > 1)
-            {
-                addEmployeeWindow.grdSelectImage.Children.Remove(addEmployeeWindow.grdSelectImage.Children[0]);
-                addEmployeeWindow.grdSelectImage.Children.Remove(addEmployeeWindow.grdSelectImage.Children[1]);
-            }
+            addEmployeeWindow.imgAvatar.Source = imageBrush.ImageSource;
             addEmployeeWindow.btnSave.ToolTip = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.Title = "Cập nhật thông tin nhân viên";
+            addEmployeeWindow.btnSave.Content = "Cập nhật";
             addEmployeeWindow.ShowDialog();
         }
         void HandleDelete(EmployeeControl employeeControl)
@@ -383,7 +379,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Xoá thất bại");
+                    MessageBox.Show("Xóa thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             int start = 0, end = 0;
@@ -461,22 +457,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 gender = "Nam";
             else
                 gender = "Nữ";
-            if (window.grdSelectImage.Background == null)
-            {
-                MessageBox.Show("Vui lòng thêm hình ảnh!");
-                return;
-            }
 
             string idEmployee = ConvertToIDString(window.txtId.Text);
             byte[] imgByteArr;
-            try
-            {
-                imgByteArr = Converter.Instance.ConvertImageToBytes(imageName);
-            }
-            catch
-            {
-                imgByteArr = EmployeeDAL.Instance.GetById(idEmployee).ImageFile;
-            }
+            imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)window.imgAvatar.Source);
+
             imageName = null;
             #endregion
             Employee employee = new Employee(int.Parse(idEmployee), window.txtName.Text, gender,
@@ -509,15 +494,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                ImageBrush imageBrush = new ImageBrush
-                {
-                    ImageSource = Converter.Instance.ConvertByteToBitmapImage(imgByteArr)
-                };
-                if (imageBrush.ImageSource != null)
-                {
-                    mainWindow.imgAccount.Fill = imageBrush;
-                }
-
                 EmployeeControl control = new EmployeeControl();
                 control.txbId.Text = window.txtId.Text;
                 control.txbName.Text = employee.Name.ToString();
@@ -551,7 +527,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             }
         }
-        void HandleSelectImage(Grid grid)
+        void HandleSelectImage(AddEmployeeWindow window)
         {
             OpenFileDialog op = new OpenFileDialog
             {
@@ -568,12 +544,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 bitmap.UriSource = new Uri(imageName);
                 bitmap.EndInit();
                 imageBrush.ImageSource = bitmap;
-                grid.Background = imageBrush;
-                if (grid.Children.Count > 1)
-                {
-                    grid.Children.Remove(grid.Children[0]);
-                    grid.Children.Remove(grid.Children[1]);
-                }
+                window.imgAvatar.Source = imageBrush.ImageSource;
             }
         }
 
@@ -630,6 +601,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.txtAddress.Text = null;
             addEmployeeWindow.txtPhoneNumber.Text = null;
             addEmployeeWindow.cboPosition.SelectedIndex = -1;
+            addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
             addEmployeeWindow.ShowDialog();
         }
         void LoadEmployeeList(MainWindow main, int curPage)

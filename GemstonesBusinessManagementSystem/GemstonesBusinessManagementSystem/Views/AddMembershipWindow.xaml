@@ -201,6 +201,7 @@
                 Margin="20,0,20,20" 
                 HorizontalAlignment="Right">
                 <Button
+                    x:Name="btnSave"
                     Content="Lưu"
                     ToolTip="Lưu thay đổi"
                     Command="{Binding AddMembershipCommand}"

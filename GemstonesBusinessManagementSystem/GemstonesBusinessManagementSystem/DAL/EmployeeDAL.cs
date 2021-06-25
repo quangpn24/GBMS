@@ -121,10 +121,14 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     throw new Exception();
                 }
+                else
+                {
+                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message.ToString());
+                MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             finally

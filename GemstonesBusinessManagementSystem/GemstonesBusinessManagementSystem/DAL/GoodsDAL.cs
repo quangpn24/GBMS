@@ -55,25 +55,25 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string query;
                 if (!isUpdate) // insert
                 {
-                    query = "Insert into Goods(idGoods, name, price, quantity, idGoodsType, imageFile, isDeleted) " +
-                   "values(@idGoods, @name, @price, 0 , @idGoodsType, @imageFile, @isDeleted)";
+                    query = "Insert into Goods(idGoods, name, importPrice, quantity, idGoodsType, imageFile, isDeleted) " +
+                   "values(@idGoods, @name, @importPrice, 0 , @idGoodsType, @imageFile, @isDeleted)";
                 }
                 else
                 {
-                    query = "update Goods set name=@name, price =@price,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
+                    query = "update Goods set name=@name, importPrice =@importPrice,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
                  "where idGoods = @idGoods";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idGoods", goods.IdGoods);
                 cmd.Parameters.AddWithValue("@name", goods.Name);
-                cmd.Parameters.AddWithValue("@price", goods.ImportPrice);
+                cmd.Parameters.AddWithValue("@importPrice", goods.ImportPrice);
                 cmd.Parameters.AddWithValue("@idGoodsType", goods.IdGoodsType);
                 cmd.Parameters.AddWithValue("@imageFile", Convert.ToBase64String(goods.ImageFile));
                 cmd.Parameters.AddWithValue("@isDeleted", goods.IsDeleted);
                 int rs = cmd.ExecuteNonQuery();
                 if (rs == 1)
                 {
-                    MessageBox.Show("Thành công!!!", "Thông báo");
+                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     return true;
                 }
                 else
@@ -83,7 +83,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch
             {
-                MessageBox.Show("Thất bại!!!", "Thông báo");
+                MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             finally
