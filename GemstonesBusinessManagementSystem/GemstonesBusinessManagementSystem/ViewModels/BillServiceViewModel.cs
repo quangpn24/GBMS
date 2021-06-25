@@ -18,7 +18,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     class BillServiceViewModel : BaseViewModel
     {
         private MainWindow main;
-        private BillServiceControl checkedItem;
+        public BillServiceControl checkedItem;
         public ICommand LoadBillServicesCommand { get; set; }
         public ICommand PickBillServiceCommand { get; set; }
         public ICommand ConfirmDeliveriedCommand { get; set; }
@@ -69,6 +69,20 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     billServiceControl.btnDeleteBillService.Visibility = Visibility.Hidden;
                 }
                 billServiceControl.IsHitTestVisible = true;
+                if (checkedItem != null)
+                {
+                    if (checkedItem.txbId.Text == billServiceControl.txbId.Text)
+                    {
+                        billServiceControl.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        billServiceControl.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        billServiceControl.txbTotal.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        billServiceControl.txbRest.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        if (billServiceControl.txbStatus.Text == "Chưa giao")
+                        {
+                            billServiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        }
+                    }   
+                }
                 mainWindow.stkBillService.Children.Add(billServiceControl);
             }
         }
@@ -94,15 +108,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             }
             //Chuyển sang màu đang được chọn
-            billServiceControl.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            billServiceControl.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            billServiceControl.txbTotal.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            billServiceControl.txbRest.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            if (billServiceControl.txbStatus.Text == "Chưa giao")
-            {
-                billServiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            }
             checkedItem = billServiceControl;
+
+            checkedItem.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            checkedItem.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            checkedItem.txbTotal.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            checkedItem.txbRest.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            if (checkedItem.txbStatus.Text == "Chưa giao")
+            {
+                checkedItem.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            }
             //Hiển thị thông tin
             main.txbIdBillServiceBS.Text = billServiceControl.txbId.Text;
             main.txbCreateDateBS.Text = billService.CreatedDate.ToShortDateString();
