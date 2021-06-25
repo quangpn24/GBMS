@@ -22,7 +22,6 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <TextBlock 
             x:Name="txbMaxQuantiy"

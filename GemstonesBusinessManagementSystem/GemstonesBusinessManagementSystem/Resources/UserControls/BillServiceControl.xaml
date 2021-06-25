@@ -22,14 +22,18 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="60" />
             <ColumnDefinition />
             <ColumnDefinition Width="100" />
             <ColumnDefinition Width="100" />
             <ColumnDefinition Width="100" />
             <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="7"           
+            Fill="{StaticResource Light}" 
+            Height="2"
+            VerticalAlignment="Bottom"/>
         <TextBlock 
             x:Name="txbId"
             Style="{StaticResource Text}"
@@ -41,7 +45,7 @@
             HorizontalAlignment="Left"
             MaxWidth="160"
             TextTrimming="CharacterEllipsis"
-            Margin="20,0,0,0"/>
+            Margin="15,0,0,0"/>
         <TextBlock 
             x:Name="txbIdCustomer"
             Visibility="Hidden" />
@@ -65,6 +69,7 @@
             Style="{StaticResource TransperantButton}"
             ToolTip="Xóa phiếu dịch vụ"
             Height="30"
+            Width="30"
             Foreground="{StaticResource Error}">
             <materialDesign:PackIcon 
                 Kind="DeleteOutline"

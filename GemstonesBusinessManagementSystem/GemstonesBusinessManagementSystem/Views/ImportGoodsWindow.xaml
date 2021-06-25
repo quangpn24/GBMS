@@ -80,7 +80,7 @@
                     <TextBox 
                         x:Name="txtSearch"
                         Style="{StaticResource TextBox}"
-                        materialDesign:HintAssist.Hint="Tìm sản phẩm"
+                        materialDesign:HintAssist.Hint="Tìm theo tên sản phẩm"
                         materialDesign:HintAssist.IsFloating="False"
                         Foreground="{StaticResource Black1}"
                         FontSize="16" 

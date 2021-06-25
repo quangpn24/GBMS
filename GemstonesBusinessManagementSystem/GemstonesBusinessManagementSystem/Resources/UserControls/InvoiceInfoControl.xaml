@@ -20,7 +20,6 @@
             <ColumnDefinition />
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
             Grid.ColumnSpan="6"

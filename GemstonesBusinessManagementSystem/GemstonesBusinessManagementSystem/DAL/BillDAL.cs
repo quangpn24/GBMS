@@ -218,5 +218,23 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public bool Delete(string idBill)
+        {
+            try
+            {
+                OpenConnection();
+                string queryString = "DELETE FROM Bill WHERE idBill=" + idBill;
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                return command.ExecuteNonQuery() == 1;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }

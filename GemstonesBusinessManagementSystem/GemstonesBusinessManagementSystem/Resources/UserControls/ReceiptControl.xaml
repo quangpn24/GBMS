@@ -11,8 +11,9 @@
     x:Name="ucReceipt"
     Style="{StaticResource MyUCHoverStyle}"
     DataContext="{StaticResource ImportGoodsVM}"
-    Height="40" 
-    Margin="0,0,0,2">
+    Height="42"
+    Margin="0,0,0,1"
+    Cursor="Hand">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
             <i:InvokeCommandAction Command="{Binding SelectReceiptCommand}"

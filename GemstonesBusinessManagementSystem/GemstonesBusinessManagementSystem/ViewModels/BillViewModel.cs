@@ -25,6 +25,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand LoadBillCommand { get; set; }
         public ICommand PickBillCommand { get; set; }
         public ICommand PrintBillCommand { get; set; }
+        public ICommand DeleteBillCommand { get; set; }
 
         private InvoiceControl checkedItem;
         private MainWindow mainWindow;
@@ -52,8 +53,47 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadBillCommand = new RelayCommand<MainWindow>(p => true, p => LoadBill(p));
             PickBillCommand = new RelayCommand<InvoiceControl>(p => true, p => PickBill(p));
             PrintBillCommand = new RelayCommand<MainWindow>(p => true, p => Print(p));
+            DeleteBillCommand = new RelayCommand<InvoiceControl>(p => true, p => DeleteBill(p));
         }
-
+        void UpdateMembership(Customer customer, long paidMoney)
+        {
+            var totalSpending = customer.TotalPrice + paidMoney;
+            CustomerDAL.Instance.UpdateTotalSpending(customer.IdCustomer, totalSpending);
+            List<KeyValuePair<long, int>> membershipList = MembershipsTypeDAL.Instance.GetSortedList();
+            foreach (var mem in membershipList)
+            {
+                if (totalSpending >= mem.Key)
+                {
+                    CustomerDAL.Instance.UpdateMembership(customer.IdCustomer, mem.Value);
+                    break;
+                }
+            }
+        }
+        void DeleteBill(InvoiceControl control)
+        {
+            var confirm = MessageBox.Show("Bạn có chắc chắn muốn xóa phiếu dịch vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            string idBill = ConvertToIDString(control.txbId.Text);
+            if (confirm == MessageBoxResult.Yes)
+            {
+                BillInfoDAL.Instance.Delete(idBill);
+                BillDAL.Instance.Delete(idBill);
+                Customer customer = CustomerDAL.Instance.FindById(control.txbIdCustomer.Text);
+                customer.TotalPrice -= ConvertToNumber(control.txbPrice.Text);
+                UpdateMembership(customer, 0);
+                if (control == checkedItem)
+                {
+                    mainWindow.stkBillInfo.Children.Clear();
+                    IdBill = "";
+                    CustomerName = "";
+                    CustomerPhoneNumber = "";
+                    InvoiceDate = "";
+                    EmployeeName = "";
+                    Total = "0";
+                }
+                mainWindow.stkBill.Children.Remove(control);
+                MessageBox.Show("Xóa hoá đơn thành công");
+            }
+        }
         public void LoadBill(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -76,6 +116,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 Employee employee = EmployeeDAL.Instance.GetByIdAccount(billList[i].IdAccount.ToString());
                 InvoiceControl invoiceControl = new InvoiceControl();
                 invoiceControl.txbId.Text = AddPrefix("HD", billList[i].IdBill);
+                invoiceControl.txbIdCustomer.Text = customer.IdCustomer.ToString();
                 invoiceControl.txbCustomerName.Text = customer.CustomerName;
                 invoiceControl.txbEmployeeName.Text = employee.Name;
                 invoiceControl.txbPrice.Text = SeparateThousands(billList[i].TotalMoney.ToString());

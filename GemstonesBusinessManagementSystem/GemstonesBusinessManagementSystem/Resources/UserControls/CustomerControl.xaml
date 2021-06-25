@@ -14,7 +14,7 @@
     DataContext="{StaticResource CustomerVM}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="110"/>
             <ColumnDefinition Width="2.5*"/>

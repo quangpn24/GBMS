@@ -10,7 +10,7 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d"
     Height="40"
-    Width="442"
+    Width="434"
     DataContext="{StaticResource BusinessServiceVM}"
     Style="{StaticResource MyUCHoverStyle }"
     Cursor="Hand"
@@ -37,12 +37,10 @@
                 x:Name="txbId"
                 Grid.Column="0"
                 Style="{StaticResource Text}"
-                Text="dv001"
                 FontSize="18"/>
             <TextBlock 
                 x:Name="txbName"
                 Style="{StaticResource Text}"
-                Text="Loại dịch vụ"
                 Grid.Column="1"
                 MaxWidth="180"
                 TextTrimming="CharacterEllipsis"
@@ -53,7 +51,6 @@
                 x:Name="txbPrice"
                 Style="{StaticResource Text}"
                 Grid.Column="2"
-                Text="Đơn giá"
                 FontSize="18"/>
         </Grid>
     </Border>

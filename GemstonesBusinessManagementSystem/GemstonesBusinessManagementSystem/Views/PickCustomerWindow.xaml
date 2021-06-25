@@ -175,8 +175,8 @@
                 CommandParameter="{Binding ElementName=wdPickCustomer}"
                 materialDesign:ButtonAssist.CornerRadius="2"
                 Content="Xác nhận"
-                Margin="15,0,15,10"
-                VerticalAlignment="Bottom"
+                Margin="15,5,15,0"
+                VerticalAlignment="Top"
                 Height="40" />
         </Grid>
         <Grid 
@@ -186,7 +186,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="80" />
                 <RowDefinition />
-                <RowDefinition Height="50" />
+                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
             <Rectangle 
                 Fill="{DynamicResource White}"
@@ -212,7 +212,7 @@
                 <TextBox 
                     x:Name="txtSearchCustomer"
                     Style="{StaticResource TextBox}"
-                    materialDesign:HintAssist.Hint="Tìm khách hàng"
+                    materialDesign:HintAssist.Hint="Tìm theo tên khách hàng"
                     FontSize="18"
                     Margin="10,0"
                     Height="Auto"
@@ -306,7 +306,7 @@
                 BorderBrush="{DynamicResource Light}"
                 BorderThickness="2,0,2,2" 
                 CornerRadius="4"
-                Margin="20,40,20,0">
+                Margin="20,40,20,19">
                 <StackPanel 
                     x:Name="stkCustomer" />
             </Border>

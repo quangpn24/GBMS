@@ -84,7 +84,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             int idBillService = BillServiceDAL.Instance.GetMaxId() + 1;
             mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService);
-            mainWindow.txbDateBillService.Text = DateTime.Today.ToString("dd-MM-yyyy");
+            mainWindow.txbDateBillService.Text = DateTime.Today.ToString("dd/MM/yyyy");
             mainWindow.wrpSaleService.Children.Clear();
             foreach (var service in services)
             {
@@ -200,7 +200,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (isPaidMoney)
             {
-                BillService billService = new BillService(ConvertToID(mainWindow.txbIdBillService.Text), CurrentAccount.IdAccount, DateTime.Now, totalMoney, totalPaidMoney, ConvertToID(mainWindow.txbIdCustomer.Text), 0);
+                int idBillService = BillServiceDAL.Instance.GetMaxId() + 1;
+                BillService billService = new BillService(idBillService, CurrentAccount.IdAccount, DateTime.Now, totalMoney, totalPaidMoney, ConvertToID(mainWindow.txbIdCustomer.Text), 0);
                 Customer customer = CustomerDAL.Instance.FindById(billService.IdCustomer.ToString());
                 if (totalMoney != 0) // Kiểm tra xem có hàng hóa nào được chọn không
                 {
@@ -231,6 +232,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         CustomerViewModel customerVM = (CustomerViewModel)mainWindow.grdCustomer.DataContext;
                         customerVM.LoadCustomerToView(mainWindow, 0);
                         mainWindow.stkPickedService.Children.Clear();
+                        mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService + 1);
                         TotalMoney = TotalPaidMoney = "0";
                         TotalServices = 0;
                         mainWindow.txbIdCustomer.Text = "";

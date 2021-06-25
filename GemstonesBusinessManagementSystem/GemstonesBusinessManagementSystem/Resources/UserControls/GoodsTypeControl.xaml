@@ -18,7 +18,6 @@
             <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="1.2*"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
             Grid.ColumnSpan="5"

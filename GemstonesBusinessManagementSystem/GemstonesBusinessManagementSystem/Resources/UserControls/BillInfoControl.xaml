@@ -17,50 +17,47 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="1.2*"/>
         </Grid.ColumnDefinitions>
-        <Grid
-            Grid.Column="0" >
-            <TextBlock 
-                x:Name="txbOrderNum"
-                Style="{StaticResource Text}"
-                FontSize="14"
-                Text="1"/>
-        </Grid>
+        <TextBlock 
+            x:Name="txbOrderNum"
+            Style="{StaticResource Text}"
+            FontSize="14"
+            Height="Auto"
+            Text="1"/>
         <TextBlock 
             x:Name="txbName"
             Style="{StaticResource Text}"
             Grid.Column="1"
+            Height="Auto"
             FontSize="14"
             Text="Tên hàng hóa"
             TextTrimming="WordEllipsis"
             MaxWidth="160"
             HorizontalAlignment="Left" 
             Margin="10,0,0,0" />
-        <Grid
-            Grid.Column="2">
-            <TextBlock 
-                x:Name="txbUnitPrice"
-                Style="{StaticResource Text}"
-                FontSize="14"
-                Text="10.000"
-                Grid.Column="2"/>
-        </Grid>
+        <TextBlock 
+            x:Name="txbUnitPrice"
+            Style="{StaticResource Text}"
+            FontSize="14"
+            Height="Auto"
+            Text="10.000"
+            Grid.Column="2"/>
         <TextBlock 
             x:Name="txbQuantity"
             Text="10"
             Style="{StaticResource Text}"
+            Height="Auto"
             FontSize="14"
             Grid.Column="3"/>
-        <Grid
-            Grid.Column="4">
-            <TextBlock 
-                x:Name="txbUnit"
-                Style="{StaticResource Text}"
-                FontSize="14"
-                Text="Cái"/>
-        </Grid>
+        <TextBlock 
+            x:Name="txbUnit"
+            Style="{StaticResource Text}"
+            Height="Auto"
+            FontSize="14"
+            Text="Cái"/>
         <TextBlock 
             x:Name="txbTotal"
             Style="{StaticResource Text}"
+            Height="Auto"
             FontSize="14"
             Text="100.000"
             Grid.Column="5"/>

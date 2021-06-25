@@ -73,7 +73,7 @@
                     Text="{Binding Username}"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                     materialDesign:HintAssist.Hint="Tên đăng nhập" 
-                    Width="240"
+                    Width="230"
                     Height="50" 
                     HorizontalAlignment="Right" 
                     FontSize="18" 
@@ -93,12 +93,13 @@
                     Width="32" 
                     Height="32" 
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom" />
+                    VerticalAlignment="Bottom" 
+                    Margin="2,0,0,0" />
                 <PasswordBox
                     x:Name="txtPassword"
                     materialDesign:HintAssist.Hint="Mật khẩu" 
                     Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                    Width="240" 
+                    Width="230" 
                     Height="50" 
                     HorizontalAlignment="Right" 
                     BorderBrush="{StaticResource Primary}"

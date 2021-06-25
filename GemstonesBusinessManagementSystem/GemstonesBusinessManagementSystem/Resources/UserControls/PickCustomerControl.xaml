@@ -11,8 +11,7 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     DataContext="{StaticResource CustomerVM}"
-    Height="40"
-    Margin="0,4,0,0"
+    Height="47"
     Style="{StaticResource MyUCHoverStyle }"
     Cursor="Hand"
     Focusable="True">

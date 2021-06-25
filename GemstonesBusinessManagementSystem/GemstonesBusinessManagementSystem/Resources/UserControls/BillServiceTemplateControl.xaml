@@ -26,10 +26,9 @@
             <ColumnDefinition />
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
-            Grid.ColumnSpan="11"           
+            Grid.ColumnSpan="12"           
             Fill="{StaticResource Light}" 
             Height="2"
             VerticalAlignment="Bottom"/>
@@ -40,63 +39,63 @@
             x:Name="txbNumber"
             Style="{StaticResource Text}"
             Grid.Column="0"
-            Text="1"
-            FontSize="12"/>
+            FontSize="12" 
+            Height="Auto"/>
         <TextBlock
             x:Name="txbName"
             Style="{StaticResource Text}"
             Grid.Column="1"
-            Text="Loại dịch vụ"
             HorizontalAlignment="Left"
             Margin="10,0,0,0"
-            FontSize="12" />
+            FontSize="12" 
+            Height="Auto"/>
         <TextBlock 
             x:Name="txbPrice"
             Style="{StaticResource Text}"
             Grid.Column="2"
-            Text="100.000.000"
+            Height="Auto"
             FontSize="12" />
         <TextBlock 
             x:Name="txbCalculateMoney"
             Style="{StaticResource Text}"
-            Text="100.000.000"
             Grid.Column="3"
+            Height="Auto"
             FontSize="12" />
         <TextBlock 
             x:Name="txbQuantity"
             Style="{StaticResource Text}"
             Grid.Column="4"
-            Text="100"
+            Height="Auto"
             FontSize="12" />
         <TextBlock 
             x:Name="txbTotal"
             Style="{StaticResource Text}"
-            Text="100.000.000"
             Grid.Column="5"
+            Height="Auto"
             FontSize="12" />
         <TextBlock 
             x:Name="txbPaidMoney"
             Style="{StaticResource Text}"
-            Text="100.000.000"
             Grid.Column="6"
+            Height="Auto"
             FontSize="12" />
         <TextBlock 
             x:Name="txbRest"
             Style="{StaticResource Text}"
-            Text="100.000.000"
             Grid.Column="7"
+            Height="Auto"
             FontSize="12" />
         <TextBlock 
             x:Name="txbDeliveryDate"
             Style="{StaticResource Text}"
-            Text="12/12/1211"
             Grid.Column="8"
+            Height="Auto"
             FontSize="12" />
         <TextBlock 
             x:Name="txbStatus"
             Style="{StaticResource Text}"
-            Text="Tình trạng"
             Grid.Column="9"
+            Height="Auto"
             FontSize="12" />
         <Button 
             x:Name="btnSwapStatus"

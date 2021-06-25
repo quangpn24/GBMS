@@ -21,7 +21,6 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="1.2*"/>
             <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
             Grid.ColumnSpan="8"
@@ -41,7 +40,7 @@
             Style="{StaticResource Text}"
             FontSize="14"
             HorizontalAlignment="Left"
-            Margin="20,0,0,0"/>
+            Margin="15,0,0,0"/>
         <TextBlock 
             x:Name="txbUnit"
             FontSize="14"

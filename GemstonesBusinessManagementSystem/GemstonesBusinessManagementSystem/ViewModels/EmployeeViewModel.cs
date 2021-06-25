@@ -665,7 +665,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (currentPage == employeeList.Count / 10)
                 end = employeeList.Count;
 
-            mainWindow.txtNumOfEmp.Text = String.Format("Trang {0} trên {1} trang", currentPage, employeeList.Count / 11 + 1);
+            mainWindow.txtNumOfEmp.Text = String.Format("Trang {0} trên {1} trang", currentPage + 1, employeeList.Count / 11 + 1);
         }
         public void GoToNextPage(MainWindow mainWindow, int currentPage)
         {
