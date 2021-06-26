@@ -45,7 +45,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition />
-                <RowDefinition Height="60" />
+                <RowDefinition Height="120" />
             </Grid.RowDefinitions>
             <Rectangle 
                 Fill="{DynamicResource White}"
@@ -168,16 +168,26 @@
                         VerticalAlignment="Top" />
                 </Grid>
             </StackPanel>
-            <Button 
-                Grid.Row="2"
-                Style="{StaticResource GreenButton}"
-                Command="{Binding ConfirmCommand}"
-                CommandParameter="{Binding ElementName=wdPickCustomer}"
-                materialDesign:ButtonAssist.CornerRadius="2"
-                Content="Xác nhận"
+            <StackPanel
                 Margin="15,5,15,0"
-                VerticalAlignment="Top"
-                Height="40" />
+                Grid.Row="2">
+                <Button 
+                    Style="{StaticResource GreenButton}"
+                    Command="{Binding ConfirmCommand}"
+                    CommandParameter="{Binding ElementName=wdPickCustomer}"
+                    Content="Xác nhận"
+                    ToolTip="Chọn khách hàng"
+                    Height="40" />
+                <Button 
+                    x:Name="btnAddCustomer"
+                    DataContext="{StaticResource CustomerVM}"
+                    Style="{StaticResource PrimaryOutlineButton}"
+                    Command="{Binding OpenAddCustomerWindowCommand}"
+                    CommandParameter="{Binding ElementName=btnAddCustomer}"
+                    Content="Thêm khách hàng"
+                    ToolTip="Thêm khách hàng"
+                    Height="40" Margin="0,15,0,0" />
+            </StackPanel>
         </Grid>
         <Grid 
             Grid.Column="0"

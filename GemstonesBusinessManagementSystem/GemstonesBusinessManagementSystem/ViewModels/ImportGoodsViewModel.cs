@@ -334,7 +334,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     receiptTemplate.stkStockReceiptInfo.Children.Clear();
                 }
             }
-                pd.PrintDocument(document.DocumentPaginator, "My first document");
+                pd.PrintDocument(document.DocumentPaginator, mainWindow.txbIdBillService.Text);
             CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         // View receipt detail
@@ -380,7 +380,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     receiptTemplate.stkStockReceiptInfo.Children.Clear();
                 }
             }
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, main.txbIdReceipt.Text);
             CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
@@ -484,7 +484,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 using (ExcelPackage p = new ExcelPackage())
                 {
                     // đặt tiêu đề cho file
-                    p.Workbook.Properties.Title = "Danh sách phiếu nhập hàng";
+                    p.Workbook.Properties.Title = "Danh sách phiếu nhập kho";
                     p.Workbook.Worksheets.Add("sheet");
 
                     ExcelWorksheet ws = p.Workbook.Worksheets[0];
@@ -514,7 +514,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     // merge các column lại từ column 1 đến số column header
                     // gán giá trị cho cell vừa merge
                     ws.Row(1).Height = 15;
-                    ws.Cells[1, 1].Value = "Danh sách phiếu nhập hàng";
+                    ws.Cells[1, 1].Value = "Danh sách phiếu nhập kho";
                     ws.Cells[1, 1, 1, countColHeader].Merge = true;
 
                     ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;

@@ -84,7 +84,6 @@
                                     <ColumnDefinition Width="2.5*"/>
                                     <ColumnDefinition Width="1.5*"/>
                                     <ColumnDefinition Width="1.2*"/>
-                                    <ColumnDefinition Width="10"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     Grid.Column="0"
@@ -369,7 +368,6 @@
                                     <ColumnDefinition Width="2.5*"/>
                                     <ColumnDefinition Width="1.5*"/>
                                     <ColumnDefinition Width="1.2*"/>
-                                    <ColumnDefinition Width="10"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     Grid.Column="0"
@@ -469,7 +467,6 @@
                                     <ColumnDefinition Width="2.5*"/>
                                     <ColumnDefinition Width="1.5*"/>
                                     <ColumnDefinition Width="1.2*"/>
-                                    <ColumnDefinition Width="10"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     Grid.Column="0"

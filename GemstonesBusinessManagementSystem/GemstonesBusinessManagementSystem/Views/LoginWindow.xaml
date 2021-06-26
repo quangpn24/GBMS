@@ -128,14 +128,13 @@
                 Foreground="{DynamicResource Secondary}" 
                 IsTabStop="False"/>
             <Button 
-                Background="{StaticResource Primary}"
                 x:Name="btnLogin"
                 IsDefault="True"
+                Style="{StaticResource PrimaryButton}"
                 Command="{Binding LogInCommand}"
                 CommandParameter="{Binding ElementName=wdLogin}"
                 Content="Đăng nhập"
                 Height="40"
-                materialDesign:ButtonAssist.CornerRadius="4"
                 ToolTip="Đăng nhập" 
                 VerticalAlignment="Bottom" 
                 Margin="60,0,60,70"

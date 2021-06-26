@@ -192,7 +192,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             List<Parameter> parameters = ParameterDAL.Instance.GetData();
             billTemplate.txbStoreName.Text = parameters[1].Value;
             billTemplate.txbStoreAddress.Text = parameters[2].Value;
-            billTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
             int numOfItems = mainWindow.stkBillInfo.Children.Count;
 
             //print
@@ -224,7 +223,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
 
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, IdBill);
         }
         public PageContent ConvertToPage(Grid grid)
         {

@@ -117,6 +117,7 @@
             HorizontalAlignment="Center"
             Width="80"
             Height="22"
+            Text="0"
             FontSize="14"
             FontWeight="SemiBold"
             BorderThickness="0,0,0,2"

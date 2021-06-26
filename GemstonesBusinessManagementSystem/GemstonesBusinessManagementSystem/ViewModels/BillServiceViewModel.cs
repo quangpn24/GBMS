@@ -265,6 +265,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             List<Parameter> parameters = ParameterDAL.Instance.GetData();
             billServiceTemplate.txbStoreName.Text = parameters[1].Value;
+            billServiceTemplate.txbStoreAddress.Text = parameters[2].Value;
             //print 
             PrintDialog pd = new PrintDialog();
             if (pd.ShowDialog() != true) return;
@@ -299,7 +300,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     billServiceTemplate.stkBillServiceInfo.Children.Clear();
                 }
             }
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, main.txbIdBillServiceBS.Text);
 
         }
         public PageContent ConvertToPage(Grid grid)

@@ -24,48 +24,36 @@
             <RowDefinition Height="130"/>
         </Grid.RowDefinitions>
         <Grid >
-            <Grid
+            <StackPanel 
                 HorizontalAlignment="Left"
                 Height="70"
                 Margin="33,15,0,0"
                 VerticalAlignment="Top"
-                Width="350">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Image 
-                    x:Name="imgStoreAvatar"
-                    Grid.Column="0"
+                Width="360">
+                <TextBlock 
+                    Text="{Binding Path=Text,ElementName=txbStoreName}" 
+                    Grid.Column="1"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Width="60" 
-                    Height="60"/>
-                <StackPanel
-                    Grid.Column="1">
-                    <TextBlock 
-                        Grid.Column="1"
-                        HorizontalAlignment="Left" 
-                        Margin="10,8,0,0"
-                        TextWrapping="Wrap"
-                        Text="{Binding Path=Text,ElementName=txbStoreName}" 
-                        VerticalAlignment="Bottom" 
-                        FontSize="22" 
-                        FontWeight="Bold" 
-                        FontFamily="Microsoft PhagsPa"
-                        Foreground="{DynamicResource Primary}"/>
-                    <TextBlock 
-                        Grid.Column="1"
-                        HorizontalAlignment="Left" 
-                        Margin="10,0,0,0"
-                        TextWrapping="Wrap"
-                        Text="Tagline space here" 
-                        VerticalAlignment="Bottom"
-                        FontSize="14" 
-                        FontWeight="Medium" 
-                        Foreground="{DynamicResource Gray2}"/>
-                </StackPanel>
-            </Grid>
+                    TextWrapping="NoWrap"
+                    Width="360"
+                    VerticalAlignment="Bottom"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    FontFamily="Microsoft PhagsPa"
+                    Foreground="{DynamicResource Primary}" />
+                <TextBlock
+                    Text="{Binding Path=Text,ElementName=txbStoreAddress}" 
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Bottom"
+                    FontSize="14"
+                    TextTrimming="CharacterEllipsis"
+                    Height="40"
+                    MaxWidth="220"
+                    FontWeight="Medium"
+                    Foreground="{DynamicResource Gray1}" />
+            </StackPanel>
             <TextBlock
                 Text="PHIẾU NHẬP KHO" 
                 Grid.Column="1" 
@@ -94,31 +82,31 @@
                     Text="Thông tin:" 
                     FontSize="14" 
                     FontWeight="Bold" 
-                    Foreground="{DynamicResource Gray1}"/>
+                    Foreground="{DynamicResource Primary}"/>
                 <TextBlock 
                     x:Name="txbStoreName"
                     TextWrapping="Wrap" 
                     Text="PNJ" 
                     FontWeight="Bold" 
                     Margin="0,2,0,0" 
-                    Foreground="{DynamicResource Black2}" 
+                    Foreground="{DynamicResource Black1}" 
                     FontSize="16"/>
                 <TextBlock 
                     x:Name="txbStoreAddress"
-                    TextTrimming="WordEllipsis"
+                    TextTrimming="CharacterEllipsis"
                     TextWrapping="Wrap" 
                     FontWeight="SemiBold"
                     Margin="0,0,0,2" 
-                    Foreground="{DynamicResource Gray2}" 
+                    Foreground="{DynamicResource Gray1}" 
                     Text="Song Hành, khu phố 6, Thủ Đức, Thành phố Hồ Chí Minh"
-                    MaxHeight="48" />
+                    MaxHeight="40" />
                 <TextBlock 
                     x:Name="txbStorePhoneNumber"
                     TextWrapping="Wrap" 
                     Text="0123456789" 
                     FontWeight="SemiBold"
                     Margin="0"
-                    Foreground="{DynamicResource Gray2}"/>
+                    Foreground="{DynamicResource Gray1}"/>
             </StackPanel>
             <StackPanel
                 VerticalAlignment="Center"
@@ -132,7 +120,7 @@
                         Text="Mã phiếu:" 
                         FontWeight="SemiBold"
                         Margin="0" 
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black1}"
                         FontSize="14" 
                         Width="70" 
                         HorizontalAlignment="Left"/>
@@ -140,9 +128,9 @@
                         x:Name="txbIdStockReceipt"
                         TextWrapping="Wrap" 
                         Text="PH0001" 
-                        FontWeight="SemiBold"
+                        FontWeight="Bold"
                         Margin="0" 
-                        Foreground="{DynamicResource Gray1}" 
+                        Foreground="{DynamicResource Primary}" 
                         HorizontalAlignment="Right" 
                         FontSize="14"/>
                 </Grid>
@@ -153,7 +141,7 @@
                         Text="Ngày:" 
                         FontWeight="SemiBold"
                         Margin="0" 
-                        Foreground="{DynamicResource Gray1}" 
+                        Foreground="{DynamicResource Black1}" 
                         FontSize="14" 
                         Width="70" 
                         HorizontalAlignment="Left"/>
@@ -163,7 +151,7 @@
                         Text="14/12/2020" 
                         FontWeight="SemiBold"
                         Margin="0" 
-                        Foreground="{DynamicResource Gray1}" 
+                        Foreground="{DynamicResource Black2}" 
                         HorizontalAlignment="Right"
                         FontSize="14"/>
                 </Grid>
@@ -174,37 +162,41 @@
                         Text="Nhà cung cấp:" 
                         FontWeight="SemiBold"
                         Margin="0" 
-                        Foreground="{DynamicResource Gray1}" 
+                        Foreground="{DynamicResource Black1}" 
                         FontSize="14"
                         HorizontalAlignment="Left"/>
                     <TextBlock 
                         x:Name="txbSupplier"
-                        TextWrapping="Wrap" 
+                        TextWrapping="NoWrap" 
+                        TextTrimming="CharacterEllipsis"
+                        MaxWidth="140"
                         Text="QuangPn" 
                         FontWeight="SemiBold"
                         Margin="0" 
-                        Foreground="{DynamicResource Gray1}" 
+                        Foreground="{DynamicResource Black2}" 
                         HorizontalAlignment="Right"
                         FontSize="14"/>
                 </Grid>
                 <Grid
                     Margin="0,5,0,0">
                     <TextBlock 
-                        TextWrapping="Wrap" 
                         Text="Nhân viên:" 
+                        TextWrapping="Wrap" 
                         FontWeight="SemiBold"
                         Margin="0" 
-                        Foreground="{DynamicResource Gray1}" 
+                        Foreground="{DynamicResource Black1}" 
                         FontSize="14" 
                         Width="70"
                         HorizontalAlignment="Left"/>
                     <TextBlock 
                         x:Name="txbImporter"
-                        TextWrapping="Wrap" 
+                        TextWrapping="NoWrap" 
+                        TextTrimming="CharacterEllipsis"
+                        MaxWidth="140"
                         Text="QuangPn" 
                         FontWeight="SemiBold"
                         Margin="0" 
-                        Foreground="{DynamicResource Gray1}" 
+                        Foreground="{DynamicResource Black2}" 
                         HorizontalAlignment="Right"
                         FontSize="14"/>
                 </Grid>
@@ -220,17 +212,19 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.5*"/>
                     <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="1.2*"/>
                     <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1.2*"/>
                     <ColumnDefinition Width="1.5*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock 
                     Text="STT"
+                    FontSize="14"
                     HorizontalAlignment="Center" 
                     Style="{StaticResource TextHeader}" 
                     VerticalAlignment="Center"/>
                 <TextBlock 
+                    FontSize="14"
                     Grid.Column="1"
                     Text="Tên sản phẩm"
                     Style="{StaticResource TextHeader}" 
@@ -238,39 +232,49 @@
                     Margin="10,0,0,0" 
                     VerticalAlignment="Center"/>
                 <TextBlock 
+                    FontSize="14"
                     Grid.Column="2" 
                     Text="Đơn vị"
                     Style="{StaticResource TextHeader}" 
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
                 <TextBlock 
+                    FontSize="14"
                     Text="Giá nhập"
                     Grid.Column="3"
                     Style="{StaticResource TextHeader}" 
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center"/>
                 <TextBlock 
+                    FontSize="14"
                     Grid.Column="4" 
                     Text="Số lượng"
                     Style="{StaticResource TextHeader}" 
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center"/>
                 <TextBlock 
+                    FontSize="14"
                     Text="Thành tiền"
                     Grid.Column="5"
                     Style="{StaticResource TextHeader}"
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center"/>
             </Grid>
-            <StackPanel 
-                Margin="30,26,30,3"
-                x:Name="stkStockReceiptInfo">
-            </StackPanel>
+            <Border
+                Margin="30,30,30,0"
+                BorderBrush="{DynamicResource Light}"
+                CornerRadius="0,0,4,4"
+                BorderThickness="2,0,2,2" 
+                VerticalAlignment="Top" >
+                <StackPanel 
+                    x:Name="stkStockReceiptInfo">
+                </StackPanel>
+            </Border>
         </Grid>
         <Grid
             Grid.Row="3">
             <Grid 
-                Margin="0,10,30,0" 
+                Margin="0,20,30,0" 
                 Width="300" 
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right">
@@ -279,7 +283,7 @@
                     Text="Tổng giá trị" 
                     FontWeight="SemiBold"
                     Margin="0" 
-                    Foreground="{DynamicResource Gray1}"
+                    Foreground="{DynamicResource Black1}"
                     FontSize="16" 
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"/>
@@ -289,7 +293,7 @@
                     Text="2.000.000" 
                     FontWeight="SemiBold"
                     Margin="0,0,10,0" 
-                    Foreground="{DynamicResource Gray1}"
+                    Foreground="{DynamicResource Black2}"
                     FontSize="18" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center" 
@@ -305,7 +309,7 @@
                     Text="Giảm giá" 
                     FontWeight="SemiBold"
                     Margin="0" 
-                    Foreground="{DynamicResource Gray1}"
+                    Foreground="{DynamicResource Black1}"
                     FontSize="16" 
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"/>
@@ -315,14 +319,14 @@
                     Text="10%" 
                     FontWeight="SemiBold"
                     Margin="0,0,10,0" 
-                    Foreground="{DynamicResource Gray1}"
+                    Foreground="{DynamicResource Black2}"
                     FontSize="18" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center" 
                     Panel.ZIndex="1"/>
             </Grid>
             <Grid 
-                Margin="0,90,30,0" 
+                Margin="0,80,30,0" 
                 Width="300" 
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right">
@@ -331,7 +335,7 @@
                     Text="Thanh toán" 
                     FontWeight="SemiBold"
                     Margin="0" 
-                    Foreground="{DynamicResource Gray1}"
+                    Foreground="{DynamicResource Black1}"
                     FontSize="16" 
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"/>
@@ -353,8 +357,8 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Margin="0" 
-                    RadiusX="4"
-                    RadiusY="4"/>
+                    RadiusX="2"
+                    RadiusY="2"/>
             </Grid>
         </Grid>
     </Grid>

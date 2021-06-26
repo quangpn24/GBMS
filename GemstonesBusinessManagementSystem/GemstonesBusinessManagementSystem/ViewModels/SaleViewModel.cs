@@ -208,7 +208,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             List<Parameter> parameters = ParameterDAL.Instance.GetData();
             billTemplate.txbStoreName.Text = parameters[1].Value;
             billTemplate.txbStoreAddress.Text = parameters[2].Value;
-            billTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
 
             if (string.IsNullOrEmpty(window.txbSaleNote.Text))
             {
@@ -248,7 +247,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     billTemplate.stkBillInfo.Children.Clear();
                 }
             }
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, IdBill);
             CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         public PageContent ConvertToPage(Grid grid)

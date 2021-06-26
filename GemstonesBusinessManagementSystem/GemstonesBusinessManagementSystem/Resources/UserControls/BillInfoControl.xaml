@@ -11,7 +11,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="1.2*"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -49,6 +49,7 @@
             FontSize="14"
             Grid.Column="3"/>
         <TextBlock 
+            Grid.Column="4"
             x:Name="txbUnit"
             Style="{StaticResource Text}"
             Height="Auto"
@@ -66,14 +67,5 @@
             Fill="{StaticResource Light}" 
             Height="2"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="5"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>

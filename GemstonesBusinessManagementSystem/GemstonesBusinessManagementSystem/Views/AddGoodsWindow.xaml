@@ -12,7 +12,7 @@
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     Title="Thêm mặt hàng" 
     x:Name="wdAddGoods"
-    Height="460" 
+    Height="400" 
     Width="700" 
     DataContext="{StaticResource GoodsVM}"
     WindowStartupLocation="CenterScreen"
@@ -193,7 +193,7 @@
                 Margin="0,40,0,0" 
                 VerticalAlignment="Top"  
                 Height="40" 
-                Width="220" 
+                Width="240" 
                 HorizontalAlignment="Right">
                 <Button
                     x:Name="btnSave"
@@ -227,7 +227,7 @@
                     Width="100"
                     ToolTip="Thoát"
                     HorizontalAlignment="Right"
-                    Content="Bỏ qua"
+                    Content="Thoát"
                     FontSize="18"
                     VerticalAlignment="Center"/>
             </Grid>

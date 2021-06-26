@@ -202,8 +202,8 @@
                                 Command="{Binding NavigateCommand}"
                                 CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource NavigationButton}"
-                                Content="Phiếu nhập hàng"
-                                ToolTip="Quản lý phiếu nhập hàng">
+                                Content="Phiếu nhập kho"
+                                ToolTip="Quản lý phiếu nhập kho">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseMove">
                                         <i:InvokeCommandAction Command="{Binding GetUidCommand}"
@@ -661,12 +661,12 @@
                                 Style="{StaticResource Text}"
                                 HorizontalAlignment="Left"
                                 FontSize="20" 
-                                Margin="10,0,0,0"/>
+                                Margin="20,0,0,0"/>
                             <TextBlock 
                                 Grid.Row="1"
                                 Text="{Binding TodaySpend}"
                                 HorizontalAlignment="Left"
-                                Margin="10,0,0,0" 
+                                Margin="20,0,0,0" 
                                 TextWrapping="Wrap" 
                                 VerticalAlignment="Center" 
                                 FontSize="24" 
@@ -693,12 +693,12 @@
                                 Style="{StaticResource Text}"
                                 HorizontalAlignment="Left"
                                 FontSize="20" 
-                                Margin="10,0,0,0"/>
+                                Margin="20,0,0,0"/>
                             <TextBlock 
                                 Grid.Row="1"
                                 Text="{Binding TodayBillQuantity}"
                                 HorizontalAlignment="Left"
-                                Margin="10,0,0,0" 
+                                Margin="20,0,0,0" 
                                 TextWrapping="Wrap" 
                                 VerticalAlignment="Center" 
                                 FontSize="24" 
@@ -819,12 +819,6 @@
                                     Foreground="{DynamicResource Gray1}"
                                     FontSize="14"/>
                             </lvc:CartesianChart.AxisY>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Initialized">
-                                    <i:InvokeCommandAction Command="{Binding InitColumnChart}"
-                                                           CommandParameter="{Binding ElementName=wdMain}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                         </lvc:CartesianChart>
                         <TextBlock
                             Text="{Binding NameChart}"
@@ -1016,7 +1010,6 @@
                                     <ColumnDefinition Width="1.5*" />
                                     <ColumnDefinition Width="1.5*" />
                                     <ColumnDefinition Width="30" />
-                                    <ColumnDefinition Width="10" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     Grid.Column="0"
@@ -1116,7 +1109,7 @@
                             <TextBox 
                                 x:Name="txtSearchSaleService"
                                 materialDesign:HintAssist.Hint="Tìm theo tên dịch vụ" 
-                                FontSize="16" 
+                                FontSize="18" 
                                 MaxLines="1"
                                 Margin="4,0,40,0" 
                                 FontWeight="Medium" 
@@ -1415,7 +1408,6 @@
                                 <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="10"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock
                                 Text="Mã SP" 
@@ -1502,7 +1494,7 @@
                         <TextBox 
                             x:Name="txtSearchSaleGoods"
                             materialDesign:HintAssist.Hint="Tìm theo tên sản phẩm" 
-                            FontSize="16" 
+                            FontSize="18" 
                             MaxLines="1"
                             Margin="12,0,40,0" 
                             FontWeight="Medium" 
@@ -1786,9 +1778,10 @@
                         Margin="0,0,20,0"
                         Width="160"/>
                     <Button
+                        x:Name="btnAddSupplier"
                         Style="{StaticResource GreenButton}"
                         Command="{Binding OpenAddSupplierWindowCommand}"
-                        CommandParameter="{Binding ElementName=wdMain}"
+                        CommandParameter="{Binding ElementName=btnAddSupplier}"
                         Content="Thêm NCC"
                         ToolTip="Thêm nhà cung cấp"
                         Width="160"/>
@@ -2505,6 +2498,7 @@
                             Style="{StaticResource TransperantButton}"
                             Command="{Binding SearchCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
+                            ToolTip="Tìm theo tên nhân viên"
                             Height="30"
                             Width="30"
                             Margin="0,0,10,0"
@@ -2722,8 +2716,8 @@
                             Margin="0,0,20,0" 
                             Width="160"/>
                         <Button 
-                            Content="Nhập hàng"
-                            ToolTip="Nhập hàng"
+                            Content="Nhập kho"
+                            ToolTip="Nhập kho"
                             Style="{StaticResource PrimaryButton}"
                             Command="{Binding OpenImportGoodsWindowCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
@@ -2964,7 +2958,7 @@
                                 VerticalAlignment="Center" 
                                 Margin="20,0,0,0" />
                             <TextBlock 
-                                Text="Mã phiếu nhập hàng: "
+                                Text="Mã phiếu nhập kho: "
                                 FontSize="22"
                                 FontWeight="SemiBold"
                                 Foreground="{StaticResource Primary}"
@@ -3125,7 +3119,6 @@
                                     <ColumnDefinition Width="1.5*"/>
                                     <ColumnDefinition Width="1.2*"/>
                                     <ColumnDefinition Width="1.5*"/>
-                                    <ColumnDefinition Width="10"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Text="Mã SP" 
@@ -3210,7 +3203,6 @@
                             Style="{StaticResource PrimaryButton}"
                             Command="{Binding ExportExcelCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
-                            Background="{StaticResource Primary}"
                             Margin="0,0,20,0"
                             Width="160"/>
                         <Button 
@@ -3227,8 +3219,8 @@
                             Width="160"/>
                         <Button 
                             x:Name="btnImportGoods"
-                            Content="Nhập hàng"
-                            ToolTip="Nhập hàng"
+                            Content="Nhập kho"
+                            ToolTip="Nhập kho"
                             Height="45"
                             FontSize="20"
                             Style="{StaticResource GreenButton}"
@@ -3281,7 +3273,7 @@
                             <TextBox 
                                 x:Name="txtSearchGoods"
                                 materialDesign:HintAssist.Hint="Tìm theo tên sản phẩm"
-                                FontSize="16"
+                                FontSize="18"
                                 BorderThickness="0"
                                 MaxLines="1"
                                 Margin="12,0,40,0"
@@ -3497,9 +3489,19 @@
                 DataContext="{StaticResource BillVM}"
                 Visibility="Collapsed">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="80"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                <Button
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding ExportExcelCommand}"
+                    CommandParameter="{Binding ElementName=wdMain}" 
+                    Content="Xuất excel"
+                    ToolTip="Xuất danh sách hóa đơn"
+                    Width="140"
+                    Height="40"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,20,0"/>
                 <Grid 
                     Grid.Row="1"
                     Margin="20,0">
@@ -3599,7 +3601,6 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="120" />
                                     <ColumnDefinition Width="50" />
-                                    <ColumnDefinition Width="10" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Text="Mã HĐ" 
@@ -3696,7 +3697,6 @@
                             Command="{Binding PrintBillCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
                             Height="35" 
-                            Visibility="Collapsed"
                             HorizontalAlignment="Right" 
                             Margin="0,0,20,0"/>
                         <Grid
@@ -3824,7 +3824,6 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="80"/>
                                     <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="10"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Text="STT" 
@@ -3902,9 +3901,10 @@
                         Width="160"
                         Margin="0,0,20,0"/>
                     <Button
+                        x:Name="btnAddCustomer"
                         Style="{StaticResource GreenButton}"
-                        Command="{Binding OpenAddCustomerWinDowCommand}"
-                        CommandParameter="{Binding ElementName=wdMain}"
+                        Command="{Binding OpenAddCustomerWindowCommand}"
+                        CommandParameter="{Binding ElementName=btnAddCustomer}"
                         Content="Thêm khách hàng"
                         ToolTip="Thêm khách hàng"
                         Padding="0"
@@ -4359,7 +4359,7 @@
                     <Grid>
                         <Grid 
                             x:Name="grdFindService"
-                            Margin="10,0,0,0"
+                            Margin="20,0,0,0"
                             Height="46"
                             Width="400"
                             Style="{StaticResource DropShadow}"
@@ -4372,7 +4372,7 @@
                                 Panel.ZIndex="-1" />
                             <TextBox 
                                 x:Name="txtSearchService"
-                                materialDesign:HintAssist.Hint="Tìm theo tên sản phẩm"
+                                materialDesign:HintAssist.Hint="Tìm theo tên dịch vụ"
                                 FontSize="16"
                                 BorderThickness="0"
                                 MaxLines="1"
@@ -4388,6 +4388,7 @@
                                 Style="{StaticResource TransperantButton}"
                                 Command="{Binding FindServiceCommand}"
                                 CommandParameter="{Binding ElementName=wdMain}"
+                                ToolTip="Tìm theo tên dịch vụ"
                                 Height="30"
                                 Width="30"
                                 Margin="0,0,10,0"
@@ -4580,15 +4581,19 @@
                 DataContext="{StaticResource BillServiceVM}"
                 Margin="10,0,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="80"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <!--<i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Loaded">
-                        <i:InvokeCommandAction Command="{Binding LoadServiceCommand}"
-                                               CommandParameter="{Binding ElementName=wdMain}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>-->
+                <Button
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding ExportExcelCommand}"
+                    CommandParameter="{Binding ElementName=wdMain}" 
+                    Content="Xuất excel"
+                    ToolTip="Xuất danh sách phiếu dịch vụ"
+                    Width="140"
+                    Height="40"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,20,0"/>
                 <Grid
                     Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -4676,7 +4681,6 @@
                                     <ColumnDefinition Width="100" />
                                     <ColumnDefinition Width="100" />
                                     <ColumnDefinition Width="30" />
-                                    <ColumnDefinition Width="10" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     Grid.Column="0"
@@ -4917,7 +4921,6 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="50" />
                                     <ColumnDefinition Width="30" />
-                                    <ColumnDefinition Width="10" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     Text="STT"

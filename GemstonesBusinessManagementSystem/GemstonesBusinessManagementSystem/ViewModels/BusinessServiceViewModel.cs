@@ -245,6 +245,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         UpdateMembership(ConvertToID(mainWindow.txbIdCustomer.Text), totalSpending + Convert.ToInt64(totalPaidMoney));
                         CustomerViewModel customerVM = (CustomerViewModel)mainWindow.grdCustomer.DataContext;
                         customerVM.LoadCustomerToView(mainWindow, 0);
+                        
                         mainWindow.stkPickedService.Children.Clear();
                         mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService + 1);
                         TotalMoney = TotalPaidMoney = "0";
@@ -359,7 +360,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     billServiceTemplate.stkBillServiceInfo.Children.Clear();
                 }
             }
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, mainWindow.txbIdBillService.Text);
             CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         public void OpenPickCustomerWd(MainWindow mainWindow)

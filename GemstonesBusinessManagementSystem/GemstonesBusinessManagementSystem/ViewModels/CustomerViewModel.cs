@@ -54,7 +54,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand GoToNextPageCommandCus { get; set; }
         public ICommand GoToPreviousPageCommandCus { get; set; }
         public ICommand FindCustomerCommand { get; set; }
-        public ICommand OpenAddCustomerWinDowCommand { get; set; }
+        public ICommand OpenAddCustomerWindowCommand { get; set; }
         public ICommand SortCustomerCommand { get; set; }
         public ICommand CountCustomerCommand { get; set; }
         public ICommand FilterCommand { get; set; }
@@ -102,7 +102,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public CustomerViewModel()
         {
             //pickCustomer
-            LoadPickCustomerCommand = new RelayCommand<Window>(p => true, p => LoadPickCustomerToView(p, 0));
+            LoadPickCustomerCommand = new RelayCommand<PickCustomerWindow>(p => true, p => LoadPickCustomerToView(p, 0));
             ConfirmCommand = new RelayCommand<PickCustomerWindow>(p => true, p => ConfirmCustomer(p));
             PickCustomerCommand = new RelayCommand<PickCustomerControl>(p => true, p => PickCustomer(p));
             ClosingWdCommand = new RelayCommand<PickCustomerWindow>((p) => true, (p) => CloseWindow(p));
@@ -114,7 +114,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             GoToNextPageCommandCus = new RelayCommand<MainWindow>(p => true, p => GoToNextPage(p, ++currentPage));
             GoToPreviousPageCommandCus = new RelayCommand<MainWindow>(p => true, p => GoToPreviousPage(p, --currentPage));
             FindCustomerCommand = new RelayCommand<MainWindow>(p => true, p => FindCustomer(p));
-            OpenAddCustomerWinDowCommand = new RelayCommand<MainWindow>(p => true, p => OpenAddCustomerWindow(p));
+            OpenAddCustomerWindowCommand = new RelayCommand<Button>(p => true, p => OpenAddCustomerWindow(p));
             ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
             SortCustomerCommand = new RelayCommand<MainWindow>(p => true, p => SortCustomer(p));
             FilterCommand = new RelayCommand<MainWindow>(p => true, p => Filter(p));
@@ -165,9 +165,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             pickCustomerWindow.txbSpending.Text = pickCustomerControl.txbSpending.Text;
             pickCustomerControl.Focus();
         }
-        public void LoadPickCustomerToView(Window window, int currentPage)
+        public void LoadPickCustomerToView(PickCustomerWindow window, int currentPage)
         {
-            this.pickCustomerWindow = window as PickCustomerWindow;
+            customerList = CustomerDAL.Instance.ConvertDBToList();
+            this.pickCustomerWindow = window;
             this.pickCustomerWindow.stkCustomer.Children.Clear();
             int start = 0, end = 0;
             this.currentPage = currentPage;
@@ -323,7 +324,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.stkMembership.Children.Add(control);
             }
         }
-        public void OpenAddCustomerWindow(MainWindow mainWindow)
+        public void OpenAddCustomerWindow(Button btn)
         {
             AddCustomerWindow addCustomerWindow = new AddCustomerWindow();
             addCustomerWindow.txtId.Text = AddPrefix("KH", (CustomerDAL.Instance.GetMaxId() + 1));
@@ -537,6 +538,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
+                        LoadPickCustomerToView(pickCustomerWindow, 0);
                         CustomMessageBox.Show("Thêm khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     }
                 }

@@ -233,12 +233,10 @@
             IsDefault="True"
             Command="{Binding SignUpCommand}"
             CommandParameter="{Binding ElementName=wdSignUp}"
-            Background="{StaticResource Primary}"
-            FocusVisualStyle="{x:Null}"
+            Style="{StaticResource PrimaryButton}"
             Content="Đăng ký"
             FontSize="20"
             Height="40"
-            materialDesign:ButtonAssist.CornerRadius="4"
             ToolTip="Đăng ký" 
             Margin="60,0,60,80" 
             VerticalAlignment="Bottom">

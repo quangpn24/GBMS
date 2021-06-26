@@ -181,7 +181,7 @@
             Margin="0,0,34,30"
             VerticalAlignment="Bottom"
             Height="40"
-            Width="220"
+            Width="240"
             HorizontalAlignment="Right">
             <Button 
                 x:Name="btnSave"

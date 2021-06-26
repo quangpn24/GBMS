@@ -60,8 +60,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 return;
             }
-            List<Account> accounts = AccountDAL.Instance.ConvertDBToList();
-
             if (string.IsNullOrEmpty(parameter.txtUsername.Text))
             {
                 CustomMessageBox.Show("Vui lòng nhập tên đăng nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -74,6 +72,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 parameter.txtPassword.Focus();
                 return;
             }
+
+            List<Account> accounts = AccountDAL.Instance.ConvertDBToList();
             string username = parameter.txtUsername.Text;
             string password = MD5Hash(parameter.txtPassword.Password);
             Account acc = new Account();

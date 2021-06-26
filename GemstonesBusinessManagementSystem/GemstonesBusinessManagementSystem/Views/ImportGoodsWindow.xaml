@@ -10,7 +10,7 @@
     xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls" 
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
     mc:Ignorable="d"
-    Title="Nhập hàng"
+    Title="Nhập kho"
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource ImportGoodsVM}"
     x:Name="wdImportGoods"
@@ -181,7 +181,6 @@
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="1.7*"/>
                         <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock 
                         Grid.Column="0"
@@ -356,6 +355,19 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </Grid>
+                <Button 
+                    x:Name="btnAddSupplier"
+                    DataContext="{StaticResource SupplierVM}"
+                    Style="{StaticResource GreenButton}"
+                    Command="{Binding OpenAddSupplierWindowCommand}"
+                    CommandParameter="{Binding ElementName=btnAddSupplier}"
+                    Height="40"
+                    BorderThickness="2"
+                    Margin="0,20,0,0" 
+                    FontSize="20" 
+                    Content="Thêm nhà cung cấp"
+                    ToolTip="Thêm nhà cung cấp"
+                    VerticalAlignment="Top" />
             </StackPanel>
             <StackPanel
                 Grid.Row="1" 

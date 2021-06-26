@@ -133,7 +133,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
 
