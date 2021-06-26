@@ -1,27 +1,26 @@
-﻿<Window x:Class="GemstonesBusinessManagementSystem.Views.AddGoodsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
-        mc:Ignorable="d"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-        Title="Thêm mặt hàng" 
-        x:Name="wdAddGoods"
-        Height="440" 
-        Width="700" 
-        DataContext="{StaticResource GoodsVM}"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
-    <Grid
-        Margin="0"
-        Height="400">
+﻿<Window 
+    x:Class="GemstonesBusinessManagementSystem.Views.AddGoodsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
+    mc:Ignorable="d"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    Title="Thêm mặt hàng" 
+    x:Name="wdAddGoods"
+    Height="400" 
+    Width="700" 
+    DataContext="{StaticResource GoodsVM}"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="CanMinimize">
+    <Grid>
         <Grid
             x:Name="grdSelectImg"
-            Margin="50,50,0,0" 
+            Margin="50,30,0,0" 
             VerticalAlignment="Top"
             Width="150"
             Height="150" 
@@ -31,105 +30,66 @@
                 Source="/Resources/Images/goods.png"/>
             <Button 
                 x:Name="btnSelectImage"
+                Style="{StaticResource PrimaryButton}"
                 Command="{Binding SelectImageCommand}"
                 CommandParameter="{Binding ElementName=imgGoods}"
                 Height="35" 
                 Width="100" 
                 Content="Chọn ảnh" 
                 FontSize="16"
-                FontWeight="SemiBold" 
                 ToolTip="Chọn ảnh"
                 Margin="0,0,0,12" 
                 HorizontalAlignment="Center" 
-                VerticalAlignment="Bottom"
-                FocusVisualStyle="{x:Null}"
-                Padding="0" 
-                Background="{StaticResource Primary}"
-                Foreground="{StaticResource Secondary}"/>
+                VerticalAlignment="Bottom"/>
         </Grid>
-        <Grid 
+        <StackPanel 
             x:Name="grdInfo"
-            HorizontalAlignment="Left"
-            Height="220"
-            Margin="240,40,0,0"
+            HorizontalAlignment="Right"
+            Margin="0,30,30,0"
             VerticalAlignment="Top" 
             Width="420">
             <Grid 
                 Margin="0"
-                VerticalAlignment="Top"  
-                Width="420" 
+                VerticalAlignment="Top" 
                 Height="40">
                 <Label
                     Content="Mã hàng hóa" 
-                    HorizontalAlignment="Left"
-                    FontSize="18" 
-                    FontWeight="SemiBold" 
-                    Height="32" 
-                    Margin="0" 
-                    VerticalAlignment="Center"/>
+                    Style="{StaticResource LabelText}"/>
                 <Rectangle
                     Width="230" 
                     Height="40"
-                    RadiusY="6"
-                    RadiusX="6" 
-                    Margin="0"
+                    RadiusY="4"
+                    RadiusX="4"
                     HorizontalAlignment="Right"
                     Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtIdGoods"
+                    Style="{StaticResource TextBox}"
                     IsReadOnly="True"
                     IsTabStop="False"
                     Cursor="Arrow"
-                    materialDesign:HintAssist.Hint="Mã tự động"
-                    HorizontalAlignment="Right"  
-                    Width="210" 
-                    FontSize="14" 
-                    BorderThickness="0" 
-                    MaxLines="1"
-                    Padding="0" 
-                    Margin="0,0,10,0" 
-                    Height="40" 
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center" 
-                    VerticalAlignment="Center" 
-                    FontWeight="SemiBold" />
+                    materialDesign:HintAssist.Hint="Mã tự động"/>
             </Grid>
             <Grid 
-                Margin="0,60,0,0" 
+                Margin="0,20,0,0" 
                 VerticalAlignment="Top" 
-                Width="420" 
                 Height="40">
                 <Label 
                     Content="Tên hàng hóa"
-                    HorizontalAlignment="Left"
-                    FontSize="18"
-                    FontWeight="SemiBold" 
-                    Height="32" 
-                    Margin="0" 
-                    VerticalAlignment="Center"/>
+                    Style="{StaticResource LabelText}"  />
                 <Rectangle 
                     HorizontalAlignment="Right" 
                     Height="40" 
                     Width="230" 
-                    RadiusY="6" 
-                    RadiusX="6"
-                    Margin="0" Stroke="{StaticResource Gray2}"/>
+                    RadiusY="4" 
+                    RadiusX="4"
+                    Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtName"
-                    Cursor="IBeam"
+                    Style="{StaticResource TextBox}"
                     materialDesign:HintAssist.Hint="Tên hàng"
-                    HorizontalAlignment="Right"
-                    Height="40"  
-                    Width="210" 
-                    FontSize="14" 
-                    BorderThickness="0" 
-                    MaxLines="1"
-                    Padding="0" 
-                    Margin="0,0,10,0" 
                     Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                    HorizontalContentAlignment="Left" 
-                    VerticalContentAlignment="Center"
-                    FontWeight="SemiBold" TabIndex="0">
+                    TabIndex="0">
                     <TextBox.Text>
                         <Binding
                             Path="Name"
@@ -146,25 +106,19 @@
                 </TextBox>
             </Grid>
             <Grid 
-                Margin="0,120,0,0"
+                Margin="0,20,0,0"
                 VerticalAlignment="Top" 
-                Width="420" 
                 Height="40">
                 <Label 
                     Content="Loại sản phẩm"
-                    HorizontalAlignment="Left"  
-                    FontSize="18" 
-                    FontWeight="SemiBold" 
-                    Height="32" 
-                    Margin="0" 
-                    VerticalAlignment="Center"/>
+                    Style="{StaticResource LabelText}"/>
                 <Rectangle 
                     HorizontalAlignment="Right" 
                     Height="40"
                     Width="230"
-                    RadiusY="6" 
-                    RadiusX="6" 
-                    Margin="0" Stroke="{StaticResource Gray2}" />
+                    RadiusY="4" 
+                    RadiusX="4" 
+                    Stroke="{StaticResource Gray2}" />
                 <ComboBox
                     x:Name="cboGoodsType"
                     materialDesign:HintAssist.Hint="Chọn loại sản phẩm"
@@ -172,7 +126,6 @@
                     FontSize="14" 
                     Width="210"
                     BorderThickness="0"
-                    Padding="0" 
                     Margin="0,0,10,0" 
                     HorizontalAlignment="Right"
                     ItemsSource="{Binding ItemSourceGoodsType}"
@@ -180,48 +133,32 @@
                     DisplayMemberPath="Name"
                     VerticalContentAlignment="Center" 
                     HorizontalContentAlignment="Left"
-                    FontWeight="SemiBold" 
+                    Foreground="{StaticResource Black2}"
+                    FontWeight="SemiBold"
                     TabIndex="1">
                 </ComboBox>
             </Grid>
             <Grid 
-                Margin="0,180,0,0" 
+                Margin="0,20,0,0" 
                 VerticalAlignment="Top" 
-                Width="420" 
                 Height="40">
                 <Label 
                     Content="Giá nhập"
-                    HorizontalAlignment="Left"
-                    FontSize="18"
-                    FontWeight="SemiBold" 
-                    Height="32" 
-                    Margin="0" 
-                    VerticalAlignment="Center"/>
+                    Style="{StaticResource LabelText}"/>
                 <Rectangle 
                     HorizontalAlignment="Right" 
                     Height="40" 
                     Width="230" 
-                    RadiusY="6" 
-                    RadiusX="6"
-                    Margin="0"
+                    RadiusY="4" 
+                    RadiusX="4"
                     Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtImportPrice"
-                    Cursor="IBeam"
+                    Style="{StaticResource TextBox}"
                     materialDesign:HintAssist.Hint="Giá nhập"
-                    HorizontalAlignment="Right"
-                    Height="40"  
-                    Width="210" 
-                    FontSize="14" 
-                    BorderThickness="0" 
-                    MaxLines="1"
                     MaxLength="11"
-                    Padding="0" 
-                    Margin="0,0,10,0" 
-                    HorizontalContentAlignment="Left" 
                     Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                    VerticalContentAlignment="Center"
-                    FontWeight="SemiBold"
+                    Foreground="{StaticResource Black2}"
                     TabIndex="2">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewTextInput">
@@ -248,56 +185,48 @@
                     </TextBox.Text>
                 </TextBox>
             </Grid>
-        </Grid>
-        <Grid 
-            Margin="0,310,34,0" 
-            VerticalAlignment="Top"  
-            Height="40" 
-            Width="220" 
-            HorizontalAlignment="Right">
-            <Button
-                x:Name="btnSave"
-                Command="{Binding SaveCommand}"
-                CommandParameter="{Binding ElementName=wdAddGoods}"
-                IsDefault="True"
+            <Grid 
+                Margin="0,40,0,0" 
+                VerticalAlignment="Top"  
                 Height="40" 
-                Width="100"
-                ToolTip="Lưu thông tin" 
-                Margin="0" 
-                HorizontalAlignment="Left"
-                FocusVisualStyle="{x:Null}"
-                Content="Lưu" 
-                FontSize="18" 
-                Style="{StaticResource GreenButton}"
-                VerticalAlignment="Center"
-                Padding="0"
-                Background="{StaticResource Success}" 
-                IsTabStop="False">
-                <Button.IsEnabled>
-                    <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
-                                  Mode="TwoWay">
-                        <Binding ElementName="txtName"
-                                 Path="(Validation.HasError)" />
-                        <Binding ElementName="txtImportPrice"
-                                 Path="(Validation.HasError)" />
-                    </MultiBinding>
-                </Button.IsEnabled>
-            </Button>
-            <Button
-                x:Name="btnCancel"
-                Style="{StaticResource CancelButton}"
-                Command="{Binding ExitCommand}"
-                CommandParameter="{Binding ElementName=wdAddGoods}"
-                Height="40"
-                Width="100"
-                ToolTip="Thoát"
-                Margin="0"
-                HorizontalAlignment="Right"
-                FocusVisualStyle="{x:Null}"
-                Content="Bỏ qua"
-                FontSize="18"
-                Padding="0" 
-                IsTabStop="False"/>
-        </Grid>
+                Width="240" 
+                HorizontalAlignment="Right">
+                <Button
+                    x:Name="btnSave"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding ElementName=wdAddGoods}"
+                    Style="{StaticResource GreenButton}"
+                    IsDefault="True"
+                    Height="40" 
+                    Width="100"
+                    ToolTip="Lưu thông tin" 
+                    HorizontalAlignment="Left"
+                    Content="Lưu" 
+                    VerticalAlignment="Center"
+                    IsTabStop="False">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                      Mode="TwoWay">
+                            <Binding ElementName="txtName"
+                                     Path="(Validation.HasError)" />
+                            <Binding ElementName="txtImportPrice"
+                                     Path="(Validation.HasError)" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
+                <Button
+                    x:Name="btnCancel"
+                    Command="{Binding ExitCommand}"
+                    CommandParameter="{Binding ElementName=wdAddGoods}"
+                    Style="{StaticResource CancelButton}"
+                    Height="40"
+                    Width="100"
+                    ToolTip="Thoát"
+                    HorizontalAlignment="Right"
+                    Content="Thoát"
+                    FontSize="18"
+                    VerticalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>

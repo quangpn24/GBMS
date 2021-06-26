@@ -11,6 +11,7 @@
     DataContext="{StaticResource BillServiceVM}"
     Style="{StaticResource MyUCHoverStyle}"
     Cursor="Hand"
+    Height="45"
     mc:Ignorable="d"
     Focusable="True">
     <i:Interaction.Triggers>
@@ -19,101 +20,61 @@
                                    CommandParameter="{Binding ElementName=ucBillService}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid 
-        x:Name="grdMain"
-        Grid.Row="1"
-        Height="50"
-        VerticalAlignment="Top"
-        Margin="0">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="1.5*" />
-            <ColumnDefinition Width="1.5*" />
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="7"           
+            Fill="{StaticResource Light}" 
+            Height="2"
+            VerticalAlignment="Bottom"/>
         <TextBlock 
             x:Name="txbId"
-            Grid.Column="0"
-            HorizontalAlignment="Center"
-            Margin="0"
-            TextWrapping="Wrap"
-            Text="Mã PDV"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Foreground="#FF4F4F4F" />
+            Style="{StaticResource Text}"
+            Grid.Column="0"/>
         <TextBlock 
             x:Name="txbNameCustomer"
+            Style="{StaticResource Text}"
             Grid.Column="1"
             HorizontalAlignment="Left"
-            Margin="20,0,0,0"
-            TextWrapping="Wrap"
-            Text="Khách hàng"
-            Padding="10,0,0,0"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Foreground="#FF4F4F4F" />
-        <TextBlock x:Name="txbIdCustomer"
-                   Visibility="Hidden" />
+            MaxWidth="160"
+            TextTrimming="CharacterEllipsis"
+            Margin="15,0,0,0"/>
+        <TextBlock 
+            x:Name="txbIdCustomer"
+            Visibility="Hidden" />
         <TextBlock
             x:Name="txbTotal"
-            Grid.Column="2"
-            HorizontalAlignment="Center"
-            Margin="0"
-            TextWrapping="Wrap"
-            Text="Tổng tiền"
-            Padding="10,0,0,0"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="SemiBold"
-            Foreground="#FF4F4F4F" />
+            Style="{StaticResource Text}"
+            Grid.Column="2" />
         <TextBlock 
             x:Name="txbRest"
-            Grid.Column="3"
-            HorizontalAlignment="Center"
-            Margin="0"
-            Foreground="#FF4F4F4F"
-            TextWrapping="Wrap"
-            Text="Còn lại"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="SemiBold" />
+            Style="{StaticResource Text}"
+            Grid.Column="3"/>
         <TextBlock 
             x:Name="txbStatus"
-            Grid.Column="4"
-            HorizontalAlignment="Center"
-            Margin="0"
-            TextWrapping="Wrap"
-            Foreground="#FF4F4F4F"
-            Text="Trạng thái"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="SemiBold" />
+            Style="{StaticResource Text}"
+            Grid.Column="4"/>
         <Button 
             x:Name="btnDeleteBillService"
             Grid.Column="5"
-                Command="{Binding DeleteBillServiceCommand}"
+            Command="{Binding DeleteBillServiceCommand}"
             CommandParameter="{Binding ElementName=ucBillService}"
-            Style="{StaticResource MaterialDesignRaisedButton}"
+            Style="{StaticResource TransperantButton}"
             ToolTip="Xóa phiếu dịch vụ"
             Height="30"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            Foreground="{StaticResource Error}"
-            VerticalAlignment="Center"
-            FocusVisualStyle="{x:Null}"
-            HorizontalAlignment="Right"
-            Padding="0"
-            Margin="0">
-            <materialDesign:PackIcon Kind="DeleteOutline"
-                                     Height="Auto"
-                                     Width="Auto"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch" />
+            Width="30"
+            Foreground="{StaticResource Error}">
+            <materialDesign:PackIcon 
+                Kind="DeleteOutline"
+                Height="24"
+                Width="24"/>
         </Button>
-
     </Grid>
 </UserControl>

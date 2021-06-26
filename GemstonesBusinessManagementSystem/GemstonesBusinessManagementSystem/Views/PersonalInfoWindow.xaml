@@ -16,333 +16,270 @@
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource SettingVM}"
     Width="700">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid  
-                x:Name="grdSelectImage"
-                Margin="40,40,0,0" 
-                VerticalAlignment="Top"
-                Width="150"
-                Height="160" 
-                HorizontalAlignment="Left">
+    <Grid>
+        <Grid  
+            x:Name="grdSelectImage"
+            Margin="40,40,0,0" 
+            VerticalAlignment="Top"
+            Width="150"
+            Height="160" 
+            HorizontalAlignment="Left">
+            <Rectangle 
+                x:Name="recImage"
+                StrokeDashArray="4 2" 
+                Stroke="{StaticResource Primary}" 
+                StrokeThickness="4" 
+                RadiusX="4" 
+                RadiusY="4"/>
+            <Button 
+                x:Name="btnSelectImage"
+                Style="{StaticResource PrimaryButton}"
+                Height="35" 
+                Width="110" 
+                Command="{Binding SelectImageCommand}"
+                CommandParameter="{Binding ElementName=grdSelectImage}"
+                ToolTip="Chọn ảnh" 
+                Content="Chọn ảnh"
+                FontSize="16"
+                TabIndex="6"
+                Margin="0,0,0,12" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Bottom"/>
+            <materialDesign:PackIcon  
+                Kind="FileImageOutline" 
+                Foreground="{StaticResource Primary}"
+                Width="64" 
+                Height="54"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"  
+                Margin="0,20,0,0"/>
+        </Grid>
+        <StackPanel 
+            HorizontalAlignment="Right"
+            Margin="0,40,30,20" VerticalAlignment="Top">
+            <Grid 
+                Margin="0" 
+                VerticalAlignment="Top" 
+                Width="420" 
+                Height="40">
+                <Label 
+                    Content="Họ tên"
+                    Style="{StaticResource LabelText}"/>
                 <Rectangle 
-                    x:Name="recImage"
-                    StrokeDashArray="4 2" 
-                    Stroke="{StaticResource Primary}" 
-                    StrokeThickness="4" 
-                    RadiusX="8" 
-                    RadiusY="8"/>
-                <Button 
-                    x:Name="btnSelectImage"
-                    Style="{StaticResource PrimaryButton}"
-                    Height="35" 
-                    Width="110" 
-                    Command="{Binding SelectImageCommand}"
-                    CommandParameter="{Binding ElementName=grdSelectImage}"
-                    ToolTip="Chọn ảnh" 
-                    Content="Chọn ảnh"
-                    FontSize="16"
-                    TabIndex="8"
-                    Margin="0,0,0,12" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Bottom"/>
-                <materialDesign:PackIcon  
-                    Kind="FileImageOutline" 
-                    Foreground="{StaticResource Primary}"
-                    Width="64" 
-                    Height="54"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"  
-                    Margin="0,20,0,0"/>
+                    HorizontalAlignment="Right" 
+                    Height="40" 
+                    Width="230" 
+                    RadiusY="4" 
+                    RadiusX="4"
+                    Stroke="{StaticResource Gray2}" />
+                <TextBox 
+                    x:Name="txtName"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                    Style="{StaticResource TextBox}"
+                    materialDesign:HintAssist.Hint="Họ và tên"
+                    TabIndex="0">
+                    <TextBox.Text>
+                        <Binding 
+                            Path="Name"
+                            Mode="OneWayToSource"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập họ và tên!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Grid>
+            <Grid 
+                Margin="0,20,0,0"
+                VerticalAlignment="Top"
+                Width="420" 
+                Height="40">
+                <Label 
+                    Content="Giới tính"
+                    Style="{StaticResource LabelText}"/>
+                <RadioButton
+                    x:Name="rdoMale"
+                    Style="{StaticResource MaterialDesignLightRadioButton}"
+                    IsChecked="True"
+                    Content="Nam" 
+                    Height="24"
+                    Width="100"
+                    Margin="190,0,0,0" 
+                    Padding="20,0,0,0"
+                    FontSize="14"
+                    FontWeight="Bold" 
+                    TabIndex="1"
+                    Foreground="{StaticResource Black2}"
+                    BorderBrush="{StaticResource Primary}" 
+                    Background="{StaticResource Primary}" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center"/>
+                <RadioButton
+                    x:Name="rdoFemale"
+                    Style="{StaticResource MaterialDesignLightRadioButton}"
+                    Content="Nữ" 
+                    Margin="290,0,0,0" 
+                    Padding="20,0,0,0" 
+                    FontSize="14" 
+                    FontWeight="Bold"
+                    Height="24"
+                    Width="101" 
+                    TabIndex="2"
+                    Foreground="{StaticResource Black2}"
+                    BorderBrush="{StaticResource Primary}" 
+                    Background="{StaticResource Primary}" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Left"/>
+            </Grid>
+            <Grid 
+                Margin="0,20,0,0" 
+                VerticalAlignment="Top" 
+                Width="420" 
+                Height="40">
+                <Label 
+                    Content="Ngày sinh" 
+                    Style="{StaticResource LabelText}"/>
+                <Rectangle 
+                    Height="40" 
+                    Width="230"
+                    RadiusY="4"
+                    RadiusX="4" 
+                    Stroke="{StaticResource Gray2}" 
+                    HorizontalAlignment="Right"/>
+                <DatePicker 
+                    x:Name="dpBirthDate"
+                    Text="{Binding BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,11,0" 
+                    Padding="0"
+                    materialDesign:HintAssist.Hint="Ngày sinh" 
+                    Width="210" 
+                    Height="40"
+                    BorderThickness="0" 
+                    TabIndex="3"
+                    FontSize="14"
+                    Foreground="{StaticResource Gray1}" 
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center">
+                </DatePicker>
+            </Grid>
+            <Grid 
+                Margin="0,20,0,0" 
+                VerticalAlignment="Top"
+                Width="420">
+                <Label 
+                    Content="Địa chỉ" 
+                    Style="{StaticResource LabelText}"/>
+                <Rectangle 
+                    HorizontalAlignment="Right" 
+                    MinHeight="40" 
+                    Width="230" 
+                    RadiusY="4"
+                    RadiusX="4" 
+                    Stroke="{StaticResource Gray2}" />
+                <TextBox
+                    x:Name="txtAddress"
+                    materialDesign:HintAssist.Hint="Địa chỉ" 
+                    Style="{StaticResource TextBox}"
+                    TabIndex="4"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+                    <TextBox.Text>
+                        <Binding
+                            Path= "UserAddress"
+                            Mode="OneWayToSource"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Grid>
+            <Grid 
+                Margin="0,20,0,0" 
+                VerticalAlignment="Top" 
+                Width="420" 
+                Height="40">
+                <Label 
+                    Content="Số điện thoại" 
+                    Style="{StaticResource LabelText}"/>
+                <Rectangle
+                    HorizontalAlignment="Right" 
+                    Height="40"  
+                    Width="230" 
+                    RadiusY="4" 
+                    RadiusX="4" 
+                    Stroke="{StaticResource Gray2}" />
+                <TextBox 
+                    x:Name="txtPhoneNumber"
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                    Style="{StaticResource TextBox}"
+                    materialDesign:HintAssist.Hint="Số điện thoại" 
+                    MaxLength="11"
+                    TabIndex="5">
+                    <TextBox.Text>
+                        <Binding 
+                            Path="UserPhoneNumber"
+                            Mode="OneWayToSource"
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewTextInput">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                    MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewKeyDown">
+                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                    MethodName="NumberValidationTextBox" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
             </Grid>
             <StackPanel 
+                Margin="0,30,0,0" 
+                VerticalAlignment="Bottom"  
+                Orientation="Horizontal"
                 HorizontalAlignment="Right"
-                Margin="0,40,30,20" VerticalAlignment="Top">
-                <Grid 
-                    Margin="0" 
-                    VerticalAlignment="Top" 
-                    Width="420" 
-                    Height="40">
-                    <Label 
-                        Content="Họ tên"
-                        HorizontalAlignment="Left"
-                        FontSize="18"
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
-                    <Rectangle 
-                        HorizontalAlignment="Right" 
-                        Height="40" 
-                        Width="230" 
-                        RadiusY="6" 
-                        RadiusX="6"
-                        Stroke="{StaticResource Gray2}" />
-                    <TextBox 
-                        x:Name="txtName"
-                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                        materialDesign:HintAssist.Hint="Họ và tên"
-                        HorizontalAlignment="Right"
-                        Cursor="IBeam"
-                        Height="40" 
-                        Width="210" 
-                        FontSize="14" 
-                        BorderThickness="0" 
-                        MaxLines="1"
-                        TabIndex="0"
-                        Foreground="{StaticResource Gray1}" 
-                        Margin="0,0,10,0" 
-                        HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center">
-                        <TextBox.Text>
-                            <Binding 
-                                Path="Name"
-                                Mode="OneWayToSource"
-                                UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập họ và tên!" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                </Grid>
-                <Grid 
-                    Margin="0,20,0,0"
-                    VerticalAlignment="Top"
-                    Width="420" 
-                    Height="40">
-                    <Label 
-                        Content="Giới tính"
-                        HorizontalAlignment="Left" 
-                        FontSize="18" 
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}"
-                        Height="32" 
-                        VerticalAlignment="Center"/>
-                    <RadioButton
-                        x:Name="rdoMale"
-                        Style="{StaticResource MaterialDesignLightRadioButton}"
-                        IsChecked="True"
-                        Content="Nam" 
-                        Height="24"
-                        Width="101"
-                        Margin="190,0,0,0" 
-                        Padding="20,0,0,0"
-                        FontSize="14"
-                        FontWeight="Bold" 
-                        TabIndex="2"
-                        BorderBrush="{StaticResource Primary}" 
-                        Background="{StaticResource Primary}" 
-                        HorizontalAlignment="Left" 
-                        VerticalAlignment="Center"/>
-                    <RadioButton
-                        x:Name="rdoFemale"
-                        Style="{StaticResource MaterialDesignLightRadioButton}"
-                        Content="Nữ" 
-                        Margin="290,0,0,0" 
-                        Padding="20,0,0,0" 
-                        FontSize="14" 
-                        FontWeight="Bold"
-                        Height="24"
-                        Width="101" 
-                        TabIndex="3"
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Left"/>
-                </Grid>
-                <Grid 
-                    Margin="0,20,0,0" 
-                    VerticalAlignment="Top" 
-                    Width="420" 
-                    Height="40">
-                    <Label 
-                        Content="Ngày sinh" 
-                        HorizontalAlignment="Left" 
-                        FontSize="18"
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
-                    <Rectangle 
-                        Height="40" 
-                        Width="230"
-                        RadiusY="6"
-                        RadiusX="6" 
-                        Stroke="{StaticResource Gray2}" 
-                        HorizontalAlignment="Right"/>
-                    <DatePicker 
-                        x:Name="dpBirthDate"
-                        Text="{Binding BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        HorizontalAlignment="Right"
-                        Margin="0,0,11,0" 
-                        Padding="0"
-                        materialDesign:HintAssist.Hint="Ngày sinh" 
-                        Width="210" 
-                        Height="40"
-                        BorderThickness="0" 
-                        TabIndex="4"
-                        FontSize="14"
-                        Foreground="{StaticResource Gray1}" 
-                        HorizontalContentAlignment="Left"
-                        VerticalContentAlignment="Center">
-                    </DatePicker>
-                </Grid>
-                <Grid 
-                    Margin="0,20,0,0" 
-                    VerticalAlignment="Top"
-                    Width="420">
-                    <Label 
-                        Content="Địa chỉ" 
-                        HorizontalAlignment="Left"
-                        FontSize="18" 
-                        FontWeight="SemiBold"
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
-                    <Rectangle 
-                        HorizontalAlignment="Right" 
-                        MinHeight="40" 
-                        Width="230" 
-                        RadiusY="6"
-                        RadiusX="6" 
-                        Stroke="{StaticResource Gray2}" />
-                    <TextBox
-                        x:Name="txtAddress"
-                        materialDesign:HintAssist.Hint="Địa chỉ" 
-                        HorizontalAlignment="Right" 
-                        Width="210"
-                        MinHeight="40"
-                        FontSize="14" 
-                        TextWrapping="Wrap"
-                        BorderThickness="0" 
-                        MaxLines="1" 
-                        TabIndex="6"
-                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                        Foreground="{StaticResource Gray1}"
-                        Padding="0"  
-                        Margin="0,0,10,0" 
-                        Cursor="IBeam"
-                        VerticalAlignment="Center"
-                        HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center">
-                        <TextBox.Text>
-                            <Binding
-                                Path= "UserAddress"
-                                Mode="OneWayToSource"
-                                UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập địa chỉ!" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                </Grid>
-                <Grid 
-                    Margin="0,20,0,0" 
-                    VerticalAlignment="Top" 
-                    Width="420" 
-                    Height="40">
-                    <Label 
-                        Content="Số điện thoại" 
-                        HorizontalAlignment="Left" 
-                        FontSize="18" 
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
-                    <Rectangle
-                        HorizontalAlignment="Right" 
-                        Height="40"  
-                        Width="230" 
-                        RadiusY="6" 
-                        RadiusX="6" 
-                        Stroke="{StaticResource Gray2}" />
-                    <TextBox 
-                        x:Name="txtPhoneNumber"
-                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                        materialDesign:HintAssist.Hint="Số điện thoại" 
-                        HorizontalAlignment="Right" 
-                        MaxLength="11"
-                        Height="40"  
-                        Width="210" 
-                        FontSize="14"
-                        BorderThickness="0"
-                        MaxLines="1" 
-                        TabIndex="7"
-                        Foreground="{StaticResource Gray1}"
-                        Padding="0" 
-                        Margin="0,0,10,0" 
-                        Cursor="IBeam"
-                        VerticalAlignment="Center"
-                        HorizontalContentAlignment="Left"
-                        VerticalContentAlignment="Center">
-                        <TextBox.Text>
-                            <Binding 
-                                Path="UserPhoneNumber"
-                                Mode="OneWayToSource"
-                                UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <vd:NotNullValidation ErrorMessage="Vui lòng nhập số điện thoại!" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="PreviewTextInput">
-                                <ei:CallMethodAction TargetObject="{Binding }"
-                                                     MethodName="NumberValidationTextBox" />
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="PreviewKeyDown">
-                                <ei:CallMethodAction TargetObject="{Binding }"
-                                                     MethodName="NumberValidationTextBox" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBox>
-                </Grid>
-                <StackPanel 
-                    Margin="0,30,0,0" 
-                    VerticalAlignment="Bottom"  
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    FlowDirection="RightToLeft">
-                    <Button
-                        x:Name="btnCancel"
-                        Style="{StaticResource CancelButton}"
-                        Height="40"
-                        Content="Thoát"
-                        Command="{Binding ExitCommand}"
-                        CommandParameter="{Binding ElementName=wdUserInfo}"
-                        Width="100"
-                        ToolTip="Thoát"
-                        TabIndex="10"
-                        materialDesign:ButtonAssist.CornerRadius="2"
-                        HorizontalAlignment="Right" 
-                        Margin="0,0,20,0"/>
-                    <Button
-                        x:Name="btnSave"
-                        IsDefault="True"
-                        Style="{StaticResource GreenButton}"
-                        Command="{Binding UpdateUserInfoCommand}"
-                        CommandParameter="{Binding ElementName=wdUserInfo}"
-                        Height="40" 
-                        Width="120"
-                        TabIndex="9"
-                        materialDesign:ButtonAssist.CornerRadius="2"
-                        ToolTip="Thêm nhân viên" 
-                        Content="Cập nhật"
-                        HorizontalAlignment="Left">
-                        <Button.IsEnabled>
-                            <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
-                                          Mode="TwoWay">
-                                <Binding ElementName="txtName"
-                                         Path="(Validation.HasError)" />
-                                <Binding ElementName="txtAddress"
-                                         Path="(Validation.HasError)" />
-                                <Binding ElementName="txtPhoneNumber"
-                                         Path="(Validation.HasError)" />
-                            </MultiBinding>
-                        </Button.IsEnabled>
-                    </Button>
-                </StackPanel>
+                FlowDirection="RightToLeft">
+                <Button
+                    x:Name="btnCancel"
+                    Style="{StaticResource CancelButton}"
+                    Command="{Binding ExitCommand}"
+                    CommandParameter="{Binding ElementName=wdUserInfo}"
+                    Content="Thoát"
+                    Width="100"
+                    ToolTip="Thoát"
+                    TabIndex="8"
+                    materialDesign:ButtonAssist.CornerRadius="2"
+                    Margin="0,0,20,0"/>
+                <Button
+                    x:Name="btnSave"
+                    IsDefault="True"
+                    Style="{StaticResource GreenButton}"
+                    Command="{Binding UpdateUserInfoCommand}"
+                    CommandParameter="{Binding ElementName=wdUserInfo}"
+                    Width="120"
+                    TabIndex="7"
+                    ToolTip="Cập nhật thông tin" 
+                    Content="Cập nhật">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                        Mode="TwoWay">
+                            <Binding ElementName="txtName"
+                                        Path="(Validation.HasError)" />
+                            <Binding ElementName="txtAddress"
+                                        Path="(Validation.HasError)" />
+                            <Binding ElementName="txtPhoneNumber"
+                                        Path="(Validation.HasError)" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
             </StackPanel>
-        </Grid>
-    </ScrollViewer>
+        </StackPanel>
+    </Grid>
 </Window>

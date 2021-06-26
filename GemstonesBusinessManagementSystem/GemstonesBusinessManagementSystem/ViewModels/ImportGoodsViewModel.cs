@@ -149,19 +149,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void SelectVND(ImportGoodsWindow window)
         {
-            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#D14040");
-            window.btnVND.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#D14040");
-            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
-            window.btnPercent.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
+            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#1BA345");
+            window.btnVND.Foreground = (Brush)new BrushConverter().ConvertFrom("#FFFFFF");
+            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#9098B1");
+            window.btnPercent.Foreground = (Brush)new BrushConverter().ConvertFrom("#263238");
             isVND = true;
             window.txtDiscount.Text = VndDiscount.ToString();
         }
         void SelectPercent(ImportGoodsWindow window)
         {
-            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
-            window.btnVND.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFBDBDBD");
-            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#d14040");
-            window.btnPercent.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#d14040");
+            window.btnVND.Background = (Brush)new BrushConverter().ConvertFrom("#9098B1");
+            window.btnVND.Foreground = (Brush)new BrushConverter().ConvertFrom("#263238");
+            window.btnPercent.Background = (Brush)new BrushConverter().ConvertFrom("#1BA345");
+            window.btnPercent.Foreground = (Brush)new BrushConverter().ConvertFrom("#FFFFFF");
             isVND = false;
             window.txtDiscount.Text = percentDiscount.ToString();
         }
@@ -334,7 +334,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     receiptTemplate.stkStockReceiptInfo.Children.Clear();
                 }
             }
-                pd.PrintDocument(document.DocumentPaginator, "My first document");
+                pd.PrintDocument(document.DocumentPaginator, mainWindow.txbIdBillService.Text);
             CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         // View receipt detail
@@ -380,7 +380,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     receiptTemplate.stkStockReceiptInfo.Children.Clear();
                 }
             }
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, main.txbIdReceipt.Text);
             CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
@@ -402,7 +402,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 GoodsType type = GoodsTypeDAL.Instance.GetById(goods.IdGoodsType);
                 receiptDetailControl.txbId.Text = AddPrefix("SP", goods.IdGoods);
                 receiptDetailControl.txbName.Text = goods.Name;
-                receiptDetailControl.txbGoodsType.Text = type.Name;
                 receiptDetailControl.txbUnit.Text = type.Unit;
                 receiptDetailControl.txbImportPrice.Text = SeparateThousands(goods.ImportPrice.ToString());
                 receiptDetailControl.txbQuantity.Text = dt.Rows[i].ItemArray[2].ToString();
@@ -485,7 +484,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 using (ExcelPackage p = new ExcelPackage())
                 {
                     // đặt tiêu đề cho file
-                    p.Workbook.Properties.Title = "Danh sách phiếu nhập hàng";
+                    p.Workbook.Properties.Title = "Danh sách phiếu nhập kho";
                     p.Workbook.Worksheets.Add("sheet");
 
                     ExcelWorksheet ws = p.Workbook.Worksheets[0];
@@ -515,7 +514,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     // merge các column lại từ column 1 đến số column header
                     // gán giá trị cho cell vừa merge
                     ws.Row(1).Height = 15;
-                    ws.Cells[1, 1].Value = "Danh sách phiếu nhập hàng";
+                    ws.Cells[1, 1].Value = "Danh sách phiếu nhập kho";
                     ws.Cells[1, 1, 1, countColHeader].Merge = true;
 
                     ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
@@ -643,6 +642,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     int.Parse(control.nsQuantity.Value.ToString()), ConvertToNumber(control.txbImportPrice.Text));
                 k = StockReceiptInfoDAL.Instance.Insert(info);
                 k = GoodsDAL.Instance.UpdateQuantity(ConvertToID(control.txbId.Text), info.Quantity);
+
+                SaleViewModel saleVM = (SaleViewModel)mainWindow.grdSale.DataContext;
+                saleVM.LoadSaleGoods(mainWindow);
             }
             if (k)
             {

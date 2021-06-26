@@ -10,12 +10,13 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d"
     Height="40"
+    Width="434"
     DataContext="{StaticResource BusinessServiceVM}"
-    Margin="4,4,0,0"
     Style="{StaticResource MyUCHoverStyle }"
     Cursor="Hand"
     ToolTip="Chọn dịch vụ"
-    Focusable="True">
+    Focusable="True" 
+    Margin="4,5,4,0">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
             <i:InvokeCommandAction Command="{Binding PickServiceCommand}"
@@ -23,50 +24,34 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Border 
-        BorderBrush="{StaticResource Gray}"
-        BorderThickness="1">
-        <Grid 
-            x:Name="grdMain"
-            Width="444"
-            Margin="0"
-            Background="White">
+        BorderBrush="{StaticResource Light}"
+        BorderThickness="2" 
+        CornerRadius="2">
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.5*" />
+                <ColumnDefinition />
                 <ColumnDefinition Width="2.5*" />
                 <ColumnDefinition Width="1.5*" />
             </Grid.ColumnDefinitions>
             <TextBlock 
                 x:Name="txbId"
                 Grid.Column="0"
-                HorizontalAlignment="Left"
-                Margin="20,0,0,0"
-                Padding="10,0,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                FontWeight="Medium"/>
+                Style="{StaticResource Text}"
+                FontSize="18"/>
             <TextBlock 
                 x:Name="txbName"
-                Text="Loại dịch vụ"
+                Style="{StaticResource Text}"
                 Grid.Column="1"
+                MaxWidth="180"
+                TextTrimming="CharacterEllipsis"
                 HorizontalAlignment="Left"
                 Margin="20,0,0,0"
-                Padding="10,0,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                FontWeight="Medium" />
+                FontSize="18"/>
             <TextBlock 
                 x:Name="txbPrice"
+                Style="{StaticResource Text}"
                 Grid.Column="2"
-                Text="Đơn giá"
-                HorizontalAlignment="Center"
-                Margin="20,0,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />
+                FontSize="18"/>
         </Grid>
     </Border>
 </UserControl>

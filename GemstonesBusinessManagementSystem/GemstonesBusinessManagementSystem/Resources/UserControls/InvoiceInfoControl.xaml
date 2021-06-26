@@ -13,23 +13,13 @@
     mc:Ignorable="d" 
     Height="40"
     Margin="0,0,0,0">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="MouseDown">
-            <i:InvokeCommandAction Command="{Binding }"
-                                   CommandParameter="{Binding ElementName=ucInvoice}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-    <Grid
-        x:Name="grdMain"
-        Margin="0"
-        Background="{StaticResource White}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="2*" />
             <ColumnDefinition />
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="5"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
             Grid.ColumnSpan="6"

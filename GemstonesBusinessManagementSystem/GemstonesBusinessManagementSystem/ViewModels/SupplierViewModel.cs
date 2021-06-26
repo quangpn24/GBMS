@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.IO;
+using System.Windows.Controls;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -48,7 +49,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             LoadSupplierCommand = new RelayCommand<MainWindow>(p => true, p => Init(p));
             ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
             SearchCommand = new RelayCommand<MainWindow>(p => true, p => Search(p));
-            OpenAddSupplierWindowCommand = new RelayCommand<MainWindow>(p => true, p => OpenAddSupplierWindow(p));
+            OpenAddSupplierWindowCommand = new RelayCommand<Button>(p => true, p => OpenAddSupplierWindow(p));
             SaveCommnad = new RelayCommand<AddSupplierWindow>(p => true, p => AddOrUpdate(p));
             ExitCommand = new RelayCommand<AddSupplierWindow>(p => true, p => p.Close());
             EditSupplierCommand = new RelayCommand<SupplierControl>(p => true, p => OpenEditSupplierWindow(p));
@@ -208,7 +209,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        void OpenAddSupplierWindow(MainWindow main)
+        void OpenAddSupplierWindow(Button btn)
         {
             isUpdate = false;
             AddSupplierWindow newWindow = new AddSupplierWindow();

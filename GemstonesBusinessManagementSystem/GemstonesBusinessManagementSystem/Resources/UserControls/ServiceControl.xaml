@@ -10,126 +10,81 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-    Height="40"
-    DataContext="{StaticResource ServiceVM}"
-    Margin="0,0,0,0">
-    <Border 
-        BorderBrush="{StaticResource Light}"
-        BorderThickness="1">
-        <Grid 
-            x:Name="grdMain"
-            Margin="0"
-            Background="White">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="2.5*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock 
-                x:Name="txbSerial"
-                Grid.Column="0"
-                TextAlignment="Center"
-                Margin="0"
-                Text="Mã dịch vụ"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />
-            <TextBlock 
-                x:Name="txbName"
-                Text="Loại dịch vụ"
-                Grid.Column="1"
-                HorizontalAlignment="Left"
-                Margin="20,0,0,0"
-                Padding="10,0,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                FontWeight="Medium" />
-            <TextBlock 
-                x:Name="txbPrice"
-                Grid.Column="2"
-                Text="Đơn giá"
-                HorizontalAlignment="Center"
-                Margin="20,0,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />
-            <TextBlock
-                x:Name="txbStatus"
-                Grid.Column="3"
-                HorizontalAlignment="Center"
-                Margin="0"
-                Text="Trạng thái"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />
-            <!--<TextBlock 
-                x:Name="txbHiredNumber"
-                Grid.Column="4"
-                HorizontalAlignment="Center"
-                Margin="0"
-                Text="Đã đặt"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Padding="0"
-                FontWeight="Medium" />-->
-            <Button 
-                Grid.Column="4"
-                x:Name="btnEditService"
-                Command="{Binding OpenUpdateWindowCommand}"
-                CommandParameter="{Binding ElementName=ucService}"
-                ToolTip="Sửa thông tin"
-                Height="30"
-                materialDesign:ButtonAssist.CornerRadius="6"
-                Margin="0,0,50,0"
-                Background="{x:Null}"
-                BorderBrush="{x:Null}"
-                FontSize="16"
-                VerticalAlignment="Center"
-                FocusVisualStyle="{x:Null}"
-                Width="40"
-                HorizontalAlignment="Right"
-                Padding="0"
-                FontWeight="SemiBold">
-                <materialDesign:PackIcon 
-                    Kind="SquareEditOutline"
-                    Width="24"
-                    Foreground="#00329E"
-                    Height="24" />
-            </Button>
-            <Button 
-                Grid.Column="4"
-                x:Name="btnDeleteService"
-                Command="{Binding DeleteServiceCommand}"
-                CommandParameter="{Binding ElementName=ucService}"
-                ToolTip="Xóa dịch vụ"
-                Height="30"
-                materialDesign:ButtonAssist.CornerRadius="6"
-                Margin="0,0,10,0"
-                Background="{x:Null}"
-                BorderBrush="{x:Null}"
-                FontSize="16"
-                VerticalAlignment="Center"
-                FocusVisualStyle="{x:Null}"
-                Width="40"
-                HorizontalAlignment="Right"
-                FontWeight="SemiBold"
-                Padding="0">
-                <materialDesign:PackIcon 
-                    Kind="DeleteOutline"
-                    Foreground="#F03738"
-                    Height="24"
-                    Width="24" />
-            </Button>
-        </Grid>
-    </Border>
+    Height="45"
+    DataContext="{StaticResource ServiceVM}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="140" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="120" />
+        </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="7"           
+            Fill="{StaticResource Light}" 
+            Height="2"
+            VerticalAlignment="Bottom"/>
+        <TextBlock 
+            x:Name="txbSerial"
+            Style="{StaticResource Text}"
+            Grid.Column="0"
+            FontSize="18"/>
+        <TextBlock 
+            x:Name="txbName"
+            Style="{StaticResource Text}"
+            Grid.Column="1"
+            MaxWidth="400"
+            TextTrimming="CharacterEllipsis"
+            HorizontalAlignment="Left"
+            Margin="20,0,0,0"
+            FontSize="18"/>
+        <TextBlock 
+            x:Name="txbPrice"
+            Style="{StaticResource Text}"
+            Grid.Column="2"
+            FontSize="18"/>
+        <TextBlock
+            x:Name="txbStatus"
+            Style="{StaticResource Text}"
+            Grid.Column="3"
+            FontSize="18"/>
+        <Button 
+            Grid.Column="4"
+            x:Name="btnEditService"
+            Style="{StaticResource TransperantButton}"
+            Command="{Binding OpenUpdateWindowCommand}"
+            CommandParameter="{Binding ElementName=ucService}"
+            ToolTip="Sửa thông tin"
+            Height="30"
+            Margin="25,0,0,0"
+            FontSize="16"
+            VerticalAlignment="Center"
+            Width="30"
+            HorizontalAlignment="Left">
+            <materialDesign:PackIcon 
+                Kind="SquareEditOutline"
+                Width="24"
+                Foreground="{StaticResource Primary}"
+                Height="24" />
+        </Button>
+        <Button 
+            Grid.Column="4"
+            x:Name="btnDeleteService"
+            Style="{StaticResource TransperantButton}"
+            Command="{Binding DeleteServiceCommand}"
+            CommandParameter="{Binding ElementName=ucService}"
+            ToolTip="Xóa dịch vụ"
+            Height="30"
+            Margin="0,0,20,0"
+            FontSize="16"
+            Width="30"
+            HorizontalAlignment="Right">
+            <materialDesign:PackIcon 
+                Kind="DeleteOutline"
+                Foreground="{StaticResource Error}"
+                Height="24"
+                Width="24" />
+        </Button>
+    </Grid>
 </UserControl>

@@ -11,78 +11,60 @@
     x:Name="ucReceipt"
     Style="{StaticResource MyUCHoverStyle}"
     DataContext="{StaticResource ImportGoodsVM}"
-    Height="40" 
-    Margin="0,0,0,2">
+    Height="42"
+    Margin="0,0,0,1"
+    Cursor="Hand">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
             <i:InvokeCommandAction Command="{Binding SelectReceiptCommand}"
                                    CommandParameter="{Binding ElementName=ucReceipt}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid
-        x:Name="grdMain">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="120"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
             Grid.ColumnSpan="9"
             Fill="{StaticResource Light}"
             Height="1"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="8"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
         <TextBlock 
             x:Name="txbId"
-            Text="PN0001"
+            Style="{StaticResource Text}"
             FontSize="14"
-            FontWeight="SemiBold"
-            Grid.Column="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            Grid.Column="0"/>
         <TextBlock 
             x:Name="txbDateReceipt"
-            Text="26/05/2021" 
+            Style="{StaticResource Text}"
             FontSize="14"
-            FontWeight="SemiBold"
-            Grid.Column="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            Grid.Column="1"/>
         <TextBlock 
             x:Name="txbImporter"
-            Text="Nguyen van a" 
+            Style="{StaticResource Text}"
             FontSize="14"
-            FontWeight="SemiBold"
+            MaxWidth="130"
+            TextTrimming="CharacterEllipsis"
             Grid.Column="2"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center" 
             Margin="10,0,0,0"/>
         <TextBlock 
             x:Name="txbSupplier"
-            FontWeight="SemiBold"
-            Text="Công ty vina" 
+            Style="{StaticResource Text}"
             FontSize="14"
+            MaxWidth="130"
+            TextTrimming="CharacterEllipsis"
             Grid.Column="3"
-            HorizontalAlignment="Left"
-            Margin="20, 0, 0, 0"
-            VerticalAlignment="Center"/>
+            Margin="20,0,0,0" 
+            HorizontalAlignment="Left"/>
         <TextBlock 
             x:Name="txbMoneyToPay"
-            Text="70000000" 
+            Style="{StaticResource Text}"
             FontSize="14"
-            FontWeight="SemiBold"
-            Grid.Column="4"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            Grid.Column="4"/>
     </Grid>
 </UserControl>

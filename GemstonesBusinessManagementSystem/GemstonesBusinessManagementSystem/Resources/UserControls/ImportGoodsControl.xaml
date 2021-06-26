@@ -14,14 +14,14 @@
     Margin="0,0,0,2">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="3.5*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.7*"/>
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
         <Rectangle 
@@ -29,68 +29,41 @@
             Fill="{StaticResource Light}"
             Height="1"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="8"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
         <TextBlock 
             x:Name="txbNumericalOder"
-            Text="1"
             Grid.Column="0"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbId"
-            Text="SP0001"
             Grid.Column="1"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbName"
-            Text="Vàng ròng 9999" 
             Grid.Column="2"
             Style="{StaticResource Text}"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center" 
             Margin="20,0,0,0"/>
         <TextBlock 
             x:Name="txbGoodsType"
-            Text="Vàng" 
             Grid.Column="3"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Margin="10,0,0,0"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbUnit"
-            Text="Chỉ" 
             Grid.Column="4"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbImportPrice"
-            Text="70000000" 
             Grid.Column="5"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <local:NumericSpinner
             x:Name="nsQuantity"
             Grid.Column="6"
             Text="1"
-            MaxValue="1000"
+            MaxValue="10000"
             MinValue="1"
             VerticalAlignment="Center"
             Height="30" 
-            Margin="10,0" >
+            Width="70">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="ValueChanged">
                     <i:InvokeCommandAction Command="{Binding ChangeQuantityCommand}"
@@ -100,28 +73,17 @@
         </local:NumericSpinner>
         <TextBlock 
             x:Name="txbTotalPrice"
-            Text="10000000" 
             Grid.Column="7"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <Button 
             Grid.Column="8"
             x:Name="btnDeleteGoods"
+            Style="{StaticResource TransperantButton}"
             ToolTip="Xóa mặt hàng" 
             Height="30"
-            Margin="0,0,10,0" 
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            FontSize="16" 
-            VerticalAlignment="Center" 
-            FocusVisualStyle="{x:Null}"
-            Width="40"
-            HorizontalAlignment="Right" 
-            FontWeight="SemiBold" 
+            Width="30"
             Command="{Binding DeleteCommand}"
-            CommandParameter="{Binding ElementName=ucImportGoods}"
-            Padding="0" >
+            CommandParameter="{Binding ElementName=ucImportGoods}" >
             <materialDesign:PackIcon 
                 Kind="DeleteOutline" 
                 Height="24"

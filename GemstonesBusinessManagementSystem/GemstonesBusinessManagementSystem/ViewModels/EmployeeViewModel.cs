@@ -144,6 +144,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.txtStandardWorkDays.Text = null;
             window.txtOvertime.Text = null;
             window.txtFault.Text = null;
+            window.btnSave.Content = "Lưu";
+            window.btnSave.ToolTip = "Lưu";
+            window.txbTitle.Text = "Thêm chức vụ";
         }
         void ViewPosition(EmployeePositionControl control)
         {
@@ -722,7 +725,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
             addEmployeeWindow.ShowDialog();
         }
-        void LoadEmployeeList(MainWindow main, int curPage)
+        public void LoadEmployeeList(MainWindow main, int curPage)
         {
             this.mainWindow = main;
             mainWindow.stkEmployeeList.Children.Clear();
@@ -755,7 +758,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (currentPage == employeeList.Count / 10)
                 end = employeeList.Count;
 
-            mainWindow.txtNumOfEmp.Text = String.Format("{0} of {1} items", mainWindow.stkEmployeeList.Children.Count, employeeList.Count);
+            mainWindow.txtNumOfEmp.Text = String.Format("Trang {0} trên {1} trang", currentPage + 1, employeeList.Count / 11 + 1);
         }
         public void GoToNextPage(MainWindow mainWindow, int currentPage)
         {

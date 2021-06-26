@@ -12,8 +12,7 @@
     Name="ucSelectedGoods"
     DataContext="{StaticResource SaleVM}"
     Height="45">
-    <Grid 
-        Height="45" >
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="2.5*"/>
@@ -23,7 +22,6 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <TextBlock 
             x:Name="txbMaxQuantiy"
@@ -31,39 +29,27 @@
         <TextBlock 
             x:Name="txbId"
             Grid.Column="0"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap" 
-            Text="SP001" 
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbName"
             Style="{StaticResource Text}"
             Grid.Column="1"
-            Text="Nhan vang"
             HorizontalAlignment="Left" 
             Margin="20,0,0,0"
-            TextWrapping="Wrap" 
-            VerticalAlignment="Center" 
             TextTrimming="CharacterEllipsis"
-            MaxWidth="150" />
+            MaxWidth="160" />
         <TextBlock 
             x:Name="txbType"
             Style="{StaticResource Text}"
             Grid.Column="2"
-            HorizontalAlignment="Center" 
-            TextWrapping="Wrap" 
-            Text="Trang suc" 
-            VerticalAlignment="Center" />
+            MaxWidth="110"
+            TextTrimming="CharacterEllipsis"/>
         <TextBlock 
             x:Name="txbUnit"
             Style="{StaticResource Text}"
             Grid.Column="3"
-            HorizontalAlignment="Center" 
-            TextWrapping="Wrap" 
-            Text="Cai" 
-            VerticalAlignment="Center" />
+            MaxWidth="110"
+            TextTrimming="CharacterEllipsis"/>
         <local:NumericSpinner
             x:Name="nmsQuantity"
             Grid.Column="4" 
@@ -85,37 +71,23 @@
         <TextBlock 
             x:Name="txbPrice"
             Style="{StaticResource Text}"
-            Grid.Column="5"
-            HorizontalAlignment="Center" 
-            Text="10.000.000"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Grid.Column="5"/>
         <TextBlock 
             x:Name="txbTotalPrice"
             Style="{StaticResource Text}"
-            Grid.Column="6"
-            HorizontalAlignment="Center" 
-            Text="10.000.000"
-            TextWrapping="Wrap"
-            VerticalAlignment="Center"/>
+            Grid.Column="6"/>
         <Button 
             x:Name="btnDelete"
             Grid.Column="7"
             Command="{Binding DeleteCommand}"
             CommandParameter="{Binding ElementName=ucSelectedGoods}"
-            Style="{StaticResource MaterialDesignRaisedButton}"
-            ToolTip="Xóa nhân viên" 
+            Style="{StaticResource TransperantButton}"
+            ToolTip="Xóa sản phẩm đã chọn" 
             Height="30"
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            Foreground="{StaticResource Error}" 
-            VerticalAlignment="Center" 
-            FocusVisualStyle="{x:Null}"
-            HorizontalAlignment="Center" 
-            Padding="0"
-            Margin="0" Width="24">
+            Width="24">
             <materialDesign:PackIcon 
                 Kind="DeleteOutline" 
+                Foreground="{StaticResource Error}" 
                 Height="24"
                 Width="24"/>
         </Button>
@@ -124,14 +96,5 @@
             Fill="{StaticResource Light}" 
             Height="2"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="8"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>

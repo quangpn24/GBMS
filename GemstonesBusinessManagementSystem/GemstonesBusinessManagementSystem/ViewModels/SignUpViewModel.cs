@@ -32,7 +32,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand PasswordChangedCommand { get; set; }
         public ICommand PasswordConfirmChangedCommand { get; set; }
         public ICommand KeyCommand { get; set; }
-        public ICommand OpenLoginWinDowCommand { get; set; }
+        public ICommand OpenLoginWindowCommand { get; set; }
         public ICommand ChangePasswordCommand { get; set; }
         private ObservableCollection<Employee> itemSourceEmployee = new ObservableCollection<Employee>();
         public ObservableCollection<Employee> ItemSourceEmployee { get => itemSourceEmployee; set => itemSourceEmployee = value; }
@@ -57,7 +57,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PasswordChangedCommand = new RelayCommand<PasswordBox>((parameter) => true, (parameter) => EncodingPassword(parameter));
             PasswordConfirmChangedCommand = new RelayCommand<PasswordBox>((parameter) => true, (parameter) => EncodingConfirmPassword(parameter));
             ChangePasswordCommand = new RelayCommand<ForgotPasswordWindow>((parameter) => true, (parameter) => ChangePassword(parameter));
-            OpenLoginWinDowCommand = new RelayCommand<Window>(parameter => true, parameter => parameter.Close());
+            OpenLoginWindowCommand = new RelayCommand<Window>(parameter => true, parameter => parameter.Close());
             LoadCommand = new RelayCommand<Window>((parameter) => true, (parameter) => SetItemSourcEmployee());
         }
 

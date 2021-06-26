@@ -12,57 +12,38 @@
     DataContext="{StaticResource EmployeeVM}"
     Name="ucEmployeePosition"
     Height="45">
-    <Grid Height="45" >
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
         <TextBlock 
             x:Name="txbShift"
-            Text="20.000" 
             Visibility="Hidden"/>
         <TextBlock 
             x:Name="txbFault"
-            Text="20.000" 
             Visibility="Hidden"/>
         <TextBlock 
             x:Name="txbId"
             Grid.Column="0"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap" 
-            Text="CV001" 
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbPosition"
             Style="{StaticResource Text}"
             Grid.Column="1"
             HorizontalAlignment="Left" 
-            TextWrapping="Wrap" 
-            Text="Quan ly" 
-            VerticalAlignment="Center" 
             Margin="20,0,0,0" />
         <TextBlock 
             x:Name="txbSalaryBase"
             Style="{StaticResource Text}"
-            Grid.Column="2"
-            HorizontalAlignment="Center" 
-            TextWrapping="Wrap" 
-            Text="10.000.000" 
-            VerticalAlignment="Center" />
+            Grid.Column="2"/>
         <TextBlock 
             x:Name="txbWorkdays"
             Style="{StaticResource Text}"
-            Grid.Column="3"
-            HorizontalAlignment="Center" 
-            TextWrapping="Wrap" 
-            Text="28" 
-            VerticalAlignment="Center" />
+            Grid.Column="3"/>
         <StackPanel
             Orientation="Horizontal"
             Grid.Column="4" >
@@ -89,7 +70,7 @@
                 x:Name="btnDelete"
                 Command="{Binding DeletePositionCommand}"
                 CommandParameter="{Binding ElementName=ucEmployeePosition}"
-                ToolTip="Xem thông tin"
+                ToolTip="Xóa chức vụ"
                 Height="28"
                 Background="{x:Null}" 
                 BorderBrush="{x:Null}" 
@@ -110,14 +91,5 @@
             Fill="{StaticResource Light}" 
             Height="2"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="5"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>

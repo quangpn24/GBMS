@@ -41,9 +41,10 @@
                     TextWrapping="Wrap"
                     MaxWidth="400"
                     Width="Auto"
+                    FontWeight="SemiBold"
                     FontSize="16"
                     VerticalAlignment="Top"
-                    Margin="20,20,41,15" />
+                    Margin="20,30,41,15" />
             </DockPanel>
         </Grid>
         <Grid 

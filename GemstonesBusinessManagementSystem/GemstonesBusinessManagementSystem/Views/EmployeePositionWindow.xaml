@@ -12,10 +12,10 @@
     xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"  
     mc:Ignorable="d"
     x:Name="wdPosition"
-    Title="Quản lý" 
+    Title="Quản lý chức vụ" 
     Height="620" 
     Width="1100" 
-    Background="{StaticResource White}" 
+    Background="#F7F8FC"
     DataContext="{StaticResource EmployeeVM}"
     WindowStartupLocation="CenterScreen" 
     ResizeMode="CanMinimize">
@@ -27,10 +27,91 @@
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Loaded">
                 <i:InvokeCommandAction Command="{Binding LoadPositionCommand}" 
-                                   CommandParameter="{Binding ElementName=wdPosition}"/>
+                                       CommandParameter="{Binding ElementName=wdPosition}"/>
             </i:EventTrigger>
         </i:Interaction.Triggers>
-        <Grid Grid.Column="1">
+        <Grid 
+            Grid.Column="0"
+            Style="{StaticResource DropShadow}" 
+            Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="69"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Rectangle 
+                Fill="{DynamicResource White}" 
+                RadiusY="4" 
+                RadiusX="4"
+                Grid.RowSpan="4"
+                Panel.ZIndex="-1"/>
+            <TextBlock
+                Text="Danh sách chức vụ" 
+                Style="{StaticResource HeadingText2}"
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"/>
+            <Border
+                CornerRadius="4,4,0,0"
+                BorderThickness="1"
+                Grid.Row="1" 
+                Margin="20,0"
+                Height="40" 
+                VerticalAlignment="Top" 
+                BorderBrush="{StaticResource Primary}" 
+                Background="{StaticResource Primary}" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Text="STT" 
+                        Grid.Column="0"
+                        Style="{StaticResource TextHeader}"/>
+                    <TextBlock
+                        Text="Chức vụ" 
+                        Grid.Column="1"
+                        Style="{StaticResource TextHeader}"
+                        HorizontalAlignment="Left"
+                        Margin="20,0,0,0"/>
+                    <TextBlock
+                        Text="Lương cơ bản" 
+                        Grid.Column="2"
+                        Style="{StaticResource TextHeader}" />
+                    <TextBlock
+                        Text="Công chuẩn" 
+                        Grid.Column="3"
+                        Style="{StaticResource TextHeader}"/>
+                </Grid>
+            </Border>
+            <Border
+                Grid.Row="1"
+                BorderBrush="{StaticResource Light}"
+                BorderThickness="2,0,2,2"
+                CornerRadius="0,0,4,4"
+                Margin="20,40,20,20" >
+                <ScrollViewer 
+                    Style="{StaticResource FavsScrollViewer}"
+                    VerticalScrollBarVisibility="Auto" 
+                    HorizontalScrollBarVisibility="Disabled" >
+                    <StackPanel 
+                        x:Name="stkPosition"/>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+        <Grid 
+            Grid.Column="1"
+            Style="{StaticResource DropShadow}" 
+            Margin="0,20,20,20">
+            <Rectangle 
+                Fill="{DynamicResource White}" 
+                RadiusY="4" 
+                RadiusX="4"
+                Grid.RowSpan="4"
+                Panel.ZIndex="-1"/>
             <StackPanel 
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Center" 
@@ -46,36 +127,20 @@
                     Height="40">
                     <Label 
                         Content="Mã chức vụ"
-                        HorizontalAlignment="Left"
-                        FontSize="18"
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+                        Style="{StaticResource LabelText}"/>
                     <Rectangle 
                         HorizontalAlignment="Right" 
                         Height="40" 
                         Width="230" 
-                        RadiusY="6" 
-                        RadiusX="6"
+                        RadiusY="4" 
+                        RadiusX="4"
                         Stroke="{StaticResource Gray2}" />
                     <TextBox 
                         x:Name="txtId"
+                        Style="{StaticResource TextBox}"
                         materialDesign:HintAssist.Hint="Mã chức vụ"
-                        HorizontalAlignment="Right"
                         IsReadOnly="True"
-                        IsTabStop="False"
-                        Cursor="Arrow"
-                        Height="40" 
-                        Width="210" 
-                        FontSize="14" 
-                        BorderThickness="0" 
-                        MaxLines="1"
-                        TabIndex="1"
-                        Foreground="{StaticResource Gray1}" 
-                        Margin="0,0,10,0" 
-                        HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center"/>
+                        IsTabStop="False"/>
                 </Grid>
                 <Grid 
                     Margin="0,0,0,20" 
@@ -83,35 +148,20 @@
                     Height="40">
                     <Label 
                         Content="Chức vụ"
-                        HorizontalAlignment="Left"
-                        FontSize="18"
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
+                        Style="{StaticResource LabelText}"/>
                     <Rectangle 
                         HorizontalAlignment="Right" 
                         Height="40" 
                         Width="230" 
-                        RadiusY="6" 
-                        RadiusX="6"
+                        RadiusY="4" 
+                        RadiusX="4"
                         Stroke="{StaticResource Gray2}" />
                     <TextBox 
                         x:Name="txtPosition"
+                        Style="{StaticResource TextBox}"
                         materialDesign:HintAssist.Hint="Chức vụ"
-                        HorizontalAlignment="Right"
-                        Cursor="IBeam"
-                        Height="40" 
-                        Width="210" 
-                        FontSize="14" 
-                        BorderThickness="0" 
-                        MaxLines="1"
                         TabIndex="1"
-                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                        Foreground="{StaticResource Gray1}" 
-                        Margin="0,0,10,0" 
-                        HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center">
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                         <TextBox.Text>
                             <Binding
                                 Path="Position"
@@ -134,36 +184,21 @@
                     Height="40">
                     <Label 
                         Content="Lương cơ bản"
-                        HorizontalAlignment="Left"
-                        FontSize="18"
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
+                        Style="{StaticResource LabelText}"/>
                     <Rectangle 
                         HorizontalAlignment="Right" 
                         Height="40" 
                         Width="230" 
-                        RadiusY="6" 
-                        RadiusX="6"
+                        RadiusY="4" 
+                        RadiusX="4"
                         Stroke="{StaticResource Gray2}" />
                     <TextBox 
                         x:Name="txtSalaryBase"
+                        Style="{StaticResource TextBox}"
                         materialDesign:HintAssist.Hint="Lương cơ bản"
-                        HorizontalAlignment="Right"
-                        Cursor="IBeam"
-                        Height="40" 
-                        Width="210" 
-                        FontSize="14" 
-                        BorderThickness="0" 
-                        MaxLines="1"
                         MaxLength="11"
                         TabIndex="2"
-                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                        Foreground="{StaticResource Gray1}" 
-                        Margin="0,0,10,0" 
-                        HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center">
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                         <TextBox.Text>
                             <Binding
                                 Path="SalaryBase"                                  
@@ -192,40 +227,24 @@
                 <Grid 
                     Margin="0,0,0,20" 
                     VerticalAlignment="Top" 
-                    Width="400" 
                     Height="40">
                     <Label 
                         Content="Ngày công chuẩn"
-                        HorizontalAlignment="Left"
-                        FontSize="18"
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
+                        Style="{StaticResource LabelText}"/>
                     <Rectangle 
                         HorizontalAlignment="Right" 
                         Height="40" 
                         Width="230" 
-                        RadiusY="6" 
-                        RadiusX="6"
+                        RadiusY="4" 
+                        RadiusX="4"
                         Stroke="{StaticResource Gray2}" />
                     <TextBox 
                         x:Name="txtStandardWorkDays"
+                        Style="{StaticResource TextBox}"
                         materialDesign:HintAssist.Hint="Số ngày công chuẩn"
-                        HorizontalAlignment="Right"
-                        Cursor="IBeam"
-                        Height="40" 
-                        Width="210" 
-                        FontSize="14" 
                         TabIndex="3"
-                        BorderThickness="0" 
-                        MaxLines="1"
                         MaxLength="2"
-                        Foreground="{StaticResource Gray1}" 
-                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                        Margin="0,0,10,0" 
-                        HorizontalContentAlignment="Left" 
-                        VerticalContentAlignment="Center">
+                        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                         <TextBox.Text>
                             <Binding 
                                 Path="Standard"
@@ -257,31 +276,19 @@
                 <Grid 
                     Margin="0,0,0,20" 
                     VerticalAlignment="Top" 
-                    Width="400" 
                     Height="40">
                     <Label 
                         Content="Tăng ca"
-                        HorizontalAlignment="Left"
-                        FontSize="18"
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
+                        Style="{StaticResource LabelText}"/>
                     <TextBox 
                         x:Name="txtOvertime"
-                        MaxLength="10"
-                        Foreground="{StaticResource Gray1}" 
+                        Style="{StaticResource TextBox}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                        VerticalAlignment="Center" 
-                        VerticalContentAlignment="Bottom" 
-                        HorizontalContentAlignment="Right" 
-                        HorizontalAlignment="Left" 
-                        Margin="175,0,0,0" 
-                        FontSize="16"
-                        Width="145" 
-                        TabIndex="4" 
-                        FontWeight="SemiBold"
-                        Height="30" >
+                        TabIndex="4"
+                        Margin="0,0,80,0"
+                        Width="150" 
+                        BorderThickness="0,0,0,2"
+                        BorderBrush="{StaticResource Gray2}">
                         <TextBox.Text>
                             <Binding 
                                 Path="MoneyPerShift"
@@ -322,27 +329,16 @@
                     Height="40">
                     <Label 
                         Content="Tiền phạt"
-                        HorizontalAlignment="Left"
-                        FontSize="18"
-                        FontWeight="SemiBold" 
-                        Foreground="{StaticResource Black2}" 
-                        Height="32" 
-                        VerticalAlignment="Center"/>
+                        Style="{StaticResource LabelText}"/>
                     <TextBox 
                         x:Name="txtFault"
-                        MaxLength="10"
-                        Foreground="{StaticResource Gray1}" 
+                        Style="{StaticResource TextBox}"
                         Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-                        VerticalAlignment="Center" 
-                        VerticalContentAlignment="Bottom" 
-                        HorizontalContentAlignment="Right" 
-                        HorizontalAlignment="Left" 
-                        Margin="175,0,0,0" 
-                        FontSize="16"
-                        Width="145" 
-                        TabIndex="5" 
-                        FontWeight="SemiBold"
-                        Height="30" >
+                        TabIndex="5"
+                        Margin="0,0,80,0"
+                        Width="150" 
+                        BorderThickness="0,0,0,2"
+                        BorderBrush="{StaticResource Gray2}">
                         <TextBox.Text>
                             <Binding 
                                 Path="MoneyPerFault"
@@ -391,8 +387,6 @@
                     Style="{StaticResource GreenButton}"
                     Margin="0,0,20,0" 
                     IsDefault="True"
-                    Height="40"
-                    FontSize="18"
                     Width="100">
                     <Button.IsEnabled>
                         <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
@@ -416,86 +410,8 @@
                     Command="{Binding ClearViewCommand}"
                     CommandParameter="{Binding ElementName=wdPosition}"
                     Style="{StaticResource CancelButton}" 
-                    Height="40" 
-                    FontSize="18"
                     Width="100"/>
             </StackPanel>
-            <Rectangle 
-                HorizontalAlignment="Left"
-                Width="1" 
-                Fill="{StaticResource Gray}" 
-                Margin="0,20"/>
-        </Grid>
-        <Grid 
-            Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <TextBlock
-                Text="Danh sách chức vụ" 
-                Style="{StaticResource HeadingText2}"
-                Margin="20,30,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"/>
-            <Border
-                CornerRadius="4,4,0,0"
-                BorderThickness="1"
-                Grid.Row="1" 
-                Margin="20,0"
-                Height="40" 
-                VerticalAlignment="Top" 
-                BorderBrush="{StaticResource Primary}" 
-                Background="{StaticResource Primary}" >
-                <Grid  Margin="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="5"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
-                        Text="STT" 
-                        Grid.Column="0"
-                        Style="{StaticResource TextHeader}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
-                    <TextBlock
-                        Text="Chức vụ" 
-                        Grid.Column="1"
-                        Style="{StaticResource TextHeader}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center" 
-                        Margin="20,0,0,0"/>
-                    <TextBlock
-                        Text="Lương cơ bản" 
-                        Grid.Column="2"
-                        Style="{StaticResource TextHeader}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
-                    <TextBlock
-                        Text="Công chuẩn" 
-                        Grid.Column="3"
-                        Style="{StaticResource TextHeader}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center" 
-                        Margin="0"/>
-                </Grid>
-            </Border>
-            <Grid
-                Grid.Row="1"
-                Margin="20,40,20,20" >
-                <ScrollViewer 
-                    VerticalScrollBarVisibility="Auto" 
-                    HorizontalScrollBarVisibility="Disabled" >
-                    <StackPanel 
-                        x:Name="stkPosition" 
-                        VerticalAlignment="Top" >
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
         </Grid>
     </Grid>
 </Window>

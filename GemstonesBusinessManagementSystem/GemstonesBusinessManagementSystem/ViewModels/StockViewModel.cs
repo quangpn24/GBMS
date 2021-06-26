@@ -288,7 +288,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             LoadStackPanel(start, end, goodsList, ref mainWindow.stkStock);
 
-            mainWindow.txtNumOfStock.Text = string.Format("{0} trong {1} mặt hàng", mainWindow.stkStock.Children.Count, goodsList.Count);
+            mainWindow.txtNumOfStock.Text = string.Format("Trang {0} trong {1} trang", currentPage + 1, goodsList.Count / 11 + 1);
         }
         void LoadInfoOfPage(ref int start, ref int end)
         {

@@ -1,21 +1,21 @@
 ﻿<Window
-        x:Class="GemstonesBusinessManagementSystem.Views.SignUpWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        mc:Ignorable="d"
-        DataContext="{StaticResource SignUpVM}"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Đăng ký tài khoản" 
-        Height="630"
-        Width="390" 
-        x:Name="wdSignUp"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
+    x:Class="GemstonesBusinessManagementSystem.Views.SignUpWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    mc:Ignorable="d"
+    DataContext="{StaticResource SignUpVM}"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    Title="Đăng ký tài khoản" 
+    Height="640"
+    Width="400" 
+    x:Name="wdSignUp"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="CanMinimize">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=wdSignUp}"/>
@@ -40,25 +40,50 @@
             FontWeight="Bold" 
             Margin="0,30,0,0" 
             Foreground="{StaticResource Primary}"/>
-        <Grid
-            HorizontalAlignment="Center" 
+        <StackPanel
             Height="350" 
-            Margin="0,110,0,0"
-            VerticalAlignment="Top" 
-            Width="270">
+            Margin="60,110,60,0"
+            VerticalAlignment="Top" >
             <Grid
-                Width="270" 
-                Height="50"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Top"
-                Margin="0,75,0,0">
+                Height="50" >
+                <materialDesign:PackIcon
+                    Kind="KeyOutline"
+                    Width="30" 
+                    Foreground="{StaticResource Black2}"
+                    Height="30"
+                    VerticalAlignment="Bottom"/>
+                <PasswordBox
+                    x:Name="pwbKey"
+                    materialDesign:HintAssist.Hint="Nhập mã xác thực" 
+                    Width="220" 
+                    Height="50" 
+                    HorizontalAlignment="Right" 
+                    BorderBrush="{StaticResource Primary}"
+                    Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
+                    FontSize="18" 
+                    TabIndex="0" 
+                    VerticalAlignment="Center" 
+                    CaretBrush="{StaticResource Primary}" 
+                    FontWeight="SemiBold" 
+                    Padding="4,0,0,0" 
+                    Foreground="{DynamicResource Black2}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PasswordChanged">
+                            <i:InvokeCommandAction Command="{Binding KeyCommand}" 
+                                                   CommandParameter="{Binding ElementName=pwbKey}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </PasswordBox>
+            </Grid>
+            <Grid 
+                Height="50" 
+                Margin="0,20,0,0" >
                 <materialDesign:PackIcon 
                     Kind="CardAccountDetailsOutline" 
-                    Foreground="{StaticResource Gray1}" 
+                    Foreground="{StaticResource Black2}" 
                     Width="30" 
                     Height="30" 
-                    VerticalAlignment="Bottom" 
-                    Margin="0,0,0,6" />
+                    VerticalAlignment="Bottom" />
                 <ComboBox
                     x:Name="cboSelectEmployee"
                     materialDesign:ComboBoxAssist.ClassicMode="true"
@@ -74,10 +99,9 @@
                     HorizontalAlignment="Right" 
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center" 
-                    Padding="3,0,0,0"
+                    Padding="4,0,0,6"
                     TabIndex="1"
-                    Foreground="{DynamicResource Gray1}">
-
+                    Foreground="{DynamicResource Black2}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel 
@@ -99,32 +123,30 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </Grid>
-            <Grid
-                Width="270" 
-                Height="50"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Top"
-                Margin="0,150,0,0">
+            <Grid 
+                Height="50" 
+                Margin="0,20,0,0">
                 <materialDesign:PackIcon 
                     Kind="AccountOutline" 
-                    Width="30" 
-                    Height="30" 
+                    Width="32" 
+                    Height="32" 
                     VerticalAlignment="Bottom"
-                    Foreground="{StaticResource Gray1}"/>
-                <TextBox x:Name="txtUsername"
-                         materialDesign:HintAssist.Hint="Tên đăng nhập"
-                         Width="220"
-                         Height="50"
-                         HorizontalAlignment="Right"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         FontSize="18"
-                         BorderBrush="{StaticResource Primary}"
-                         TabIndex="2"
-                         VerticalAlignment="Center"
-                         CaretBrush="{StaticResource Primary}"
-                         FontWeight="Medium"
-                         Padding="2,0,0,0"
-                         Foreground="{DynamicResource Gray1}">
+                    Foreground="{StaticResource Black2}"/>
+                <TextBox 
+                    x:Name="txtUsername"
+                    materialDesign:HintAssist.Hint="Tên đăng nhập"
+                    Width="220"
+                    Height="50"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    FontSize="18"
+                    TabIndex="2"
+                    VerticalAlignment="Center"
+                    FontWeight="Medium"
+                    Padding="4,0,0,0"
+                    BorderBrush="{StaticResource Primary}"
+                    CaretBrush="{StaticResource Primary}"
+                    Foreground="{DynamicResource Black2}">
                     <TextBox.Text>
                         <Binding Path="Username"
                                  Source="{StaticResource Account}"
@@ -139,24 +161,19 @@
                     </TextBox.Text>
                 </TextBox>
             </Grid>
-            <Grid
-                Width="270" 
+            <Grid 
                 Height="50" 
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Left"
-                Margin="0,225,0,0">
+                Margin="0,20,0,0">
                 <materialDesign:PackIcon 
                     Kind="LockOutline" 
-                    Foreground="{StaticResource Gray1}"
+                    Foreground="{StaticResource Black2}"
                     Width="30" 
                     Height="30" 
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom" 
-                    Margin="0"/>
+                    VerticalAlignment="Bottom" />
                 <PasswordBox
                     x:Name="pwbPassword"
                     materialDesign:HintAssist.Hint="Mật khẩu" 
-                    Margin="0" 
                     Width="220" 
                     Height="50" 
                     HorizontalAlignment="Right" 
@@ -167,7 +184,8 @@
                     VerticalAlignment="Center"
                     CaretBrush="{StaticResource Primary}" 
                     FontWeight="SemiBold" 
-                    Padding="2,0,0,0" Foreground="{DynamicResource Gray1}">
+                    Padding="4,0,0,0"
+                    Foreground="{DynamicResource Black2}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PasswordChanged">
                             <i:InvokeCommandAction Command="{Binding PasswordChangedCommand}" 
@@ -176,24 +194,19 @@
                     </i:Interaction.Triggers>
                 </PasswordBox>
             </Grid>
-            <Grid
-                 Width="270" 
+            <Grid 
                 Height="50" 
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Left"
-                Margin="0,300,0,0">
+                Margin="0,20,0,0">
                 <materialDesign:PackIcon 
                     Kind="LockOutline" 
-                    Foreground="{StaticResource Gray1}"
+                    Foreground="{StaticResource Black2}"
                     Width="30" 
                     Height="30" 
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom" 
-                    Margin="0"/>
+                    VerticalAlignment="Bottom" />
                 <PasswordBox
                     x:Name="pwbPasswordConfirm"
                     materialDesign:HintAssist.Hint="Nhập lại mật khẩu" 
-                    Margin="0" 
                     Width="220" 
                     Height="50" 
                     HorizontalAlignment="Right" 
@@ -204,9 +217,8 @@
                     VerticalAlignment="Center" 
                     CaretBrush="{StaticResource Primary}" 
                     FontWeight="SemiBold" 
-                    Padding="2,0,0,0"
-                    Foreground="{DynamicResource Gray1}">
-
+                    Padding="4,0,0,0"
+                    Foreground="{DynamicResource Black2}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PasswordChanged">
                             <i:InvokeCommandAction Command="{Binding PasswordConfirmChangedCommand}" 
@@ -214,63 +226,20 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </PasswordBox>
-
             </Grid>
-            <Grid
-                Width="270"
-                Height="50"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Top">
-                <materialDesign:PackIcon
-                    Kind="KeyOutline"
-                    Width="30" 
-                    Foreground="{StaticResource Gray1}"
-                    Height="30"
-                    VerticalAlignment="Bottom"/>
-                <PasswordBox
-                    x:Name="pwbKey"
-                    materialDesign:HintAssist.Hint="Nhập mã xác thực" 
-                    Margin="0" 
-                    Width="220" 
-                    Height="50" 
-                    HorizontalAlignment="Right" 
-                    BorderBrush="{StaticResource Primary}"
-                    Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
-                    FontSize="18" 
-                    TabIndex="0" 
-                    VerticalAlignment="Center" 
-                    CaretBrush="{StaticResource Primary}" 
-                    FontWeight="SemiBold" 
-                    Padding="2,0,0,0" 
-                    Foreground="{DynamicResource Gray1}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PasswordChanged">
-                            <i:InvokeCommandAction Command="{Binding KeyCommand}" 
-                                                   CommandParameter="{Binding ElementName=pwbKey}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </PasswordBox>
-
-            </Grid>
-        </Grid>
+        </StackPanel>
         <Button
-            Background="{StaticResource Primary}"
-            IsDefault="True"
             x:Name="btnSignUp"
+            IsDefault="True"
             Command="{Binding SignUpCommand}"
             CommandParameter="{Binding ElementName=wdSignUp}"
-            FocusVisualStyle="{x:Null}"
+            Style="{StaticResource PrimaryButton}"
             Content="Đăng ký"
             FontSize="20"
-            FontWeight="Bold"
-            Height="40" 
-            Width="220"
-            materialDesign:ButtonAssist.CornerRadius="4"
+            Height="40"
             ToolTip="Đăng ký" 
-            VerticalAlignment="Top" 
-            Margin="0,490,0,0" 
-            HorizontalAlignment="Center" 
-            BorderThickness="0">
+            Margin="60,0,60,80" 
+            VerticalAlignment="Bottom">
             <Button.IsEnabled>
                 <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
                               Mode="TwoWay">
@@ -280,27 +249,21 @@
             </Button.IsEnabled>
         </Button>
         <Button
-             x:Name="btnLogin" 
-            Command="{Binding OpenLoginWinDowCommand}"
+            x:Name="btnLogin" 
+            Style="{StaticResource MaterialDesignOutlinedButton}"
+            Command="{Binding OpenLoginWindowCommand}"
             CommandParameter="{Binding ElementName=wdSignUp}"
-            Content="Đăng nhập" 
+            Content="Thoát" 
             ToolTip="Đăng nhập"
-            HorizontalAlignment="Center" 
-            Height="30" 
+            Height="34" 
             Width="120" 
-            VerticalAlignment="Top" 
-            Padding="0" 
-            HorizontalContentAlignment="Center" 
-            VerticalContentAlignment="Center" 
-            FontSize="18" 
-            Margin="0,550,0,0" 
-            Foreground="{StaticResource Secondary}" 
-            FontWeight="Medium" 
-            Cursor="Hand"
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            IsTabStop="False"
-            FocusVisualStyle="{x:Null}">
+            Padding="0"
+            BorderThickness="2"
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Bottom" 
+            materialDesign:ButtonAssist.CornerRadius="2"
+            FontSize="16" 
+            Margin="0,0,0,30" >
         </Button>
     </Grid>
     

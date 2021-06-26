@@ -10,13 +10,19 @@
     mc:Ignorable="d" 
     x:Name="ucSearchGoods"
     Height="100" 
-    DataContext="{StaticResource ImportGoodsVM}"
-    Margin="0,0,0,2">
+    Width="Auto"
+    ToolTip="Chọn mặt hàng"
+    DataContext="{StaticResource ImportGoodsVM}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="2"
+            Fill="{StaticResource Light}"
+            Height="1"
+            VerticalAlignment="Top"/>
         <Rectangle 
             Grid.ColumnSpan="2"
             Fill="{StaticResource Light}"
@@ -35,52 +41,48 @@
             x:Name="imgGoods"
             Grid.Column="0" 
             Margin="10"/>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+        <StackPanel 
+            Grid.Column="1">
+            <TextBlock 
+                Style="{StaticResource Text}"
+                Text="SP00001" 
+                x:Name="txbId" 
+                HorizontalAlignment="Left" Margin="0,6,0,0" Height="Auto"/>
             <TextBlock 
                 x:Name="txbName"
                 Grid.Row="0"
-                FontWeight="UltraBlack"
-                Text="Tên sản phẩm" 
-                VerticalAlignment="Center" 
-                Margin="20,0"/>
+                Style="{StaticResource Text}"
+                FontWeight="Bold"
+                Foreground="{StaticResource Black1}"
+                Text="Tên sản phẩm Tên sản phẩm Tên sản phẩm Tên sản phẩm Tên sản phẩm Tên sản phẩm" 
+                MaxWidth="320"
+                TextTrimming="CharacterEllipsis"
+                Margin="0,4,20,14" 
+                FontSize="18"
+                HorizontalAlignment="Left" 
+                TextAlignment="Left" />
             <StackPanel 
-                Grid.Row="1" 
                 Orientation="Horizontal"
-                Margin="20,0"
-                VerticalAlignment="Center">
-                <TextBlock 
-                    Style="{StaticResource Text}"
-                    Text="SP00001" 
-                    x:Name="txbId"/>
+                HorizontalAlignment="Left" >
                 <TextBlock 
                     Text="Giá nhập: " 
-                    Style="{StaticResource Text}"
-                    Margin="30,0,0,0"/>
+                    Style="{StaticResource Text}"/>
                 <TextBlock
                     x:Name="txbImportPrice" 
                     Style="{StaticResource Text}"
                     Text="700000"/>
-            </StackPanel>
-            <StackPanel 
-                Grid.Row="2" 
-                VerticalAlignment="Center"
-                Margin="20,0" 
-                Orientation="Horizontal">
                 <TextBlock 
                     Style="{StaticResource Text}"
-                    Text="Tồn kho: "/>
+                    Text="Tồn kho: " 
+                    Margin="40,0,0,0"/>
                 <TextBlock
                     Style="{StaticResource Text}"
                     x:Name="txbQuantity"
                     Text="10 "/>
             </StackPanel>
-        </Grid>
+        </StackPanel>
         <Button 
+            Visibility="Collapsed"
             Grid.ColumnSpan="2"
             FocusVisualStyle="{x:Null}"
             Command="{Binding SelectGoodsCommand}"

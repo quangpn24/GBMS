@@ -14,6 +14,7 @@ namespace GemstonesBusinessManagementSystem.Models
         private long moneyPerShift;
         private long moneyPerFault;
         private int standardWorkDays;
+        private bool isDeleted;
 
         public int IdEmployeePosition { get => idEmployeePosition; set => idEmployeePosition = value; }
         public string Position { get => position; set => position = value; }
@@ -21,12 +22,14 @@ namespace GemstonesBusinessManagementSystem.Models
         public long MoneyPerShift { get => moneyPerShift; set => moneyPerShift = value; }
         public long MoneyPerFault { get => moneyPerFault; set => moneyPerFault = value; }
         public int StandardWorkDays { get => standardWorkDays; set => standardWorkDays = value; }
+        public bool IsDeleted { get => isDeleted; set => isDeleted = value; }
 
         public EmployeePosition()
         {
         }
 
-        public EmployeePosition(int id, string pos, long salarybase, long shift, long fault, int days)
+        public EmployeePosition(int id, string pos, long salarybase, long shift, long fault, 
+            int days, bool deleted = false)
         {
             idEmployeePosition = id;
             position = pos;
@@ -34,6 +37,7 @@ namespace GemstonesBusinessManagementSystem.Models
             moneyPerShift = shift;
             moneyPerFault = fault;
             standardWorkDays = days;
+            isDeleted = deleted;
         }
     }
 }

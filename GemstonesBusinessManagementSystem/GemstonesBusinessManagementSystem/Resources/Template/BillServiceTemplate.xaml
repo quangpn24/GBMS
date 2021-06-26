@@ -24,48 +24,37 @@
             <RowDefinition Height="140" />
         </Grid.RowDefinitions>
         <Grid>
-            <Grid 
+            <StackPanel 
                 HorizontalAlignment="Left"
                 Height="70"
                 Margin="33,15,0,0"
                 VerticalAlignment="Top"
-                Width="350">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Image 
-                    x:Name="imgStoreAvatar"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="70"
-                    Height="70"/>
-                <StackPanel 
-                    Grid.Column="1">
-                    <TextBlock 
-                        x:Name="txbStoreName"
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        Margin="10,8,0,0"
-                        TextWrapping="Wrap"
-                        Text="PNJ"
-                        VerticalAlignment="Bottom"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        FontFamily="Microsoft PhagsPa"
-                        Foreground="{DynamicResource Primary}" />
-                    <TextBlock
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        Margin="10,0,0,0"
-                        TextWrapping="Wrap"
-                        Text="Tagline space here"
-                        VerticalAlignment="Bottom"
-                        FontSize="14"
-                        FontWeight="Medium"
-                        Foreground="{DynamicResource Gray2}" />
-                </StackPanel>
-            </Grid>
+                Width="360">
+                <TextBlock 
+                    x:Name="txbStoreName"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    TextWrapping="NoWrap"
+                    Width="360"
+                    Text="PNJ"
+                    VerticalAlignment="Bottom"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    FontFamily="Microsoft PhagsPa"
+                    Foreground="{DynamicResource Primary}" />
+                <TextBlock
+                    x:Name="txbStoreAddress"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Bottom"
+                    FontSize="14"
+                    TextTrimming="CharacterEllipsis"
+                    Height="40"
+                    MaxWidth="220"
+                    FontWeight="Medium"
+                    Foreground="{DynamicResource Gray1}" />
+            </StackPanel>
             <TextBlock 
                 Text="PHIẾU DỊCH VỤ"
                 Grid.Column="1"
@@ -88,56 +77,34 @@
                 HorizontalAlignment="Left"
                 Margin="30,0,0,0"
                 VerticalAlignment="Center"
-                Width="240">
+                Width="300">
                 <TextBlock 
                     TextWrapping="Wrap"
                     Text="Thông tin khách hàng:"
                     FontSize="14"
                     FontWeight="Bold"
-                    Foreground="{DynamicResource Gray1}" />
+                    Foreground="{DynamicResource Primary}" />
                 <Grid 
-                    Margin="0">
+                    Margin="0,5,0,0">
                     <TextBlock 
                         TextWrapping="Wrap"
                         Text="Khách hàng:"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black1}"
                         FontSize="14"
                         HorizontalAlignment="Left" />
                     <TextBlock 
                         x:Name="txbName"
-                        TextWrapping="Wrap"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
                         Text="Tên"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black2}"
                         HorizontalAlignment="Right"
                         FontSize="14"
-                        FlowDirection="RightToLeft"
-                        Width="150" />
-                </Grid>
-                <Grid 
-                    Margin="0">
-                    <TextBlock 
-                        TextWrapping="Wrap"
-                        Text="Địa chỉ:"
-                        FontWeight="SemiBold"
-                        Margin="0"
-                        Foreground="{DynamicResource Gray1}"
-                        FontSize="14"
-                        HorizontalAlignment="Left" />
-                    <TextBlock 
-                        x:Name="txbAddress"
-                        TextWrapping="Wrap"
-                        Text="Địa chỉ"
-                        FontWeight="SemiBold"
-                        Margin="0"
-                        Foreground="{DynamicResource Gray1}"
-                        HorizontalAlignment="Right"
-                        FontSize="14"
-                        FlowDirection="RightToLeft"
-                        Width="150" />
+                        MaxWidth="180" />
                 </Grid>
                 <Grid 
                     Margin="0">
@@ -146,7 +113,7 @@
                         Text="Số điện thoại:"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black1}"
                         FontSize="14"
                         HorizontalAlignment="Left" />
                     <TextBlock 
@@ -155,26 +122,47 @@
                         Text="SĐT"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black2}"
                         HorizontalAlignment="Right"
                         FontSize="14"
                         FlowDirection="RightToLeft"
                         Width="100" />
                 </Grid>
+                <Grid 
+                    Margin="0">
+                    <TextBlock 
+                        TextWrapping="Wrap"
+                        Text="Địa chỉ:"
+                        FontWeight="SemiBold"
+                        Margin="0"
+                        Foreground="{DynamicResource Black1}"
+                        FontSize="14"
+                        HorizontalAlignment="Left" />
+                    <TextBlock 
+                        x:Name="txbAddress"
+                        TextWrapping="Wrap"
+                        TextTrimming="CharacterEllipsis"
+                        Text="Địa chỉ"
+                        FontWeight="SemiBold"
+                        Foreground="{DynamicResource Black2}"
+                        HorizontalAlignment="Right"
+                        FontSize="14"
+                        MaxHeight="40"
+                        MaxWidth="180" />
+                </Grid>
             </StackPanel>
             <StackPanel 
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right"
-                Margin="0,0,53,0"
+                Margin="0,20,30,0"
                 Width="240">
-                <Grid 
-                    Margin="0">
+                <Grid>
                     <TextBlock 
                         TextWrapping="Wrap"
                         Text="Mã phiếu:"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black1}"
                         FontSize="14"
                         Width="70"
                         HorizontalAlignment="Left" />
@@ -182,9 +170,9 @@
                         x:Name="txbId"
                         TextWrapping="Wrap"
                         Text="PH0001"
-                        FontWeight="SemiBold"
+                        FontWeight="Bold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Primary}"
                         HorizontalAlignment="Right"
                         FontSize="14" />
                 </Grid>
@@ -195,7 +183,7 @@
                         Text="Ngày lập:"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black1}"
                         FontSize="14"
                         Width="70"
                         HorizontalAlignment="Left" />
@@ -205,7 +193,7 @@
                         Text="14/12/2020"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black2}"
                         HorizontalAlignment="Right"
                         FontSize="14" />
                 </Grid>
@@ -216,16 +204,18 @@
                         Text="Nhân viên:"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        Foreground="{DynamicResource Black1}"
                         FontSize="14"
                         Width="70"
                         HorizontalAlignment="Left" />
                     <TextBlock 
                         x:Name="txbEmployeeName"
-                        TextWrapping="Wrap"
+                        TextWrapping="NoWrap"
                         FontWeight="SemiBold"
                         Margin="0"
-                        Foreground="{DynamicResource Gray1}"
+                        MaxWidth="140"
+                        TextTrimming="CharacterEllipsis"
+                        Foreground="{DynamicResource Black2}"
                         HorizontalAlignment="Right"
                         FontSize="14" />
                 </Grid>
@@ -359,10 +349,16 @@
                     TextAlignment="Center"
                     FontSize="13" />
             </Grid>
-            <StackPanel 
+            <Border
                 Margin="30,40,30,0"
-                x:Name="stkBillServiceInfo">
-            </StackPanel>
+                BorderBrush="{DynamicResource Light}"
+                CornerRadius="0,0,4,4"
+                BorderThickness="2,0,2,2" 
+                VerticalAlignment="Top" >
+                <StackPanel 
+                    x:Name="stkBillServiceInfo">
+                </StackPanel>
+            </Border>
         </Grid>
         <Grid
             Grid.Row="3">
@@ -376,7 +372,7 @@
                     Text="Tổng tiền trả trước"
                     FontWeight="SemiBold"
                     Margin="0"
-                    Foreground="{DynamicResource Gray2}"
+                    Foreground="{DynamicResource Black1}"
                     FontSize="16"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" />
@@ -386,20 +382,10 @@
                     Text="2.000.000"
                     FontWeight="SemiBold"
                     Margin="0,0,10,0"
-                    Foreground="{DynamicResource White}"
+                    Foreground="{DynamicResource Black2}"
                     FontSize="18"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Panel.ZIndex="1" />
-                <Rectangle 
-                    Fill="{DynamicResource Primary}"
-                    Height="30"
-                    Width="170"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Margin="0"
-                    RadiusX="4"
-                    RadiusY="4" />
+                    VerticalAlignment="Center" />
             </Grid>
             <Grid
                 Margin="0,20,30,0"
@@ -411,7 +397,7 @@
                     Text="Tổng tiền"
                     FontWeight="SemiBold"
                     Margin="0"
-                    Foreground="{DynamicResource Gray2}"
+                    Foreground="{DynamicResource Black1}"
                     FontSize="16"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" />
@@ -421,20 +407,10 @@
                     Text="2.000.000"
                     FontWeight="SemiBold"
                     Margin="0,0,10,0"
-                    Foreground="{DynamicResource White}"
+                    Foreground="{DynamicResource Black2}"
                     FontSize="18"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Panel.ZIndex="1" />
-                <Rectangle 
-                    Fill="{DynamicResource Primary}"
-                    Height="30"
-                    Width="170"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Margin="0"
-                    RadiusX="4"
-                    RadiusY="4" />
+                    VerticalAlignment="Center" />
             </Grid>
             <Grid
                 Margin="0,0,30,20"
@@ -446,7 +422,7 @@
                     Text="Tổng tiền còn lại"
                     FontWeight="SemiBold"
                     Margin="0"
-                    Foreground="{DynamicResource Gray2}"
+                    Foreground="{DynamicResource Black1}"
                     FontSize="16"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" />

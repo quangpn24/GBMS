@@ -8,9 +8,10 @@
     mc:Ignorable="d" 
     x:Name="ucSaleGoods"
     DataContext="{StaticResource SaleVM}"
-    Width="150" 
+    ToolTip="Chọn sản phẩm"
+    Width="160" 
     Height="200" 
-    Margin="4,2,4,8"
+    Margin="4,4,4,8"
     Cursor="Hand">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
@@ -22,7 +23,7 @@
         Background="{DynamicResource White}" 
         BorderBrush="{DynamicResource Light}"
         BorderThickness="2" 
-        CornerRadius="4">
+        CornerRadius="2">
         <Grid Cursor="Hand" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="130"></RowDefinition>
@@ -44,32 +45,26 @@
             <Image 
                 x:Name="imgGood" 
                 Grid.Row="0" 
-                Margin="4,4,4,0" 
+                Margin="8,8,8,0" 
                 Source="/GemstonesBusinessManagementSystem;component/Resources/Images/avatar.jpg"/>
             <TextBlock 
                 x:Name="txbName" 
                 Text="Tên hàng" 
                 Style="{StaticResource Text}"
                 TextTrimming="CharacterEllipsis" 
-                HorizontalAlignment="Center" 
                 Margin="10,0" 
-                TextWrapping="Wrap"
                 Grid.Row="1" 
-                Foreground="{DynamicResource Gray1}" 
-                FontSize="14"
-                VerticalAlignment="Center" 
-                TextAlignment="Center"/>
+                MaxWidth="140"
+                Foreground="{DynamicResource Black1}" 
+                FontSize="14"/>
             <TextBlock 
                 Name="txbPrice"
                 Text="100.000Đ" 
-                TextTrimming="WordEllipsis" 
-                HorizontalAlignment="Center"
+                Style="{StaticResource Text}"
+                TextTrimming="CharacterEllipsis" 
+                MaxWidth="140"
                 Margin="20,0" 
                 Grid.Row="2" 
-                TextWrapping="Wrap"
-                VerticalAlignment="Center" 
-                FontSize="16" 
-                FontWeight="SemiBold" 
                 Foreground="{DynamicResource Primary}"/>
         </Grid>
     </Border>

@@ -96,6 +96,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void LoadServicesToView(List<Service> services, MainWindow mainWindow)
         {
+            int idBillService = BillServiceDAL.Instance.GetMaxId() + 1;
+            mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService);
+            mainWindow.txbDateBillService.Text = DateTime.Today.ToString("dd/MM/yyyy");
             mainWindow.wrpSaleService.Children.Clear();
             foreach (var service in services)
             {
@@ -227,13 +230,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                                 paidMoney = double.Parse(temp.txtPaidMoney.Text);
                             if (!String.IsNullOrEmpty(temp.txtTips.Text))
                                 tips = double.Parse(temp.txtTips.Text);
-                            BillServiceInfo billServiceInfo = new BillServiceInfo(idBillService, ConvertToID(temp.txbSerial.Text), double.Parse(temp.txbPrice.Text), tips, Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
+                            BillServiceInfo billServiceInfo = new BillServiceInfo(ConvertToID(mainWindow.txbIdBillService.Text), ConvertToID(temp.txbSerial.Text), double.Parse(temp.txbPrice.Text), tips, Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
                             BillServiceInfoDAL.Instance.Insert(billServiceInfo);
                             customer.TotalPrice += Convert.ToInt64(billService.TotalPaidMoney);
                             //UpdateMembership(customer);
                             //CustomerDAL.Instance.AddOrUpdate(customer, true);
                         }
-                        mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService);
 
                         var result = CustomMessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (result == MessageBoxResult.Yes)
@@ -243,13 +245,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         UpdateMembership(ConvertToID(mainWindow.txbIdCustomer.Text), totalSpending + Convert.ToInt64(totalPaidMoney));
                         CustomerViewModel customerVM = (CustomerViewModel)mainWindow.grdCustomer.DataContext;
                         customerVM.LoadCustomerToView(mainWindow, 0);
+                        
                         mainWindow.stkPickedService.Children.Clear();
+                        mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService + 1);
                         TotalMoney = TotalPaidMoney = "0";
                         TotalServices = 0;
                         mainWindow.txbIdCustomer.Text = "";
                         mainWindow.txbNameCustomer.Text = "";
                         mainWindow.txbAddressCustomer.Text = "";
                         mainWindow.txbPhoneCustomer.Text = "";
+                        mainWindow.txbClassCustomer.Text = "";
                     }
                     else
                     {
@@ -310,7 +315,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billServiceTemplate.txbPhoneNumber.Text = mainWindow.txbPhoneCustomer.Text;
             billServiceTemplate.txbEmployeeName.Text = CurrentAccount.Name;
             billServiceTemplate.txbId.Text = mainWindow.txbIdBillService.Text;
-            billServiceTemplate.txbDate.Text = DateTime.Now.ToShortDateString();
+            billServiceTemplate.txbDate.Text = mainWindow.txbDateBillService.Text;
             billServiceTemplate.txbTotal.Text = mainWindow.txbTotalBillService.Text;
             billServiceTemplate.txbTotalPaid.Text = mainWindow.txbTotalPaidBillService.Text;
             billServiceTemplate.txbRest.Text = SeparateThousands((double.Parse(mainWindow.txbTotalBillService.Text) - double.Parse(mainWindow.txbTotalPaidBillService.Text)).ToString());
@@ -355,7 +360,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     billServiceTemplate.stkBillServiceInfo.Children.Clear();
                 }
             }
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, mainWindow.txbIdBillService.Text);
             CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         public void OpenPickCustomerWd(MainWindow mainWindow)
@@ -366,6 +371,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.txbNameCustomer.Text = pickCustomerWindow.txbName.Text;
             mainWindow.txbAddressCustomer.Text = pickCustomerWindow.txbAddress.Text;
             mainWindow.txbPhoneCustomer.Text = pickCustomerWindow.txbPhoneNumber.Text;
+            mainWindow.txbClassCustomer.Text = pickCustomerWindow.txbRank.Text;
             if (!String.IsNullOrEmpty(pickCustomerWindow.txbSpending.Text))
             {
                 totalSpending = ConvertToNumber(pickCustomerWindow.txbSpending.Text);

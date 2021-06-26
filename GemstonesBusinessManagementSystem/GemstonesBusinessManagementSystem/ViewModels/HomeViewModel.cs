@@ -136,14 +136,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case 20:
                     window.txbTabName.Text = "Tồn kho";
                     window.grdStock.Visibility = Visibility.Visible;
+                    StockViewModel stockVM = (StockViewModel)window.grdStock.DataContext;
+                    stockVM.LoadStockList(window, 0);
                     CloseExpander(window, 1);
                     window.btnStock.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnStock.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     break;
                 //nhập hàng
                 case 21:
-                    window.txbTabName.Text = "Nhập hàng";
+                    window.txbTabName.Text = "Nhập kho";
                     window.grdImport.Visibility = Visibility.Visible;
+                    ImportGoodsViewModel importVM = (ImportGoodsViewModel)window.grdImport.DataContext;
+                    importVM.Init(window);
                     CloseExpander(window, 1);
                     window.btnImport.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnImport.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
@@ -175,6 +179,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case 40:
                     window.txbTabName.Text = "Quản lý nhân viên";
                     window.grdEmployee.Visibility = Visibility.Visible;
+                    EmployeeViewModel employeeVM = (EmployeeViewModel)window.grdEmployee.DataContext;
+                    employeeVM.LoadEmployeeList(window, 0);
                     CloseExpander(window, 3);
                     window.btnEmployee.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
                     window.btnEmployee.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);

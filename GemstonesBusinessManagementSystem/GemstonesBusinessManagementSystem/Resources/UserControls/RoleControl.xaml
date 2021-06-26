@@ -22,54 +22,34 @@
         <TextBlock 
             x:Name="txbId"
             Grid.Column="0"
-            Style="{StaticResource Text}"
-            HorizontalAlignment="Center" 
-            Margin="0"
-            TextWrapping="Wrap" 
-            Text="CV001" 
-            VerticalAlignment="Center"/>
+            Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbRoleName"
             Style="{StaticResource Text}"
             Grid.Column="1"
-            HorizontalAlignment="Left" 
-            TextWrapping="Wrap" 
-            Text="Quan ly" 
-            VerticalAlignment="Center" 
-            Margin="20,0,0,0" />
+            MaxWidth="360"
+            TextTrimming="CharacterEllipsis"
+            Margin="20,0,0,0" 
+            HorizontalAlignment="Left" />
         <Button 
             x:Name="btnView"
             Grid.Column="2" 
+            Style="{StaticResource TransperantButton}"
             Command="{Binding ViewPermissionCommand}"
             CommandParameter="{Binding ElementName=ucRole}"
-            ToolTip="Xem thông tin"
-            Height="28"
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}" 
-            Foreground="{DynamicResource Primary}" 
-            VerticalAlignment="Center" 
-            FocusVisualStyle="{x:Null}"
-            HorizontalAlignment="Center" 
-            Padding="0" 
-            Margin="0">
+            ToolTip="Sửa quyền truy cập"
+            Height="30"
+            Width="30">
             <materialDesign:PackIcon 
                 Kind="SquareEditOutline" 
                 Width="22"
-                Height="22"/>
+                Height="22"
+                Foreground="{StaticResource Primary}"/>
         </Button>
         <Rectangle 
             Grid.ColumnSpan="6"           
             Fill="{StaticResource Light}" 
             Height="2"
             VerticalAlignment="Bottom"/>
-        <Rectangle 
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Left"/>
-        <Rectangle 
-            Grid.Column="5"
-            Fill="{StaticResource Light}"
-            Width="2" 
-            HorizontalAlignment="Right"/>
     </Grid>
 </UserControl>

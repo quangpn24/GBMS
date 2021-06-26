@@ -150,14 +150,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billServiceTemplateControl.txbTotal.Text = SeparateThousands((ConvertToNumber(billServiceTemplateControl.txbCalculateMoney.Text) * billServiceInfos[i].Quantity).ToString());
                 if (billServiceInfos[i].Status == 1)  // Đã giao thì bỏ button swap và chuyển màu sang success
                 {
-                    if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
-                    {
-                        billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
-                    }
                     billServiceTemplateControl.txbDeliveryDate.Text = billServiceInfos[i].DeliveryDate.ToShortDateString();
                     billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
                     billServiceTemplateControl.txbStatus.Text = "Đã giao";
-                    billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
                     billServiceTemplateControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
                 }
                 else
@@ -167,7 +162,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 main.stkBillServiceInfo.Children.Add(billServiceTemplateControl);
             }
-            main.btnPrintBS.Visibility = Visibility.Visible;
+            main.btnPrintBS.IsEnabled = true;
         }
         public void ConfirmDeliveried(BillServiceTemplateControl billServiceTemplateControl)
         {
@@ -180,14 +175,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 CustomMessageBox.Show("Cập nhật giao hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 Customer customer = CustomerDAL.Instance.FindById(checkedItem.txbIdCustomer.Text);
                 UpdateMembership(customer, ConvertToNumber(billServiceTemplateControl.txbRest.Text));
-                if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
-                {
-                    billServiceTemplateControl.Margin = new Thickness(0, 0, 10, 0);
-                }
                 checkedItem.btnDeleteBillService.Visibility = Visibility.Hidden;
                 checkedItem.txbRest.Text = main.txbRestBS.Text = (double.Parse(main.txbRestBS.Text) - double.Parse(billServiceTemplateControl.txbRest.Text)).ToString();
                 billServiceTemplateControl.txbRest.Text = "0";
-                billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
                 billServiceTemplateControl.txbStatus.Text = "Đã giao";
                 billServiceTemplateControl.txbDeliveryDate.Text = DateTime.Now.ToShortDateString();
                 billServiceTemplateControl.btnSwapStatus.IsHitTestVisible = false;
@@ -212,7 +202,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //billServiceTemplateControl.icStatus.Kind = MaterialDesignThemes.Wpf.PackIconKind.TickCircleOutline;
             //billServiceTemplateControl.btnSwapStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
         }
-
         void UpdateMembership(Customer customer, long paidMoney)
         {
             var totalSpending = customer.TotalPrice + paidMoney;
@@ -276,6 +265,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             List<Parameter> parameters = ParameterDAL.Instance.GetData();
             billServiceTemplate.txbStoreName.Text = parameters[1].Value;
+            billServiceTemplate.txbStoreAddress.Text = parameters[2].Value;
             //print 
             PrintDialog pd = new PrintDialog();
             if (pd.ShowDialog() != true) return;
@@ -310,7 +300,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     billServiceTemplate.stkBillServiceInfo.Children.Clear();
                 }
             }
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, main.txbIdBillServiceBS.Text);
 
         }
         public PageContent ConvertToPage(Grid grid)

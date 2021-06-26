@@ -21,18 +21,16 @@
                                    CommandParameter="{Binding ElementName=ucInvoice}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid
-        x:Name="grdMain"
-        Margin="0">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80" />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition Width="120" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="50" />
         </Grid.ColumnDefinitions>
         <Rectangle 
-            Grid.ColumnSpan="5"
+            Grid.ColumnSpan="6"
             Fill="{StaticResource Light}"
             Height="1"
             VerticalAlignment="Bottom"/>
@@ -43,9 +41,14 @@
         <TextBlock 
             x:Name="txbCustomerName"
             Grid.Column="1"
+            MaxWidth="130"
+            TextTrimming="CharacterEllipsis"
             Style="{StaticResource Text}"
             Margin="10,0,0,0" 
             HorizontalAlignment="Left"/>
+        <TextBlock 
+            x:Name="txbIdCustomer"
+            Visibility="Hidden"/>
         <TextBlock 
             x:Name="txbEmployeeName"
             Grid.Column="2"
@@ -56,6 +59,21 @@
             x:Name="txbPrice"
             Grid.Column="3"
             Style="{StaticResource Text}"/>
+        <Button 
+            x:Name="btnDeleteBill"
+            Grid.Column="4"
+            Command="{Binding DeleteBillCommand}"
+            CommandParameter="{Binding ElementName=ucInvoice}"
+            Style="{StaticResource TransperantButton}"
+            ToolTip="Xóa hóa đơn"
+            Height="30"
+            Width="30"
+            Foreground="{StaticResource Error}">
+            <materialDesign:PackIcon 
+                Kind="DeleteOutline"
+                Height="24"
+                Width="24"/>
+        </Button>
     </Grid>
 </UserControl>
 

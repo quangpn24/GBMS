@@ -31,6 +31,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand LoadBillCommand { get; set; }
         public ICommand PickBillCommand { get; set; }
         public ICommand PrintBillCommand { get; set; }
+        public ICommand DeleteBillCommand { get; set; }
         public ICommand ExportExcelCommand { get; set; }
 
         private InvoiceControl checkedItem;
@@ -43,7 +44,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private string employeeName;
         private string invoiceDate;
         private long quantity = 0;
-        private long total = 0;
+        private string total = null;
 
         public string CustomerName { get => customerName; set { customerName = value; OnPropertyChanged(); } }
         public string CustomerPhoneNumber { get => customerPhoneNumber; set { customerPhoneNumber = value; OnPropertyChanged(); } }
@@ -52,16 +53,55 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public string EmployeeName { get => employeeName; set { employeeName = value; OnPropertyChanged(); } }
         public string InvoiceDate { get => invoiceDate; set { invoiceDate = value; OnPropertyChanged(); } }
         public long Quantity { get => quantity; set { quantity = value; OnPropertyChanged(); } }
-        public string Total { get => SeparateThousands(total.ToString()); set { total = ConvertToNumber(value); OnPropertyChanged(); } }
+        public string Total { get => SeparateThousands(total); set { total = value; OnPropertyChanged(); } }
 
         public BillViewModel()
         {
             LoadBillCommand = new RelayCommand<MainWindow>(p => true, p => LoadBill(p));
             PickBillCommand = new RelayCommand<InvoiceControl>(p => true, p => PickBill(p));
             PrintBillCommand = new RelayCommand<MainWindow>(p => true, p => Print(p));
+            DeleteBillCommand = new RelayCommand<InvoiceControl>(p => true, p => DeleteBill(p));
             ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
         }
-
+        void UpdateMembership(Customer customer, long paidMoney)
+        {
+            var totalSpending = customer.TotalPrice + paidMoney;
+            CustomerDAL.Instance.UpdateTotalSpending(customer.IdCustomer, totalSpending);
+            List<KeyValuePair<long, int>> membershipList = MembershipsTypeDAL.Instance.GetSortedList();
+            foreach (var mem in membershipList)
+            {
+                if (totalSpending >= mem.Key)
+                {
+                    CustomerDAL.Instance.UpdateMembership(customer.IdCustomer, mem.Value);
+                    break;
+                }
+            }
+        }
+        void DeleteBill(InvoiceControl control)
+        {
+            var confirm = MessageBox.Show("Bạn có chắc chắn muốn xóa phiếu dịch vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            string idBill = ConvertToIDString(control.txbId.Text);
+            if (confirm == MessageBoxResult.Yes)
+            {
+                BillInfoDAL.Instance.Delete(idBill);
+                BillDAL.Instance.Delete(idBill);
+                Customer customer = CustomerDAL.Instance.FindById(control.txbIdCustomer.Text);
+                customer.TotalPrice -= ConvertToNumber(control.txbPrice.Text);
+                UpdateMembership(customer, 0);
+                if (control == checkedItem)
+                {
+                    mainWindow.stkBillInfo.Children.Clear();
+                    IdBill = "";
+                    CustomerName = "";
+                    CustomerPhoneNumber = "";
+                    InvoiceDate = "";
+                    EmployeeName = "";
+                    Total = "";
+                }
+                mainWindow.stkBill.Children.Remove(control);
+                MessageBox.Show("Xóa hoá đơn thành công");
+            }
+        }
         public void LoadBill(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -84,6 +124,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 Employee employee = EmployeeDAL.Instance.GetByIdAccount(billList[i].IdAccount.ToString());
                 InvoiceControl invoiceControl = new InvoiceControl();
                 invoiceControl.txbId.Text = AddPrefix("HD", billList[i].IdBill);
+                invoiceControl.txbIdCustomer.Text = customer.IdCustomer.ToString();
                 invoiceControl.txbCustomerName.Text = customer.CustomerName;
                 invoiceControl.txbEmployeeName.Text = employee.Name;
                 invoiceControl.txbPrice.Text = SeparateThousands(billList[i].TotalMoney.ToString());
@@ -93,7 +134,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void PickBill(InvoiceControl invoiceControl)
         {
-            mainWindow.btnPrintBill.Visibility = Visibility.Visible;
+            mainWindow.btnPrintBill.IsEnabled = true;
             Bill bill = BillDAL.Instance.GetBill(ConvertToIDString(invoiceControl.txbId.Text));
             Customer customer = CustomerDAL.Instance.FindById(bill.IdCustomer.ToString());
             List<BillInfo> billInfos = BillInfoDAL.Instance.GetBillInfos(bill.IdBill.ToString());
@@ -117,8 +158,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             CustomerName = customer.CustomerName;
             CustomerPhoneNumber = customer.PhoneNumber;
             CustomerAddress = customer.Address;
-            total = bill.TotalMoney;
-            Total = total.ToString();
+            Total = bill.TotalMoney.ToString();
             mainWindow.stkBillInfo.Children.Clear();
             for (int i = 0; i < billInfos.Count; i++)
             {
@@ -151,7 +191,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             List<Parameter> parameters = ParameterDAL.Instance.GetData();
             billTemplate.txbStoreName.Text = parameters[1].Value;
             billTemplate.txbStoreAddress.Text = parameters[2].Value;
-            billTemplate.txbStorePhoneNumber.Text = parameters[3].Value;
             int numOfItems = mainWindow.stkBillInfo.Children.Count;
 
             //print
@@ -183,7 +222,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
 
-            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            pd.PrintDocument(document.DocumentPaginator, IdBill);
         }
         public PageContent ConvertToPage(Grid grid)
         {
