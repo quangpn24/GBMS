@@ -168,7 +168,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 int rs = cmd.ExecuteNonQuery();
                 if (rs == 1)
                 {
-                    MessageBox.Show("Thành công!!!", "Thông báo");
                     return true;
                 }
                 else

@@ -18,7 +18,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
     class BillServiceViewModel : BaseViewModel
     {
         private MainWindow main;
-        private BillServiceControl checkedItem;
+        public BillServiceControl checkedItem;
         public ICommand LoadBillServicesCommand { get; set; }
         public ICommand PickBillServiceCommand { get; set; }
         public ICommand ConfirmDeliveriedCommand { get; set; }
@@ -41,7 +41,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (mainWindow.dpStartDateBS.SelectedDate > mainWindow.dpEndDateBS.SelectedDate)
             {
-                MessageBox.Show("Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc!");
+                CustomMessageBox.Show("Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             main.stkBillService.Children.Clear();
@@ -69,6 +69,20 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     billServiceControl.btnDeleteBillService.Visibility = Visibility.Hidden;
                 }
                 billServiceControl.IsHitTestVisible = true;
+                if (checkedItem != null)
+                {
+                    if (checkedItem.txbId.Text == billServiceControl.txbId.Text)
+                    {
+                        billServiceControl.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        billServiceControl.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        billServiceControl.txbTotal.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        billServiceControl.txbRest.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        if (billServiceControl.txbStatus.Text == "Chưa giao")
+                        {
+                            billServiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+                        }
+                    }   
+                }
                 mainWindow.stkBillService.Children.Add(billServiceControl);
             }
         }
@@ -94,15 +108,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             }
             //Chuyển sang màu đang được chọn
-            billServiceControl.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            billServiceControl.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            billServiceControl.txbTotal.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            billServiceControl.txbRest.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            if (billServiceControl.txbStatus.Text == "Chưa giao")
-            {
-                billServiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            }
             checkedItem = billServiceControl;
+
+            checkedItem.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            checkedItem.txbNameCustomer.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            checkedItem.txbTotal.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            checkedItem.txbRest.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            if (checkedItem.txbStatus.Text == "Chưa giao")
+            {
+                checkedItem.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            }
             //Hiển thị thông tin
             main.txbIdBillServiceBS.Text = billServiceControl.txbId.Text;
             main.txbCreateDateBS.Text = billService.CreatedDate.ToShortDateString();
@@ -153,6 +168,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //billServiceInfo.PaidMoney = (billServiceInfo.Price + billServiceInfo.Tips) * billServiceInfo.Quantity;
             if (BillServiceInfoDAL.Instance.Update(billServiceInfo))
             {
+                CustomMessageBox.Show("Cập nhật giao hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 Customer customer = CustomerDAL.Instance.FindById(checkedItem.txbIdCustomer.Text);
                 UpdateMembership(customer, ConvertToNumber(billServiceTemplateControl.txbRest.Text));
                 if (main.scvBillServiceInfo.ComputedVerticalScrollBarVisibility == Visibility.Collapsed)
@@ -182,7 +198,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                MessageBox.Show("Cập nhật thất bại!");
+                CustomMessageBox.Show("Cập nhật thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             //billServiceTemplateControl.icStatus.Kind = MaterialDesignThemes.Wpf.PackIconKind.TickCircleOutline;
             //billServiceTemplateControl.btnSwapStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
@@ -218,7 +234,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void DeleteBillService(BillServiceControl billServiceControl)
         {
-            var result = MessageBox.Show("Xác nhận xóa phiếu dịch vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = CustomMessageBox.Show("Xác nhận xóa phiếu dịch vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
                 if (BillServiceInfoDAL.Instance.DeleteByIdBillService(ConvertToIDString(billServiceControl.txbId.Text)))
@@ -243,7 +259,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                         }
                         main.stkBillService.Children.Remove(billServiceControl);
-                        MessageBox.Show("Xóa phiếu dịch vụ thành công");
+                        CustomMessageBox.Show("Xóa phiếu dịch vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     }
 
                 }

@@ -59,7 +59,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (selectedYear == null || selectedMonth == null)
             {
-                MessageBox.Show("Vui lòng chọn thời gian!");
+                CustomMessageBox.Show("Vui lòng chọn thời gian!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             DataTable table = new DataTable();
@@ -95,7 +95,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     workbook.Worksheets.Add(table, "Báo cáo tồn kho");
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
-                MessageBox.Show("Xuất danh sách thành công!");
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
         }
         void Search(MainWindow window)

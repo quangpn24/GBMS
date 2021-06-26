@@ -176,11 +176,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (ParameterDAL.Instance.UpdatePrepayment(PrepaymentPercent))
             {
                 parameters[0].Value = PrepaymentPercent;
-                MessageBox.Show("Thành công!");
+                CustomMessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
-                MessageBox.Show("Thất bại!");
+                CustomMessageBox.Show("Cập nhật thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         void UpdateStoreInfo(MainWindow main)
@@ -209,7 +209,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ImageBrush imageBrush = (ImageBrush)main.grdSelectImage.Background;
             if (imageBrush == null)
             {
-                MessageBox.Show("Vui lòng chọn ảnh!");
+                CustomMessageBox.Show("Vui lòng chọn ảnh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
@@ -220,7 +220,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                MessageBox.Show("SĐT không bao gồm chữ cái");
+                CustomMessageBox.Show("SĐT không bao gồm chữ cái!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 main.txtStorePhoneNumber.Focus();
                 PhoneNumber = null;
                 return;
@@ -237,13 +237,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 parameters[3].Value = PhoneNumber;
                 parameters[4].Value = Email;
                 parameters[5].Value = Convert.ToBase64String(imgByteArr);
-                MessageBox.Show("Thành công!");
+                CustomMessageBox.Show("Cập nhật thông tin cửa hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 main.imgStore.Source = imageBrush.ImageSource;
                 main.txbStoreName.Text = parameters[1].Value;
             }
             else
             {
-                MessageBox.Show("Thất bại!");
+                CustomMessageBox.Show("Cập nhật thông tin cửa hàng thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -299,22 +299,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(Name))
             {
-                MessageBox.Show("Nhập tên");
+                CustomMessageBox.Show("Vui lòng nhập tên!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (string.IsNullOrEmpty(BirthDate))
             {
-                MessageBox.Show("Nhập ngày sinh");
+                CustomMessageBox.Show("Vui lòng nhập ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (string.IsNullOrEmpty(UserAddress))
             {
-                MessageBox.Show("Nhập địa chỉ");
+                CustomMessageBox.Show("Vui lòng nhập địa chỉ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (string.IsNullOrEmpty(UserPhoneNumber))
             {
-                MessageBox.Show("Nhập số điện thoại");
+                CustomMessageBox.Show("Vui lòng nhập số điện thoại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             byte[] imgByteArr;
@@ -322,7 +322,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ImageBrush imageBrush = (ImageBrush)window.grdSelectImage.Background;
             if (imageBrush == null)
             {
-                MessageBox.Show("Vui lòng chọn ảnh!");
+                CustomMessageBox.Show("Vui lòng chọn ảnh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
@@ -332,7 +332,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                MessageBox.Show("SĐT không bao gồm chữ cái");
+                CustomMessageBox.Show("SĐT không bao gồm chữ cái!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 main.txtStorePhoneNumber.Focus();
                 PhoneNumber = null;
                 return;
@@ -351,11 +351,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             employee.ImageFile = imgByteArr;
             if (EmployeeDAL.Instance.UpdateUserInfo(employee))
             {
-                MessageBox.Show("Thành công!");
+                CustomMessageBox.Show("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
-                MessageBox.Show("Thất bại!");
+                CustomMessageBox.Show("Cập nhật thông tin cá nhân thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             CurrentAccount.Name = Name;
             CurrentAccount.ImageFile = imgByteArr;
@@ -415,38 +415,44 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(window.pwbPassword.Password))
             {
-                MessageBox.Show("Nhập mật khẩu");
+                CustomMessageBox.Show("Vui lòng nhập mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.pwbPassword.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.pwbNewPassword.Password))
             {
-                MessageBox.Show("Nhập mật khẩu");
+                CustomMessageBox.Show("Vui lòng nhập mật khẩu mới!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.pwbNewPassword.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.pwbConfirmPassword.Password))
             {
-                MessageBox.Show("Nhập mật khẩu");
+                CustomMessageBox.Show("Vui lòng nhập mật khẩu xác nhận!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.pwbConfirmPassword.Focus();
                 return;
             }
             if (MD5Hash(window.pwbPassword.Password) != AccountDAL.Instance.GetPasswordById(CurrentAccount.IdAccount.ToString()))
             {
-                MessageBox.Show("Mật khẩu không đúng");
+                CustomMessageBox.Show("Mật khẩu không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.pwbPassword.Focus();
                 return;
             }
             if (window.pwbConfirmPassword.Password != window.pwbNewPassword.Password)
             {
-                MessageBox.Show("Nhập lại mật khẩu không trùng khớp");
+                CustomMessageBox.Show("Mật khẩu xác nhận không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.pwbNewPassword.Password = null;
                 window.pwbConfirmPassword.Password = null;
                 window.pwbNewPassword.Focus();
                 return;
             }
-            AccountDAL.Instance.UpdatePasswordByUsername("admin", MD5Hash(window.pwbNewPassword.Password));
-            MessageBox.Show("Thành công");
+            if(AccountDAL.Instance.UpdatePasswordByUsername("admin", MD5Hash(window.pwbNewPassword.Password)))
+            {
+                CustomMessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            else
+            {
+                CustomMessageBox.Show("Đổi mật khẩu thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             window.Close();
         }
         void OpenChangePasswordWindow(MainWindow main)

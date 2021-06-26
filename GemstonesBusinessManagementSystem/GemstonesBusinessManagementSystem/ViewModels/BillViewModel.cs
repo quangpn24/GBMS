@@ -63,7 +63,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (mainWindow.dpStartDateBill.SelectedDate > mainWindow.dpEndDateBill.SelectedDate)
             {
-                MessageBox.Show("Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc!");
+                CustomMessageBox.Show("Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             mainWindow.stkBill.Children.Clear();

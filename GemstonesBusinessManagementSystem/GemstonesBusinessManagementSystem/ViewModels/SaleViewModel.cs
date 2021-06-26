@@ -130,12 +130,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(IdCustomer))
             {
-                MessageBox.Show("Vui lòng nhập thông tin khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập thông tin khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (mainWindow.stkSelectedGoods.Children.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn sản phẩm!");
+                CustomMessageBox.Show("Vui lòng chọn sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             Bill bill = new Bill(ConvertToID(window.txbIdBillSale.Text), CurrentAccount.IdAccount,
@@ -160,7 +160,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             if (isSuccess)
             {
-                var result = MessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?",
+                var result = CustomMessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?",
                     "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
@@ -169,7 +169,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                MessageBox.Show("Thanh toán thất bại!");
+                CustomMessageBox.Show("Thanh toán thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             UpdateMembership(ConvertToID(IdCustomer), CustomerSpending + total);
             //CustomerDAL.Instance.UpdateTotalSpending(ConvertToID(IdCustomer), total);
@@ -248,7 +248,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (int.Parse(control.txbQuantity.Text) == 0)
             {
-                MessageBox.Show("Đã hết hàng!");
+                CustomMessageBox.Show("Đã hết hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             SelectedGoodsControl selectedControl = new SelectedGoodsControl();
@@ -270,7 +270,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     if (int.Parse(control.txbQuantity.Text) == temp.nmsQuantity.Value)
                     {
-                        MessageBox.Show("Đã hết hàng!");
+                        CustomMessageBox.Show("Đã hết hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     temp.nmsQuantity.Value++;

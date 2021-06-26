@@ -121,10 +121,22 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     throw new Exception();
                 }
+                else
+                {
+                    if(isUpdating)
+                    {
+                        CustomMessageBox.Show("Cập nhật nhân viên thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
+                    else
+                    {
+                        CustomMessageBox.Show("Thêm nhân viên hành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
+                }
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message.ToString());
+                CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 return;
             }
             finally
@@ -399,7 +411,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message.ToString());
+                CustomMessageBox.Show(e.Message.ToString(), "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             finally

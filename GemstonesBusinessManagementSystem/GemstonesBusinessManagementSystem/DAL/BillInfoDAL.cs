@@ -41,7 +41,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message.ToString());
+                CustomMessageBox.Show(e.Message.ToString(), "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
