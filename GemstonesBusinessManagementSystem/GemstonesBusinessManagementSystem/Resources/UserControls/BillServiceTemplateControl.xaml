@@ -157,6 +157,8 @@
                 x:Name="btnSwapStatus"
                 Grid.Column="10"
                 Style="{StaticResource MaterialDesignRaisedButton}"
+                Command="{Binding ConfirmDeliveriedCommand}"
+                CommandParameter="{Binding ElementName=ucBillServiceInfo}"
                 ToolTip="Xác nhận đã giao"
                 Height="30"
                 Background="{x:Null}"

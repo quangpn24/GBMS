@@ -181,11 +181,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             string idPosition = ConvertToIDString(control.txbId.Text);
             if (EmployeeDAL.Instance.IsPosition(idPosition))
             {
-                MessageBox.Show("Không thể xóa vì tồn tại nhân viên có chức vụ này");
+                CustomMessageBox.Show("Không thể xóa vì tồn tại nhân viên có chức vụ này!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Xác nhận xóa chức vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = CustomMessageBox.Show("Xác nhận xóa chức vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -196,7 +196,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Xóa thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                        CustomMessageBox.Show("Xoá thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -228,44 +228,44 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             #region
             if (string.IsNullOrEmpty(window.txtPosition.Text))
             {
-                MessageBox.Show("Vui lòng nhập chức vụ!");
+                CustomMessageBox.Show("Vui lòng nhập chức vụ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtPosition.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtSalaryBase.Text))
             {
-                MessageBox.Show("Vui lòng nhập lương cơ bản!");
+                CustomMessageBox.Show("Vui lòng nhập lương cơ bản!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtSalaryBase.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtStandardWorkDays.Text))
             {
-                MessageBox.Show("Vui lòng nhập ngày công chuẩn!");
+                CustomMessageBox.Show("Vui lòng nhập ngày công chuẩn!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtStandardWorkDays.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtOvertime.Text))
             {
-                MessageBox.Show("Vui lòng nhập tiền lương tăng ca!");
+                CustomMessageBox.Show("Vui lòng nhập tiền lương tăng ca!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtOvertime.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtFault.Text))
             {
-                MessageBox.Show("Vui lòng nhập tiền phạt!");
+                CustomMessageBox.Show("Vui lòng nhập tiền phạt!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtFault.Focus();
                 return;
             }
             #endregion
             if (window.txtPosition.Text != oldPosition && EmployeePositionDAL.Instance.IsExisted(window.txtPosition.Text))
             {
-                MessageBox.Show("Chức vụ đã tồn tại!");
+                CustomMessageBox.Show("Chức vụ đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtPosition.Focus();
                 return;
             }
             if (string.Compare(window.txtStandardWorkDays.Text, "30") > 0)
             {
-                MessageBox.Show("Số ngày công chuẩn không >30");
+                CustomMessageBox.Show("Số ngày công chuẩn không >30!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtStandardWorkDays.Focus();
                 return;
             }
@@ -352,8 +352,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.dpBirthDate.SelectedDate = DateTime.Parse(employee.DateOfBirth.ToString());
             addEmployeeWindow.dpWorkDate.SelectedDate = DateTime.Parse(employee.StartingDate.ToString());
             ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
-            addEmployeeWindow.imgAvatar.Source = imageBrush.ImageSource;
+            if (employee.ImageFile != null)
+            {
+                imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
+                addEmployeeWindow.imgAvatar.Source = imageBrush.ImageSource;
+            }
+            else
+            {
+                addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
+            }
             addEmployeeWindow.btnSave.ToolTip = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.Title = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.btnSave.Content = "Cập nhật";
@@ -362,7 +369,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void HandleDelete(EmployeeControl employeeControl)
         {
             string idEmployee = ConvertToIDString(employeeControl.txbId.Text);
-            MessageBoxResult result = MessageBox.Show("Xác nhận xóa nhân viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = CustomMessageBox.Show("Xác nhận xóa nhân viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
             {
@@ -382,7 +389,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Xóa thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CustomMessageBox.Show("Xoá thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             int start = 0, end = 0;
@@ -396,19 +403,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             string gender = "";
             if (string.IsNullOrEmpty(window.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập họ tên!");
+                CustomMessageBox.Show("Vui lòng nhập họ tên!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtName.Focus();
                 return;
             }
             if (window.cboPosition.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập chức vụ!");
+                CustomMessageBox.Show("Vui lòng nhập chức vụ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.cboPosition.Focus();
                 return;
             }
             if (window.dpBirthDate.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập ngày sinh!");
+                CustomMessageBox.Show("Vui lòng nhập ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.dpBirthDate.Focus();
                 return;
             }
@@ -417,26 +424,26 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 DateTime dateTime = new DateTime();
                 if (!DateTime.TryParse(window.dpBirthDate.Text, out dateTime))
                 {
-                    MessageBox.Show("Vui lòng nhập lại ngày sinh!");
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     window.dpBirthDate.Focus();
                     return;
                 }
             }
             if (window.txtAddress.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập địa chỉ!");
+                CustomMessageBox.Show("Vui lòng nhập địa chỉ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtAddress.Focus();
                 return;
             }
             if (window.txtPhoneNumber.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập số điện thoại!");
+                CustomMessageBox.Show("Vui lòng nhập số điện thoại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtPhoneNumber.Focus();
                 return;
             }
             if (window.dpWorkDate.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập ngày vào làm!");
+                CustomMessageBox.Show("Vui lòng nhập ngày vào làm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.dpWorkDate.Focus();
                 return;
             }
@@ -445,13 +452,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 DateTime dateTime = new DateTime();
                 if (!DateTime.TryParse(window.dpWorkDate.Text, out dateTime))
                 {
-                    MessageBox.Show("Vui lòng nhập lại ngày vào làm!");
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày vào làm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     window.dpWorkDate.Focus();
                     return;
                 }
                 if (dateTime < DateTime.Parse(window.dpBirthDate.Text))
                 {
-                    MessageBox.Show("Vui lòng nhập lại ngày vào làm lớn hơn ngày sinh!");
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày vào làm lớn hơn ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     window.dpWorkDate.Focus();
                     return;
                 }
@@ -498,9 +505,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             else
             {
                 EmployeeControl control = new EmployeeControl();
+                EmployeePosition employeePosition = EmployeePositionDAL.Instance.GetById(employee.IdPosition);
                 control.txbId.Text = window.txtId.Text;
                 control.txbName.Text = employee.Name.ToString();
-                control.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employee.IdPosition).Position;
+                control.txbPosition.Text = employeePosition.Position;
+                control.txbTotalSalary.Text = SeparateThousands(employeePosition.SalaryBase.ToString());
                 control.txbPhoneNumber.Text = employee.PhoneNumber.ToString();
                 control.txbAddress.Text = employee.Address.ToString();
 
@@ -684,20 +693,20 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         ws.Cells[rowIndex, colIndex++].Value = employee.Address;
                         ws.Cells[rowIndex, colIndex++].Value = employee.StartingDate;
                         ws.Cells[rowIndex, colIndex++].Value = SeparateThousands(employeePosition.SalaryBase.ToString());
-                        if(i % 10 == 9)
+                        if (i % 10 == 9)
                         {
                             GoToNextPage(mainWindow, currentPage);
-                        }    
+                        }
                     }
                     //Lưu file lại
                     Byte[] bin = p.GetAsByteArray();
                     File.WriteAllBytes(filePath, bin);
                 }
-                MessageBox.Show("Xuất excel thành công!");
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             catch
             {
-                MessageBox.Show("Có lỗi khi lưu file!");
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

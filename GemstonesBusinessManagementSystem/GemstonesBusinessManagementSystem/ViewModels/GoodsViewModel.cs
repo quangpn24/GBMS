@@ -264,7 +264,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             Binding binding = BindingOperations.GetBinding(addGoodsWd.txtName, TextBox.TextProperty);
             binding.ValidationRules.Clear();
-            Goods goods = GoodsDAL.Instance.GetById(control.txbId.Text.Remove(0, 2));
+            Goods goods = GoodsDAL.Instance.GetById(ConvertToIDString(control.txbId.Text));
             addGoodsWd.txtIdGoods.Text = control.txbId.Text;
 
             addGoodsWd.txtName.Text = control.txbName.Text;
@@ -274,8 +274,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addGoodsWd.cboGoodsType.Text = control.txbGoodsType.Text;
 
             ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(goods.ImageFile);
-            addGoodsWd.imgGoods.Source = imageBrush.ImageSource;
+            if (goods.ImageFile != null)
+            {
+                imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(goods.ImageFile);
+                addGoodsWd.imgGoods.Source = imageBrush.ImageSource;
+            }
+            else
+            {
+                addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("/Resources/Images/goods.png", UriKind.Relative));
+            }
             addGoodsWd.txtImportPrice.Text = control.txbImportPrice.Text;
             addGoodsWd.txtImportPrice.SelectionStart = addGoodsWd.txtImportPrice.Text.Length;
             addGoodsWd.txtImportPrice.SelectionLength = 0;
@@ -309,8 +316,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void Delete(GoodsControl control)
         {
-            var result = MessageBox.Show("Bạn có chắc chắn muốn xóa?", "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Information);
-            if (result == MessageBoxResult.OK)
+            var result = CustomMessageBox.Show("Bạn có chắc chắn muốn xóa?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
             {
                 if (GoodsDAL.Instance.Delete(ConvertToID(control.txbId.Text)))
                 {
@@ -325,7 +332,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Xóa không thành công!!!", "Error");
+                    CustomMessageBox.Show("Xóa không thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             }
@@ -434,13 +441,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     Byte[] bin = p.GetAsByteArray();
                     File.WriteAllBytes(filePath, bin);
                 }
-                MessageBox.Show("Xuất excel thành công!");
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             catch
             {
-                MessageBox.Show("Có lỗi khi lưu file!");
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
         public void SelectImage(Image parameter)
         {
@@ -464,28 +470,27 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(addGoodsWd.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên sản phẩm", "Error");
+                CustomMessageBox.Show("Vui lòng nhập tên sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 addGoodsWd.txtName.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(addGoodsWd.cboGoodsType.Text))
             {
-                MessageBox.Show("Vui lòng chọn loại sản phẩm", "Error");
+                CustomMessageBox.Show("Vui lòng chọn loại sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 addGoodsWd.cboGoodsType.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(addGoodsWd.txtImportPrice.Text))
             {
-                MessageBox.Show("Vui lòng nhập giá sản phẩm", "Error");
+                CustomMessageBox.Show("Vui lòng nhập giá sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 addGoodsWd.txtImportPrice.Focus();
                 return;
             }
             byte[] imgByteArr;
-
             imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)addGoodsWd.imgGoods.Source);
             if ((!isUpdate || addGoodsWd.txtName.Text != oldGoods) && GoodsDAL.Instance.IsExisted(addGoodsWd.txtName.Text))
             {
-                MessageBox.Show("Sản phẩm đã tồn tại!");
+                CustomMessageBox.Show("Sản phẩm đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 addGoodsWd.txtName.Focus();
                 return;
             }
@@ -495,7 +500,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 newGoods.ImportPrice = ConvertToNumber(addGoodsWd.txtImportPrice.Text);
             }
-            GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate);
+            if (GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate))
+            {
+                if (isUpdate)
+                {
+                    CustomMessageBox.Show("Cập nhật hàng hóa thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                }
+                else
+                {
+                    CustomMessageBox.Show("Thêm hàng hóa thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                }
+            }
+            else
+            {
+                CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             if (isUpdate)
             {
                 //Update tab home 

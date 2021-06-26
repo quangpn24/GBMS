@@ -147,7 +147,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (String.IsNullOrEmpty(pickCustomerWindow.txbId.Text))
             {
-                MessageBox.Show("Vui lòng chọn khách hàng!");
+                CustomMessageBox.Show("Vui lòng chọn khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -222,11 +222,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             string idMembership = ConvertToIDString(control.txbId.Text);
             if (CustomerDAL.Instance.IsMembership(idMembership))
             {
-                MessageBox.Show("Không thể xóa vì tồn tại khách hàng có hạng thành viên này");
+                CustomMessageBox.Show("Không thể xóa vì tồn tại khách hàng có hạng thành viên này!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Xác nhận xóa hạng thành viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = CustomMessageBox.Show("Xác nhận xóa hạng thành viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -237,7 +237,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Xóa thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                        CustomMessageBox.Show("Xoá thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -365,19 +365,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(window.txtMembership.Text))
             {
-                MessageBox.Show("Vui lòng nhập hạng thành viên!");
+                CustomMessageBox.Show("Vui lòng nhập hạng thành viên!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtMembership.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtTarget.Text))
             {
-                MessageBox.Show("Vui lòng nhập chỉ tiêu!");
+                CustomMessageBox.Show("Vui lòng nhập chỉ tiêu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtTarget.Focus();
                 return;
             }
             if (window.txtMembership.Text != oldMembership && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
             {
-                MessageBox.Show("Hạng thành viên đã tồn tại!");
+                CustomMessageBox.Show("Hạng thành viên đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtMembership.Focus();
                 return;
             }
@@ -471,22 +471,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(addCustomerWindow.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập tên khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrEmpty(addCustomerWindow.txtPhoneNumber.Text))
             {
-                MessageBox.Show("Vui lòng nhập số điện thoại khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập số điện thoại khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrEmpty(addCustomerWindow.txtCMND.Text))
             {
-                MessageBox.Show("Vui lòng nhập số CMND khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập số CMND khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrEmpty(addCustomerWindow.txtAddress.Text))
             {
-                MessageBox.Show("Vui lòng nhập địa chỉ khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập địa chỉ khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             return true;
@@ -531,11 +531,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 if (CustomerDAL.Instance.AddOrUpdate(customer, isEditing))
                 {
-                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (isEditing)
+                    {
+                        CustomMessageBox.Show("Cập nhật khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
+                    else
+                    {
+                        CustomMessageBox.Show("Thêm khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 int indexSort = mainWindow.cboSelectCustomerSort.SelectedIndex;
@@ -590,7 +597,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     ws.Column(7).Width = 30;
                     ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     // Tạo danh sách các column header
-                    string[] arrColumnHeader = { "STT", "Tên khách hàng", "Địa chỉ", "Số điện thoại","Số CMND" ,"Hạng thành viên", "Tổng tiền" };
+                    string[] arrColumnHeader = { "STT", "Tên khách hàng", "Địa chỉ", "Số điện thoại", "Số CMND", "Hạng thành viên", "Tổng tiền" };
 
                     var countColHeader = arrColumnHeader.Count();
 
@@ -656,11 +663,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     Byte[] bin = p.GetAsByteArray();
                     File.WriteAllBytes(filePath, bin);
                 }
-                MessageBox.Show("Xuất excel thành công!");
+                CustomMessageBox.Show("Xuất dữ liệu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             catch
             {
-                MessageBox.Show("Có lỗi khi lưu file!");
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

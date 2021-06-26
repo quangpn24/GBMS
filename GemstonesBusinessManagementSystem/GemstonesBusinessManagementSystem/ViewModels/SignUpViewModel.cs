@@ -86,7 +86,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(parameter.pwbKey.Password))
             {
-                MessageBox.Show("Vui lòng nhập mã xác thực!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Vui lòng nhập mã xác thực!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbKey.Focus();
                 return;
             }
@@ -100,33 +100,33 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //check password
             if (string.IsNullOrEmpty(parameter.pwbPassword.Password))
             {
-                MessageBox.Show("Vui lòng nhập mật khẩu mới!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Vui lòng nhập mật khẩu mới!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbPassword.Focus();
                 return;
             }
             //check password confirm
             if (string.IsNullOrEmpty(parameter.pwbPasswordConfirm.Password))
             {
-                MessageBox.Show("Vui lòng xác thực mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Vui lòng xác thực mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbPasswordConfirm.Focus();
                 return;
             }
             //kiem tra do chinh xac
             if (!AuthorizationsDAL.Instance.CheckData(parameter.pwbKey.Password))
             {
-                MessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbKey.Focus();
                 return;
             }
 
             if (password != passwordConfirm)
             {
-                MessageBox.Show("Mật khẩu không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Mật khẩu không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (AccountDAL.Instance.UpdatePasswordByUsername(parameter.txtUsername.Text, password))
             {
-                MessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                CustomMessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 parameter.txtUsername.Text = null;
                 parameter.pwbPassword.Password = "";
                 parameter.pwbPasswordConfirm.Password = "";
@@ -142,13 +142,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //check ma xac thuc
             if (string.IsNullOrEmpty(parameter.pwbKey.Password))
             {
-                MessageBox.Show("Vui lòng nhập mã xác thực!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Vui lòng nhập mã xác thực!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbKey.Focus();
                 return;
             }
             //check loai nhan vien
             if (string.IsNullOrEmpty(parameter.cboSelectEmployee.Text))
             {
+                CustomMessageBox.Show("Vui lòng chọn nhân viên để đăng ký!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.cboSelectEmployee.Focus();
                 parameter.cboSelectEmployee.Text = "";
                 return;
@@ -163,28 +164,28 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //check password
             if (string.IsNullOrEmpty(parameter.pwbPassword.Password))
             {
-                MessageBox.Show("Vui lòng nhập mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Vui lòng nhập mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbPassword.Focus();
                 return;
             }
             //check password confirm
             if (string.IsNullOrEmpty(parameter.pwbPasswordConfirm.Password))
             {
-                MessageBox.Show("Vui lòng xác thực mật khẩu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Vui lòng nhập mật khẩu xác nhận!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbPasswordConfirm.Focus();
                 return;
             }
 
             if (!AuthorizationsDAL.Instance.CheckData(parameter.pwbKey.Password))
             {
-                MessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbKey.Focus();
                 return;
             }
 
             if (password != passwordConfirm)
             {
-                MessageBox.Show("Mật khẩu không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.Show("Mật khẩu xác nhận không trùng khớp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             int idAccount = AccountDAL.Instance.GetNewID();
@@ -194,12 +195,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 isSignUp = AccountDAL.Instance.AddintoDB(newAccount);
                 if (isSignUp && EmployeeDAL.Instance.UpdateIdAccount(idAccount, selectedEmployee.IdEmployee))
                 {
-                    MessageBox.Show("Đăng ký thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    
+                    CustomMessageBox.Show("Đăng ký thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    parameter.txtUsername.Text = null;
+                    parameter.pwbPassword.Password = null;
+                    parameter.pwbPasswordConfirm.Password = null;
+                    ItemSourceEmployee.Remove(selectedEmployee);
                     isSignUp = true;
                 }
                 else
                 {
-                    MessageBox.Show("Đăng ký không thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CustomMessageBox.Show("Đăng ký không thành công", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 

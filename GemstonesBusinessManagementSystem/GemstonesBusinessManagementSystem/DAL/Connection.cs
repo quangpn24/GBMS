@@ -38,7 +38,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch
             {
                 conn.Close();
-                MessageBox.Show("Mất kết nối đến cơ sở dữ liệu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Mất kết nối đến cơ sở dữ liệu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public void CloseConnection()
@@ -49,7 +49,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show(ex.Message);
+                CustomMessageBox.Show(ex.Message.ToString(), "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

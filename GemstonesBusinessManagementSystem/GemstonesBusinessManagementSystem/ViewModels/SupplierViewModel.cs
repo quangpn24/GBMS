@@ -143,19 +143,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(wdAddSupplier.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên nhà cung cấp!");
+                CustomMessageBox.Show("Vui lòng nhập tên nhà cung cấp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtName.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(wdAddSupplier.txtAddress.Text))
             {
-                MessageBox.Show("Vui lòng nhập địa chỉ!");
+                CustomMessageBox.Show("Vui lòng nhập địa chỉ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtAddress.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(wdAddSupplier.txtPhoneNumber.Text))
             {
-                MessageBox.Show("Vui lòng nhập số điện thoại!");
+                CustomMessageBox.Show("Vui lòng nhập số điện thoại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtPhoneNumber.Focus();
                 return;
             }
@@ -165,14 +165,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                MessageBox.Show("Số điện thoại không bao gồm chữ cái!");
+                CustomMessageBox.Show("Số điện thoại không bao gồm chữ cái!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtPhoneNumber.Focus();
                 return;
             }
             Supplier newSupplier = new Supplier(ConvertToID(wdAddSupplier.txtId.Text), wdAddSupplier.txtName.Text, wdAddSupplier.txtAddress.Text, wdAddSupplier.txtPhoneNumber.Text);
             if ((!isUpdate || wdAddSupplier.txtName.Text != oldSupplier) && SupplierDAL.Instance.IsExisted(wdAddSupplier.txtName.Text))
             {
-                MessageBox.Show("Tên nhà cung cấp đã tồn tại!");
+                CustomMessageBox.Show("Tên nhà cung cấp đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtName.Focus();
                 return;
             }
@@ -184,9 +184,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     supplierControl.txbName.Text = newSupplier.Name;
                     supplierControl.txbAddress.Text = newSupplier.Address;
                     supplierControl.txbPhoneNumber.Text = newSupplier.PhoneNumber;
+                    CustomMessageBox.Show("Cập nhật nhà cung cấp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
                 else
                 {
+                    CustomMessageBox.Show("Thêm nhà cung cấp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     SupplierControl control = new SupplierControl();
                     control.txbId.Text = AddPrefix("NC", newSupplier.Id);
                     control.txbName.Text = newSupplier.Name;
@@ -200,6 +202,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 var importVM = mainWindow.grdImport.DataContext as ImportGoodsViewModel;
                 importVM.Init(mainWindow);
                 wdAddSupplier.Close();
+            }
+            else
+            {
+                CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         void OpenAddSupplierWindow(MainWindow main)
@@ -382,7 +388,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
                         }
-                        
+
                         ws.Cells[rowIndex, colIndex++].Value = i + 1;
                         ws.Cells[rowIndex, colIndex++].Value = control.txbName.Text;
                         ws.Cells[rowIndex, colIndex++].Value = control.txbAddress.Text;
@@ -394,11 +400,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     Byte[] bin = p.GetAsByteArray();
                     File.WriteAllBytes(filePath, bin);
                 }
-                MessageBox.Show("Xuất excel thành công!");
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             catch
             {
-                MessageBox.Show("Có lỗi khi lưu file!");
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

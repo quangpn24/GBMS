@@ -198,7 +198,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (String.IsNullOrEmpty(mainWindow.txbIdCustomer.Text))
             {
-                MessageBox.Show("Vui lòng chọn khách hàng!");
+                CustomMessageBox.Show("Vui lòng chọn khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             double prepaymentPercent = double.Parse(ParameterDAL.Instance.GetPrepayment().Value) / 100;
@@ -206,7 +206,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             isOver = IsOverMoney(mainWindow);
             if (isOver)
             {
-                MessageBox.Show("Vui lòng nhập tiền cọc <= thành tiền trong từng dịch vụ!");
+                CustomMessageBox.Show("Vui lòng nhập tiền cọc <= thành tiền trong từng dịch vụ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (isPaidMoney)
@@ -235,7 +235,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         }
                         mainWindow.txbIdBillService.Text = AddPrefix("PD", idBillService);
 
-                        var result = MessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        var result = CustomMessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (result == MessageBoxResult.Yes)
                         {
                             PrintBill(mainWindow);
@@ -253,17 +253,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Thanh toán thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                        CustomMessageBox.Show("Thanh toán thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Vui lòng mua hàng trước khi thanh toán!");
+                    CustomMessageBox.Show("Vui lòng chọn dịch vụ trước khi thanh toán!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
-                MessageBox.Show(string.Format("Vui lòng nhập tiền đặt cọc >= {0}% tiền thanh toán trong từng dịch vụ!", prepaymentPercent * 100));
+                CustomMessageBox.Show(string.Format("Vui lòng nhập tiền đặt cọc >= {0}% tiền thanh toán trong từng dịch vụ!", prepaymentPercent * 100), "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public bool CheckPaidMoney(MainWindow mainWindow, double prepaymentPercent)
@@ -356,6 +356,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
             pd.PrintDocument(document.DocumentPaginator, "My first document");
+            CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         public void OpenPickCustomerWd(MainWindow mainWindow)
         {

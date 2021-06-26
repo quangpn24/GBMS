@@ -71,7 +71,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (mainWindow.dpStartDateBill.SelectedDate > mainWindow.dpEndDateBill.SelectedDate)
             {
-                MessageBox.Show("Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc!");
+                CustomMessageBox.Show("Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             mainWindow.stkBill.Children.Clear();
@@ -243,7 +243,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     ws.Column(6).Width = 30;
                     ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     // Tạo danh sách các column header
-                    string[] arrColumnHeader = { "STT", "Mã hóa đơn", "Khách hàng", "Người lập", "Ngày lập", "Tổng tiền"};
+                    string[] arrColumnHeader = { "STT", "Mã hóa đơn", "Khách hàng", "Người lập", "Ngày lập", "Tổng tiền" };
 
                     var countColHeader = arrColumnHeader.Count();
 
@@ -308,11 +308,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     Byte[] bin = p.GetAsByteArray();
                     File.WriteAllBytes(filePath, bin);
                 }
-                MessageBox.Show("Xuất excel thành công!");
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             catch
             {
-                MessageBox.Show("Có lỗi khi lưu file!");
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

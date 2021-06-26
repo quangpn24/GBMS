@@ -524,7 +524,7 @@
             </Grid>
             <Grid
                 x:Name="grdHome"
-                Visibility="Collapsed"
+                Visibility="Visible"
                 DataContext="{StaticResource ReportVM}"
                 Grid.Row="1"
                 Margin="0,20,0,0">
@@ -3053,7 +3053,6 @@
                     </Grid>
                     <Grid
                         Grid.Column="1"
-                        x:Name="grdPrintImport"
                         Background="{StaticResource White}"
                         Style="{StaticResource DropShadow}"
                         Margin="0,0,10,10">
@@ -4888,7 +4887,7 @@
             <Grid 
                 x:Name="grdBillService"
                 Grid.Row="1"
-                Visibility="Visible"
+                Visibility="Collapsed"
                 DataContext="{StaticResource BillServiceVM}"
                 Margin="10,0,0,0">
                 <Grid.ColumnDefinitions>

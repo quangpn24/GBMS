@@ -200,7 +200,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 OpenConnection();
                 string queryString = "";
                 if (!isUpdating)
-                {   
+                {
                     queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber,totalPrice, idMembership, address)" +
                     "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalPrice, @idMembership  , @address);";
                 }

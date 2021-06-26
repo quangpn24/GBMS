@@ -47,26 +47,26 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(wdGoodsType.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên loại sản phẩm");
+                CustomMessageBox.Show("Vui lòng nhập tên loại sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdGoodsType.txtName.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(wdGoodsType.txtUnit.Text))
             {
-                MessageBox.Show("Vui lòng nhập đơn vị tính");
+                CustomMessageBox.Show("Vui lòng nhập đơn vị tính!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdGoodsType.txtUnit.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(wdGoodsType.txtProfitPercentage.Text))
             {
-                MessageBox.Show("Vui lòng nhập phần trăm lợi nhuận");
+                CustomMessageBox.Show("Vui lòng nhập phần trăm lợi nhuận!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdGoodsType.txtProfitPercentage.Focus();
                 return;
             }
 
             if ((!isUpdate || wdGoodsType.txtName.Text != oldType) && GoodsTypeDAL.Instance.IsExisted(wdGoodsType.txtName.Text))
             {
-                MessageBox.Show("Loại sản phẩm đã tồn tại!");
+                CustomMessageBox.Show("Loại sản phẩm đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdGoodsType.txtName.Focus();
                 return;
             }
@@ -95,7 +95,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int idMax = GoodsTypeDAL.Instance.GetMaxId();
             if (idMax == -1)
             {
-                MessageBox.Show("Lỗi hệ thống");
+                CustomMessageBox.Show("Lỗi hệ thống!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (newBinding != null)
@@ -112,11 +112,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (!GoodsTypeDAL.Instance.IsActive(ConvertToID(goodsTypeControl.txbId.Text)))
             {
-                MessageBox.Show("Loại sản phẩm này đã ngừng hoạt động!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Loại sản phẩm này đã ngừng hoạt động!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            var result = MessageBox.Show("Tất cả các sản phẩm có loại này sẽ ngừng hoạt động! Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButton.OKCancel, MessageBoxImage.Question);
-            if (result == MessageBoxResult.OK)
+            var result = CustomMessageBox.Show("Tất cả các sản phẩm có loại này sẽ ngừng hoạt động! Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
             {
                 if (GoodsTypeDAL.Instance.InactivateOrReactivate(ConvertToID(goodsTypeControl.txbId.Text), false))
                 {
@@ -130,7 +130,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (GoodsTypeDAL.Instance.IsActive(ConvertToID(goodsTypeControl.txbId.Text)))
             {
-                MessageBox.Show("Loại sản phẩm này đang hoạt động!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Loại sản phẩm này đang hoạt động!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (GoodsTypeDAL.Instance.InactivateOrReactivate(ConvertToID(goodsTypeControl.txbId.Text), true))
@@ -146,7 +146,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int idMax = GoodsTypeDAL.Instance.GetMaxId();
             if (idMax == -1)
             {
-                MessageBox.Show("Lỗi hệ thống");
+                CustomMessageBox.Show("Lỗi hệ thống!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             this.wdGoodsType.txtId.Text = AddPrefix("LS", idMax + 1);

@@ -229,7 +229,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (main.dpkStartDate.SelectedDate > main.dpkEndDate.SelectedDate)
             {
-                MessageBox.Show("Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
+                CustomMessageBox.Show("Ngày bắt đầu phải nhỏ hơn ngày kết thúc!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 main.dpkStartDate.SelectedDate = null;
                 main.dpkEndDate.SelectedDate = null;
                 return;
@@ -335,6 +335,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
                 pd.PrintDocument(document.DocumentPaginator, "My first document");
+            CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         // View receipt detail
         void PrintReceipt(MainWindow main)
@@ -380,6 +381,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
             pd.PrintDocument(document.DocumentPaginator, "My first document");
+            CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         public void Cancel(MainWindow main)
@@ -574,13 +576,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     Byte[] bin = p.GetAsByteArray();
                     File.WriteAllBytes(filePath, bin);
                 }
-                MessageBox.Show("Xuất excel thành công!");
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             catch
             {
-                MessageBox.Show("Có lỗi khi lưu file!");
+                CustomMessageBox.Show("Có lỗi khi chọn file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
         public void OpenImportGoodsWindow(MainWindow main)
         {
@@ -592,7 +593,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
             if (idStockReceiptMax == -1)
             {
-                MessageBox.Show("Lỗi hệ thống!");
+                CustomMessageBox.Show("Lỗi hệ thống!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             newWindow.txbIdReceipt.Text = AddPrefix("PN", idStockReceiptMax + 1);
@@ -620,12 +621,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             bool k;
             if (wdImportGoods.stkImportGoods.Children.Count == 0)
             {
-                MessageBox.Show("Hiện tại chưa có sản phẩm nào được nhập!");
+                CustomMessageBox.Show("Hiện tại chưa có sản phẩm nào được nhập!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (string.IsNullOrEmpty(wdImportGoods.cboSupplier.Text))
             {
-                MessageBox.Show("Vui lòng chọn nhà cung cấp!");
+                CustomMessageBox.Show("Vui lòng chọn nhà cung cấp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdImportGoods.cboSupplier.Focus();
                 return;
             }
@@ -645,7 +646,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (k)
             {
-                var result = MessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = CustomMessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     PrintReceipt(wdImportGoods);
@@ -688,7 +689,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();
                 if (idStockReceiptMax == -1)
                 {
-                    MessageBox.Show("Lỗi hệ thống!");
+                    CustomMessageBox.Show("Lỗi hệ thống!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 wdImportGoods.txbIdReceipt.Text = AddPrefix("PN", idStockReceiptMax + 1);
@@ -697,7 +698,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                MessageBox.Show("Nhập kho thất bại!");
+                CustomMessageBox.Show("Nhập kho thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         void ChangeQuantity(ImportGoodsControl control)
@@ -800,7 +801,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (dt.Rows.Count == 0)
             {
-                MessageBox.Show("Loại sản phẩm này vẫn chưa có sản phẩm!");
+                CustomMessageBox.Show("Loại sản phẩm này vẫn chưa có sản phẩm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             wdImportGoods.cboSelectFast.SelectedIndex = -1;
         }
