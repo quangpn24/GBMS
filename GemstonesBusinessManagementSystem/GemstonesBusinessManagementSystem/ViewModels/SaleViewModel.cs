@@ -6,11 +6,16 @@ using GemstonesBusinessManagementSystem.Views;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
 using System.Printing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Xml;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -130,7 +135,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(IdCustomer))
             {
-                CustomMessageBox.Show("Vui lòng nhập thông tin khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Vui lòng chọn khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (mainWindow.stkSelectedGoods.Children.Count == 0)
@@ -176,8 +181,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             CustomerViewModel customerVM = (CustomerViewModel)mainWindow.grdCustomer.DataContext;
             customerVM.LoadCustomerToView(mainWindow, 0);
 
+            //Load bill
             BillViewModel billVM = (BillViewModel)mainWindow.grdBill.DataContext;
             billVM.LoadBill(mainWindow);
+
+            //Load stock
+            StockViewModel stockVM = (StockViewModel)mainWindow.grdStock.DataContext;
+            stockVM.Search(mainWindow);
 
             mainWindow.stkSelectedGoods.Children.Clear();
             LoadDefault(mainWindow);
@@ -193,6 +203,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billTemplate.txbCustomerPhoneNumber.Text = CustomerPhoneNumber;
             billTemplate.txbCustomerAddress.Text = CustomerAddress;
             billTemplate.txbTotal.Text = Total.ToString();
+            billTemplate.txbEmployeeName.Text = CurrentAccount.Name;
 
             List<Parameter> parameters = ParameterDAL.Instance.GetData();
             billTemplate.txbStoreName.Text = parameters[1].Value;
@@ -209,6 +220,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
 
             int numOfItems = mainWindow.stkSelectedGoods.Children.Count;
+
+            //print
+            PrintDialog pd = new PrintDialog();
+            if (pd.ShowDialog() != true) return;
+            FixedDocument document = new FixedDocument();
+            PageContent temp;
             for (int i = 0; i < numOfItems; i++)
             {
                 SelectedGoodsControl selectedControl = (SelectedGoodsControl)mainWindow.stkSelectedGoods.Children[i];
@@ -221,21 +238,39 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 billInfoControl.txbTotal.Text = selectedControl.txbTotalPrice.Text;
 
                 billTemplate.stkBillInfo.Children.Add(billInfoControl);
-            }
-            try
-            {
-                PrintDialog printDialog = new PrintDialog();
-                printDialog.PrintTicket.PageMediaSize = new PageMediaSize(PageMediaSizeName.ISOA5);
-
-                if (printDialog.ShowDialog() == true)
+                document.DocumentPaginator.PageSize = new Size(billTemplate.grdPrint.ActualWidth, billTemplate.grdPrint.ActualHeight);
+                if (billTemplate.stkBillInfo.Children.Count == 10 || i == numOfItems - 1)
                 {
-                    printDialog.PrintVisual(billTemplate.grdPrint, window.txbIdBillSale.Text);
+                    billTemplate.grdPrint.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    billTemplate.grdPrint.Arrange(new Rect(0, 0, billTemplate.grdPrint.DesiredSize.Width, billTemplate.grdPrint.DesiredSize.Height));
+                    temp = ConvertToPage(billTemplate.grdPrint);
+                    document.Pages.Add(temp);
+                    billTemplate.stkBillInfo.Children.Clear();
                 }
             }
-            catch
-            {
+            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+        }
+        public PageContent ConvertToPage(Grid grid)
+        {
+            FixedPage page = new FixedPage();
+            page.Width = grid.ActualWidth; ;
+            page.Height = grid.ActualHeight;
+            string gridXaml = XamlWriter.Save(grid);
+            gridXaml = gridXaml.Replace("Name=\"txbOrderNum\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbUnitPrice\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbName\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbQuantity\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbUnit\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbTotal\"", "");
+            StringReader stringReader = new StringReader(gridXaml);
+            XmlReader xmlReader = XmlReader.Create(stringReader);
+            Grid newGrid = (Grid)XamlReader.Load(xmlReader);
 
-            }
+            page.Children.Add(newGrid);
+            PageContent pageContent = new PageContent();
+            ((IAddChild)pageContent).AddChild(page);
+            return pageContent;
         }
 
         public void Search(MainWindow window)

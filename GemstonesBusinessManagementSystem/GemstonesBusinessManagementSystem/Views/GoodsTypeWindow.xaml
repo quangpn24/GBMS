@@ -339,7 +339,7 @@
                                 Margin="0" 
                                 HorizontalAlignment="Left"
                                 FocusVisualStyle="{x:Null}"
-                                Content="Thêm" 
+                                Content="Lưu" 
                                 FontSize="18" 
                                 Style="{StaticResource GreenButton}"
                                 VerticalAlignment="Center"

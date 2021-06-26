@@ -13,11 +13,12 @@ namespace GemstonesBusinessManagementSystem.DAL
     class ParameterDAL : Connection
     {
 
-        // id 1: Prepayment PerCent
-        //     2: Store Name
-        //     3: Store Address
-        //     4: Store Phone Number
-        //     5: Store Email
+        // id 1: PrepaymentPerCent
+        //     2: StoreName
+        //     3: StoreAddress
+        //     4: StorePhone Number
+        //     5: StoreEmail
+        //     6: StoreAvatar
         private static ParameterDAL instance;
 
         public static ParameterDAL Instance

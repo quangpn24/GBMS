@@ -74,11 +74,11 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     if(isUpdate)
                     {
-                        CustomMessageBox.Show("Cập nhật loại sp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                        CustomMessageBox.Show("Cập nhật loại sản phẩm thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     }
                     else
                     {
-                        CustomMessageBox.Show("Thêm loại sp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                        CustomMessageBox.Show("Thêm loại sản phẩm thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     }
                     return true;
                 }

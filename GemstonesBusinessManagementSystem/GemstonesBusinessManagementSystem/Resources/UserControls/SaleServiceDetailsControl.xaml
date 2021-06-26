@@ -131,6 +131,7 @@
                 FontWeight="Medium" />
             <TextBox 
                 x:Name="txtPaidMoney"
+                Text="0"
                 Grid.Column="6"
                 MaxLength="11"
                 materialDesign:HintAssist.Hint="Trả trước"

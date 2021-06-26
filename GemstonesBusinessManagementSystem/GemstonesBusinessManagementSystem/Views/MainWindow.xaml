@@ -2202,6 +2202,9 @@
                         Width="140"/>
                     <Button
                         x:Name="btnSwitchImportStock"
+                        DataContext="{StaticResource GoodsVM}"
+                        Command="{Binding OpenImportGoodsCommand}"
+                        CommandParameter="{Binding ElementName=wdMain}"
                         Style="{StaticResource GreenButton}"
                         Uid="21"
                         Content="Nhập kho"
@@ -3853,11 +3856,13 @@
                                 FontWeight="Bold" />
                         </StackPanel>
                         <Button
+                            x:Name="btnPrintBill"
                             Content="In hoá đơn"
                             Style="{StaticResource PrimaryButton}" 
                             Command="{Binding PrintBillCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
                             Height="35" 
+                            Visibility="Collapsed"
                             HorizontalAlignment="Right" 
                             Margin="0,0,20,0"/>
                         <Grid

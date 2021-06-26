@@ -5,12 +5,17 @@ using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Xml;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -36,8 +41,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand PayBillServiceCommand { get; set; }
         public ICommand CheckPaidMoneyCommand { get; set; }
         public ICommand PickCustomerCommand { get; set; }
-        //billservicetemplate
-        public ICommand PrintBillServiceCommand { get; set; }
 
         public BusinessServiceViewModel()
         {
@@ -49,7 +52,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PickCustomerCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenPickCustomerWd(p));
             PayBillServiceCommand = new RelayCommand<MainWindow>((p) => true, (p) => PayBillService(p));
             //CheckPaidMoneyCommand = new RelayCommand<SaleServiceDetailsControl>((p) => true, (p) => CheckPaidMoney(p));
-            PrintBillServiceCommand = new RelayCommand<BillServiceTemplate>((p) => true, (p) => PrintBillService(p));
         }
         void UpdateMembership(int idCustomer, long totalSpending)
         {
@@ -64,21 +66,33 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
         }
-        public void PrintBillService(BillServiceTemplate billServiceTemplate)
+        public PageContent ConvertToPage(Grid grid)
         {
-            try
-            {
-                PrintDialog printDialog = new PrintDialog();
-                if (printDialog.ShowDialog() == true)
-                {
-                    billServiceTemplate.btnPrint.Visibility = Visibility.Hidden;
-                    printDialog.PrintVisual(billServiceTemplate.grdPrint, "Bill Service");
-                }
-            }
-            finally
-            {
-                billServiceTemplate.btnPrint.Visibility = Visibility.Visible;
-            }
+            FixedPage page = new FixedPage();
+            page.Width = grid.ActualWidth; ;
+            page.Height = grid.ActualHeight;
+            string gridXaml = XamlWriter.Save(grid);
+            gridXaml = gridXaml.Replace("Name=\"ucBillServiceInfo\"", "");
+            gridXaml = gridXaml.Replace("Name=\"grdMain\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbIdService\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbNumber\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbName\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbPrice\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbCalculateMoney\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbQuantity\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbTotal\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbPaidMoney\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbDeliveryDate\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbRest\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbStatus\"", "");
+            StringReader stringReader = new StringReader(gridXaml);
+            XmlReader xmlReader = XmlReader.Create(stringReader);
+            Grid newGrid = (Grid)XamlReader.Load(xmlReader);
+
+            page.Children.Add(newGrid);
+            PageContent pageContent = new PageContent();
+            ((IAddChild)pageContent).AddChild(page);
+            return pageContent;
         }
         public void LoadServicesToView(List<Service> services, MainWindow mainWindow)
         {
@@ -257,6 +271,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             for (int i = 0; i < mainWindow.stkPickedService.Children.Count; i++)
             {
                 SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
+                if (String.IsNullOrEmpty(temp.txtPaidMoney.Text) && prepaymentPercent == 0)
+                    return true;
                 if (!String.IsNullOrEmpty(temp.txtPaidMoney.Text))
                 {
                     if (double.Parse(temp.txtPaidMoney.Text) / double.Parse(temp.txtTotal.Text) < prepaymentPercent)
@@ -268,7 +284,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     return false;
                 }
-
             }
             return true;
         }
@@ -299,31 +314,49 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             billServiceTemplate.txbTotal.Text = mainWindow.txbTotalBillService.Text;
             billServiceTemplate.txbTotalPaid.Text = mainWindow.txbTotalPaidBillService.Text;
             billServiceTemplate.txbRest.Text = SeparateThousands((double.Parse(mainWindow.txbTotalBillService.Text) - double.Parse(mainWindow.txbTotalPaidBillService.Text)).ToString());
+            List<Parameter> parameters = ParameterDAL.Instance.GetData();
+            billServiceTemplate.txbStoreName.Text = parameters[1].Value;
+            //print 
+            PrintDialog pd = new PrintDialog();
+            if (pd.ShowDialog() != true) return;
+            FixedDocument document = new FixedDocument();
+            PageContent temp;
             for (int i = 0; i < mainWindow.stkPickedService.Children.Count; i++) // Duyệt các chi tiết hóa đơn dịch vụ đã chọn
             {
-                SaleServiceDetailsControl temp = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
+                SaleServiceDetailsControl control = mainWindow.stkPickedService.Children[i] as SaleServiceDetailsControl;
                 BillServiceTemplateControl billServiceTemplateControl = new BillServiceTemplateControl();
                 billServiceTemplateControl.txbNumber.Text = (i + 1).ToString();
-                billServiceTemplateControl.txbName.Text = temp.txbName.Text;
-                billServiceTemplateControl.txbPrice.Text = temp.txbPrice.Text;
+                billServiceTemplateControl.txbName.Text = control.txbName.Text;
+                billServiceTemplateControl.txbPrice.Text = control.txbPrice.Text;
                 double tips = 0;
-                if (!String.IsNullOrEmpty(temp.txtTips.Text))
+                if (!String.IsNullOrEmpty(control.txtTips.Text))
                 {
-                    tips = double.Parse(temp.txtTips.Text);
+                    tips = double.Parse(control.txtTips.Text);
                 }
-                billServiceTemplateControl.txbCalculateMoney.Text = SeparateThousands((double.Parse(temp.txbPrice.Text) + tips).ToString());
-                billServiceTemplateControl.txbQuantity.Text = temp.nmsQuantity.Text.ToString();
-                billServiceTemplateControl.txbTotal.Text = temp.txtTotal.Text;
-                billServiceTemplateControl.txbPaidMoney.Text = temp.txtPaidMoney.Text;
-                billServiceTemplateControl.txbRest.Text = SeparateThousands((double.Parse(temp.txtTotal.Text) - double.Parse(temp.txtPaidMoney.Text)).ToString());
+                billServiceTemplateControl.txbCalculateMoney.Text = SeparateThousands((double.Parse(control.txbPrice.Text) + tips).ToString());
+                billServiceTemplateControl.txbQuantity.Text = control.nmsQuantity.Text.ToString();
+                billServiceTemplateControl.txbTotal.Text = control.txtTotal.Text;
+                billServiceTemplateControl.txbPaidMoney.Text = control.txtPaidMoney.Text;
+                billServiceTemplateControl.txbRest.Text = SeparateThousands((double.Parse(control.txtTotal.Text) - double.Parse(control.txtPaidMoney.Text)).ToString());
                 billServiceTemplateControl.txbDeliveryDate.Text = "";
                 billServiceTemplateControl.txbStatus.Text = "Chưa giao";
                 billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
                 billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
+                billServiceTemplateControl.grdMain.Children.Remove(billServiceTemplateControl.grdMain.Children[11]);
                 billServiceTemplate.stkBillServiceInfo.Children.Add(billServiceTemplateControl);
-            }
-            billServiceTemplate.ShowDialog();
 
+                document.DocumentPaginator.PageSize = new Size(billServiceTemplate.grdPrint.ActualWidth, billServiceTemplate.grdPrint.ActualHeight);
+                if (billServiceTemplate.stkBillServiceInfo.Children.Count == 10 || i == mainWindow.stkPickedService.Children.Count - 1)
+                {
+                    billServiceTemplate.grdPrint.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    billServiceTemplate.grdPrint.Arrange(new Rect(0, 0, billServiceTemplate.grdPrint.DesiredSize.Width, billServiceTemplate.grdPrint.DesiredSize.Height));
+                    temp = ConvertToPage(billServiceTemplate.grdPrint);
+                    document.Pages.Add(temp);
+                    billServiceTemplate.stkBillServiceInfo.Children.Clear();
+                }
+            }
+            pd.PrintDocument(document.DocumentPaginator, "My first document");
+            CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         public void OpenPickCustomerWd(MainWindow mainWindow)
         {

@@ -26,21 +26,13 @@
             Width="150"
             Height="150" 
             HorizontalAlignment="Left">
-            <Rectangle 
-                x:Name="recImage"
-                StrokeDashArray="4 2" 
-                StrokeThickness="4" 
-                RadiusX="4" 
-                RadiusY="4"
-                Width="150"
-                Height="150" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Top"
-                Stroke="{StaticResource Primary}"/>
+            <Image
+                x:Name="imgGoods"
+                Source="/Resources/Images/goods.png"/>
             <Button 
                 x:Name="btnSelectImage"
                 Command="{Binding SelectImageCommand}"
-                CommandParameter="{Binding ElementName=grdSelectImg}"
+                CommandParameter="{Binding ElementName=imgGoods}"
                 Height="35" 
                 Width="100" 
                 Content="Chọn ảnh" 
@@ -54,14 +46,6 @@
                 Padding="0" 
                 Background="{StaticResource Primary}"
                 Foreground="{StaticResource Secondary}"/>
-            <materialDesign:PackIcon 
-                x:Name="iconImage" 
-                Kind="FileImageOutline" 
-                Width="64" Height="54"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"  
-                Margin="0,25,0,0" 
-                Foreground="{StaticResource Primary}"/>
         </Grid>
         <Grid 
             x:Name="grdInfo"
@@ -301,6 +285,7 @@
             </Button>
             <Button
                 x:Name="btnCancel"
+                Style="{StaticResource CancelButton}"
                 Command="{Binding ExitCommand}"
                 CommandParameter="{Binding ElementName=wdAddGoods}"
                 Height="40"
@@ -311,9 +296,7 @@
                 FocusVisualStyle="{x:Null}"
                 Content="Bỏ qua"
                 FontSize="18"
-                VerticalAlignment="Center"
                 Padding="0" 
-                Background="{StaticResource Gray2}" 
                 IsTabStop="False"/>
         </Grid>
     </Grid>

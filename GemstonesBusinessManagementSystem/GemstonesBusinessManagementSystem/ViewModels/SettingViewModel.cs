@@ -20,11 +20,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 {
     class SettingViewModel : BaseViewModel
     {
-        // id 1: Prepayment PerCent
-        //     2: Store Name
-        //     3: Store Address
-        //     4: Store Phone Number
-        //     5: Store Email
+        // id 1: PrepaymentPerCent
+        //     2: StoreName
+        //     3: StoreAddress
+        //     4: StorePhone Number
+        //     5: StoreEmail
+        //     6: StoreAvatar
         private List<Parameter> parameters = ParameterDAL.Instance.GetData();
         private MainWindow main;
 
@@ -257,10 +258,20 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             main.txtStoreAddress.Text = parameters[2].Value;
             main.txtStorePhoneNumber.Text = parameters[3].Value;
             main.txtEmail.Text = parameters[4].Value;
+                ImageBrush imageBrush = new ImageBrush();
             if (!string.IsNullOrEmpty(parameters[5].Value))
             {
-                ImageBrush imageBrush = new ImageBrush();
                 imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(Convert.FromBase64String(parameters[5].Value));
+                main.grdSelectImage.Background = imageBrush;
+                if (main.grdSelectImage.Children.Count > 1)
+                {
+                    main.grdSelectImage.Children.Remove(main.grdSelectImage.Children[0]);
+                    main.grdSelectImage.Children.Remove(main.grdSelectImage.Children[1]);
+                }
+            }
+            else
+            {
+                imageBrush.ImageSource = new BitmapImage(new Uri("/Resources/Images/avatar.jpg", UriKind.Relative));
                 main.grdSelectImage.Background = imageBrush;
                 if (main.grdSelectImage.Children.Count > 1)
                 {
@@ -382,12 +393,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (employee.ImageFile != null)
             {
                 imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
+                window.grdSelectImage.Background = imageBrush;            }
+            else
+            {
+                imageBrush.ImageSource = new BitmapImage(new Uri("/Resources/Images/avatar.jpg", UriKind.Relative));
                 window.grdSelectImage.Background = imageBrush;
-                if (window.grdSelectImage.Children.Count > 1)
-                {
-                    window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[0]);
-                    window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[1]);
-                }
+            }
+            if (window.grdSelectImage.Children.Count > 1)
+            {
+                window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[0]);
+                window.grdSelectImage.Children.Remove(window.grdSelectImage.Children[1]);
             }
             window.txtName.Text = employee.Name;
             window.txtName.SelectionStart = 0;

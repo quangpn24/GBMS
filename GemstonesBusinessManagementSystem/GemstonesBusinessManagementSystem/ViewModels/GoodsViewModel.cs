@@ -4,10 +4,13 @@ using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
 using Microsoft.Win32;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -75,7 +78,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             SaveCommand = new RelayCommand<AddGoodsWindow>(p => true, p => AddOrUpdate(p));
             ExitCommand = new RelayCommand<AddGoodsWindow>(p => true, p => p.Close());
             SeparateThousandsCommand = new RelayCommand<TextBox>((parameter) => true, (parameter) => SeparateThousands(parameter));
-            SelectImageCommand = new RelayCommand<Grid>(p => true, p => SelectImage(p));
+            SelectImageCommand = new RelayCommand<Image>(p => true, p => SelectImage(p));
             SeparateThousandsCommand = new RelayCommand<TextBox>(p => true, p => SeparateThousands(p));
 
             AddGoodsCommand = new RelayCommand<MainWindow>(p => true, p => OpenAddGoodsWindow(p));
@@ -261,7 +264,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             Binding binding = BindingOperations.GetBinding(addGoodsWd.txtName, TextBox.TextProperty);
             binding.ValidationRules.Clear();
-            Goods goods = GoodsDAL.Instance.GetById(control.txbId.Text.Remove(0, 2));
+            Goods goods = GoodsDAL.Instance.GetById(ConvertToIDString(control.txbId.Text));
             addGoodsWd.txtIdGoods.Text = control.txbId.Text;
 
             addGoodsWd.txtName.Text = control.txbName.Text;
@@ -271,16 +274,20 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addGoodsWd.cboGoodsType.Text = control.txbGoodsType.Text;
 
             ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(goods.ImageFile);
-            addGoodsWd.grdSelectImg.Background = imageBrush;
-            if (addGoodsWd.grdSelectImg.Children.Count > 1)
+            if (goods.ImageFile != null)
             {
-                addGoodsWd.grdSelectImg.Children.Remove(addGoodsWd.grdSelectImg.Children[0]);
-                addGoodsWd.grdSelectImg.Children.Remove(addGoodsWd.grdSelectImg.Children[1]);
+                imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(goods.ImageFile);
+                addGoodsWd.imgGoods.Source = imageBrush.ImageSource;
+            }
+            else
+            {
+                addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("/Resources/Images/goods.png", UriKind.Relative));
             }
             addGoodsWd.txtImportPrice.Text = control.txbImportPrice.Text;
             addGoodsWd.txtImportPrice.SelectionStart = addGoodsWd.txtImportPrice.Text.Length;
             addGoodsWd.txtImportPrice.SelectionLength = 0;
+            addGoodsWd.Title = "Cập nhật thông tin sản phẩm";
+            addGoodsWd.btnSave.Content = "Cập nhật";
             addGoodsWd.ShowDialog();
         }
         void OpenImportGoodsWindow(MainWindow main)
@@ -294,6 +301,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             addGoodsWd.txtName.Text = null;
             addGoodsWd.txtImportPrice.Text = null;
+            addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("/Resources/Images/goods.png", UriKind.Relative));
             int idMax = GoodsDAL.Instance.GetMaxId();
             if (idMax >= 0)
             {
@@ -329,40 +337,118 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
         }
-        void ExportExcel(MainWindow wdMain)
+        public void ExportExcel(MainWindow main)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Mã SP", typeof(string));
-            table.Columns.Add("Tên sản phẩm", typeof(string));
-            table.Columns.Add("Loại sản phẩm", typeof(string));
-            table.Columns.Add("Số lượng", typeof(int));
-            table.Columns.Add("Đơn vị tính", typeof(string));
-            table.Columns.Add("Giá mua", typeof(string));
-            table.Columns.Add("Giá bán", typeof(string));
-
-
-            for (int i = 0; i < listControlToView.Count; i++)
-            {
-                GoodsControl control = listControlToView[i];
-                table.Rows.Add(control.txbId.Text, control.txbName.Text, control.txbGoodsType.Text,
-                    control.txbQuantity.Text, control.txbUnit.Text, control.txbImportPrice.Text,
-                    control.txbSalesPrice.Text);
-            }
+            string filePath = "";
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Excel |*.xlsx"
             };
-            if ((bool)saveFileDialog.ShowDialog())
+            if (saveFileDialog.ShowDialog() == true)
             {
-                using (XLWorkbook workbook = new XLWorkbook())
+                filePath = saveFileDialog.FileName;
+            }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
                 {
-                    workbook.Worksheets.Add(table, "Danh sách hàng hóa");
-                    workbook.SaveAs(saveFileDialog.FileName);
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách sản phẩm";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSNCC";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 30;
+                    ws.Column(3).Width = 30;
+                    ws.Column(4).Width = 20;
+                    ws.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(5).Width = 20;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 30;
+                    ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(7).Width = 30;
+                    ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Tên sản phẩm", "Loại sản phẩm", "Đơn vị tính", "Tồn kho", "Giá mua", "Giá bán" };
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách sản phẩm";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu 
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < listControlToView.Count; i++)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        GoodsControl control = listControlToView[i];
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":G" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbName.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbGoodsType.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbUnit.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbQuantity.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbImportPrice.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbSalesPrice.Text;
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
                 }
                 CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
+            catch
+            {
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-        public void SelectImage(Grid parameter)
+        public void SelectImage(Image parameter)
         {
             OpenFileDialog op = new OpenFileDialog();
             op.Title = "Select a picture";
@@ -377,12 +463,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 bitmap.UriSource = new Uri(imageFileName);
                 bitmap.EndInit();
                 imageBrush.ImageSource = bitmap;
-                parameter.Background = imageBrush;
-                if (parameter.Children.Count > 1)
-                {
-                    parameter.Children.Remove(parameter.Children[0]);
-                    parameter.Children.Remove(parameter.Children[1]);
-                }
+                parameter.Source = imageBrush.ImageSource;
             }
         }
         void AddOrUpdate(AddGoodsWindow addGoodsWd)
@@ -406,14 +487,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             byte[] imgByteArr;
-
-            ImageBrush imageBrush = (ImageBrush)addGoodsWd.grdSelectImg.Background;
-            if (imageBrush == null)
-            {
-                CustomMessageBox.Show("Vui lòng chọn ảnh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)imageBrush.ImageSource);
+            imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)addGoodsWd.imgGoods.Source);
             if ((!isUpdate || addGoodsWd.txtName.Text != oldGoods) && GoodsDAL.Instance.IsExisted(addGoodsWd.txtName.Text))
             {
                 CustomMessageBox.Show("Sản phẩm đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);

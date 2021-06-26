@@ -1,17 +1,24 @@
 ﻿using GemstonesBusinessManagementSystem.DAL;
 using GemstonesBusinessManagementSystem.Models;
+using GemstonesBusinessManagementSystem.Resources.Template;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
+using Microsoft.Win32;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
+using System.Xml;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -24,6 +31,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand ConfirmDeliveriedCommand { get; set; }
         public ICommand PrintBillServiceCommand { get; set; }
         public ICommand DeleteBillServiceCommand { get; set; }
+        public ICommand ExportExcelCommand { get; set; }
         public BillServiceViewModel()
         {
             LoadBillServicesCommand = new RelayCommand<MainWindow>((p) => true, (p) => LoadBillServices(p));
@@ -31,6 +39,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             ConfirmDeliveriedCommand = new RelayCommand<BillServiceTemplateControl>((p) => true, (p) => ConfirmDeliveried(p));
             PrintBillServiceCommand = new RelayCommand<MainWindow>((p) => true, (p) => PrintBillService(p));
             DeleteBillServiceCommand = new RelayCommand<BillServiceControl>((p) => true, (p) => DeleteBillService(p));
+            ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel(p));
         }
         public void LoadBillServices(MainWindow mainWindow)
         {
@@ -81,7 +90,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             billServiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
                         }
-                    }   
+                    }
                 }
                 mainWindow.stkBillService.Children.Add(billServiceControl);
             }
@@ -203,21 +212,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             //billServiceTemplateControl.icStatus.Kind = MaterialDesignThemes.Wpf.PackIconKind.TickCircleOutline;
             //billServiceTemplateControl.btnSwapStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF01B500");
         }
-        public void PrintBillService(MainWindow mainWindow)
-        {
-            try
-            {
-                PrintDialog printDialog = new PrintDialog();
-                if (printDialog.ShowDialog() == true)
-                {
-                    printDialog.PrintVisual(mainWindow.grdPrintBS, "Bill Service");
-                }
-            }
-            finally
-            {
-                main.btnPrintBS.Visibility = Visibility.Visible;
-            }
-        }
+
         void UpdateMembership(Customer customer, long paidMoney)
         {
             var totalSpending = customer.TotalPrice + paidMoney;
@@ -266,6 +261,205 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
         }
 
+        public void PrintBillService(MainWindow main)
+        {
+            BillServiceTemplate billServiceTemplate = new BillServiceTemplate();
+            billServiceTemplate.txbName.Text = main.txbNameCustomerBS.Text;
+            billServiceTemplate.txbAddress.Text = CustomerDAL.Instance.FindByIdBillService(ConvertToIDString(main.txbIdBillServiceBS.Text)).Address;
+            billServiceTemplate.txbPhoneNumber.Text = main.txbPhoneCustomerBS.Text;
+            billServiceTemplate.txbEmployeeName.Text = CurrentAccount.Name;
+            billServiceTemplate.txbId.Text = main.txbIdBillServiceBS.Text;
+            billServiceTemplate.txbDate.Text = DateTime.Now.ToShortDateString();
+            billServiceTemplate.txbTotal.Text = main.txbTotalBS.Text;
+            billServiceTemplate.txbTotalPaid.Text = main.txbTotalPaidBS.Text;
+            billServiceTemplate.txbRest.Text = main.txbRestBS.Text;
+
+            List<Parameter> parameters = ParameterDAL.Instance.GetData();
+            billServiceTemplate.txbStoreName.Text = parameters[1].Value;
+            //print 
+            PrintDialog pd = new PrintDialog();
+            if (pd.ShowDialog() != true) return;
+            FixedDocument document = new FixedDocument();
+            PageContent temp;
+            for (int i = 0; i < main.stkBillServiceInfo.Children.Count; i++) // Duyệt các chi tiết hóa đơn dịch vụ đã chọn
+            {
+                BillServiceTemplateControl control = main.stkBillServiceInfo.Children[i] as BillServiceTemplateControl;
+                BillServiceTemplateControl billServiceTemplateControl = new BillServiceTemplateControl();
+                billServiceTemplateControl.txbNumber.Text = (i + 1).ToString();
+                billServiceTemplateControl.txbName.Text = control.txbName.Text;
+                billServiceTemplateControl.txbPrice.Text = control.txbPrice.Text;
+                billServiceTemplateControl.txbCalculateMoney.Text = control.txbCalculateMoney.Text;
+                billServiceTemplateControl.txbQuantity.Text = control.txbQuantity.Text;
+                billServiceTemplateControl.txbTotal.Text = control.txbTotal.Text;
+                billServiceTemplateControl.txbPaidMoney.Text = control.txbPaidMoney.Text;
+                billServiceTemplateControl.txbRest.Text = control.txbRest.Text;
+                billServiceTemplateControl.txbDeliveryDate.Text = control.txbDeliveryDate.Text;
+                billServiceTemplateControl.txbStatus.Text = control.txbStatus.Text;
+                billServiceTemplateControl.btnSwapStatus.Visibility = Visibility.Hidden;
+                billServiceTemplateControl.grdMain.ColumnDefinitions.RemoveAt(10);
+                billServiceTemplateControl.grdMain.Children.Remove(billServiceTemplateControl.grdMain.Children[11]);
+                billServiceTemplate.stkBillServiceInfo.Children.Add(billServiceTemplateControl);
+
+                document.DocumentPaginator.PageSize = new Size(billServiceTemplate.grdPrint.ActualWidth, billServiceTemplate.grdPrint.ActualHeight);
+                if (billServiceTemplate.stkBillServiceInfo.Children.Count == 10 || i == main.stkBillServiceInfo.Children.Count - 1)
+                {
+                    billServiceTemplate.grdPrint.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    billServiceTemplate.grdPrint.Arrange(new Rect(0, 0, billServiceTemplate.grdPrint.DesiredSize.Width, billServiceTemplate.grdPrint.DesiredSize.Height));
+                    temp = ConvertToPage(billServiceTemplate.grdPrint);
+                    document.Pages.Add(temp);
+                    billServiceTemplate.stkBillServiceInfo.Children.Clear();
+                }
+            }
+            pd.PrintDocument(document.DocumentPaginator, "My first document");
+
+        }
+        public PageContent ConvertToPage(Grid grid)
+        {
+            FixedPage page = new FixedPage();
+            page.Width = grid.ActualWidth;
+            page.Height = grid.ActualHeight;
+            string gridXaml = XamlWriter.Save(grid);
+            gridXaml = gridXaml.Replace("Name=\"ucBillServiceInfo\"", "");
+            gridXaml = gridXaml.Replace("Name=\"grdMain\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbIdService\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbNumber\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbName\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbPrice\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbCalculateMoney\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbQuantity\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbTotal\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbPaidMoney\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbDeliveryDate\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbRest\"", "");
+            gridXaml = gridXaml.Replace("Name=\"txbStatus\"", "");
+            StringReader stringReader = new StringReader(gridXaml);
+            XmlReader xmlReader = XmlReader.Create(stringReader);
+            Grid newGrid = (Grid)XamlReader.Load(xmlReader);
+
+            page.Children.Add(newGrid);
+            PageContent pageContent = new PageContent();
+            ((IAddChild)pageContent).AddChild(page);
+            return pageContent;
+        }
+
+        public void ExportExcel(MainWindow main)
+        {
+            string filePath = "";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Excel |*.xlsx"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                filePath = saveFileDialog.FileName;
+            }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách phiếu dịch vụ";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSPDV";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 20;
+                    ws.Column(2).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(3).Width = 30;
+                    ws.Column(4).Width = 30;
+                    ws.Column(5).Width = 20;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 30;
+                    ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(7).Width = 20;
+                    ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(8).Width = 20;
+                    ws.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(9).Width = 20;
+                    ws.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Mã phiếu", "Khách hàng", "Người lập", "Ngày lập", "Tổng tiền", "Trả trước", "Còn lại", "Trạng thái" };
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách phiếu dịch vụ";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu 
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < main.stkBillService.Children.Count; i++)
+                    {
+                        BillServiceControl control = (BillServiceControl)main.stkBillService.Children[i];
+                        ws.Row(rowIndex).Height = 15;
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":I" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+                        BillService billService = BillServiceDAL.Instance.GetBillService(ConvertToIDString(control.txbId.Text));
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbId.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbNameCustomer.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = EmployeeDAL.Instance.GetByIdAccount(billService.IdAccount.ToString()).Name;
+                        ws.Cells[rowIndex, colIndex++].Value = billService.CreatedDate.ToString("dd/MM/yyyy");
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbTotal.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = SeparateThousands(billService.TotalPaidMoney.ToString());
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbRest.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbStatus.Text;
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            catch
+            {
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
     }
 }
 

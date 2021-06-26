@@ -73,8 +73,8 @@ namespace GemstonesBusinessManagementSystem.DAL
                 else
                 {
                     query = "insert into EmployeePosition " +
-                        "(idEmployeePosition, position, salaryBase, moneyPerShift, moneyPerFault, standardWorkDays) " +
-                        "values(@idEmployeePosition, @position, @salaryBase, @moneyPerShift, @moneyPerFault, @standardWorkDays)";
+                        "(idEmployeePosition, position, salaryBase, moneyPerShift, moneyPerFault, standardWorkDays, isDeleted) " +
+                        "values(@idEmployeePosition, @position, @salaryBase, @moneyPerShift, @moneyPerFault, @standardWorkDays, false)";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -93,15 +93,11 @@ namespace GemstonesBusinessManagementSystem.DAL
                 if(isUpdating)
                 {
                     CustomMessageBox.Show("Cập nhật chức vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-
-
                 }    
                 else
                 {
                     CustomMessageBox.Show("Thêm chức vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-
                 }
-
             }
             catch (Exception e)
             {
