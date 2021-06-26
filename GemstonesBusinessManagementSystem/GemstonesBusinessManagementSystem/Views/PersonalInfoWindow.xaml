@@ -265,7 +265,7 @@
                     CommandParameter="{Binding ElementName=wdUserInfo}"
                     Width="120"
                     TabIndex="7"
-                    ToolTip="Thêm nhân viên" 
+                    ToolTip="Cập nhật thông tin" 
                     Content="Cập nhật">
                     <Button.IsEnabled>
                         <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"

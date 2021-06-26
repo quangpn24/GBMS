@@ -299,6 +299,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 if (totalSpending >= mem.Key)
                 {
+                    customer.IdMembership = mem.Value;
                     CustomerDAL.Instance.UpdateMembership(customer.IdCustomer, mem.Value);
                     break;
                 }

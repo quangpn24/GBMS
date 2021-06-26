@@ -57,14 +57,15 @@
                 <materialDesign:PackIcon 
                     Kind="EyeOutline" 
                     Width="22"
-                    Height="22" Margin="0,0,5,0"/>
+                    Height="22" 
+                    Margin="0,0,5,0"/>
             </Button>
             <Button 
                 x:Name="btnDelete"
                 Command="{Binding DeleteMembershipCommand}"
                 CommandParameter="{Binding ElementName=ucMembership}"
                 Style="{StaticResource TransperantButton}"
-                ToolTip="Xem thông tin"
+                ToolTip="Xóa hạng thành viên"
                 Height="28"
                 Foreground="{DynamicResource Error}" 
                 VerticalAlignment="Center" 

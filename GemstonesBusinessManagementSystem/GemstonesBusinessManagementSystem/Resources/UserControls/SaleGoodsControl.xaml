@@ -8,6 +8,7 @@
     mc:Ignorable="d" 
     x:Name="ucSaleGoods"
     DataContext="{StaticResource SaleVM}"
+    ToolTip="Chọn sản phẩm"
     Width="160" 
     Height="200" 
     Margin="4,4,4,8"

@@ -10,7 +10,7 @@
     xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
     mc:Ignorable="d"
     DataContext="{StaticResource CustomerVM}"
-    Title="PickCustomerWindow"
+    Title="Danh sách khách hàng"
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen"
     Height="740"

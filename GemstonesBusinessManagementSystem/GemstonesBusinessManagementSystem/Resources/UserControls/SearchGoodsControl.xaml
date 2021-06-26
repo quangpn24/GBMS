@@ -11,6 +11,7 @@
     x:Name="ucSearchGoods"
     Height="100" 
     Width="Auto"
+    ToolTip="Chọn mặt hàng"
     DataContext="{StaticResource ImportGoodsVM}">
     <Grid>
         <Grid.ColumnDefinitions>

@@ -239,6 +239,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         void OpenGoodsTypeWindow(MainWindow main)
         {
             GoodsTypeWindow newWindow = new GoodsTypeWindow();
+            newWindow.txtName.Text = null;
+            newWindow.txtUnit.Text = null;
+            newWindow.txtUnit.Text = null;
             newWindow.ShowDialog();
             SetItemSourceGoodsType(main);
             int indexSort = main.cboSortGoods.SelectedIndex;

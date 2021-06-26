@@ -11,7 +11,7 @@
     xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls" 
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
     mc:Ignorable="d"
-    Title="GoodsTypeWindow"
+    Title="Quản lý loại sản phẩm"
     Height="700"
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource GoodsTypeVM}"
@@ -412,6 +412,7 @@
                             Style="{StaticResource PaginationButton}"
                             Command="{Binding InactivateCommand}"
                             CommandParameter="{Binding ElementName=wdGoodsType}"
+                            ToolTip="Ngừng hoạt động"
                             Width="60"
                             Height="40">
                             <materialDesign:PackIcon 
@@ -424,6 +425,7 @@
                             Style="{StaticResource PaginationButton}"
                             Command="{Binding ActivateCommand}"
                             CommandParameter="{Binding ElementName=wdGoodsType}"
+                            ToolTip="Hoạt động"
                             Width="60"
                             Height="40" 
                             Margin="0,20,0,0">

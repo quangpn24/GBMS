@@ -29,14 +29,15 @@
             Grid.Column="1"
             MaxWidth="360"
             TextTrimming="CharacterEllipsis"
-            Margin="20,0,0,0" />
+            Margin="20,0,0,0" 
+            HorizontalAlignment="Left" />
         <Button 
             x:Name="btnView"
             Grid.Column="2" 
             Style="{StaticResource TransperantButton}"
             Command="{Binding ViewPermissionCommand}"
             CommandParameter="{Binding ElementName=ucRole}"
-            ToolTip="Sửa"
+            ToolTip="Sửa quyền truy cập"
             Height="30"
             Width="30">
             <materialDesign:PackIcon 

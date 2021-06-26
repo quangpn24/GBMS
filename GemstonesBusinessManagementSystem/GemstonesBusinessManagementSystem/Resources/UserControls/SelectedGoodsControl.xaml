@@ -82,7 +82,7 @@
             Command="{Binding DeleteCommand}"
             CommandParameter="{Binding ElementName=ucSelectedGoods}"
             Style="{StaticResource TransperantButton}"
-            ToolTip="Xóa nhân viên" 
+            ToolTip="Xóa sản phẩm đã chọn" 
             Height="30"
             Width="24">
             <materialDesign:PackIcon 

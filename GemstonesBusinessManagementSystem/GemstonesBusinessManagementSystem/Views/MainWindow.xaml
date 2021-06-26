@@ -716,14 +716,17 @@
                             RadiusX="4"
                             Grid.RowSpan="4"
                             Panel.ZIndex="-1"/>
+                        <TextBlock
+                            VerticalAlignment="Top" 
+                            Margin="20,16,20,0"
+                            Text="Thống kê thu chi"
+                            Style="{StaticResource HeadingText2}"
+                            FontSize="22"/>
                         <StackPanel 
                             Orientation="Horizontal"
                             VerticalAlignment="Top" 
-                            Margin="20,10,20,0">
-                            <TextBlock
-                                Text="Thống kê thu chi"
-                                Style="{StaticResource HeadingText2}"
-                                FontSize="20"/>
+                            Margin="0,10,20,0"
+                            HorizontalAlignment="Right">
                             <ComboBox
                                 x:Name="cboSelectPeriod"
                                 materialDesign:ComboBoxAssist.ClassicMode="true"
@@ -737,8 +740,7 @@
                                 HorizontalAlignment="Left" 
                                 HorizontalContentAlignment="Left"
                                 VerticalContentAlignment="Center" 
-                                Padding="3,0,0,0" 
-                                Margin="280,0,0,0">
+                                Padding="3,0,0,0" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
                                         <i:InvokeCommandAction Command="{Binding SelectPeriodCommand}"
@@ -988,7 +990,7 @@
                             Style="{StaticResource HeadingText1}"
                             HorizontalAlignment="Left"
                             FontSize="24"
-                            Text="Danh sách dịch vụ"
+                            Text="Dịch vụ đã chọn"
                             VerticalAlignment="Center" 
                             Margin="10,0,0,0" />
                         <Border 
@@ -1784,6 +1786,7 @@
                         CommandParameter="{Binding ElementName=btnAddSupplier}"
                         Content="Thêm NCC"
                         ToolTip="Thêm nhà cung cấp"
+                        Height="40"
                         Width="160"/>
                 </StackPanel>
                 <Grid 
@@ -1912,6 +1915,7 @@
                                 Grid.Row="1"
                                 Style="{StaticResource Text}"
                                 MaxWidth="200"
+                                Height="Auto"
                                 FontSize="24"
                                 Margin="20,0,0,0"
                                 HorizontalAlignment="Left"/>
@@ -1934,6 +1938,7 @@
                                 Grid.Row="0"
                                 Style="{StaticResource HeadingText2}"
                                 Text="Tổng chi" 
+                                Height="Auto"
                                 FontSize="22"
                                 HorizontalAlignment="Left" 
                                 VerticalAlignment="Center" 
@@ -1949,6 +1954,7 @@
                                 Grid.Row="1"
                                 Style="{StaticResource Text}"
                                 MaxWidth="200"
+                                Height="Auto"
                                 FontSize="24"
                                 Margin="20,0,0,0"
                                 HorizontalAlignment="Left"/>
@@ -1985,11 +1991,12 @@
                             <TextBox 
                                 x:Name="txtSearchSupplier"
                                 materialDesign:HintAssist.Hint="Tìm theo tên nhà cung cấp" 
-                                FontSize="16" 
+                                FontSize="18" 
                                 BorderThickness="0" 
                                 MaxLines="1"
                                 Margin="12,0,40,0" 
                                 FontWeight="SemiBold" 
+                                Foreground="{StaticResource Black1}"
                                 Height="40" 
                                 VerticalAlignment="Center" 
                                 HorizontalContentAlignment="Left" 
@@ -2159,6 +2166,7 @@
                         Style="{StaticResource GreenButton}"
                         Content="Nhập kho"
                         ToolTip="Nhập kho"
+                        Height="40"
                         Width="160"/>
                 </StackPanel>
                 <Grid 
@@ -2448,6 +2456,7 @@
                         x:Name="btnAddEmployee"
                         Style="{StaticResource GreenButton}"
                         Command="{Binding OpenAddWindowCommand}"
+                        Height="40"
                         Content="Thêm nhân viên"
                         ToolTip="Thêm nhân viên"/>
                 </StackPanel>
@@ -2718,9 +2727,10 @@
                         <Button 
                             Content="Nhập kho"
                             ToolTip="Nhập kho"
-                            Style="{StaticResource PrimaryButton}"
+                            Style="{StaticResource GreenButton}"
                             Command="{Binding OpenImportGoodsWindowCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
+                            Height="40"
                             Width="160"/>
                     </StackPanel>
                 </Grid>
@@ -2837,6 +2847,7 @@
                                 Width="90"
                                 Height="40"
                                 Content="Hủy"
+                                ToolTip="Xóa lựa chọn"
                                 Command="{Binding CancelCommand}"
                                 CommandParameter="{Binding ElementName=wdMain}"
                                 Style="{StaticResource CancelButton}" 
@@ -2976,6 +2987,7 @@
                         <Button 
                             x:Name="btnPrint"
                             Content="In phiếu"
+                            ToolTip="In phiếu nhập kho"
                             Style="{StaticResource PrimaryButton}"
                             Command="{Binding PrintReceiptInfoCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
@@ -3199,7 +3211,6 @@
                             x:Name="btnExportGoods"
                             Content="Xuất excel"
                             ToolTip="Xuất danh sách hàng hóa"
-                            Height="45"
                             Style="{StaticResource PrimaryButton}"
                             Command="{Binding ExportExcelCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
@@ -3210,18 +3221,16 @@
                             Content="Loại sản phẩm"
                             ToolTip="Quản lý loại sản phẩm"
                             FontSize="19"
-                            Height="45"
                             Style="{StaticResource PrimaryButton}"
                             Command="{Binding OpenGoodsTypeWindowCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
                             Margin="0,0,20,0" 
-                            Padding="0"
                             Width="160"/>
                         <Button 
                             x:Name="btnImportGoods"
                             Content="Nhập kho"
                             ToolTip="Nhập kho"
-                            Height="45"
+                            Height="40"
                             FontSize="20"
                             Style="{StaticResource GreenButton}"
                             Command="{Binding OpenImportGoodsCommand}"
@@ -3231,7 +3240,8 @@
                         <Button 
                             x:Name="btnAddGoods"
                             Content="Thêm sản phẩm"
-                            Height="45"
+                            ToolTip="Thêm sản phẩm"
+                            Height="40"
                             FontSize="20"
                             Style="{StaticResource GreenButton}"
                             Command="{Binding AddGoodsCommand}"
@@ -3278,6 +3288,7 @@
                                 MaxLines="1"
                                 Margin="12,0,40,0"
                                 FontWeight="SemiBold"
+                                Foreground="{StaticResource Black1}"
                                 Height="40"
                                 VerticalAlignment="Center"
                                 HorizontalContentAlignment="Left"
@@ -3499,7 +3510,6 @@
                     Content="Xuất excel"
                     ToolTip="Xuất danh sách hóa đơn"
                     Width="140"
-                    Height="40"
                     HorizontalAlignment="Right"
                     Margin="0,0,20,0"/>
                 <Grid 
@@ -3886,12 +3896,15 @@
                     VerticalAlignment="Center" 
                     Margin="0,0,20,0">
                     <Button
-                        Style="{StaticResource GreenButton}"
+                        Style="{StaticResource PrimaryButton}"
                         Command="{Binding OpenMembershipWindowCommand}"
                         CommandParameter="{Binding ElementName=wdMain}"
-                        Content="Thêm HTV"
+                        Content="Hạng thành viên"
+                        Height="40"
                         ToolTip="Quản lý hạng thành viên"
                         Width="160"
+                        Padding="0"
+                        FontSize="18"
                         Margin="0,0,20,0"/>
                     <Button
                         Style="{StaticResource PrimaryButton}"
@@ -3908,6 +3921,8 @@
                         Content="Thêm khách hàng"
                         ToolTip="Thêm khách hàng"
                         Padding="0"
+                        FontSize="18"
+                        Height="40"
                         Width="160"/>
                 </StackPanel>
                 <Grid Grid.Row="1">
@@ -4314,7 +4329,6 @@
                         Style="{StaticResource PrimaryButton}"
                         Content="Xuất excel"
                         ToolTip="Xuất danh sách dịch vụ"
-                        Height="45"
                         Command="{Binding ExportExcelCommand}"
                         CommandParameter="{Binding ElementName=wdMain}"
                         Margin="0,0,20,0"
@@ -4323,17 +4337,18 @@
                         x:Name="btnRestoreService"
                         Content="Khôi phục dữ liệu"
                         ToolTip="Khôi phục dữ liệu đã xóa"
-                        Height="45"
                         Style="{StaticResource PrimaryButton}"
                         Command="{Binding RestoreServiceCommand}"
                         CommandParameter="{Binding ElementName=wdMain}"
+                        FontSize="18"
+                        Padding="0"
                         Margin="0,0,20,0"
                         Width="160"/>
                     <Button 
                         x:Name="btnAddService"
                         Content="Thêm dịch vụ"
                         ToolTip="Thêm dịch vụ mới"
-                        Height="45"
+                        Height="40"
                         Style="{StaticResource GreenButton}"
                         Command="{Binding OpenAddServiceWinDowCommand}"
                         CommandParameter="{Binding ElementName=wdMain}"
@@ -4373,7 +4388,8 @@
                             <TextBox 
                                 x:Name="txtSearchService"
                                 materialDesign:HintAssist.Hint="Tìm theo tên dịch vụ"
-                                FontSize="16"
+                                FontSize="18"
+                                Foreground="{StaticResource Black1}"
                                 BorderThickness="0"
                                 MaxLines="1"
                                 Margin="12,0,40,0"
@@ -4591,7 +4607,6 @@
                     Content="Xuất excel"
                     ToolTip="Xuất danh sách phiếu dịch vụ"
                     Width="140"
-                    Height="40"
                     HorizontalAlignment="Right"
                     Margin="0,0,20,0"/>
                 <Grid
@@ -4830,8 +4845,8 @@
                                         Style="{StaticResource Text}"
                                         HorizontalAlignment="Right"
                                         FontSize="18"
-                                        Width="160" 
-                                        FlowDirection="RightToLeft" />
+                                        MaxWidth="180" 
+                                        TextTrimming="CharacterEllipsis"/>
                                 </Grid>
                                 <Grid 
                                     Margin="0,15,0,0">
@@ -4845,7 +4860,6 @@
                                         x:Name="txbPhoneCustomerBS"
                                         Style="{StaticResource Text}"
                                         HorizontalAlignment="Right"
-                                        Foreground="{StaticResource Primary}"
                                         FontSize="18"/>
                                 </Grid>
                             </StackPanel>
@@ -4864,7 +4878,6 @@
                                         x:Name="txbTotalBS"
                                         Style="{StaticResource Text}"
                                         HorizontalAlignment="Right"
-                                        Foreground="{StaticResource Primary}"
                                         FontSize="18"/>
                                 </Grid>
                                 <Grid 
@@ -4879,7 +4892,6 @@
                                         x:Name="txbTotalPaidBS"
                                         Style="{StaticResource Text}"
                                         HorizontalAlignment="Right"
-                                        Foreground="{StaticResource Primary}"
                                         FontSize="18" />
                                 </Grid>
                                 <Grid 
@@ -4894,7 +4906,6 @@
                                         x:Name="txbRestBS"
                                         Style="{StaticResource Text}"
                                         HorizontalAlignment="Right"
-                                        Foreground="{StaticResource Primary}"
                                         FontSize="18"/>
                                 </Grid>
                             </StackPanel>

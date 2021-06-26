@@ -63,7 +63,7 @@
                 Style="{StaticResource TransperantButton}"
                 Command="{Binding EditCommand}"
                 CommandParameter="{Binding ElementName=ucEmployee}"
-                ToolTip="Sửa thông tin"
+                ToolTip="Sửa thông tin nhân viên"
                 Height="30"
                 Foreground="{DynamicResource Primary}" 
                 Margin="0,0,10,0">

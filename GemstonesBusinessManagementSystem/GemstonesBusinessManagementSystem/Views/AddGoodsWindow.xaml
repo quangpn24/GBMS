@@ -40,11 +40,7 @@
                 ToolTip="Chọn ảnh"
                 Margin="0,0,0,12" 
                 HorizontalAlignment="Center" 
-                VerticalAlignment="Bottom"
-                FocusVisualStyle="{x:Null}"
-                Padding="0" 
-                Background="{StaticResource Primary}"
-                Foreground="{StaticResource Secondary}"/>
+                VerticalAlignment="Bottom"/>
         </Grid>
         <StackPanel 
             x:Name="grdInfo"
@@ -80,7 +76,7 @@
                 Height="40">
                 <Label 
                     Content="Tên hàng hóa"
-                    Style="{StaticResource LabelText}"/>
+                    Style="{StaticResource LabelText}"  />
                 <Rectangle 
                     HorizontalAlignment="Right" 
                     Height="40" 

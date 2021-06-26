@@ -11,7 +11,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"  
     mc:Ignorable="d"
-    Title="Khách hàng" 
+    Title="Quản lý hạng thành viên" 
     x:Name="wdMembership"
     Height="620" 
     Width="1000" 
@@ -47,6 +47,7 @@
             <TextBlock
                 Text="Danh sách hạng thành viên" 
                 Style="{StaticResource HeadingText2}"
+                FontSize="22"
                 Margin="20,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"/>
@@ -114,6 +115,7 @@
                 <TextBlock
                     x:Name="txbTitle"
                     Text="Thêm hạng thành viên" 
+                    FontSize="22"
                     Style="{StaticResource HeadingText2}"/>
                 <Grid
                     Margin="0,30,0,20" 

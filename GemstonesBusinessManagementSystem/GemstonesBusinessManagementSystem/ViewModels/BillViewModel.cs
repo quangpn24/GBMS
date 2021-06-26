@@ -44,7 +44,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private string employeeName;
         private string invoiceDate;
         private long quantity = 0;
-        private long total = 0;
+        private string total = null;
 
         public string CustomerName { get => customerName; set { customerName = value; OnPropertyChanged(); } }
         public string CustomerPhoneNumber { get => customerPhoneNumber; set { customerPhoneNumber = value; OnPropertyChanged(); } }
@@ -53,7 +53,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public string EmployeeName { get => employeeName; set { employeeName = value; OnPropertyChanged(); } }
         public string InvoiceDate { get => invoiceDate; set { invoiceDate = value; OnPropertyChanged(); } }
         public long Quantity { get => quantity; set { quantity = value; OnPropertyChanged(); } }
-        public string Total { get => SeparateThousands(total.ToString()); set { total = ConvertToNumber(value); OnPropertyChanged(); } }
+        public string Total { get => SeparateThousands(total); set { total = value; OnPropertyChanged(); } }
 
         public BillViewModel()
         {
@@ -96,7 +96,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     CustomerPhoneNumber = "";
                     InvoiceDate = "";
                     EmployeeName = "";
-                    Total = "0";
+                    Total = "";
                 }
                 mainWindow.stkBill.Children.Remove(control);
                 MessageBox.Show("Xóa hoá đơn thành công");
@@ -158,8 +158,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             CustomerName = customer.CustomerName;
             CustomerPhoneNumber = customer.PhoneNumber;
             CustomerAddress = customer.Address;
-            total = bill.TotalMoney;
-            Total = total.ToString();
+            Total = bill.TotalMoney.ToString();
             mainWindow.stkBillInfo.Children.Clear();
             for (int i = 0; i < billInfos.Count; i++)
             {

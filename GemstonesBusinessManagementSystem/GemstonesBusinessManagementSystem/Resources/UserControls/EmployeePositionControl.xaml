@@ -70,7 +70,7 @@
                 x:Name="btnDelete"
                 Command="{Binding DeletePositionCommand}"
                 CommandParameter="{Binding ElementName=ucEmployeePosition}"
-                ToolTip="Xem thông tin"
+                ToolTip="Xóa chức vụ"
                 Height="28"
                 Background="{x:Null}" 
                 BorderBrush="{x:Null}" 

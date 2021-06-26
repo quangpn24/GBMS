@@ -151,7 +151,8 @@
             Style="{StaticResource TransperantButton}"
             Command="{Binding DeleteBillServiceInfoDetailsCommand}"
             CommandParameter="{Binding ElementName=ucSaleServiceDetails}"
-            IsTabStop="False" HorizontalAlignment="Left">
+            IsTabStop="False" 
+            HorizontalAlignment="Left">
             <materialDesign:PackIcon 
                 Kind="DeleteOutline"
                 Height="24"

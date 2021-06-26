@@ -78,7 +78,8 @@
             Height="30"
             Margin="0,0,20,0"
             FontSize="16"
-            Width="30" HorizontalAlignment="Right">
+            Width="30"
+            HorizontalAlignment="Right">
             <materialDesign:PackIcon 
                 Kind="DeleteOutline"
                 Foreground="{StaticResource Error}"

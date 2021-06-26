@@ -99,8 +99,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 DisplayInfo(main);
                 if (CurrentAccount.IdPosition != 0) // admin
                 {
-                    CurrentAccount.PositionDetails = PositionDetailDAL.Instance.GetListByPosition(employee.IdPosition);
-                    SetRole(main);
+
+                    List<PositionDetail> positionDetails =
+                        PositionDetailDAL.Instance.GetListByPosition(CurrentAccount.IdPosition);
+                    CurrentAccount.PositionDetails = positionDetails;
+                    SetRole(main, positionDetails);
+                }
+                else
+                {
+                    HomeViewModel homeVM = (HomeViewModel)main.DataContext;
+                    homeVM.Uid = "0";
+                    homeVM.Navigate(main);
                 }
                 parameter.txtPassword.Password = null;
                 parameter.Hide();
@@ -121,10 +130,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             parameter.Opacity = 1;
             parameter.Show();
         }
-        void SetRole(MainWindow window)
+        void SetRole(MainWindow window, List<PositionDetail> positionDetails)
         {
-            List<PositionDetail> positionDetails =
-                PositionDetailDAL.Instance.GetListByPosition(CurrentAccount.IdPosition);
+
+            if (positionDetails[0].IsPermitted)
+            {
+                HomeViewModel homeVM = (HomeViewModel)window.DataContext;
+                homeVM.Uid = "0";
+                homeVM.Navigate(window);
+            }
 
             window.btnHome.IsEnabled = positionDetails[0].IsPermitted;
 
