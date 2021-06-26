@@ -184,8 +184,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void LoadPickCustomerToView(PickCustomerWindow window, int currentPage)
         {
-            customerList = CustomerDAL.Instance.ConvertDBToList();
-            this.pickCustomerWindow = window;
+            this.pickCustomerWindow = window as PickCustomerWindow;
             this.pickCustomerWindow.stkCustomer.Children.Clear();
             int start = 0, end = 0;
             this.currentPage = currentPage;
@@ -228,7 +227,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void FindPickCustomer(PickCustomerWindow pickCustomerWindow)
         {
-            customerList = CustomerDAL.Instance.FindByName(pickCustomerWindow.txtSearchCustomer.Text);
+            customerList = CustomerDAL.Instance.FindByName(pickCustomerWindow.txtSearchCustomer.Text.ToLower());
             currentPage = 0;
             LoadPickCustomerToView(pickCustomerWindow, currentPage);
         }

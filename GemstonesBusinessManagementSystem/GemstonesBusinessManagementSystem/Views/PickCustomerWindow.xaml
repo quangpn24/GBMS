@@ -230,6 +230,7 @@
                     HorizontalAlignment="Stretch" 
                     Width="Auto" />
                 <Button 
+                    IsDefault="True"
                     Command="{Binding FindPickCustomerCommand}"
                     CommandParameter="{Binding ElementName=wdPickCustomer}"
                     Style="{StaticResource TransperantButton}"
