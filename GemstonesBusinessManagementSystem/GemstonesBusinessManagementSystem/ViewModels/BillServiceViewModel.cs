@@ -442,7 +442,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         ws.Cells[rowIndex, colIndex++].Value = control.txbId.Text;
                         ws.Cells[rowIndex, colIndex++].Value = control.txbNameCustomer.Text;
                         ws.Cells[rowIndex, colIndex++].Value = EmployeeDAL.Instance.GetByIdAccount(billService.IdAccount.ToString()).Name;
-                        ws.Cells[rowIndex, colIndex++].Value = billService.CreatedDate.ToString();
+                        ws.Cells[rowIndex, colIndex++].Value = billService.CreatedDate.ToString("dd/MM/yyyy");
                         ws.Cells[rowIndex, colIndex++].Value = control.txbTotal.Text;
                         ws.Cells[rowIndex, colIndex++].Value = SeparateThousands(billService.TotalPaidMoney.ToString());
                         ws.Cells[rowIndex, colIndex++].Value = control.txbRest.Text;

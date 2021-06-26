@@ -301,7 +301,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         ws.Cells[rowIndex, colIndex++].Value = control.txbId.Text;
                         ws.Cells[rowIndex, colIndex++].Value = control.txbCustomerName.Text;
                         ws.Cells[rowIndex, colIndex++].Value = control.txbEmployeeName.Text;
-                        ws.Cells[rowIndex, colIndex++].Value = BillDAL.Instance.GetBill(ConvertToIDString(control.txbId.Text)).InvoiceDate;
+                        ws.Cells[rowIndex, colIndex++].Value = BillDAL.Instance.GetBill(ConvertToIDString(control.txbId.Text)).InvoiceDate.ToString("dd/MM/yyyy");
                         ws.Cells[rowIndex, colIndex++].Value = control.txbPrice.Text;
                     }
                     //Lưu file lại

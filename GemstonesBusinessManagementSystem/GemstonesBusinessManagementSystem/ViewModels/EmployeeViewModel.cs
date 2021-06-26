@@ -688,10 +688,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         ws.Cells[rowIndex, colIndex++].Value = employee.Name;
                         ws.Cells[rowIndex, colIndex++].Value = employeePosition.Position;
                         ws.Cells[rowIndex, colIndex++].Value = employee.Gender;
-                        ws.Cells[rowIndex, colIndex++].Value = employee.DateOfBirth;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.DateOfBirth.ToString("dd/MM/yyyy");
                         ws.Cells[rowIndex, colIndex++].Value = employee.PhoneNumber;
                         ws.Cells[rowIndex, colIndex++].Value = employee.Address;
-                        ws.Cells[rowIndex, colIndex++].Value = employee.StartingDate;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.StartingDate.ToString("dd/MM/yyyy");
                         ws.Cells[rowIndex, colIndex++].Value = SeparateThousands(employeePosition.SalaryBase.ToString());
                         if (i % 10 == 9)
                         {
