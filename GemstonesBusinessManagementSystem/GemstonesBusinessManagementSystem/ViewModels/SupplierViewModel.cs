@@ -174,15 +174,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             if (SupplierDAL.Instance.InsertOrUpdate(newSupplier, isUpdate))
             {
-                CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 if (isUpdate)
                 {
                     supplierControl.txbName.Text = newSupplier.Name;
                     supplierControl.txbAddress.Text = newSupplier.Address;
                     supplierControl.txbPhoneNumber.Text = newSupplier.PhoneNumber;
+                    CustomMessageBox.Show("Cập nhật nhà cung cấp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
                 else
                 {
+                    CustomMessageBox.Show("Thêm nhà cung cấp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     SupplierControl control = new SupplierControl();
                     control.txbId.Text = AddPrefix("NC", newSupplier.Id);
                     control.txbName.Text = newSupplier.Name;

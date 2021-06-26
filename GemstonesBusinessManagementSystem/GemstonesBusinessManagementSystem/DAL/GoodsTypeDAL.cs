@@ -72,7 +72,14 @@ namespace GemstonesBusinessManagementSystem.DAL
                 int rs = cmd.ExecuteNonQuery();
                 if (rs == 1)
                 {
-                    CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    if(isUpdate)
+                    {
+                        CustomMessageBox.Show("Cập nhật loại sp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
+                    else
+                    {
+                        CustomMessageBox.Show("Thêm loại sp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
                     return true;
                 }
                 else

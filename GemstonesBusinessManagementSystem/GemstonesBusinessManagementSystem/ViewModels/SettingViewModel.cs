@@ -176,11 +176,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (ParameterDAL.Instance.UpdatePrepayment(PrepaymentPercent))
             {
                 parameters[0].Value = PrepaymentPercent;
-                CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                CustomMessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
-                CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Cập nhật thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         void UpdateStoreInfo(MainWindow main)
@@ -237,13 +237,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 parameters[3].Value = PhoneNumber;
                 parameters[4].Value = Email;
                 parameters[5].Value = Convert.ToBase64String(imgByteArr);
-                CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                CustomMessageBox.Show("Cập nhật thông tin cửa hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 main.imgStore.Source = imageBrush.ImageSource;
                 main.txbStoreName.Text = parameters[1].Value;
             }
             else
             {
-                CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Cập nhật thông tin cửa hàng thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -351,11 +351,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             employee.ImageFile = imgByteArr;
             if (EmployeeDAL.Instance.UpdateUserInfo(employee))
             {
-                CustomMessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                CustomMessageBox.Show("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
-                CustomMessageBox.Show("Cập nhật thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Cập nhật thông tin cá nhân thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             CurrentAccount.Name = Name;
             CurrentAccount.ImageFile = imgByteArr;
@@ -445,8 +445,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.pwbNewPassword.Focus();
                 return;
             }
-            AccountDAL.Instance.UpdatePasswordByUsername("admin", MD5Hash(window.pwbNewPassword.Password));
-            CustomMessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            if(AccountDAL.Instance.UpdatePasswordByUsername("admin", MD5Hash(window.pwbNewPassword.Password)))
+            {
+                CustomMessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            else
+            {
+                CustomMessageBox.Show("Đổi mật khẩu thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             window.Close();
         }
         void OpenChangePasswordWindow(MainWindow main)

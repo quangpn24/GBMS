@@ -123,8 +123,14 @@ namespace GemstonesBusinessManagementSystem.DAL
                 }
                 else
                 {
-                    CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-
+                    if(isUpdating)
+                    {
+                        CustomMessageBox.Show("Cập nhật nhân viên thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
+                    else
+                    {
+                        CustomMessageBox.Show("Thêm nhân viên hành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
                 }
             }
             catch (Exception e)

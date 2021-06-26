@@ -426,9 +426,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 newGoods.ImportPrice = ConvertToNumber(addGoodsWd.txtImportPrice.Text);
             }
-            if(GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate))
+            if (GoodsDAL.Instance.InsertOrUpdate(newGoods, isUpdate))
             {
-                CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                if (isUpdate)
+                {
+                    CustomMessageBox.Show("Cập nhật hàng hóa thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                }
+                else
+                {
+                    CustomMessageBox.Show("Thêm hàng hóa thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                }
             }
             else
             {

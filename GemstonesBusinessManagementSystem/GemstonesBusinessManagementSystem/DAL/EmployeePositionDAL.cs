@@ -90,7 +90,17 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     throw new Exception();
                 }
-                CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                if(isUpdating)
+                {
+                    CustomMessageBox.Show("Cập nhật chức vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+
+
+                }    
+                else
+                {
+                    CustomMessageBox.Show("Thêm chức vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+
+                }
 
             }
             catch (Exception e)

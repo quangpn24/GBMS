@@ -527,7 +527,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 if (CustomerDAL.Instance.AddOrUpdate(customer, isEditing))
                 {
-                    CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    if(isEditing)
+                    {
+                        CustomMessageBox.Show("Cập nhật khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
+                    else
+                    {
+                        CustomMessageBox.Show("Thêm khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
                 }
                 else
                 {

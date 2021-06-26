@@ -244,7 +244,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    CustomMessageBox.Show("Vui lòng mua hàng trước khi thanh toán!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CustomMessageBox.Show("Vui lòng chọn dịch vụ trước khi thanh toán!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else

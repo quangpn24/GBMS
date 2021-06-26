@@ -53,7 +53,16 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     throw new Exception();
                 }
-                CustomMessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                if(isUpdating)
+                {
+                    CustomMessageBox.Show("Cập nhật hạng thành viên thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+
+                }
+                else
+                {
+                    CustomMessageBox.Show("Thêm hạng thành viên thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+
+                }
             }
             catch (Exception e)
             {
