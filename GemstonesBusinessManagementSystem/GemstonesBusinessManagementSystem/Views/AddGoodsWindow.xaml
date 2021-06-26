@@ -25,22 +25,14 @@
             Width="150"
             Height="150" 
             HorizontalAlignment="Left">
-            <Rectangle 
-                x:Name="recImage"
-                StrokeDashArray="4 2" 
-                StrokeThickness="4" 
-                RadiusX="2" 
-                RadiusY="2"
-                Width="150"
-                Height="150" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Top"
-                Stroke="{StaticResource Primary}"/>
+            <Image
+                x:Name="imgGoods"
+                Source="/Resources/Images/goods.png"/>
             <Button 
                 x:Name="btnSelectImage"
                 Style="{StaticResource PrimaryButton}"
                 Command="{Binding SelectImageCommand}"
-                CommandParameter="{Binding ElementName=grdSelectImg}"
+                CommandParameter="{Binding ElementName=imgGoods}"
                 Height="35" 
                 Width="100" 
                 Content="Chọn ảnh" 
@@ -48,16 +40,11 @@
                 ToolTip="Chọn ảnh"
                 Margin="0,0,0,12" 
                 HorizontalAlignment="Center" 
-                VerticalAlignment="Bottom"/>
-            <materialDesign:PackIcon 
-                x:Name="iconImage" 
-                Kind="FileImageOutline" 
-                Width="64" 
-                Height="54"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"  
-                Margin="0,25,0,0" 
-                Foreground="{StaticResource Primary}"/>
+                VerticalAlignment="Bottom"
+                FocusVisualStyle="{x:Null}"
+                Padding="0" 
+                Background="{StaticResource Primary}"
+                Foreground="{StaticResource Secondary}"/>
         </Grid>
         <StackPanel 
             x:Name="grdInfo"

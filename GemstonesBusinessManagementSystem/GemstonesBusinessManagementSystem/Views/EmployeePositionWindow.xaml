@@ -254,7 +254,7 @@
                                     <vd:NumberValidation ErrorMessageNull="Nhập số ngày công chuẩn!"
                                                          ErrorMessage="Vui lòng nhập giá trị số!" />
                                     <vd:ExistValidation ElementName="StandardDays"
-                                                        ErrorMessage="Số ngày công chuẩn không lớn hơn 30 " />
+                                                        ErrorMessage="Công chuẩn từ phải 1 tới 30 ngày  " />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>

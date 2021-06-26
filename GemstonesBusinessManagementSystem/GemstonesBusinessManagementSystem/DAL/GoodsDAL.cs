@@ -55,25 +55,24 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string query;
                 if (!isUpdate) // insert
                 {
-                    query = "Insert into Goods(idGoods, name, price, quantity, idGoodsType, imageFile, isDeleted) " +
-                   "values(@idGoods, @name, @price, 0 , @idGoodsType, @imageFile, @isDeleted)";
+                    query = "Insert into Goods(idGoods, name, importPrice, quantity, idGoodsType, imageFile, isDeleted) " +
+                   "values(@idGoods, @name, @importPrice, 0 , @idGoodsType, @imageFile, @isDeleted)";
                 }
                 else
                 {
-                    query = "update Goods set name=@name, price =@price,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
+                    query = "update Goods set name=@name, importPrice =@importPrice,idGoodsType=@idGoodsType, imageFile=@imageFile, isDeleted =@isDeleted " +
                  "where idGoods = @idGoods";
                 }
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idGoods", goods.IdGoods);
                 cmd.Parameters.AddWithValue("@name", goods.Name);
-                cmd.Parameters.AddWithValue("@price", goods.ImportPrice);
+                cmd.Parameters.AddWithValue("@importPrice", goods.ImportPrice);
                 cmd.Parameters.AddWithValue("@idGoodsType", goods.IdGoodsType);
                 cmd.Parameters.AddWithValue("@imageFile", Convert.ToBase64String(goods.ImageFile));
                 cmd.Parameters.AddWithValue("@isDeleted", goods.IsDeleted);
                 int rs = cmd.ExecuteNonQuery();
                 if (rs == 1)
                 {
-                    MessageBox.Show("Thành công!!!", "Thông báo");
                     return true;
                 }
                 else
@@ -83,7 +82,6 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             catch
             {
-                MessageBox.Show("Thất bại!!!", "Thông báo");
                 return false;
             }
             finally
@@ -176,15 +174,15 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string queryString = "select * from Goods where idGoods = " + idGoods;
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-
-                Goods res = new Goods(int.Parse(idGoods), dataTable.Rows[0].ItemArray[1].ToString(),
-                    long.Parse(dataTable.Rows[0].ItemArray[2].ToString()), int.Parse(dataTable.Rows[0].ItemArray[3].ToString()),
-                    int.Parse(dataTable.Rows[0].ItemArray[4].ToString()),
-                   Convert.FromBase64String(dataTable.Rows[0].ItemArray[5].ToString()), bool.Parse(dataTable.Rows[0].ItemArray[6].ToString()));
+                MySqlDataReader reader = command.ExecuteReader();
+                reader.Read();
+                byte[] imageArr = null ;
+                if (!reader.IsDBNull(5))
+                {
+                    imageArr = Convert.FromBase64String(reader.GetString(5));
+                }
+                Goods res = new Goods(int.Parse(idGoods), reader.GetString(1), long.Parse(reader.GetString(2)), int.Parse(reader.GetString(3)),
+                    int.Parse(reader.GetString(4)), imageArr , bool.Parse(reader.GetString(6)));
                 return res;
             }
             catch

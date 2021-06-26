@@ -357,5 +357,35 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+
+        public Customer FindByIdBillService(string idBillService)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                OpenConnection();
+                string queryString = "SELECT Customer.idCustomer, Customer.customerName,Customer.phoneNumber, Customer.address, " +
+                    "Customer.idNumber, Customer.totalPrice, Customer.idMembership FROM Customer " +
+                    "inner join BillService as BS on BS.idCustomer = Customer.idCustomer " +
+                    "WHERE BS.idBillService = " + idBillService;
+                MySqlCommand command = new MySqlCommand(queryString, conn);
+                command.ExecuteNonQuery();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                adapter.Fill(dt);
+                Customer customer = new Customer(int.Parse(dt.Rows[0].ItemArray[0].ToString()),
+                    dt.Rows[0].ItemArray[1].ToString(), dt.Rows[0].ItemArray[2].ToString(), (dt.Rows[0].ItemArray[3].ToString()),
+                    (dt.Rows[0].ItemArray[4].ToString()), long.Parse(dt.Rows[0].ItemArray[5].ToString()), int.Parse(dt.Rows[0].ItemArray[6].ToString()));
+                return customer;
+            }
+            catch
+            {
+                return new Customer();
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }

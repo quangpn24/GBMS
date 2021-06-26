@@ -13,6 +13,9 @@ using ClosedXML.Excel;
 using Microsoft.Win32;
 using System.Windows;
 using System.Collections.ObjectModel;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.IO;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -132,25 +135,27 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             newWindow.txtPhoneNumber.Text = control.txbPhoneNumber.Text;
             oldSupplier = control.txbName.Text;
             supplierControl = control;
+            newWindow.Title = "Sửa thông tin nhà cung cấp";
+            newWindow.btnSave.Content = "Cập nhật";
             newWindow.ShowDialog();
         }
         void AddOrUpdate(AddSupplierWindow wdAddSupplier)
         {
             if (string.IsNullOrEmpty(wdAddSupplier.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên nhà cung cấp!");
+                CustomMessageBox.Show("Vui lòng nhập tên nhà cung cấp!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtName.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(wdAddSupplier.txtAddress.Text))
             {
-                MessageBox.Show("Vui lòng nhập địa chỉ!");
+                CustomMessageBox.Show("Vui lòng nhập địa chỉ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtAddress.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(wdAddSupplier.txtPhoneNumber.Text))
             {
-                MessageBox.Show("Vui lòng nhập số điện thoại!");
+                CustomMessageBox.Show("Vui lòng nhập số điện thoại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtPhoneNumber.Focus();
                 return;
             }
@@ -160,14 +165,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                MessageBox.Show("Số điện thoại không bao gồm chữ cái!");
+                CustomMessageBox.Show("Số điện thoại không bao gồm chữ cái!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtPhoneNumber.Focus();
                 return;
             }
             Supplier newSupplier = new Supplier(ConvertToID(wdAddSupplier.txtId.Text), wdAddSupplier.txtName.Text, wdAddSupplier.txtAddress.Text, wdAddSupplier.txtPhoneNumber.Text);
             if ((!isUpdate || wdAddSupplier.txtName.Text != oldSupplier) && SupplierDAL.Instance.IsExisted(wdAddSupplier.txtName.Text))
             {
-                MessageBox.Show("Tên nhà cung cấp đã tồn tại!");
+                CustomMessageBox.Show("Tên nhà cung cấp đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdAddSupplier.txtName.Focus();
                 return;
             }
@@ -179,9 +184,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     supplierControl.txbName.Text = newSupplier.Name;
                     supplierControl.txbAddress.Text = newSupplier.Address;
                     supplierControl.txbPhoneNumber.Text = newSupplier.PhoneNumber;
+                    CustomMessageBox.Show("Cập nhật nhà cung cấp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 }
                 else
                 {
+                    CustomMessageBox.Show("Thêm nhà cung cấp thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     SupplierControl control = new SupplierControl();
                     control.txbId.Text = AddPrefix("NC", newSupplier.Id);
                     control.txbName.Text = newSupplier.Name;
@@ -195,6 +202,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 var importVM = mainWindow.grdImport.DataContext as ImportGoodsViewModel;
                 importVM.Init(mainWindow);
                 wdAddSupplier.Close();
+            }
+            else
+            {
+                CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         void OpenAddSupplierWindow(MainWindow main)
@@ -290,33 +301,112 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void ExportExcel(MainWindow main)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Mã NCC", typeof(string));
-            table.Columns.Add("Tên nhà cung cấp", typeof(string));
-            table.Columns.Add("Địa chỉ", typeof(string));
-            table.Columns.Add("Số điện thoại", typeof(string));
-            table.Columns.Add("Số đơn hàng", typeof(int));
-            table.Columns.Add("Tổng tiền", typeof(string));
-
-            for (int i = 0; i < ListSupplierToView.Count; i++)
-            {
-                SupplierControl control = ListSupplierToView[i];
-                table.Rows.Add(control.txbId.Text, control.txbName.Text, control.txbAddress.Text,
-                    control.txbPhoneNumber.Text, control.txbNumOfReceipts.Text, control.txbTotal.Text);
-            }
+            string filePath = "";
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Excel |*.xlsx"
             };
-            if ((bool)saveFileDialog.ShowDialog())
+            if (saveFileDialog.ShowDialog() == true)
             {
-                using (XLWorkbook workbook = new XLWorkbook())
-                {
-                    workbook.Worksheets.Add(table, "Danh sách nhà cung cấp");
-                    workbook.SaveAs(saveFileDialog.FileName);
-                }
-                MessageBox.Show("Xuất danh sách thành công!");
+                filePath = saveFileDialog.FileName;
             }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách nhà cung cấp";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSNCC";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 30;
+                    ws.Column(3).Width = 30;
+                    ws.Column(4).Width = 30;
+                    ws.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(5).Width = 20;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 30;
+                    ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Tên NCC", "Địa chỉ", "Số điện thoại", "Số đơn hàng", "Tổng tiền" };
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách thông tin nhà cung cấp";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu thành gray
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < ListSupplierToView.Count; i++)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        SupplierControl control = ListSupplierToView[i];
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":F" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbName.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbAddress.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbPhoneNumber.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbNumOfReceipts.Text;
+                        ws.Cells[rowIndex, colIndex++].Value = control.txbTotal.Text;
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            catch
+            {
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
     }
 }

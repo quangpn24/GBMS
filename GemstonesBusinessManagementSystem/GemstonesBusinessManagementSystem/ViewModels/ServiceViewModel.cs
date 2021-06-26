@@ -4,8 +4,11 @@ using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
 using Microsoft.Win32;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,6 +80,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addService.txtPriceOfService.Text = uCService.txbPrice.Text;
             addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 1 : 0; // kiểm tra isActived
             addService.Title = "Sửa thông tin dịch vụ";
+            addService.btnSave.Content = "Cập nhật";
             addService.ShowDialog();
         }
         public void AddService(AddServiceWindow addServiceWindow)
@@ -91,7 +95,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, ConvertToNumber(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.Add(service))
                         {
-                            MessageBox.Show("Thành công!");
+                            CustomMessageBox.Show("Thêm dịch vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                             addServiceWindow.Close();
 
                             ServiceControl uCService = new ServiceControl();
@@ -110,12 +114,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         }
                         else
                         {
-                            MessageBox.Show("Thất bại!");
+                            CustomMessageBox.Show("Thêm dịch vụ thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Tên dịch vụ đã tồn tại!");
+                        CustomMessageBox.Show("Tên dịch vụ đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else // id đã xuất hiện thì cập nhật
@@ -125,6 +129,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         Service service = new Service(ConvertToID(addServiceWindow.txtIdService.Text), addServiceWindow.txtNameOfService.Text, ConvertToNumber(addServiceWindow.txtPriceOfService.Text), addServiceWindow.cboStatus.SelectedIndex, 0);
                         if (ServiceDAL.Instance.Update(service))
                         {
+                            CustomMessageBox.Show("Cập nhật dịch vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                             addServiceWindow.Close();
                             selectedUCService.txbName.Text = service.Name;
                             selectedUCService.txbPrice.Text = service.Price.ToString();
@@ -147,12 +152,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         }
                         else
                         {
-                            MessageBox.Show("Thất bại!");
+                            CustomMessageBox.Show("Cập nhật thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Tên dịch vụ đã tồn tại!");
+                        CustomMessageBox.Show("Tên dịch vụ đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -161,7 +166,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void DeleteService(ServiceControl uCService)
         {
-            if (MessageBox.Show("Xác nhận xóa dịch vụ?", "Thông báo?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (CustomMessageBox.Show("Xác nhận xóa dịch vụ?", "Thông báo?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 if (ServiceDAL.Instance.Delete(ConvertToID(uCService.txbSerial.Text).ToString()))
                 {
@@ -174,7 +179,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Xóa thất bại!");
+                    CustomMessageBox.Show("Xóa dịch vụ thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             int start = 0, end = 0;
@@ -184,12 +189,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(addServiceWindow.txtNameOfService.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên dịch vụ!");
+                CustomMessageBox.Show("Vui lòng nhập tên dịch vụ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrEmpty(addServiceWindow.txtPriceOfService.Text))
             {
-                MessageBox.Show("Vui lòng nhập giá dịch vụ!");
+                CustomMessageBox.Show("Vui lòng nhập giá dịch vụ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             return true;
@@ -239,19 +244,107 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void ExportExcel()
         {
+            string filePath = "";
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Excel Workbook|*.xlsx"
+                Filter = "Excel |*.xlsx"
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                using (XLWorkbook workbook = new XLWorkbook())
-                {
-                    workbook.Worksheets.Add(ServiceDAL.Instance.GetServices(), "Services");
-                    workbook.SaveAs(saveFileDialog.FileName);
-                }
-                MessageBox.Show("Xuất dữ liệu thành công!");
+                filePath = saveFileDialog.FileName;
             }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách dịch vụ";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSDV";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 30;
+                    ws.Column(3).Width = 30;
+                    ws.Column(3).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(4).Width = 30;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Tên dịch vụ", "Đơn giá", "Trạng thái"};
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách dịch vụ";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu thành gray
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < services.Count; i++)
+                    {
+                        Service service = services[i];
+                        ws.Row(rowIndex).Height = 15;
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":E" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = service.Name;
+                        ws.Cells[rowIndex, colIndex++].Value = service.Price;
+                        ws.Cells[rowIndex, colIndex++].Value = (service.IsActived == 1) ? "Đang hoạt động" : "Dừng hoạt động";
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            catch
+            {
+                MessageBox.Show("Có lỗi khi lưu file!");
+            }
+
         }
         public void RestoreService(MainWindow mainWindow)
         {
@@ -263,11 +356,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 FindService(mainWindow);
                 mainWindow.cboSelectSort.SelectedIndex = selectedSort;
                 mainWindow.cboSelectFilter.SelectedIndex = selectedFilter;
-                MessageBox.Show("Khôi phục dữ liệu thành công!");
+                CustomMessageBox.Show("Khôi phục dữ liệu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
-                MessageBox.Show("Khôi phục dữ liệu thất bại!");
+                CustomMessageBox.Show("Khôi phục dữ liệu thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public void LoadInfoOfPage(ref int start, ref int end)
@@ -280,7 +373,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (currentPage == services.Count / 10)
                 end = services.Count;
 
-            mainWindow.txtNumOfService.Text = String.Format("Trang {0} trên {1} trang", currentPage+1, (services.Count-1) / 10 + 1);
+            mainWindow.txtNumOfService.Text = String.Format("Trang {0} trên {1} trang", currentPage + 1, (services.Count - 1) / 10 + 1);
         }
         public void FilterService(MainWindow mainWindow)
         {

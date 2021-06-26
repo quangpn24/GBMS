@@ -292,7 +292,7 @@
                                 TabIndex="3"
                                 materialDesign:ButtonAssist.CornerRadius="2"
                                 ToolTip="Lưu thông tin" 
-                                Content="Thêm" >
+                                Content="Lưu" >
                                 <Button.IsEnabled>
                                     <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
                                                   Mode="TwoWay">

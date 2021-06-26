@@ -26,20 +26,16 @@
             Width="150"
             Height="160" 
             HorizontalAlignment="Left">
-            <Rectangle 
-                x:Name="recImage"
-                StrokeDashArray="4 2" 
-                Stroke="{StaticResource Primary}" 
-                StrokeThickness="4" 
-                RadiusX="4" 
-                RadiusY="4"/>
+            <Image
+                x:Name="imgAvatar"
+                Source="/Resources/Images/employee.jpg"/>
             <Button 
                 x:Name="btnSelectImage"
                 Style="{StaticResource PrimaryButton}"
                 Height="35" 
                 Width="110" 
                 Command="{Binding SelectImageCommand}"
-                CommandParameter="{Binding ElementName=grdSelectImage}"
+                CommandParameter="{Binding ElementName=wdAddEmployee}"
                 materialDesign:ButtonAssist.CornerRadius="2"
                 ToolTip="Chọn ảnh" 
                 Content="Chọn ảnh"
@@ -48,14 +44,6 @@
                 Margin="0,0,0,12" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Bottom"/>
-            <materialDesign:PackIcon  
-                Kind="FileImageOutline" 
-                Foreground="{StaticResource Primary}"
-                Width="64" 
-                Height="54"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"  
-                Margin="0,20,0,0"/>
         </Grid>
         <StackPanel 
             HorizontalAlignment="Right"
@@ -362,7 +350,7 @@
                     Command="{Binding SaveCommand}"
                     CommandParameter="{Binding ElementName=wdAddEmployee}"
                     Height="40" 
-                    Width="100"
+                    Width="120"
                     TabIndex="9"
                     ToolTip="Thêm nhân viên" 
                     Content="Lưu">

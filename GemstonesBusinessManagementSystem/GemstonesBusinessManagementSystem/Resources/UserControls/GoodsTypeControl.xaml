@@ -11,7 +11,14 @@
     x:Name="ucGoodsTypeControl"
     Height="40" 
     DataContext="{StaticResource GoodsTypeVM}"
+    Style="{StaticResource MyUCHoverStyle}"
     Margin="0,0,0,2">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding SelectedGoodsTypeCommand}"
+                                   CommandParameter="{Binding ElementName=ucGoodsTypeControl}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>

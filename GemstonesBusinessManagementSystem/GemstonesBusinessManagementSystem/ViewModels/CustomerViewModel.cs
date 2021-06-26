@@ -18,6 +18,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Data;
 using System.Windows.Data;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.IO;
 
 namespace GemstonesBusinessManagementSystem.ViewModels
 {
@@ -112,7 +115,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             GoToPreviousPageCommandCus = new RelayCommand<MainWindow>(p => true, p => GoToPreviousPage(p, --currentPage));
             FindCustomerCommand = new RelayCommand<MainWindow>(p => true, p => FindCustomer(p));
             OpenAddCustomerWinDowCommand = new RelayCommand<MainWindow>(p => true, p => OpenAddCustomerWindow(p));
-            ExportExcelCommand = new RelayCommand<Window>(p => true, p => ExportExcel());
+            ExportExcelCommand = new RelayCommand<MainWindow>(p => true, p => ExportExcel(p));
             SortCustomerCommand = new RelayCommand<MainWindow>(p => true, p => SortCustomer(p));
             FilterCommand = new RelayCommand<MainWindow>(p => true, p => Filter(p));
             EditCommand = new RelayCommand<CustomerControl>((p) => true, (p) => OpenEditWindow(p));
@@ -144,7 +147,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (String.IsNullOrEmpty(pickCustomerWindow.txbId.Text))
             {
-                MessageBox.Show("Vui lòng chọn khách hàng!");
+                CustomMessageBox.Show("Vui lòng chọn khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -219,11 +222,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             string idMembership = ConvertToIDString(control.txbId.Text);
             if (CustomerDAL.Instance.IsMembership(idMembership))
             {
-                MessageBox.Show("Không thể xóa vì tồn tại khách hàng có hạng thành viên này");
+                CustomMessageBox.Show("Không thể xóa vì tồn tại khách hàng có hạng thành viên này!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Xác nhận xóa hạng thành viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = CustomMessageBox.Show("Xác nhận xóa hạng thành viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -234,7 +237,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Xoá thất bại");
+                        CustomMessageBox.Show("Xoá thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -254,6 +257,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             isEditingMembership = true;
             addMembershipWindow.txbTitle.Text = "Sửa hạng thành viên";
             addMembershipWindow.txtId.Text = control.txbId.Text;
+            addMembershipWindow.btnSave.Content = "Cập nhật";
 
             addMembershipWindow.txtMembership.Text = control.txbMembership.Text;
             addMembershipWindow.txtMembership.SelectionStart = control.txbMembership.Text.Length;
@@ -353,6 +357,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             addCustomerWindow.btnSave.ToolTip = "Cập nhật thông tin khách hàng";
             addCustomerWindow.Title = "Cập nhật thông tin khách hàng";
+            addCustomerWindow.btnSave.Content = "Cập nhật";
             addCustomerWindow.ShowDialog();
         }
 
@@ -360,19 +365,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(window.txtMembership.Text))
             {
-                MessageBox.Show("Vui lòng nhập hạng thành viên!");
+                CustomMessageBox.Show("Vui lòng nhập hạng thành viên!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtMembership.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtTarget.Text))
             {
-                MessageBox.Show("Vui lòng nhập chỉ tiêu!");
+                CustomMessageBox.Show("Vui lòng nhập chỉ tiêu!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtTarget.Focus();
                 return;
             }
             if (window.txtMembership.Text != oldMembership && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
             {
-                MessageBox.Show("Hạng thành viên đã tồn tại!");
+                CustomMessageBox.Show("Hạng thành viên đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtMembership.Focus();
                 return;
             }
@@ -429,7 +434,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 ucCustomer.txbPhone.Text = customerList[i].PhoneNumber.ToString();
                 ucCustomer.txbAddress.Text = customerList[i].Address.ToString();
                 ucCustomer.txbAllPrice.Text = SeparateThousands(customerList[i].TotalPrice.ToString());
-                //ucCustomer.txbLevelCus.Text = customerList[i].IdMembership == 1 ? "VIP" : "Thân thiết";
                 ucCustomer.txbLevelCus.Text = MembershipsTypeDAL.Instance.GetById(customerList[i].IdMembership).Membership;
                 mainWindow.stkCustomer.Children.Add(ucCustomer);
             }
@@ -467,22 +471,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             if (string.IsNullOrEmpty(addCustomerWindow.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập tên khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrEmpty(addCustomerWindow.txtPhoneNumber.Text))
             {
-                MessageBox.Show("Vui lòng nhập số điện thoại khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập số điện thoại khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrEmpty(addCustomerWindow.txtCMND.Text))
             {
-                MessageBox.Show("Vui lòng nhập số CMND khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập số CMND khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrEmpty(addCustomerWindow.txtAddress.Text))
             {
-                MessageBox.Show("Vui lòng nhập địa chỉ khách hàng!");
+                CustomMessageBox.Show("Vui lòng nhập địa chỉ khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             return true;
@@ -508,7 +512,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (CheckData(addCustomerWindow))// kiem tra du lieu dau vao
             {
                 Customer customer = new Customer(ConvertToID(addCustomerWindow.txtId.Text), addCustomerWindow.txtName.Text, (addCustomerWindow.txtPhoneNumber.Text), addCustomerWindow.txtAddress.Text,
-                    (addCustomerWindow.txtCMND.Text), 0, 1);
+                    (addCustomerWindow.txtCMND.Text), 0, 0);
 
                 if (isEditing)
                 {
@@ -527,11 +531,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 if (CustomerDAL.Instance.AddOrUpdate(customer, isEditing))
                 {
-                    MessageBox.Show("Thành công!");
+                    if (isEditing)
+                    {
+                        CustomMessageBox.Show("Cập nhật khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
+                    else
+                    {
+                        CustomMessageBox.Show("Thêm khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Thất bại!");
+                    CustomMessageBox.Show("Thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 int indexSort = mainWindow.cboSelectCustomerSort.SelectedIndex;
@@ -548,21 +559,117 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int start = 0, end = 0;
             LoadInfoOfPage(ref start, ref end);
         }
-        public void ExportExcel()
+        public void ExportExcel(MainWindow main)
         {
+            string filePath = "";
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Excel Workbook|*.xlsx"
+                Filter = "Excel |*.xlsx"
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                using (XLWorkbook workbook = new XLWorkbook())
-                {
-                    workbook.Worksheets.Add(CustomerDAL.Instance.LoadData(), "Customers");
-                    workbook.SaveAs(saveFileDialog.FileName);
-                }
-                MessageBox.Show("Xuất dữ liệu thành công!");
+                filePath = saveFileDialog.FileName;
             }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách khách hàng";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSKH";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 30;
+                    ws.Column(3).Width = 30;
+                    ws.Column(4).Width = 30;
+                    ws.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(5).Width = 30;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 20;
+                    ws.Column(6).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(7).Width = 30;
+                    ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Tên khách hàng", "Địa chỉ", "Số điện thoại", "Số CMND", "Hạng thành viên", "Tổng tiền" };
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách khách hàng";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu 
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < customerList.Count; i++)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        Customer customer = customerList[i];
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":G" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = customer.CustomerName;
+                        ws.Cells[rowIndex, colIndex++].Value = customer.Address;
+                        ws.Cells[rowIndex, colIndex++].Value = customer.PhoneNumber;
+                        ws.Cells[rowIndex, colIndex++].Value = customer.IdCustomer;
+                        ws.Cells[rowIndex, colIndex++].Value = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
+                        ws.Cells[rowIndex, colIndex++].Value = customer.TotalPrice;
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                CustomMessageBox.Show("Xuất dữ liệu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            catch
+            {
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
         public void SortCustomer(MainWindow mainWindow)
         {

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
+        xmlns:UserControl ="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
         mc:Ignorable="d"
         x:Name="wdStockReceiptTemplate"
         Title="Phiếu nhập kho"
@@ -12,13 +12,15 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
         SizeToContent="Height"
+        Height="700"
         Width="700">
     <Grid 
+        Width="695"
         x:Name="grdPrint">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="130"/>
-            <RowDefinition Height="auto" MinHeight="300"/>
+            <RowDefinition />
             <RowDefinition Height="130"/>
         </Grid.RowDefinitions>
         <Grid >
@@ -33,10 +35,12 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Image 
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="70" 
-                    Height="70"/>
+                    x:Name="imgStoreAvatar"
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Width="60" 
+                    Height="60"/>
                 <StackPanel
                     Grid.Column="1">
                     <TextBlock 
@@ -44,7 +48,7 @@
                         HorizontalAlignment="Left" 
                         Margin="10,8,0,0"
                         TextWrapping="Wrap"
-                        Text="Brand Name" 
+                        Text="{Binding Path=Text,ElementName=txbStoreName}" 
                         VerticalAlignment="Bottom" 
                         FontSize="22" 
                         FontWeight="Bold" 
@@ -260,12 +264,8 @@
             </Grid>
             <StackPanel 
                 Margin="30,26,30,3"
-                x:Name="stkStockReceiptInfo" >
+                x:Name="stkStockReceiptInfo">
             </StackPanel>
-            <Border 
-                BorderBrush="{DynamicResource Primary}" 
-                BorderThickness="2"
-                Margin="30,0,30,1"/>
         </Grid>
         <Grid
             Grid.Row="3">
@@ -356,18 +356,6 @@
                     RadiusX="4"
                     RadiusY="4"/>
             </Grid>
-            <Button 
-                x:Name="btnPrint"
-                materialDesign:ButtonAssist.CornerRadius="2"
-                IsDefault="True"
-                Content="In hóa đơn"
-                HorizontalAlignment="Left" 
-                Margin="30,0,0,10" 
-                Height="25" 
-                Width="100"
-                VerticalAlignment="Bottom" 
-                BorderBrush="{DynamicResource Success}" 
-                Padding="0" />
         </Grid>
     </Grid>
 </Window>

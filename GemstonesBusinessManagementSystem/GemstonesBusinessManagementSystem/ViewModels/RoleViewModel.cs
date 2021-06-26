@@ -151,11 +151,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             mainWindow.cbCheckAll.IsEnabled = false;
             if (success == n)
             {
-                MessageBox.Show("Cập nhật thành công!");
+                CustomMessageBox.Show("Cập nhật phân quyền thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
-                MessageBox.Show("Cập nhật không thành công!");
+                CustomMessageBox.Show("Cập nhật phân quyền không thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         void InitPermission(RoleControl control)

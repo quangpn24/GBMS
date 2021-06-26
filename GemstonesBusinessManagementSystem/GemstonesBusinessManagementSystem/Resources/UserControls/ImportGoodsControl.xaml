@@ -12,8 +12,7 @@
     DataContext="{StaticResource ImportGoodsVM}"
     Height="40" 
     Margin="0,0,0,2">
-    <Grid
-        x:Name="grdMain">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60"/>
             <ColumnDefinition Width="80"/>

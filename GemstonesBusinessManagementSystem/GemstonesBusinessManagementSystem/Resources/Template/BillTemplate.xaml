@@ -49,6 +49,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Image 
+                    x:Name="imgStoreAvatar"
                     Grid.Column="0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -57,26 +58,16 @@
                 <StackPanel
                     Grid.Column="1">
                     <TextBlock 
-                        x:Name="txbFieldNameBrand"
                         Grid.Column="1"
                         HorizontalAlignment="Left" 
                         Margin="10,8,0,0"
                         TextWrapping="Wrap"
-                        Text="Brand Name" 
+                        Text="{Binding Path=Text,ElementName=txbStoreName}" 
                         VerticalAlignment="Bottom" 
                         FontSize="22" 
                         FontWeight="Bold" 
                         FontFamily="Microsoft PhagsPa"
                         Foreground="{DynamicResource Primary}"/>
-                    <TextBlock 
-                        Grid.Column="1"
-                        HorizontalAlignment="Left" 
-                        Margin="10,0,0,0"
-                        TextWrapping="Wrap"
-                        Text="Tagline space here" 
-                        VerticalAlignment="Bottom" 
-                        FontWeight="Medium" 
-                        Foreground="{DynamicResource Black2}"/>
                 </StackPanel>
             </Grid>
             <Rectangle 

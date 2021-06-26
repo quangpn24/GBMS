@@ -2160,6 +2160,9 @@
                         Width="160"/>
                     <Button
                         x:Name="btnSwitchImportStock"
+                        DataContext="{StaticResource GoodsVM}"
+                        Command="{Binding OpenImportGoodsCommand}"
+                        CommandParameter="{Binding ElementName=wdMain}"
                         Style="{StaticResource GreenButton}"
                         Content="Nhập kho"
                         ToolTip="Nhập kho"
@@ -3693,6 +3696,7 @@
                             Command="{Binding PrintBillCommand}"
                             CommandParameter="{Binding ElementName=wdMain}"
                             Height="35" 
+                            Visibility="Collapsed"
                             HorizontalAlignment="Right" 
                             Margin="0,0,20,0"/>
                         <Grid

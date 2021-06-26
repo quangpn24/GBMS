@@ -8,14 +8,12 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d" 
-    x:Name="ucStockReceiptInfo"
     DataContext="{StaticResource ImportGoodsVM}"
     Height="40" 
     Margin="0,0,0,2">
-    <Grid
-        x:Name="grdMain">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="1.2*"/>
             <ColumnDefinition Width="1.5*"/>

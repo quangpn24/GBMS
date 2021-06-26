@@ -4,9 +4,12 @@ using GemstonesBusinessManagementSystem.Models;
 using GemstonesBusinessManagementSystem.Resources.UserControls;
 using GemstonesBusinessManagementSystem.Views;
 using Microsoft.Win32;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -112,7 +115,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             DeleteCommand = new RelayCommand<EmployeeControl>((p) => true, (p) => HandleDelete(p));
 
             //AddEmployeeWindow
-            SelectImageCommand = new RelayCommand<Grid>((p) => true, (p) => HandleSelectImage(p));
+            SelectImageCommand = new RelayCommand<AddEmployeeWindow>((p) => true, (p) => HandleSelectImage(p));
             SaveCommand = new RelayCommand<AddEmployeeWindow>((p) => true, (p) => HandleAddOrUpdate(p));
             ExitCommand = new RelayCommand<AddEmployeeWindow>((p) => true, (p) => p.Close());
 
@@ -122,7 +125,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PreviousPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToPreviousPage(p, --currentPage));
             NextPageCommand = new RelayCommand<MainWindow>((p) => true, (p) => GoToNextPage(p, ++currentPage));
             SearchCommand = new RelayCommand<MainWindow>((p) => true, (p) => Search(p));
-            ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel());
+            ExportExcelCommand = new RelayCommand<MainWindow>((p) => true, (p) => ExportExcel(p));
             OpenAddWindowCommand = new RelayCommand<MainWindow>((p) => true, (p) => OpenAddWindow(p));
             LoadCommand = new RelayCommand<MainWindow>((p) => true, (p) => { LoadEmployeeList(p, 0); SetItemSource(); });
         }
@@ -178,11 +181,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             string idPosition = ConvertToIDString(control.txbId.Text);
             if (EmployeeDAL.Instance.IsPosition(idPosition))
             {
-                MessageBox.Show("Không thể xóa vì tồn tại nhân viên có chức vụ này");
+                CustomMessageBox.Show("Không thể xóa vì tồn tại nhân viên có chức vụ này!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Xác nhận xóa chức vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = CustomMessageBox.Show("Xác nhận xóa chức vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -193,7 +196,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Xoá thất bại");
+                        CustomMessageBox.Show("Xoá thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -225,44 +228,44 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             #region
             if (string.IsNullOrEmpty(window.txtPosition.Text))
             {
-                MessageBox.Show("Vui lòng nhập chức vụ!");
+                CustomMessageBox.Show("Vui lòng nhập chức vụ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtPosition.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtSalaryBase.Text))
             {
-                MessageBox.Show("Vui lòng nhập lương cơ bản!");
+                CustomMessageBox.Show("Vui lòng nhập lương cơ bản!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtSalaryBase.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtStandardWorkDays.Text))
             {
-                MessageBox.Show("Vui lòng nhập ngày công chuẩn!");
+                CustomMessageBox.Show("Vui lòng nhập ngày công chuẩn!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtStandardWorkDays.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtOvertime.Text))
             {
-                MessageBox.Show("Vui lòng nhập tiền lương tăng ca!");
+                CustomMessageBox.Show("Vui lòng nhập tiền lương tăng ca!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtOvertime.Focus();
                 return;
             }
             if (string.IsNullOrEmpty(window.txtFault.Text))
             {
-                MessageBox.Show("Vui lòng nhập tiền phạt!");
+                CustomMessageBox.Show("Vui lòng nhập tiền phạt!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtFault.Focus();
                 return;
             }
             #endregion
             if (window.txtPosition.Text != oldPosition && EmployeePositionDAL.Instance.IsExisted(window.txtPosition.Text))
             {
-                MessageBox.Show("Chức vụ đã tồn tại!");
+                CustomMessageBox.Show("Chức vụ đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtPosition.Focus();
                 return;
             }
             if (string.Compare(window.txtStandardWorkDays.Text, "30") > 0)
             {
-                MessageBox.Show("Số ngày công chuẩn không >30");
+                CustomMessageBox.Show("Số ngày công chuẩn không >30!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtStandardWorkDays.Focus();
                 return;
             }
@@ -349,21 +352,24 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.dpBirthDate.SelectedDate = DateTime.Parse(employee.DateOfBirth.ToString());
             addEmployeeWindow.dpWorkDate.SelectedDate = DateTime.Parse(employee.StartingDate.ToString());
             ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
-            addEmployeeWindow.grdSelectImage.Background = imageBrush;
-            if (addEmployeeWindow.grdSelectImage.Children.Count > 1)
+            if (employee.ImageFile != null)
             {
-                addEmployeeWindow.grdSelectImage.Children.Remove(addEmployeeWindow.grdSelectImage.Children[0]);
-                addEmployeeWindow.grdSelectImage.Children.Remove(addEmployeeWindow.grdSelectImage.Children[1]);
+                imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(employee.ImageFile);
+                addEmployeeWindow.imgAvatar.Source = imageBrush.ImageSource;
+            }
+            else
+            {
+                addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
             }
             addEmployeeWindow.btnSave.ToolTip = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.Title = "Cập nhật thông tin nhân viên";
+            addEmployeeWindow.btnSave.Content = "Cập nhật";
             addEmployeeWindow.ShowDialog();
         }
         void HandleDelete(EmployeeControl employeeControl)
         {
             string idEmployee = ConvertToIDString(employeeControl.txbId.Text);
-            MessageBoxResult result = MessageBox.Show("Xác nhận xóa nhân viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = CustomMessageBox.Show("Xác nhận xóa nhân viên?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
             {
@@ -383,7 +389,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Xoá thất bại");
+                    CustomMessageBox.Show("Xoá thất bại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             int start = 0, end = 0;
@@ -397,19 +403,19 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             string gender = "";
             if (string.IsNullOrEmpty(window.txtName.Text))
             {
-                MessageBox.Show("Vui lòng nhập họ tên!");
+                CustomMessageBox.Show("Vui lòng nhập họ tên!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtName.Focus();
                 return;
             }
             if (window.cboPosition.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập chức vụ!");
+                CustomMessageBox.Show("Vui lòng nhập chức vụ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.cboPosition.Focus();
                 return;
             }
             if (window.dpBirthDate.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập ngày sinh!");
+                CustomMessageBox.Show("Vui lòng nhập ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.dpBirthDate.Focus();
                 return;
             }
@@ -418,26 +424,26 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 DateTime dateTime = new DateTime();
                 if (!DateTime.TryParse(window.dpBirthDate.Text, out dateTime))
                 {
-                    MessageBox.Show("Vui lòng nhập lại ngày sinh!");
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     window.dpBirthDate.Focus();
                     return;
                 }
             }
             if (window.txtAddress.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập địa chỉ!");
+                CustomMessageBox.Show("Vui lòng nhập địa chỉ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtAddress.Focus();
                 return;
             }
             if (window.txtPhoneNumber.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập số điện thoại!");
+                CustomMessageBox.Show("Vui lòng nhập số điện thoại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtPhoneNumber.Focus();
                 return;
             }
             if (window.dpWorkDate.Text == "")
             {
-                MessageBox.Show("Vui lòng nhập ngày vào làm!");
+                CustomMessageBox.Show("Vui lòng nhập ngày vào làm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.dpWorkDate.Focus();
                 return;
             }
@@ -446,13 +452,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 DateTime dateTime = new DateTime();
                 if (!DateTime.TryParse(window.dpWorkDate.Text, out dateTime))
                 {
-                    MessageBox.Show("Vui lòng nhập lại ngày vào làm!");
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày vào làm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     window.dpWorkDate.Focus();
                     return;
                 }
                 if (dateTime < DateTime.Parse(window.dpBirthDate.Text))
                 {
-                    MessageBox.Show("Vui lòng nhập lại ngày vào làm lớn hơn ngày sinh!");
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày vào làm lớn hơn ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     window.dpWorkDate.Focus();
                     return;
                 }
@@ -461,22 +467,11 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 gender = "Nam";
             else
                 gender = "Nữ";
-            if (window.grdSelectImage.Background == null)
-            {
-                MessageBox.Show("Vui lòng thêm hình ảnh!");
-                return;
-            }
 
             string idEmployee = ConvertToIDString(window.txtId.Text);
             byte[] imgByteArr;
-            try
-            {
-                imgByteArr = Converter.Instance.ConvertImageToBytes(imageName);
-            }
-            catch
-            {
-                imgByteArr = EmployeeDAL.Instance.GetById(idEmployee).ImageFile;
-            }
+            imgByteArr = Converter.Instance.ConvertBitmapImageToBytes((BitmapImage)window.imgAvatar.Source);
+
             imageName = null;
             #endregion
             Employee employee = new Employee(int.Parse(idEmployee), window.txtName.Text, gender,
@@ -509,19 +504,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                ImageBrush imageBrush = new ImageBrush
-                {
-                    ImageSource = Converter.Instance.ConvertByteToBitmapImage(imgByteArr)
-                };
-                if (imageBrush.ImageSource != null)
-                {
-                    mainWindow.imgAccount.Fill = imageBrush;
-                }
-
                 EmployeeControl control = new EmployeeControl();
+                EmployeePosition employeePosition = EmployeePositionDAL.Instance.GetById(employee.IdPosition);
                 control.txbId.Text = window.txtId.Text;
                 control.txbName.Text = employee.Name.ToString();
-                control.txbPosition.Text = EmployeePositionDAL.Instance.GetById(employee.IdPosition).Position;
+                control.txbPosition.Text = employeePosition.Position;
+                control.txbTotalSalary.Text = SeparateThousands(employeePosition.SalaryBase.ToString());
                 control.txbPhoneNumber.Text = employee.PhoneNumber.ToString();
                 control.txbAddress.Text = employee.Address.ToString();
 
@@ -551,7 +539,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             }
         }
-        void HandleSelectImage(Grid grid)
+        void HandleSelectImage(AddEmployeeWindow window)
         {
             OpenFileDialog op = new OpenFileDialog
             {
@@ -568,12 +556,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 bitmap.UriSource = new Uri(imageName);
                 bitmap.EndInit();
                 imageBrush.ImageSource = bitmap;
-                grid.Background = imageBrush;
-                if (grid.Children.Count > 1)
-                {
-                    grid.Children.Remove(grid.Children[0]);
-                    grid.Children.Remove(grid.Children[1]);
-                }
+                window.imgAvatar.Source = imageBrush.ImageSource;
             }
         }
 
@@ -605,21 +588,127 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             currentPage = 0;
             LoadEmployeeList(mainWindow, currentPage);
         }
-        void ExportExcel()
+        public void ExportExcel(MainWindow main)
         {
+            string filePath = "";
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Excel |*.xlsx"
             };
-            if ((bool)saveFileDialog.ShowDialog())
+            if (saveFileDialog.ShowDialog() == true)
             {
-                using (XLWorkbook workbook = new XLWorkbook())
-                {
-                    workbook.Worksheets.Add(EmployeeDAL.Instance.GetDatatable(), "Danh sách nhân viên");
-                    workbook.SaveAs(saveFileDialog.FileName);
-                }
-                MessageBox.Show("Xuất danh sách thành công!");
+                filePath = saveFileDialog.FileName;
             }
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage p = new ExcelPackage())
+                {
+                    // đặt tiêu đề cho file
+                    p.Workbook.Properties.Title = "Danh sách nhân viên";
+                    p.Workbook.Worksheets.Add("sheet");
+
+                    ExcelWorksheet ws = p.Workbook.Worksheets[0];
+                    ws.Name = "DSNCC";
+                    ws.Cells.Style.Font.Size = 11;
+                    ws.Cells.Style.Font.Name = "Calibri";
+                    ws.Cells.Style.WrapText = true;
+                    ws.Column(1).Width = 10;
+                    ws.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(2).Width = 30;
+                    ws.Column(3).Width = 20;
+                    ws.Column(4).Width = 30;
+                    ws.Column(4).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(5).Width = 30;
+                    ws.Column(5).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(6).Width = 30;
+                    ws.Column(7).Width = 30;
+                    ws.Column(7).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(8).Width = 30;
+                    ws.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(9).Width = 30;
+                    ws.Column(9).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Tạo danh sách các column header
+                    string[] arrColumnHeader = { "STT", "Tên nhân viên", "Chức vụ", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Ngày vào làm", "Lương" };
+
+                    var countColHeader = arrColumnHeader.Count();
+
+                    // merge các column lại từ column 1 đến số column header
+                    // gán giá trị cho cell vừa merge
+                    ws.Row(1).Height = 15;
+                    ws.Cells[1, 1].Value = "Danh sách nhân viên";
+                    ws.Cells[1, 1, 1, countColHeader].Merge = true;
+
+                    ws.Cells[1, 1, 1, countColHeader].Style.Font.Bold = true;
+                    ws.Cells[1, 1, 1, countColHeader].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    int colIndex = 1;
+                    int rowIndex = 2;
+                    //tạo các header từ column header đã tạo từ bên trên
+                    foreach (var item in arrColumnHeader)
+                    {
+                        ws.Row(rowIndex).Height = 15;
+                        var cell = ws.Cells[rowIndex, colIndex];
+                        //set màu 
+                        var fill = cell.Style.Fill;
+                        fill.PatternType = ExcelFillStyle.Solid;
+                        fill.BackgroundColor.SetColor(255, 29, 161, 242);
+                        cell.Style.Font.Bold = true;
+                        //căn chỉnh các border
+                        var border = cell.Style.Border;
+                        border.Bottom.Style =
+                            border.Top.Style =
+                            border.Left.Style =
+                            border.Right.Style = ExcelBorderStyle.Thin;
+
+                        cell.Value = item;
+                        colIndex++;
+                    }
+                    currentPage = 0;
+                    // lấy ra danh sách nhà cung cấp
+                    for (int i = 0; i < employeeList.Count; i++)
+                    {
+                        Employee employee = employeeList[i];
+                        EmployeePosition employeePosition = EmployeePositionDAL.Instance.GetById(employeeList[i].IdPosition);
+                        ws.Row(rowIndex).Height = 15;
+                        colIndex = 1;
+                        rowIndex++;
+                        string address = "A" + rowIndex + ":I" + rowIndex;
+                        ws.Cells[address].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        if (rowIndex % 2 != 0)
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 255, 255, 255);
+                        }
+                        else
+                        {
+                            ws.Cells[address].Style.Fill.BackgroundColor.SetColor(255, 229, 241, 255);
+                        }
+
+                        ws.Cells[rowIndex, colIndex++].Value = i + 1;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.Name;
+                        ws.Cells[rowIndex, colIndex++].Value = employeePosition.Position;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.Gender;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.DateOfBirth.ToString("dd/MM/yyyy");
+                        ws.Cells[rowIndex, colIndex++].Value = employee.PhoneNumber;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.Address;
+                        ws.Cells[rowIndex, colIndex++].Value = employee.StartingDate.ToString("dd/MM/yyyy");
+                        ws.Cells[rowIndex, colIndex++].Value = SeparateThousands(employeePosition.SalaryBase.ToString());
+                        if (i % 10 == 9)
+                        {
+                            GoToNextPage(mainWindow, currentPage);
+                        }
+                    }
+                    //Lưu file lại
+                    Byte[] bin = p.GetAsByteArray();
+                    File.WriteAllBytes(filePath, bin);
+                }
+                CustomMessageBox.Show("Xuất danh sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            catch
+            {
+                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
         void OpenAddWindow(MainWindow mainWindow)
         {
@@ -630,6 +719,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.txtAddress.Text = null;
             addEmployeeWindow.txtPhoneNumber.Text = null;
             addEmployeeWindow.cboPosition.SelectedIndex = -1;
+            addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
             addEmployeeWindow.ShowDialog();
         }
         void LoadEmployeeList(MainWindow main, int curPage)
