@@ -36,6 +36,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         private string oldMembership;
         private PickCustomerWindow pickCustomerWindow;
         private CustomerControl customerControl;
+        private PickCustomerControl pickedItem;
         Binding newBinding;
         private string name;
         private string phoneNumber;
@@ -156,6 +157,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void PickCustomer(PickCustomerControl pickCustomerControl)
         {
+            if(pickedItem!=null)
+            {
+                pickedItem.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbName.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbPhoneNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbIdNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbAddress.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbRank.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+            }    
+            pickCustomerControl.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbName.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbPhoneNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbIdNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbAddress.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbRank.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickedItem = pickCustomerControl; 
             pickCustomerWindow.txbId.Text = pickCustomerControl.txbId.Text;
             pickCustomerWindow.txbName.Text = pickCustomerControl.txbName.Text;
             pickCustomerWindow.txbAddress.Text = pickCustomerControl.txbAddress.Text;

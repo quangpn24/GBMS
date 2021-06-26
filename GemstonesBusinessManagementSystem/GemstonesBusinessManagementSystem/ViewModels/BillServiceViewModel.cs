@@ -90,6 +90,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             billServiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
                         }
+                        checkedItem = billServiceControl;
                     }
                 }
                 mainWindow.stkBillService.Children.Add(billServiceControl);
