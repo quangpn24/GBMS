@@ -334,7 +334,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     receiptTemplate.stkStockReceiptInfo.Children.Clear();
                 }
             }
-                pd.PrintDocument(document.DocumentPaginator, mainWindow.txbIdBillService.Text);
+            pd.PrintDocument(document.DocumentPaginator, mainWindow.txbIdBillService.Text);
             CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         // View receipt detail
@@ -381,7 +381,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
             pd.PrintDocument(document.DocumentPaginator, main.txbIdReceipt.Text);
-            CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            CustomMessageBox.Show("In phiếu nhập kho thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         public void Cancel(MainWindow main)
@@ -507,7 +507,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     ws.Column(8).Width = 30;
                     ws.Column(8).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     // Tạo danh sách các column header
-                    string[] arrColumnHeader = { "STT", "Mã phiếu", "Ngày lập", "Người nhập", "Nhà cung cấp", "Tổng tiền", "Giảm giá", "Thanh toán"};
+                    string[] arrColumnHeader = { "STT", "Mã phiếu", "Ngày lập", "Người nhập", "Nhà cung cấp", "Tổng tiền", "Giảm giá", "Thanh toán" };
 
                     var countColHeader = arrColumnHeader.Count();
 
@@ -647,7 +647,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             if (k)
             {
-                var result = CustomMessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                CustomMessageBox.Show("Thanh toán thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                var result = CustomMessageBox.Show("Bạn có muốn in phiếu nhập kho?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     PrintReceipt(wdImportGoods);

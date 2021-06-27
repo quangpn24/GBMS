@@ -20,7 +20,8 @@
     ResizeMode="CanMinimize" 
     WindowStartupLocation="CenterScreen" 
     Background="#FFF7F8FC"
-    DataContext="{StaticResource HomeVM}">
+    DataContext="{StaticResource HomeVM}" 
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
             <i:InvokeCommandAction Command="{Binding HiddenGridChangeInfoCommand}"
@@ -798,7 +799,7 @@
                             </ComboBox>
                         </StackPanel>
                         <lvc:CartesianChart 
-                            Height="460"
+                            Height="440"
                             LegendLocation="Top"
                             Series="{Binding SeriesCollection}"
                             VerticalAlignment="Bottom" 

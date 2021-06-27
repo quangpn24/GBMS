@@ -15,7 +15,8 @@
     Width="400" 
     x:Name="wdSignUp"
     WindowStartupLocation="CenterScreen"
-    ResizeMode="CanMinimize">
+    ResizeMode="CanMinimize"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=wdSignUp}"/>

@@ -16,7 +16,8 @@
     x:Name="wdImportGoods"
     Background="#F7F8FC"
     Height="800"
-    Width="1500">
+    Width="1500"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
             <i:InvokeCommandAction Command="{Binding HiddenGridDiscountCommand}"

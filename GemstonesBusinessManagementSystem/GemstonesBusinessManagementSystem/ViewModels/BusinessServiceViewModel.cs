@@ -237,7 +237,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             //CustomerDAL.Instance.AddOrUpdate(customer, true);
                         }
 
-                        var result = CustomMessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        CustomMessageBox.Show("Thanh toán thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                        var result = CustomMessageBox.Show("Bạn có muốn in phiếu dịch vụ?", "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (result == MessageBoxResult.Yes)
                         {
                             PrintBill(mainWindow);
@@ -361,7 +362,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 }
             }
             pd.PrintDocument(document.DocumentPaginator, mainWindow.txbIdBillService.Text);
-            CustomMessageBox.Show("In hóa đơn thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            CustomMessageBox.Show("In phiếu dịch vụ thành công", "Thông tin", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
         public void OpenPickCustomerWd(MainWindow mainWindow)
         {
