@@ -47,6 +47,7 @@
                     x:Name="txtIdService"
                     Style="{StaticResource TextBox}"
                     IsReadOnly="True"
+                    Focusable="True"
                     IsTabStop="False"
                     materialDesign:HintAssist.Hint="Mã tự động"/>
             </Grid>
@@ -213,7 +214,7 @@
                 Width="100"
                 ToolTip="Thoát"
                 HorizontalAlignment="Right"
-                Content="Bỏ qua" />
+                Content="Thoát" />
         </Grid>
     </Grid>
 </Window>

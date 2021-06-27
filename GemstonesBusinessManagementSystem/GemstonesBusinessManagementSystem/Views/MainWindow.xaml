@@ -912,7 +912,7 @@
                                 <ColumnDefinition Width="0.5*"/>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock
                                 Grid.Column="0"
@@ -4024,17 +4024,18 @@
                             <ComboBox      
                                 x:Name="cboSelectCustomerSort"
                                 Grid.Row="1"
+                                Style="{StaticResource MaterialDesignOutlinedComboBox}"
                                 materialDesign:ComboBoxAssist.ClassicMode="True"
                                 materialDesign:HintAssist.Hint="Sắp xếp"
                                 Height="40"
                                 FontSize="18"
-                                BorderThickness="0"
-                                Padding="10,0,0,0"
+                                BorderThickness="1"
+                                Padding="10,0,10,0"
                                 VerticalContentAlignment="Center"
                                 HorizontalContentAlignment="Left"
                                 FontWeight="SemiBold"
-                                BorderBrush="{StaticResource Black2}" 
-                                Background="{StaticResource White}"                           
+                                BorderBrush="{StaticResource Gray1}" 
+                                Background="{StaticResource White}"  
                                 Margin="30,0" 
                                 VerticalAlignment="Center">
                                 <i:Interaction.Triggers>
@@ -4046,14 +4047,6 @@
                                 <ComboBoxItem Content="Từ cao xuống" />
                                 <ComboBoxItem Content="Từ thấp lên" />
                             </ComboBox>
-                            <Rectangle 
-                                RadiusX="4"
-                                RadiusY="4"
-                                Height="40"
-                                Stroke="{StaticResource Gray2}"
-                                Grid.Row="1" 
-                                VerticalAlignment="Center"
-                                Margin="20,0"/>
                         </Grid>
                         <Grid
                             Height="125"
