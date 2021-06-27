@@ -19,6 +19,7 @@ namespace GemstonesBusinessManagementSystem.DAL
         //     4: StorePhone Number
         //     5: StoreEmail
         //     6: StoreAvatar
+        //     7: AuthKey
         private static ParameterDAL instance;
 
         public static ParameterDAL Instance
@@ -111,6 +112,26 @@ namespace GemstonesBusinessManagementSystem.DAL
             catch
             {
                 return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public Parameter GetAuthKey()
+        {
+            try
+            {
+                OpenConnection();
+                string query = "select * from Parameter where idParameter = 7";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return new Parameter(int.Parse(reader.GetString(0)), reader.GetString(1), reader.GetString(2));
+            }
+            catch
+            {
+                return new Parameter();
             }
             finally
             {

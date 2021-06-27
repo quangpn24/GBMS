@@ -112,7 +112,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             //kiem tra do chinh xac
-            if (!AuthorizationsDAL.Instance.CheckData(parameter.pwbKey.Password))
+            if (!(ParameterDAL.Instance.GetAuthKey().Value == parameter.pwbKey.Password))
             {
                 CustomMessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbKey.Focus();
@@ -176,7 +176,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
 
-            if (!AuthorizationsDAL.Instance.CheckData(parameter.pwbKey.Password))
+            if (!(ParameterDAL.Instance.GetAuthKey().Value == parameter.pwbKey.Password))
             {
                 CustomMessageBox.Show("Mã xác thực không đúng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 parameter.pwbKey.Focus();
