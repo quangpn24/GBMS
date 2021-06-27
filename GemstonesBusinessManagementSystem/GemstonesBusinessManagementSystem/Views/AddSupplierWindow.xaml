@@ -42,6 +42,7 @@
                     x:Name="txtId"
                     Style="{StaticResource TextBox}"
                     IsReadOnly="True"
+                    Focusable="False"
                     IsTabStop="False"
                     materialDesign:HintAssist.Hint="Mã tự động"/>
             </Grid>
@@ -185,7 +186,7 @@
                 TabIndex="4"
                 ToolTip="Thoát"
                 HorizontalAlignment="Right"
-                Content="Bỏ qua"/>
+                Content="Thoát"/>
         </Grid>
     </Grid>
 </Window>

@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <TextBlock 
                 x:Name="txbNumeralOrder"
@@ -36,6 +36,8 @@
                 Foreground="{StaticResource Gray}"
                 HorizontalAlignment="Left" 
                 FontWeight="Medium"
+                MaxWidth="140"
+                TextTrimming="WordEllipsis"
                 Margin="10,0,0,0"
                 TextWrapping="Wrap"  
                 VerticalAlignment="Center"/>

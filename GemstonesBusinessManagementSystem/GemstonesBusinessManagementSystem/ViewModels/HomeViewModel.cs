@@ -115,7 +115,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //bán hàng
                 case 10:
-                    window.txbTabName.Text = "Bán hàng";
+                    window.txbTabName.Text = "Tạo phiếu bán hàng";
                     window.grdSale.Visibility = Visibility.Visible;
                     CloseExpander(window, 0);
                     window.btnStore.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
@@ -124,7 +124,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //dịch vụ
                 case 11:
                     window.grdPayService.Visibility = Visibility.Visible;
-                    window.txbTabName.Text = "Dịch vụ";
+                    window.txbTabName.Text = "Tạo phiếu dịch vụ";
                     BusinessServiceViewModel businessServiceViewModel = new BusinessServiceViewModel();
                     businessServiceViewModel.LoadSaleServices(window);
                     CloseExpander(window, 0);
@@ -134,7 +134,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //tồn kho
                 case 20:
-                    window.txbTabName.Text = "Tồn kho";
+                    window.txbTabName.Text = "Báo cáo tồn kho";
                     window.grdStock.Visibility = Visibility.Visible;
                     StockViewModel stockVM = (StockViewModel)window.grdStock.DataContext;
                     stockVM.LoadStockList(window, 0);
@@ -144,7 +144,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //nhập hàng
                 case 21:
-                    window.txbTabName.Text = "Nhập kho";
+                    window.txbTabName.Text = "Danh sách phiếu nhập kho";
                     window.grdImport.Visibility = Visibility.Visible;
                     ImportGoodsViewModel importVM = (ImportGoodsViewModel)window.grdImport.DataContext;
                     importVM.Init(window);
@@ -206,7 +206,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 //báo cáo phiếu
                 case 50:
-                    window.txbTabName.Text = "Báo cáo phiếu";
+                    window.txbTabName.Text = "Danh sách phiếu dịch vụ";
                     if (window.dpStartDateBS.SelectedDate != null)
                     {
                         window.grdBillService.Visibility = Visibility.Visible;
@@ -222,7 +222,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 //báo cáo doanh thu
                 case 51:
                     window.grdBill.Visibility = Visibility.Visible;
-                    window.txbTabName.Text = "Báo cáo doanh thu";
+                    window.txbTabName.Text = "Danh sách hóa đơn bán hàng";
                     CloseExpander(window, 4);
                     window.btnRevenue.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
                     window.btnRevenue.Background = (Brush)new BrushConverter().ConvertFrom(backFocus);
