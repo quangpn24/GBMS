@@ -34,10 +34,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public bool isEditingMembership = false;
         private MembershipControl membershipControl;
         private string oldMembership;
+        private string oldTarget;
         private PickCustomerWindow pickCustomerWindow;
         private CustomerControl customerControl;
         private PickCustomerControl pickedItem;
-        Binding newBinding;
+        Binding newBindingName;
+        Binding newBindingTarget;
         private string name;
         private string phoneNumber;
         private string idNumber;
@@ -261,15 +263,21 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void ViewMembership(MembershipControl control)
         {
-            Binding binding = BindingOperations.GetBinding(addMembershipWindow.txtMembership, TextBox.TextProperty);
-            if (binding != null)
+            Binding bindingName = BindingOperations.GetBinding(addMembershipWindow.txtMembership, TextBox.TextProperty);
+            Binding bindingTarget = BindingOperations.GetBinding(addMembershipWindow.txtTarget, TextBox.TextProperty);
+            if (bindingName != null)
             {
-                newBinding = CloneBinding(binding as BindingBase, binding.Source) as Binding;
-
+                newBindingName = CloneBinding(bindingName as BindingBase, bindingName.Source) as Binding;
+            }
+            if (bindingTarget != null)
+            {
+                newBindingTarget = CloneBinding(bindingTarget as BindingBase, bindingTarget.Source,true ) as Binding;
             }
             BindingOperations.ClearBinding(addMembershipWindow.txtMembership, TextBox.TextProperty);
+            BindingOperations.ClearBinding(addMembershipWindow.txtTarget, TextBox.TextProperty);
 
             oldMembership = control.txbMembership.Text;
+            oldTarget = control.txbTarget.Text;
             membershipControl = control;
             isEditingMembership = true;
             addMembershipWindow.txbTitle.Text = "Sửa hạng thành viên";
@@ -288,9 +296,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void ClearView(AddMembershipWindow window)
         {
-            if (newBinding != null)
+            if (newBindingName != null)
             {
-                window.txtMembership.SetBinding(TextBox.TextProperty, newBinding);
+                window.txtMembership.SetBinding(TextBox.TextProperty, newBindingName);
+            }
+            if (newBindingTarget != null)
+            {
+                window.txtTarget.SetBinding(TextBox.TextProperty, newBindingTarget);
             }
             isEditingMembership = false;
             window.txtId.Text = AddPrefix("TV", (MembershipsTypeDAL.Instance.GetMaxId() + 1));
@@ -406,6 +418,15 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 {
                     CustomMessageBox.Show("Hạng thành viên đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     window.txtMembership.Focus();
+                    return;
+                }
+            }
+            if (!string.IsNullOrEmpty(oldTarget))
+            {
+                if (window.txtTarget.Text != oldTarget && MembershipsTypeDAL.Instance.IsExistTarget(double.Parse(window.txtTarget.Text).ToString()))
+                {
+                    CustomMessageBox.Show("Mục tiêu đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    window.txtTarget.Focus();
                     return;
                 }
             }

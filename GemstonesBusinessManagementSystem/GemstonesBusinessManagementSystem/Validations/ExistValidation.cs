@@ -71,6 +71,12 @@ namespace GemstonesBusinessManagementSystem.Validations
                         result = new ValidationResult(false, this.ErrorMessage);
                     }
                     break;
+                case "Target":
+                    if (MembershipsTypeDAL.Instance.IsExistTarget(double.Parse(value.ToString()).ToString()))
+                    {
+                        result = new ValidationResult(false, this.ErrorMessage);
+                    }
+                    break;
                 default:
                     break;
             }

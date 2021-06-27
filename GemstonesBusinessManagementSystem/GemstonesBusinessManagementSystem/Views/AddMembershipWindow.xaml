@@ -216,6 +216,8 @@
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <vd:NotNullValidation ErrorMessage="Vui lòng nhập chỉ tiêu!" />
+                                    <vd:ExistValidation ElementName="Target"
+                                                        ErrorMessage="Mục tiêu đã tồn tại" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>

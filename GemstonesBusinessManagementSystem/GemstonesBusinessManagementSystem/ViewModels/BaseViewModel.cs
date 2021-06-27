@@ -104,16 +104,17 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             return int.Parse(input.Remove(0, 2));
         }
-        public BindingBase CloneBinding(BindingBase bindingBase, object source)
+        public BindingBase CloneBinding(BindingBase bindingBase, object source,bool isNumber=false)
         {
             var binding = bindingBase as Binding;
             if (binding != null)
             {
+                   
                 var result = new Binding
                 {
-                    Source = source,
-                    AsyncState = binding.AsyncState,
-                    BindingGroupName = binding.BindingGroupName,
+                    //Source = source,
+                    //AsyncState = binding.AsyncState,
+                    //BindingGroupName = binding.BindingGroupName,
                     BindsDirectlyToSource = binding.BindsDirectlyToSource,
                     Converter = binding.Converter,
                     ConverterCulture = binding.ConverterCulture,
@@ -135,7 +136,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     ValidatesOnExceptions = binding.ValidatesOnExceptions,
                     XPath = binding.XPath,
                 };
-
+                if (!isNumber)
+                {
+                    result.Source = source;
+                }
                 foreach (var validationRule in binding.ValidationRules)
                 {
                     result.ValidationRules.Add(validationRule);

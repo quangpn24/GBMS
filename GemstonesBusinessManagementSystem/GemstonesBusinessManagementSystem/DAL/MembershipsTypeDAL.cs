@@ -265,5 +265,27 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
+        public bool IsExistTarget(string target)
+        {
+            try
+            {
+                OpenConnection();
+
+                string query = String.Format("select * from MembershipsType where target='{0}'", target);
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dataReader);
+                return dt.Rows.Count > 0;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
     }
 }
