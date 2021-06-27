@@ -102,7 +102,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             ServiceControl uCService = new ServiceControl();
                             uCService.txbSerial.Text = AddPrefix("DV", service.IdService);
                             uCService.txbName.Text = service.Name;
-                            uCService.txbPrice.Text = service.Price.ToString();
+                            uCService.txbPrice.Text = SeparateThousands(service.Price.ToString());
                             uCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                             if (mainWindow.cboSelectFilter.SelectedIndex == service.IsActived || mainWindow.cboSelectFilter.SelectedIndex == -1) // trùng trạng thái với filter thì thêm vào stk
                             {
@@ -133,7 +133,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             CustomMessageBox.Show("Cập nhật dịch vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                             addServiceWindow.Close();
                             selectedUCService.txbName.Text = service.Name;
-                            selectedUCService.txbPrice.Text = service.Price.ToString();
+                            selectedUCService.txbPrice.Text = SeparateThousands(service.Price.ToString());
                             selectedUCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                             if (service.IsActived != mainWindow.cboSelectFilter.SelectedIndex && mainWindow.cboSelectFilter.SelectedIndex != -1) // kiểm tra trạng thái để remove uc ra khỏi stk 
                             {

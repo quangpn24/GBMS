@@ -165,7 +165,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             if (isSuccess)
             {
-                var result = CustomMessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?",
+                CustomMessageBox.Show("Thanh toán thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                var result = CustomMessageBox.Show("Bạn có muốn in hóa đơn?",
                     "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {

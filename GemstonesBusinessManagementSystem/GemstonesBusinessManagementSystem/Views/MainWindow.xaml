@@ -799,7 +799,7 @@
                             </ComboBox>
                         </StackPanel>
                         <lvc:CartesianChart 
-                            Height="460"
+                            Height="440"
                             LegendLocation="Top"
                             Series="{Binding SeriesCollection}"
                             VerticalAlignment="Bottom" 

@@ -157,7 +157,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void PickCustomer(PickCustomerControl pickCustomerControl)
         {
-            if(pickedItem!=null)
+            if (pickedItem != null)
             {
                 pickedItem.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
                 pickedItem.txbName.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
@@ -165,14 +165,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 pickedItem.txbIdNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
                 pickedItem.txbAddress.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
                 pickedItem.txbRank.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
-            }    
+            }
             pickCustomerControl.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             pickCustomerControl.txbName.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             pickCustomerControl.txbPhoneNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             pickCustomerControl.txbIdNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             pickCustomerControl.txbAddress.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
             pickCustomerControl.txbRank.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
-            pickedItem = pickCustomerControl; 
+            pickedItem = pickCustomerControl;
             pickCustomerWindow.txbId.Text = pickCustomerControl.txbId.Text;
             pickCustomerWindow.txbName.Text = pickCustomerControl.txbName.Text;
             pickCustomerWindow.txbAddress.Text = pickCustomerControl.txbAddress.Text;
@@ -400,11 +400,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.txtTarget.Focus();
                 return;
             }
-            if (window.txtMembership.Text.ToLower() != oldMembership.ToLower() && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
+            if (!string.IsNullOrEmpty(oldMembership))
             {
-                CustomMessageBox.Show("Hạng thành viên đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                window.txtMembership.Focus();
-                return;
+                if (window.txtMembership.Text.ToLower() != oldMembership.ToLower() && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
+                {
+                    CustomMessageBox.Show("Hạng thành viên đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    window.txtMembership.Focus();
+                    return;
+                }
             }
 
             MembershipsType membership = new MembershipsType(ConvertToID(window.txtId.Text), window.txtMembership.Text,
@@ -562,7 +565,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        if(pickCustomerWindow != null)
+                        if (pickCustomerWindow != null)
                             FindPickCustomer(pickCustomerWindow);
                         CustomMessageBox.Show("Thêm khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     }

@@ -51,7 +51,7 @@
         <Grid 
             Grid.Row="1"
             Background="{StaticResource White}"
-            MinHeight="49">
+            MinHeight="60">
             <DockPanel 
                 Margin="5,0">
                 <Button

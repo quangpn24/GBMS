@@ -200,6 +200,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             throw new NotSupportedException("Failed to clone binding");
         }
-
+        public int CalculateAge(DateTime dateOfBirth, DateTime now)
+        {
+            int age = now.Year - dateOfBirth.Year;
+            if (now.DayOfYear < dateOfBirth.DayOfYear)
+            {
+                age--;
+            }
+            return age;
+        }
     }
 }
