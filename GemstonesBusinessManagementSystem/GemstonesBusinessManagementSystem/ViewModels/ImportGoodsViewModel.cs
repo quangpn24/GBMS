@@ -686,6 +686,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 selectedSupplier = null;
                 wdImportGoods.cboSupplier.Text = null;
                 wdImportGoods.txtSearch.Text = null;
+                wdImportGoods.txtDiscount.Text = null;
                 TotalPrice = "0";
                 MoneyToPay = "0";
                 int idStockReceiptMax = StockReceiptDAL.Instance.GetMaxId();

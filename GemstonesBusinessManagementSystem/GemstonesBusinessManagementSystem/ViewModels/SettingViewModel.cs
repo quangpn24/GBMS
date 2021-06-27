@@ -460,7 +460,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.pwbNewPassword.Focus();
                 return;
             }
-            if(AccountDAL.Instance.UpdatePasswordByUsername("admin", MD5Hash(window.pwbNewPassword.Password)))
+            if(AccountDAL.Instance.UpdatePasswordByUsername(CurrentAccount.IdAccount.ToString(), MD5Hash(window.pwbNewPassword.Password)))
             {
                 CustomMessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }

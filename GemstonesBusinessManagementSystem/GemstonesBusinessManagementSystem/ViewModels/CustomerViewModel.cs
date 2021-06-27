@@ -441,13 +441,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         public void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
         {
-            mainWindow.txbCountCustomer.Text = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
-            mainWindow.txbCountAllPrice.Text = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
             SetItemSource(mainWindow);
             LoadCustomerToView(mainWindow, 0);
         }
         public void LoadCustomerToView(MainWindow mainWindow, int currentPage)
         {
+            mainWindow.txbCountCustomer.Text = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
+            mainWindow.txbCountAllPrice.Text = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
             this.mainWindow = mainWindow;
             mainWindow.stkCustomer.Children.Clear();
             int start = 0, end = 0;
@@ -581,9 +581,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 FindCustomer(mainWindow);
                 mainWindow.cboSelectCustomerSort.SelectedIndex = indexSort;
                 mainWindow.cboSelectCustomerIdMembership.SelectedIndex = indexFilter;
-
-                mainWindow.txbCountAllPrice.Text = CustomerDAL.Instance.CountPrice().ToString();
-
                 addCustomerWindow.Close();
             }
             int start = 0, end = 0;

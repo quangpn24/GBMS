@@ -30,7 +30,7 @@ namespace GemstonesBusinessManagementSystem.Validations
             switch (ElementName)
             {
                 case "UserName":
-                    if (AccountDAL.Instance.IsExistUserName(value.ToString()))
+                    if (AccountDAL.Instance.IsExistUsername(value.ToString()))
                     {
                         result = new ValidationResult(false, this.ErrorMessage);
                     }

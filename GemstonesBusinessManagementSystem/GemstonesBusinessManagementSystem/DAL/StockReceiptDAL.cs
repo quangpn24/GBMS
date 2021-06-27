@@ -153,7 +153,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                     "(year(receiptDate) = {0} and month(receiptDate) < {1}) " +
                     "and idGoods in (select idGoods from goods) " +
                     "group by idGoods", year, month);
-
                 if (month == "1")
                 {
                     queryStr = String.Format("select idGoods, sum(quantity) " +
