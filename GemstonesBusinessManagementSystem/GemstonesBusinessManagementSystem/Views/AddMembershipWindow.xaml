@@ -137,6 +137,7 @@
                         x:Name="txtId"
                         Style="{StaticResource TextBox}"
                         materialDesign:HintAssist.Hint="Mã hạng thành viên"
+                        Focusable="False"
                         IsReadOnly="True"
                         IsTabStop="False"/>
                 </Grid>

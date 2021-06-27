@@ -42,7 +42,7 @@
                     x:Name="txtId"
                     materialDesign:HintAssist.Hint="Mã tự động"
                     Style="{StaticResource TextBox}"
-                    IsReadOnly="True"
+                    IsReadOnly="False"
                     Focusable="True"
                     IsTabStop="False"/>
             </Grid>

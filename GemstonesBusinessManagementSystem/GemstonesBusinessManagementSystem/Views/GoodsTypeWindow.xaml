@@ -160,6 +160,7 @@
                                     x:Name="txtId"
                                     Style="{StaticResource TextBox}"
                                     IsReadOnly="True"
+                                    Focusable="False"
                                     IsTabStop="False"
                                     materialDesign:HintAssist.Hint="Mã tự động"
                                     Width="200" 

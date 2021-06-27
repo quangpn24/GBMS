@@ -67,7 +67,7 @@
                 <TextBox 
                     x:Name="txtIdGoods"
                     Style="{StaticResource TextBox}"
-                    Focusable="True"
+                    Focusable="False"
                     IsReadOnly="True"
                     IsTabStop="False"
                     Cursor="Arrow"
