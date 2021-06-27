@@ -28,7 +28,7 @@
             HorizontalAlignment="Left">
             <Image
                 x:Name="imgAvatar"
-                Source="/Resources/Images/employee.jpg"/>
+                Source="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/employee.jpg"/>
             <Button 
                 x:Name="btnSelectImage"
                 Style="{StaticResource PrimaryButton}"

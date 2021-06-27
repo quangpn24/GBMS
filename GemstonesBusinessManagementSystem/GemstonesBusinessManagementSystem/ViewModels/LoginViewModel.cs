@@ -214,6 +214,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         {
             window.txbUsername.Text = CurrentAccount.Name;
 
+            if (CurrentAccount.ImageFile == null)
+            {
+                return;
+            }
             ImageBrush imageBrush = new ImageBrush();
             imageBrush.ImageSource = Converter.Instance.ConvertByteToBitmapImage(CurrentAccount.ImageFile);
             if (imageBrush.ImageSource != null)

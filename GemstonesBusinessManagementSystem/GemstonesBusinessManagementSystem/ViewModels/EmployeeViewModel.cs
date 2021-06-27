@@ -362,7 +362,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
+                addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/employee.jpg"));
             }
             addEmployeeWindow.btnSave.ToolTip = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.Title = "Cập nhật thông tin nhân viên";
@@ -722,7 +722,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.txtAddress.Text = null;
             addEmployeeWindow.txtPhoneNumber.Text = null;
             addEmployeeWindow.cboPosition.SelectedIndex = -1;
-            addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
+            addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/employee.jpg"));
             addEmployeeWindow.ShowDialog();
         }
         public void LoadEmployeeList(MainWindow main, int curPage)

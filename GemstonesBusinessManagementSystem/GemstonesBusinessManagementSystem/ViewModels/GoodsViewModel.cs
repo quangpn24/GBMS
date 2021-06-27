@@ -284,7 +284,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("/Resources/Images/goods.png", UriKind.Relative));
+                addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/goods.png"));
             }
             addGoodsWd.txtImportPrice.Text = control.txbImportPrice.Text;
             addGoodsWd.txtImportPrice.SelectionStart = addGoodsWd.txtImportPrice.Text.Length;
@@ -305,7 +305,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             addGoodsWd.txtName.Text = null;
             addGoodsWd.txtImportPrice.Text = null;
-            addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("/Resources/Images/goods.png", UriKind.Relative));
+            addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/goods.png"));
             int idMax = GoodsDAL.Instance.GetMaxId();
             if (idMax >= 0)
             {

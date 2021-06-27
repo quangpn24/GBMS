@@ -82,7 +82,6 @@
             </StackPanel>
         </StackPanel>
         <Button 
-            Visibility="Collapsed"
             Grid.ColumnSpan="2"
             FocusVisualStyle="{x:Null}"
             Command="{Binding SelectGoodsCommand}"

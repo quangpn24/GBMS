@@ -342,7 +342,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                     control.txbQuantity.Text = saleGoodsList[i].Quantity.ToString();
                     control.txbId.Text = saleGoodsList[i].IdGoods.ToString();
-                    control.imgGood.Source = Converter.Instance.ConvertByteToBitmapImage(saleGoodsList[i].ImageFile);
+                    if (saleGoodsList[i].ImageFile != null)
+                    {
+                        control.imgGood.Source = Converter.Instance.ConvertByteToBitmapImage(saleGoodsList[i].ImageFile);
+                    }
                     control.txbName.Text = saleGoodsList[i].Name;
                     GoodsType type = GoodsTypeDAL.Instance.GetById(saleGoodsList[i].IdGoodsType);
                     double profitPercentage = type.ProfitPercentage;

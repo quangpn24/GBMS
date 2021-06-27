@@ -396,7 +396,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.grdSelectImage.Background = imageBrush;            }
             else
             {
-                imageBrush.ImageSource = new BitmapImage(new Uri("/Resources/Images/avatar.jpg", UriKind.Relative));
+                imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/avatar.jpg"));
                 window.grdSelectImage.Background = imageBrush;
             }
             if (window.grdSelectImage.Children.Count > 1)
