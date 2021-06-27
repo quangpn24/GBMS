@@ -138,6 +138,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             supplierControl = control;
             newWindow.Title = "Sửa thông tin nhà cung cấp";
             newWindow.btnSave.Content = "Cập nhật";
+            newWindow.btnSave.ToolTip = "Cập nhật nhà cung cấp";
             newWindow.ShowDialog();
         }
         void AddOrUpdate(AddSupplierWindow wdAddSupplier)
@@ -405,7 +406,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

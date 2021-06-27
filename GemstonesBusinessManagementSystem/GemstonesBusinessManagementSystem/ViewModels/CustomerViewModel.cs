@@ -108,8 +108,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PickCustomerCommand = new RelayCommand<PickCustomerControl>(p => true, p => PickCustomer(p));
             ClosingWdCommand = new RelayCommand<PickCustomerWindow>((p) => true, (p) => CloseWindow(p));
             FindPickCustomerCommand = new RelayCommand<PickCustomerWindow>(p => true, p => FindPickCustomer(p));
-            GoToNextPageCommandCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToNextPagePickCustomer(p, ++currentPage));
-            GoToPreviousPageCommandCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToPreviousPagePickCustomer(p, --currentPage));
+            GoToNextPageCommandPickCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToNextPagePickCustomer(p, ++currentPage));
+            GoToPreviousPageCommandPickCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToPreviousPagePickCustomer(p, --currentPage));
             //Grid Customer to mainWindow
             LoadCustomerCommand = new RelayCommand<MainWindow>(p => true, p => { Load(p); });
             GoToNextPageCommandCus = new RelayCommand<MainWindow>(p => true, p => GoToNextPage(p, ++currentPage));
@@ -275,12 +275,16 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addMembershipWindow.txbTitle.Text = "Sửa hạng thành viên";
             addMembershipWindow.txtId.Text = control.txbId.Text;
             addMembershipWindow.btnSave.Content = "Cập nhật";
+            addMembershipWindow.btnSave.ToolTip = "Cập nhật hạng thành viên";
 
             addMembershipWindow.txtMembership.Text = control.txbMembership.Text;
             addMembershipWindow.txtMembership.SelectionStart = control.txbMembership.Text.Length;
 
             addMembershipWindow.txtTarget.Text = control.txbTarget.Text;
-            addMembershipWindow.txtTarget.SelectionLength = control.txbTarget.Text.Length;
+            addMembershipWindow.txtTarget.SelectionStart = control.txbTarget.Text.Length;
+            addMembershipWindow.txtTarget.IsEnabled = true;
+            if (control.txbId.Text == "TV0001")
+                addMembershipWindow.txtTarget.IsEnabled = false;
         }
         void ClearView(AddMembershipWindow window)
         {
@@ -376,6 +380,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addCustomerWindow.btnSave.ToolTip = "Cập nhật thông tin khách hàng";
             addCustomerWindow.Title = "Cập nhật thông tin khách hàng";
             addCustomerWindow.btnSave.Content = "Cập nhật";
+            addCustomerWindow.btnSave.Content = "Cập nhật khách hàng";
             addCustomerWindow.ShowDialog();
         }
 
@@ -530,7 +535,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (CheckData(addCustomerWindow))// kiem tra du lieu dau vao
             {
                 Customer customer = new Customer(ConvertToID(addCustomerWindow.txtId.Text), addCustomerWindow.txtName.Text, (addCustomerWindow.txtPhoneNumber.Text), addCustomerWindow.txtAddress.Text,
-                    (addCustomerWindow.txtCMND.Text), 0, 0);
+                    (addCustomerWindow.txtCMND.Text), 0, 1);
 
                 if (isEditing)
                 {
@@ -555,7 +560,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        LoadPickCustomerToView(pickCustomerWindow, 0);
+                        if(pickCustomerWindow != null)
+                            FindPickCustomer(pickCustomerWindow);
                         CustomMessageBox.Show("Thêm khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     }
                 }
@@ -686,7 +692,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

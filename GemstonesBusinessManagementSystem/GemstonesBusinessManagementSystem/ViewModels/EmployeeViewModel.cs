@@ -367,6 +367,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.btnSave.ToolTip = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.Title = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.btnSave.Content = "Cập nhật";
+            addEmployeeWindow.btnSave.ToolTip = "Cập nhật nhân viên";
             addEmployeeWindow.ShowDialog();
         }
         void HandleDelete(EmployeeControl employeeControl)
@@ -709,7 +710,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

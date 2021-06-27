@@ -579,7 +579,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi chọn file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public void OpenImportGoodsWindow(MainWindow main)

@@ -241,7 +241,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             GoodsTypeWindow newWindow = new GoodsTypeWindow();
             newWindow.txtName.Text = null;
             newWindow.txtUnit.Text = null;
-            newWindow.txtUnit.Text = null;
+            newWindow.txtProfitPercentage.Text = null;
             newWindow.ShowDialog();
             SetItemSourceGoodsType(main);
             int indexSort = main.cboSortGoods.SelectedIndex;
@@ -291,6 +291,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addGoodsWd.txtImportPrice.SelectionLength = 0;
             addGoodsWd.Title = "Cập nhật thông tin sản phẩm";
             addGoodsWd.btnSave.Content = "Cập nhật";
+            addGoodsWd.btnSave.ToolTip = "Cập nhật sản phẩm";
             addGoodsWd.ShowDialog();
         }
         void OpenImportGoodsWindow(MainWindow main)
@@ -448,7 +449,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public void SelectImage(Image parameter)

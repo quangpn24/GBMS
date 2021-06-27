@@ -107,6 +107,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.wdGoodsType.txtProfitPercentage.Text = null;
             this.wdGoodsType.txtUnit.Text = null;
             isUpdate = false;
+            if (goodsTypeControl != null) // dua lai mau xam
+            {
+                goodsTypeControl.txbId.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbName.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbProfitPercentage.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbUnit.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+            }
         }
         void Inactivate(GoodsTypeWindow wdGoodsType)
         {
@@ -180,6 +187,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 oldType = goodsTypeControl.txbName.Text;
                 this.wdGoodsType.txbTitle.Text = "Sửa thông tin";
                 this.wdGoodsType.btnSave.Content = "Cập nhật";
+                this.wdGoodsType.btnSave.ToolTip = "Cập nhật loại sản phẩm";
                 this.wdGoodsType.txtId.Text = control.txbId.Text;
                 this.wdGoodsType.txtName.Text = control.txbName.Text;
                 this.wdGoodsType.txtProfitPercentage.Text = control.txbProfitPercentage.Text.Remove(control.txbProfitPercentage.Text.Length - 1, 1);
@@ -200,6 +208,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 isActiveTab = true;
                 LoadActiveTab(wdGoodsType);
+                Cancel(wdGoodsType);
             }
             else
             {

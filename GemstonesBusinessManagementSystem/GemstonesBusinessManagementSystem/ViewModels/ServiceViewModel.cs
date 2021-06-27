@@ -81,6 +81,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 1 : 0; // kiểm tra isActived
             addService.Title = "Sửa thông tin dịch vụ";
             addService.btnSave.Content = "Cập nhật";
+            addService.btnSave.ToolTip = "Cập nhật dịch vụ";
             addService.ShowDialog();
         }
         public void AddService(AddServiceWindow addServiceWindow)
@@ -342,7 +343,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                MessageBox.Show("Có lỗi khi lưu file!");
             }
 
         }
