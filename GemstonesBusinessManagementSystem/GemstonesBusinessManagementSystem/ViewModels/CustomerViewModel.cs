@@ -296,6 +296,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             window.txtId.Text = AddPrefix("TV", (MembershipsTypeDAL.Instance.GetMaxId() + 1));
             window.txtTarget.Text = null;
             window.txtMembership.Text = null;
+            window.txbTitle.Text = "Thêm hạng thành viên";
+            window.btnSave.Content = "Lưu";
         }
         void OpenMembershipWindow(MainWindow mainWindow)
         {
@@ -398,7 +400,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.txtTarget.Focus();
                 return;
             }
-            if (window.txtMembership.Text != oldMembership && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
+            if (window.txtMembership.Text.ToLower() != oldMembership.ToLower() && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
             {
                 CustomMessageBox.Show("Hạng thành viên đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtMembership.Focus();

@@ -575,7 +575,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 OpenConnection();
                 string query = "Select idGoods, sum(quantity) as quantity from BillInfo " +
                     "group by idGoods " +
-                    "order by quantity DESC " +
+                    "order by quantity DESC, price DESC " +
                     "limit 10";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);

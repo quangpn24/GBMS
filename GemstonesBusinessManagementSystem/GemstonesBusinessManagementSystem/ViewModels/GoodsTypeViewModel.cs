@@ -64,7 +64,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
 
-            if ((!isUpdate || wdGoodsType.txtName.Text != oldType) && GoodsTypeDAL.Instance.IsExisted(wdGoodsType.txtName.Text))
+            if ((!isUpdate || wdGoodsType.txtName.Text.ToLower() != oldType.ToLower()) && GoodsTypeDAL.Instance.IsExisted(wdGoodsType.txtName.Text))
             {
                 CustomMessageBox.Show("Loại sản phẩm đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdGoodsType.txtName.Focus();

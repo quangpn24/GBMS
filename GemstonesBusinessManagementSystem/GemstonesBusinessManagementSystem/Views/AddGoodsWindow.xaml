@@ -16,7 +16,8 @@
     Width="700" 
     DataContext="{StaticResource GoodsVM}"
     WindowStartupLocation="CenterScreen"
-    ResizeMode="CanMinimize">
+    ResizeMode="CanMinimize"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <Grid>
         <Grid
             x:Name="grdSelectImg"
@@ -61,6 +62,7 @@
                     RadiusY="4"
                     RadiusX="4"
                     HorizontalAlignment="Right"
+                    Fill="{StaticResource Gray3}"
                     Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtIdGoods"

@@ -14,7 +14,8 @@
     DataContext="{StaticResource LoginVM}"
     x:Name="wdLogin"
     WindowStartupLocation="CenterScreen"
-    ResizeMode="CanMinimize">
+    ResizeMode="CanMinimize"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <Grid>
         <Label
             x:Name="lblSoftwareName" 

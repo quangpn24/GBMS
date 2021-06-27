@@ -260,7 +260,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             #endregion
-            if (window.txtPosition.Text != oldPosition && EmployeePositionDAL.Instance.IsExisted(window.txtPosition.Text))
+            if (window.txtPosition.Text.ToLower() != oldPosition.ToLower() && EmployeePositionDAL.Instance.IsExisted(window.txtPosition.Text))
             {
                 CustomMessageBox.Show("Chức vụ đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtPosition.Focus();
