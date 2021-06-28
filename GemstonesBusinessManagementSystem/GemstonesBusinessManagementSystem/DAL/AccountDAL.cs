@@ -177,14 +177,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
         }
 
-        public bool UpdatePasswordByUsername(string idAccount, string password)
+        public bool UpdatePasswordByUsername(string username, string password)
         {
             try
             {
                 OpenConnection();
-                string query = "update Account set password=@password where idAccount = @idAccount";
+                string query = "update Account set password=@password where username = @username";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@idAccount", idAccount);
+                cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@password", password);
                 cmd.ExecuteNonQuery();
                 return true;

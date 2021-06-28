@@ -41,6 +41,7 @@
             Style="{StaticResource Text}"/>
         <TextBlock 
             x:Name="txbName"
+            TextAlignment="Left"
             Grid.Column="1"
             Style="{StaticResource Text}"
             MaxWidth="150"
