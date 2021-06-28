@@ -1,0 +1,364 @@
+﻿<Window 
+    xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"  
+    x:Name="wdPickCustomer"
+    x:Class="GemstonesBusinessManagementSystem.Views.PickCustomerWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
+    mc:Ignorable="d"
+    DataContext="{StaticResource CustomerVM}"
+    Title="Danh sách khách hàng"
+    ResizeMode="CanMinimize"
+    WindowStartupLocation="CenterScreen"
+    Height="740"
+    Width="1300"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding ClosingWdCommand}"
+                                   CommandParameter="{Binding ElementName=wdPickCustomer}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid 
+        Background="#FFF7F8FC"
+        x:Name="grdCustomer">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2.5*" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding LoadPickCustomerCommand}"
+                                       CommandParameter="{Binding ElementName=wdPickCustomer}" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="Closed">
+                <i:InvokeCommandAction Command="{Binding ClosingWdCommand}"
+                                       CommandParameter="{Binding ElementName=wdPickCustomer}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        <Grid 
+            Grid.Column="1"
+            Style="{StaticResource DropShadow}"
+            Margin="10,20,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+                <RowDefinition Height="120" />
+            </Grid.RowDefinitions>
+            <Rectangle 
+                Fill="{DynamicResource White}"
+                RadiusY="4"
+                RadiusX="4"
+                Grid.RowSpan="8"
+                Panel.ZIndex="-1"
+                Margin="0" />
+            <Rectangle 
+                Grid.RowSpan="1"
+                Fill="{StaticResource Primary}"
+                Height="1"
+                VerticalAlignment="Bottom"
+                Margin="20,0" />
+            <TextBlock 
+                Grid.Row="0"
+                Text="Thông tin khách hàng"
+                Style="{StaticResource HeadingText2}"
+                FontSize="20"
+                Margin="15,15,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" />
+            <StackPanel 
+                Grid.Row="1"
+                VerticalAlignment="Top" 
+                Margin="20,35,20,0">
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Mã KH"
+                        HorizontalAlignment="Left" 
+                        Foreground="{StaticResource Black1}"/>
+                    <TextBlock
+                        x:Name="txbId"
+                        Style="{StaticResource Text}"
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Họ tên"
+                        HorizontalAlignment="Left"
+                        Foreground="{DynamicResource Black1}" />
+                    <TextBlock
+                        x:Name="txbName"
+                        Style="{StaticResource Text}"
+                        HorizontalAlignment="Right" 
+                        TextTrimming="WordEllipsis"
+                        Width="180" 
+                        TextAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Số điện thoại"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"/>
+                    <TextBlock
+                        x:Name="txbPhoneNumber"
+                        Style="{StaticResource Text}"
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="CMND"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"/>
+                    <TextBlock
+                        x:Name="txbIdNumber"
+                        Style="{StaticResource Text}"
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Tổng chi tiêu"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"/>
+                    <TextBlock
+                        x:Name="txbSpending"
+                        Style="{StaticResource Text}"
+                        TextAlignment="Right" 
+                        Width="140" 
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid 
+                    Margin="0,0,0,15">
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Hạng thành viên"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"/>
+                    <TextBlock
+                        x:Name="txbRank"
+                        Style="{StaticResource Text}"
+                        TextAlignment="Right" 
+                        Width="160" 
+                        HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid >
+                    <TextBlock
+                        Style="{StaticResource Text}"
+                        Text="Địa chỉ"
+                        HorizontalAlignment="Left" 
+                        Foreground="{DynamicResource Black1}"/>
+                    <TextBlock
+                        x:Name="txbAddress"
+                        Style="{StaticResource Text}"
+                        TextTrimming="CharacterEllipsis"
+                        HorizontalAlignment="Right" 
+                        Width="180" 
+                        TextWrapping="Wrap"
+                        TextAlignment="Right" 
+                        VerticalAlignment="Top" />
+                </Grid>
+            </StackPanel>
+            <StackPanel
+                Margin="15,5,15,0"
+                Grid.Row="2">
+                <Button 
+                    Style="{StaticResource GreenButton}"
+                    Command="{Binding ConfirmCommand}"
+                    CommandParameter="{Binding ElementName=wdPickCustomer}"
+                    Content="Xác nhận"
+                    ToolTip="Chọn khách hàng"
+                    Height="40" />
+                <Button 
+                    x:Name="btnAddCustomer"
+                    DataContext="{StaticResource CustomerVM}"
+                    Style="{StaticResource PrimaryOutlineButton}"
+                    Command="{Binding OpenAddCustomerWindowCommand}"
+                    CommandParameter="{Binding ElementName=btnAddCustomer}"
+                    Content="Thêm khách hàng"
+                    ToolTip="Thêm khách hàng"
+                    Height="40" Margin="0,15,0,0" />
+            </StackPanel>
+        </Grid>
+        <Grid 
+            Grid.Column="0"
+            Style="{StaticResource DropShadow}"
+            Margin="20,20,10,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+            <Rectangle 
+                Fill="{DynamicResource White}"
+                RadiusY="4"
+                RadiusX="4"
+                Grid.RowSpan="3"
+                Panel.ZIndex="-1" />
+            <TextBlock 
+                Grid.Row="0"
+                Text="Danh sách khách hàng "
+                Style="{StaticResource HeadingText2}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="20,20,0,0" />
+            <Grid 
+                Grid.Row="0"
+                Margin="0,20,20,0"
+                Height="46"
+                Width="320"
+                Style="{StaticResource DropShadow}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top">
+                <TextBox 
+                    x:Name="txtSearchCustomer"
+                    Style="{StaticResource TextBox}"
+                    materialDesign:HintAssist.Hint="Tìm theo tên khách hàng"
+                    FontSize="18"
+                    Margin="10,0"
+                    Height="Auto"
+                    Padding="2,0,30,0"
+                    HorizontalAlignment="Stretch" 
+                    Width="Auto" />
+                <Button 
+                    IsDefault="True"
+                    Command="{Binding FindPickCustomerCommand}"
+                    CommandParameter="{Binding ElementName=wdPickCustomer}"
+                    Style="{StaticResource TransperantButton}"
+                    Height="30"
+                    Width="30"
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Padding="0">
+                    <materialDesign:PackIcon 
+                        Kind="Magnify"
+                        Foreground="{StaticResource Black2}"
+                        Height="26"
+                        Width="26"/>
+                </Button>
+                <Rectangle 
+                    Fill="{DynamicResource White}"
+                    RadiusY="4"
+                    RadiusX="4"
+                    Panel.ZIndex="-1"
+                    Margin="0" />
+            </Grid>
+            <Border 
+                CornerRadius="4,4,0,0"
+                Grid.Row="1"
+                Margin="20,0,20,0"
+                Height="40"
+                VerticalAlignment="Top"
+                BorderBrush="{StaticResource Primary}"
+                Background="{StaticResource Primary}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="2.5*" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="110" />
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="140" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Text="Mã KH"
+                        Grid.Column="0"
+                        Style="{StaticResource TextHeader}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+                    <TextBlock 
+                        Text="Họ tên"
+                        Grid.Column="1"
+                        Style="{StaticResource TextHeader}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="20,0,0,0"/>
+                    <TextBlock 
+                        Text="SĐT"
+                        Grid.Column="2"
+                        Style="{StaticResource TextHeader}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+                    <TextBlock 
+                        Text="CMND"
+                        Grid.Column="3"
+                        Style="{StaticResource TextHeader}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="0" />
+                    <TextBlock 
+                        Text="Địa chỉ"
+                        Grid.Column="4"
+                        Style="{StaticResource TextHeader}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="0" />
+                    <TextBlock 
+                        Text="Hạng"
+                        Grid.Column="5"
+                        Style="{StaticResource TextHeader}"
+                        VerticalAlignment="Center"
+                        Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center" />
+                </Grid>
+            </Border>
+            <Border 
+                Grid.Row="1"
+                BorderBrush="{DynamicResource Light}"
+                BorderThickness="2,0,2,2" 
+                CornerRadius="4"
+                Margin="20,40,20,19">
+                <StackPanel 
+                    x:Name="stkCustomer" />
+            </Border>
+            <StackPanel 
+                Grid.Row="2"
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="0,0,20,0">
+                <TextBlock 
+                    x:Name="txtNumOfCus"
+                    Style="{StaticResource Text}"
+                    Margin="0,0,20,0"
+                    FontSize="14" />
+                <Button 
+                    x:Name="btnPrePageCus"
+                    Margin="8,0"
+                    ToolTip="Trang trước"
+                    Style="{StaticResource PaginationButton}"
+                    Command="{Binding GoToPreviousPageCommandPickCus}"
+                    CommandParameter="{Binding ElementName=wdPickCustomer}">
+                    <materialDesign:PackIcon 
+                        Width="26"
+                        Height="28"
+                        Kind="ChevronLeft" />
+                </Button>
+                <Button 
+                    x:Name="btnNextPageCus"
+                    Margin="8,0,0,0"
+                    ToolTip="Trang tiếp theo"
+                    Style="{StaticResource PaginationButton}"
+                    Command="{Binding GoToNextPageCommandPickCus}"
+                    CommandParameter="{Binding ElementName=wdPickCustomer}">
+                    <materialDesign:PackIcon 
+                        Width="26"
+                        Height="28"
+                        Kind="ChevronRight" />
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,93 @@
+﻿<UserControl 
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.SearchGoodsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    mc:Ignorable="d" 
+    x:Name="ucSearchGoods"
+    Height="100" 
+    Width="Auto"
+    ToolTip="Chọn mặt hàng"
+    DataContext="{StaticResource ImportGoodsVM}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="2"
+            Fill="{StaticResource Light}"
+            Height="1"
+            VerticalAlignment="Top"/>
+        <Rectangle 
+            Grid.ColumnSpan="2"
+            Fill="{StaticResource Light}"
+            Height="1"
+            VerticalAlignment="Bottom"/>
+        <Rectangle 
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Left"/>
+        <Rectangle 
+            Grid.Column="1"
+            Fill="{StaticResource Light}"
+            Width="2" 
+            HorizontalAlignment="Right"/>
+        <Image 
+            x:Name="imgGoods"
+            Grid.Column="0" 
+            Margin="10"/>
+        <StackPanel 
+            Grid.Column="1">
+            <TextBlock 
+                Style="{StaticResource Text}"
+                Text="SP00001" 
+                x:Name="txbId" 
+                HorizontalAlignment="Left" Margin="0,6,0,0" Height="Auto"/>
+            <TextBlock 
+                x:Name="txbName"
+                Grid.Row="0"
+                Style="{StaticResource Text}"
+                FontWeight="Bold"
+                Foreground="{StaticResource Black1}"
+                Text="Tên sản phẩm Tên sản phẩm Tên sản phẩm Tên sản phẩm Tên sản phẩm Tên sản phẩm" 
+                MaxWidth="320"
+                TextTrimming="CharacterEllipsis"
+                Margin="0,4,20,14" 
+                FontSize="18"
+                HorizontalAlignment="Left" 
+                TextAlignment="Left" />
+            <StackPanel 
+                Orientation="Horizontal"
+                HorizontalAlignment="Left" >
+                <TextBlock 
+                    Text="Giá nhập: " 
+                    Style="{StaticResource Text}"/>
+                <TextBlock
+                    x:Name="txbImportPrice" 
+                    Style="{StaticResource Text}"
+                    Text="700000"/>
+                <TextBlock 
+                    Style="{StaticResource Text}"
+                    Text="Tồn kho: " 
+                    Margin="40,0,0,0"/>
+                <TextBlock
+                    Style="{StaticResource Text}"
+                    x:Name="txbQuantity"
+                    Text="10 "/>
+            </StackPanel>
+        </StackPanel>
+        <Button 
+            Grid.ColumnSpan="2"
+            FocusVisualStyle="{x:Null}"
+            Command="{Binding SelectGoodsCommand}"
+            CommandParameter="{Binding ElementName=ucSearchGoods}"
+            Style="{StaticResource MaterialDesignFlatButton}"
+            Background="{x:Null}" 
+            Height="Auto"/>
+    </Grid>
+</UserControl>

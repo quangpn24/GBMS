@@ -1,0 +1,70 @@
+﻿<UserControl 
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.ReceiptControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    mc:Ignorable="d" 
+    x:Name="ucReceipt"
+    Style="{StaticResource MyUCHoverStyle}"
+    DataContext="{StaticResource ImportGoodsVM}"
+    Height="42"
+    Margin="0,0,0,1"
+    Cursor="Hand">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding SelectReceiptCommand}"
+                                   CommandParameter="{Binding ElementName=ucReceipt}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="120"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="9"
+            Fill="{StaticResource Light}"
+            Height="1"
+            VerticalAlignment="Bottom"/>
+        <TextBlock 
+            x:Name="txbId"
+            Style="{StaticResource Text}"
+            FontSize="14"
+            Grid.Column="0"/>
+        <TextBlock 
+            x:Name="txbDateReceipt"
+            Style="{StaticResource Text}"
+            FontSize="14"
+            Grid.Column="1"/>
+        <TextBlock 
+            x:Name="txbImporter"
+            Style="{StaticResource Text}"
+            FontSize="14"
+            MaxWidth="130"
+            TextTrimming="CharacterEllipsis"
+            Grid.Column="2"
+            HorizontalAlignment="Left"
+            Margin="10,0,0,0"/>
+        <TextBlock 
+            x:Name="txbSupplier"
+            Style="{StaticResource Text}"
+            FontSize="14"
+            MaxWidth="130"
+            TextTrimming="CharacterEllipsis"
+            Grid.Column="3"
+            Margin="20,0,0,0" 
+            HorizontalAlignment="Left"/>
+        <TextBlock 
+            x:Name="txbMoneyToPay"
+            Style="{StaticResource Text}"
+            FontSize="14"
+            Grid.Column="4"/>
+    </Grid>
+</UserControl>

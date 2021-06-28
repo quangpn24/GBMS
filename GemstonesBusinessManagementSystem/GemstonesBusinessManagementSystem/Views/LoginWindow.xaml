@@ -1,0 +1,163 @@
+﻿<Window 
+    x:Class="GemstonesBusinessManagementSystem.Views.LoginWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    mc:Ignorable="d"
+    Title="Phần mềm quản lí cửa hàng vàng bạc" 
+    Height="830"
+    Width="1500"
+    DataContext="{StaticResource LoginVM}"
+    x:Name="wdLogin"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="CanMinimize"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
+    <Grid>
+        <Label
+            x:Name="lblSoftwareName" 
+            Content="Phần mềm  &#xD;&#xA;quản lý cửa hàng" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            VerticalContentAlignment="Center" 
+            FontSize="46" 
+            Margin="100,50,0,0" 
+            Foreground="{StaticResource Primary}" 
+            FontWeight="Bold"/>
+        <Image 
+            Margin="80,0,0,-60" 
+            Source="/Resources/Images/Queue-pana.png"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom" 
+            Height="800" 
+            Width="800" />
+        <Grid
+            Width="360" 
+            Height="440" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Center"
+            Margin="0,0,140,0" >
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="20" Opacity="0.4"/>
+            </Grid.Effect>
+            <Rectangle 
+                Fill="{DynamicResource White}" 
+                RadiusY="8" 
+                RadiusX="8"
+                Panel.ZIndex="-1" />
+            <Label 
+                x:Name="lblLogin" 
+                Content="Đăng nhập" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top" 
+                FontSize="32" 
+                FontWeight="Bold" 
+                Margin="0,40,0,0" 
+                Foreground="{StaticResource Primary}"/>
+            <Grid 
+                Height="50" 
+                VerticalAlignment="Top"
+                Margin="40,140,40,0">
+                <materialDesign:PackIcon 
+                    Kind="Account" 
+                    Foreground="{StaticResource Black2}"
+                    Width="36" 
+                    Height="36" 
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"  
+                    Margin="0" />
+                <TextBox 
+                    x:Name="txtUsername"
+                    Text="{Binding Username}"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    materialDesign:HintAssist.Hint="Tên đăng nhập" 
+                    Width="230"
+                    Height="50" 
+                    HorizontalAlignment="Right" 
+                    FontSize="18" 
+                    BorderBrush="{StaticResource Primary}" 
+                    TabIndex="1" 
+                    VerticalAlignment="Center" 
+                    CaretBrush="{StaticResource Primary}" 
+                    FontWeight="Medium" 
+                    Padding="4,0,0,8"  />
+            </Grid>
+            <Grid 
+                VerticalAlignment="Top"
+                Margin="40,210,40,0">
+                <materialDesign:PackIcon 
+                    Kind="Lock" 
+                    Foreground="{StaticResource Black2}"
+                    Width="32" 
+                    Height="32" 
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom" 
+                    Margin="2,0,0,0" />
+                <PasswordBox
+                    x:Name="txtPassword"
+                    materialDesign:HintAssist.Hint="Mật khẩu" 
+                    Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                    Width="230" 
+                    Height="50" 
+                    HorizontalAlignment="Right" 
+                    BorderBrush="{StaticResource Primary}"
+                    FontSize="18" 
+                    TabIndex="2" 
+                    VerticalAlignment="Center" 
+                    CaretBrush="{StaticResource Primary}" 
+                    FontWeight="SemiBold" 
+                    Padding="4,0,0,8"/>
+            </Grid>
+            <Button 
+                x:Name="btnForgetPassword" 
+                Command="{Binding ChangePasswordCommand}"
+                CommandParameter="{Binding ElementName=wdLogin}"
+                Style="{StaticResource TransperantButton}"
+                Content="Quên mật khẩu?" 
+                HorizontalAlignment="Right" 
+                Height="24"
+                Width="120" 
+                VerticalAlignment="Top" 
+                HorizontalContentAlignment="Right" 
+                VerticalContentAlignment="Center" 
+                FontSize="16" 
+                Margin="0,270,40,0" 
+                FontWeight="Medium" 
+                Foreground="{DynamicResource Secondary}" 
+                IsTabStop="False"/>
+            <Button 
+                x:Name="btnLogin"
+                IsDefault="True"
+                Style="{StaticResource PrimaryButton}"
+                Command="{Binding LogInCommand}"
+                CommandParameter="{Binding ElementName=wdLogin}"
+                Content="Đăng nhập"
+                Height="40"
+                ToolTip="Đăng nhập" 
+                VerticalAlignment="Bottom" 
+                Margin="60,0,60,70"
+                TabIndex="3" 
+                FontSize="20" 
+                FontWeight="Bold"
+                Padding="0" />
+            <Button 
+                x:Name="btnSignUp" 
+                Style="{StaticResource TransperantButton}"
+                Command="{Binding OpenSignUpWindowCommand}"
+                CommandParameter="{Binding ElementName=wdLogin}"
+                Content="Đăng ký" 
+                ToolTip="Đăng ký" 
+                Height="24" 
+                VerticalAlignment="Bottom" 
+                HorizontalContentAlignment="Center" 
+                VerticalContentAlignment="Center" 
+                FontSize="18" 
+                Margin="130,0,130,30" 
+                Foreground="{StaticResource Secondary}" 
+                IsTabStop="False"/>
+        </Grid>
+    </Grid>
+</Window>

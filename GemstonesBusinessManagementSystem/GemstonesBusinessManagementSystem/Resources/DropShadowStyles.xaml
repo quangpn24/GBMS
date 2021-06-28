@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources">
+    <Style x:Key="DropShadow" TargetType="{x:Type Grid}">
+        <Setter Property="Effect" >
+            <Setter.Value>
+                <DropShadowEffect 
+                    BlurRadius="4" 
+                    Direction="90" 
+                    Opacity="0.25" 
+                    ShadowDepth="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DropShadow2" TargetType="{x:Type Grid}">
+        <Setter Property="Effect" >
+            <Setter.Value>
+                <DropShadowEffect 
+                    BlurRadius="4" 
+                    Direction="90" 
+                    Opacity="0.4" 
+                    ShadowDepth="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="MyUCHoverStyle" TargetType="{x:Type UserControl}">
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource Primary}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource Primary}" />
+                <Setter Property="Background" Value="{StaticResource Light}" />
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey} }" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="StackPanelDropShadow" TargetType="{x:Type StackPanel}">
+        <Setter Property="Effect" >
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="4" Direction="90" Opacity="0.25" ShadowDepth="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DropShadowSearchBar" TargetType="{x:Type Grid}">
+        <Setter Property="Effect" >
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="20" Direction="270" Opacity="0.4" ShadowDepth="5"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

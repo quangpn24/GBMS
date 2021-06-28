@@ -1,0 +1,163 @@
+﻿<UserControl
+    x:Name="ucSaleServiceDetails"
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.SaleServiceDetailsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+    mc:Ignorable="d"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    Height="50"
+    DataContext="{StaticResource BusinessServiceVM}">
+    <Grid 
+        x:Name="grdMain">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="30" />
+        </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="10"           
+            Fill="{StaticResource Light}" 
+            Height="2"
+            VerticalAlignment="Bottom"/>
+        <TextBlock 
+            x:Name="txbIdBillService"
+            Visibility="Hidden"/>
+        <TextBlock 
+            Grid.Column="0"
+            x:Name="txbSerial"
+            Style="{StaticResource Text}"
+            FontSize="18"
+            Text="Mã DV"/>
+        <TextBlock
+            x:Name="txbName"
+            Style="{StaticResource Text}"
+            MaxWidth="140"
+            TextTrimming="CharacterEllipsis"
+            FontSize="18"
+            Text="Loại dịch vụ"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            Margin="20,0,0,0" />
+        <TextBlock 
+            x:Name="txbPrice"
+            Style="{StaticResource Text}"
+            FontSize="18"
+            Grid.Column="2"
+            Text="Đơn giá"/>
+        <local:NumericSpinner 
+            x:Name="nmsQuantity"
+            MinValue="0"
+            Width="66"
+            Height="32"
+            VerticalAlignment="Center"
+            Grid.Column="4">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="ValueChanged">
+                    <i:InvokeCommandAction Command="{Binding PickServiceInfoChangedCommand}"
+                                            CommandParameter="{Binding ElementName=ucSaleServiceDetails}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="KeyUp">
+                    <i:InvokeCommandAction Command="{Binding PickServiceInfoChangedCommand}"
+                                            CommandParameter="{Binding ElementName=ucSaleServiceDetails}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </local:NumericSpinner>
+        <TextBox
+            x:Name="txtTips"
+            Grid.Column="3"
+            MaxLength="11"
+            materialDesign:HintAssist.Hint="Phí khác"
+            HorizontalAlignment="Center"
+            Width="80"
+            Height="22"
+            FontSize="14"
+            FontWeight="SemiBold"
+            BorderThickness="0,0,0,2"
+            MaxLines="1"
+            Foreground="{StaticResource Black2}"
+            Padding="0"
+            Margin="0,0,0,15"
+            VerticalAlignment="Bottom"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Bottom"
+            BorderBrush="{DynamicResource Gray2}"
+            TabIndex="0">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewTextInput">
+                    <ei:CallMethodAction TargetObject="{Binding }"
+                                            MethodName="NumberValidationTextBox" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="TextChanged">
+                    <i:InvokeCommandAction Command="{Binding PickServiceInfoChangedCommand}"
+                                            CommandParameter="{Binding ElementName=ucSaleServiceDetails}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+        <TextBlock 
+            x:Name="txtTotal"
+            Style="{StaticResource Text}"
+            Grid.Column="5"
+            Text="Thành tiền"
+            FontSize="18"/>
+        <TextBox 
+            x:Name="txtPaidMoney"
+            Grid.Column="6"
+            MaxLength="11"
+            materialDesign:HintAssist.Hint="Trả trước"
+            HorizontalAlignment="Center"
+            Width="80"
+            Height="22"
+            Text="0"
+            FontSize="14"
+            FontWeight="SemiBold"
+            BorderThickness="0,0,0,2"
+            MaxLines="1"
+            Foreground="{StaticResource Black2}"
+            BorderBrush="{DynamicResource Gray2}"
+            Padding="0"
+            Margin="0,0,0,15"
+            Cursor="IBeam"
+            VerticalAlignment="Bottom"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            TabIndex="0">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewTextInput">
+                    <ei:CallMethodAction TargetObject="{Binding }"
+                                         MethodName="NumberValidationTextBox" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="TextChanged">
+                    <i:InvokeCommandAction Command="{Binding PickServiceInfoChangedCommand}"
+                                           CommandParameter="{Binding ElementName=ucSaleServiceDetails}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+        <Button 
+            x:Name="btnDelete"
+            Grid.Column="7"
+            ToolTip="Xóa dịch vụ đã chọn"
+            Height="26"
+            Width="24"
+            Style="{StaticResource TransperantButton}"
+            Command="{Binding DeleteBillServiceInfoDetailsCommand}"
+            CommandParameter="{Binding ElementName=ucSaleServiceDetails}"
+            IsTabStop="False" 
+            HorizontalAlignment="Left">
+            <materialDesign:PackIcon 
+                Kind="DeleteOutline"
+                Height="24"
+                Width="24"
+                Foreground="{DynamicResource Error}"/>
+        </Button>
+    </Grid>
+</UserControl>

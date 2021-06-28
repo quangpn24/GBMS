@@ -1,0 +1,90 @@
+﻿<UserControl 
+    x:Name="ucService"
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.ServiceControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls"
+    mc:Ignorable="d"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    Height="45"
+    DataContext="{StaticResource ServiceVM}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="140" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="120" />
+        </Grid.ColumnDefinitions>
+        <Rectangle 
+            Grid.ColumnSpan="7"           
+            Fill="{StaticResource Light}" 
+            Height="2"
+            VerticalAlignment="Bottom"/>
+        <TextBlock 
+            x:Name="txbSerial"
+            Style="{StaticResource Text}"
+            Grid.Column="0"
+            FontSize="18"/>
+        <TextBlock 
+            x:Name="txbName"
+            Style="{StaticResource Text}"
+            Grid.Column="1"
+            MaxWidth="400"
+            TextTrimming="CharacterEllipsis"
+            HorizontalAlignment="Left"
+            Margin="20,0,0,0"
+            FontSize="18"/>
+        <TextBlock 
+            x:Name="txbPrice"
+            Style="{StaticResource Text}"
+            Grid.Column="2"
+            FontSize="18"/>
+        <TextBlock
+            x:Name="txbStatus"
+            Style="{StaticResource Text}"
+            Grid.Column="3"
+            FontSize="18"/>
+        <Button 
+            Grid.Column="4"
+            x:Name="btnEditService"
+            Style="{StaticResource TransperantButton}"
+            Command="{Binding OpenUpdateWindowCommand}"
+            CommandParameter="{Binding ElementName=ucService}"
+            ToolTip="Sửa thông tin"
+            Height="30"
+            Margin="25,0,0,0"
+            FontSize="16"
+            VerticalAlignment="Center"
+            Width="30"
+            HorizontalAlignment="Left">
+            <materialDesign:PackIcon 
+                Kind="SquareEditOutline"
+                Width="24"
+                Foreground="{StaticResource Primary}"
+                Height="24" />
+        </Button>
+        <Button 
+            Grid.Column="4"
+            x:Name="btnDeleteService"
+            Style="{StaticResource TransperantButton}"
+            Command="{Binding DeleteServiceCommand}"
+            CommandParameter="{Binding ElementName=ucService}"
+            ToolTip="Xóa dịch vụ"
+            Height="30"
+            Margin="0,0,20,0"
+            FontSize="16"
+            Width="30"
+            HorizontalAlignment="Right">
+            <materialDesign:PackIcon 
+                Kind="DeleteOutline"
+                Foreground="{StaticResource Error}"
+                Height="24"
+                Width="24" />
+        </Button>
+    </Grid>
+</UserControl>

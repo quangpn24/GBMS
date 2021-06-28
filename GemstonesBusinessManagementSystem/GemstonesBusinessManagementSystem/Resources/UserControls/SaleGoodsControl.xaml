@@ -1,0 +1,71 @@
+﻿<UserControl 
+    x:Class="GemstonesBusinessManagementSystem.Resources.UserControls.SaleGoodsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    mc:Ignorable="d" 
+    x:Name="ucSaleGoods"
+    DataContext="{StaticResource SaleVM}"
+    ToolTip="Chọn sản phẩm"
+    Width="160" 
+    Height="200" 
+    Margin="4,4,4,8"
+    Cursor="Hand">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding PickGoodsCommand}" 
+                                   CommandParameter="{Binding ElementName=ucSaleGoods}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Border
+        Background="{DynamicResource White}" 
+        BorderBrush="{DynamicResource Light}"
+        BorderThickness="2" 
+        CornerRadius="2">
+        <Grid Cursor="Hand" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="130"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock 
+                x:Name="txbId" 
+                Visibility="Hidden"/>
+            <TextBlock 
+                x:Name="txbUnit" 
+                Visibility="Hidden"/>
+            <TextBlock 
+                x:Name="txbType" 
+                Visibility="Hidden"/>
+            <TextBlock 
+                x:Name="txbQuantity" 
+                Visibility="Hidden"/>
+            <Image 
+                x:Name="imgGood" 
+                Grid.Row="0" 
+                Margin="8,8,8,0" 
+                Source="/GemstonesBusinessManagementSystem;component/Resources/Images/avatar.jpg"/>
+            <TextBlock 
+                x:Name="txbName" 
+                Text="Tên hàng" 
+                Style="{StaticResource Text}"
+                TextTrimming="CharacterEllipsis" 
+                Margin="10,0" 
+                Grid.Row="1" 
+                MaxWidth="140"
+                Foreground="{DynamicResource Black1}" 
+                FontSize="14"/>
+            <TextBlock 
+                Name="txbPrice"
+                Text="100.000Đ" 
+                Style="{StaticResource Text}"
+                TextTrimming="CharacterEllipsis" 
+                MaxWidth="140"
+                Margin="20,0" 
+                Grid.Row="2" 
+                Foreground="{DynamicResource Primary}"/>
+        </Grid>
+    </Border>
+</UserControl>

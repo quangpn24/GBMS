@@ -1,0 +1,515 @@
+﻿<Window 
+    x:Class="GemstonesBusinessManagementSystem.Views.GoodsTypeWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:vd="clr-namespace:GemstonesBusinessManagementSystem.Validations"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:GemstonesBusinessManagementSystem.Views"
+    xmlns:i ="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ei ="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:UserControls="clr-namespace:GemstonesBusinessManagementSystem.Resources.UserControls" 
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+    mc:Ignorable="d"
+    Title="Quản lý loại sản phẩm"
+    Height="700"
+    WindowStartupLocation="CenterScreen"
+    DataContext="{StaticResource GoodsTypeVM}"
+    x:Name="wdGoodsType"
+    Background="#F7F8FC"
+    Width="1200"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}"
+                                   CommandParameter="{Binding ElementName=wdGoodsType}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <TabControl 
+            x:Name="tabControl"
+            Background="#F7F8FC"
+            Margin="20,20,20,20"
+            BorderBrush="{x:Null}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectionChangedTabItemCommand}"
+                                           CommandParameter="{Binding ElementName=wdGoodsType}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TabItem
+                Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                Header="Đang hoạt động"
+                FontSize="18"
+                FontWeight="SemiBold"
+                Width="180" 
+                Height="40" 
+                Padding="0">
+                <Grid 
+                    Margin="0,10,0,0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="400"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid 
+                        Grid.Column="0"
+                        Style="{StaticResource DropShadow}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Rectangle 
+                            Fill="{DynamicResource White}" 
+                            RadiusY="4" 
+                            RadiusX="4"
+                            Grid.RowSpan="4"
+                            Panel.ZIndex="-1"/>
+                        <TextBlock
+                            Grid.Row="0"
+                            Style="{StaticResource HeadingText2}"
+                            Text="Danh sách loại sản phẩm" 
+                            FontSize="22"
+                            Margin="20,0,0,0"/>
+                        <Border 
+                            Grid.Row="1" 
+                            CornerRadius="4,4,0,0"
+                            Height="40"
+                            Background="{StaticResource Primary}"
+                            VerticalAlignment="Bottom" 
+                            Margin="20,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="1.2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock 
+                                    Grid.Column="0"
+                                    Text="Mã loại" 
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock
+                                    Grid.Column="1" 
+                                    HorizontalAlignment="Left" 
+                                    Margin="20,0,0,0" 
+                                    Text="Tên loại"
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock
+                                    Grid.Column="2" 
+                                    Text="Đơn vị" 
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock 
+                                    Grid.Column="3" 
+                                    Text="Lợi nhuận" 
+                                    Style="{StaticResource TextHeader}" />
+                            </Grid>
+                        </Border>
+                        <Border 
+                            Grid.Row="2"
+                            BorderBrush="{DynamicResource Light}"
+                            CornerRadius="4,0,4,4"
+                            BorderThickness="2,0,2,2" 
+                            Margin="20,0,20,20">
+                            <ScrollViewer 
+                                Style="{StaticResource FavsScrollViewer}"
+                                VerticalScrollBarVisibility="Auto" 
+                                HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel 
+                                    x:Name="stkActive_ActiveTab"/>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                    <Grid
+                        Grid.Column="1" />
+                    <Grid 
+                        Grid.Column="2"
+                        Background="{StaticResource White}"
+                        Style="{StaticResource DropShadow}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="100"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            x:Name="txbTitle"
+                            Grid.Row="0"
+                            Style="{StaticResource HeadingText2}"
+                            Text="Thêm loại sản phẩm" 
+                            FontSize="22"
+                            Margin="20,0,0,0"/>
+                        <StackPanel 
+                            Grid.Row="1"
+                            VerticalAlignment="Top"
+                            Margin="20,10,20,0">
+                            <Grid>
+                                <Label
+                                    Content="Mã loại" 
+                                    Foreground="{StaticResource Black1}"
+                                    Style="{StaticResource LabelText}"/>
+                                <Rectangle
+                                    Width="200" 
+                                    Height="40"
+                                    RadiusY="4"
+                                    RadiusX="4" 
+                                    Fill="{StaticResource Gray3}"
+                                    HorizontalAlignment="Right"
+                                    Stroke="{StaticResource Gray2}"/>
+                                <TextBox 
+                                    x:Name="txtId"
+                                    Style="{StaticResource TextBox}"
+                                    IsReadOnly="True"
+                                    Focusable="False"
+                                    IsTabStop="False"
+                                    materialDesign:HintAssist.Hint="Mã tự động"
+                                    Width="200" 
+                                    Height="40" />
+                            </Grid>
+                            <Grid 
+                                Margin="0,20,0,0">
+                                <Label
+                                    Content="Tên loại" 
+                                    Foreground="{StaticResource Black1}"
+                                    Style="{StaticResource LabelText}"/>
+                                <Rectangle
+                                    Width="200" 
+                                    Height="40"
+                                    RadiusY="4"
+                                    RadiusX="4" 
+                                    HorizontalAlignment="Right"
+                                    Stroke="{StaticResource Gray2}"/>
+                                <TextBox 
+                                    x:Name="txtName"
+                                    Style="{StaticResource TextBox}"
+                                    materialDesign:HintAssist.Hint="Tên loại sản phẩm"
+                                    Width="200" 
+                                    Height="40" 
+                                    TabIndex="0"
+                                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}" >
+                                    <TextBox.Text>
+                                        <Binding 
+                                            Path="Name"
+                                            Source="{StaticResource GoodsType}"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập tên loại sản phẩm!" />
+                                                <vd:ExistValidation
+                                                    ElementName="GoodsTypeName"
+                                                    ErrorMessage="Tên loại sản phẩm đã tồn tại!" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </Grid>
+                            <Grid 
+                                Margin="0,20,0,0">
+                                <Label
+                                    Content="Đơn vị tính" 
+                                    Foreground="{StaticResource Black1}"
+                                    Style="{StaticResource LabelText}"/>
+                                <Rectangle
+                                    Width="200" 
+                                    Height="40"
+                                    RadiusY="4"
+                                    RadiusX="4" 
+                                    HorizontalAlignment="Right"
+                                    Stroke="{StaticResource Gray2}"/>
+                                <TextBox 
+                                    x:Name="txtUnit"
+                                    Style="{StaticResource TextBox}"
+                                    materialDesign:HintAssist.Hint="Đơn vị tính của loại"
+                                    TabIndex="1"
+                                    Width="200" 
+                                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+                                    <TextBox.Text>
+                                        <Binding 
+                                            Path="Unit"
+                                            Source="{StaticResource GoodsType}"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <vd:NotNullValidation ErrorMessage="Vui lòng nhập đơn vị tính!" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </Grid>
+                            <Grid 
+                                Margin="0,20,0,0">
+                                <Label
+                                    Content="Lợi nhuận (%)" 
+                                    Foreground="{StaticResource Black1}"
+                                    Style="{StaticResource LabelText}"/>
+                                <Rectangle
+                                    Width="200" 
+                                    Height="40"
+                                    RadiusY="4"
+                                    RadiusX="4" 
+                                    HorizontalAlignment="Right"
+                                    Stroke="{StaticResource Gray2}"/>
+                                <TextBox 
+                                    x:Name="txtProfitPercentage"
+                                    Style="{StaticResource TextBox}"
+                                    materialDesign:HintAssist.Hint="Tính theo đơn vị %"
+                                    TabIndex="2"
+                                    Width="200" 
+                                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="PreviewTextInput" >
+                                            <ei:CallMethodAction TargetObject="{Binding }" 
+                                                 MethodName="NumberValidationTextBox" />
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="PreviewKeyDown">
+                                            <ei:CallMethodAction TargetObject="{Binding }"
+                                                                 MethodName="NumberValidationTextBox" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <TextBox.Text>
+                                        <Binding 
+                                            Path="ProfitPercentage"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <vd:NumberValidation ErrorMessageNull="Nhập lợi nhuận!"
+                                                                     ErrorMessage="Vui lòng nhập giá trị số!" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel 
+                            Grid.Row="2" 
+                            Margin="20"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Right">
+                            <Button
+                                x:Name="btnSave"
+                                IsDefault="True"
+                                Style="{StaticResource GreenButton}"
+                                Command="{Binding SaveCommand}"
+                                CommandParameter="{Binding ElementName=wdGoodsType}"
+                                Height="40" 
+                                Width="100"
+                                TabIndex="3"
+                                materialDesign:ButtonAssist.CornerRadius="2"
+                                ToolTip="Lưu thông tin" 
+                                Content="Lưu" >
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource InverseAndBooleansToBooleanConverter}"
+                                                  Mode="TwoWay">
+                                        <Binding ElementName="txtName"
+                                                 Path="(Validation.HasError)" />
+                                        <Binding ElementName="txtUnit"
+                                                 Path="(Validation.HasError)" />
+                                        <Binding ElementName="txtProfitPercentage"
+                                                 Path="(Validation.HasError)" />
+                                    </MultiBinding>
+                                </Button.IsEnabled>
+                            </Button>
+                            <Button
+                                x:Name="btnCancel"
+                                Command="{Binding CancelCommand}"
+                                CommandParameter="{Binding ElementName=wdGoodsType}"
+                                Style="{StaticResource CancelButton}"
+                                Height="40" 
+                                Width="100"
+                                TabIndex="4"
+                                ToolTip="Hủy thông tin" 
+                                Margin="20,0,0,0" 
+                                materialDesign:ButtonAssist.CornerRadius="2"
+                                Content="Hủy" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem
+                Style="{StaticResource MaterialDesignNavigationRailTabItem}"
+                Header="Ngừng hoạt động"
+                FontSize="18"
+                FontWeight="SemiBold"
+                Width="180" 
+                Height="40" 
+                Padding="0">
+                <Grid 
+                    Margin="0,20,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid 
+                        Grid.Column="0" 
+                        Style="{StaticResource DropShadow}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Rectangle 
+                            Fill="{DynamicResource White}" 
+                            RadiusY="4" 
+                            RadiusX="4"
+                            Grid.RowSpan="4"
+                            Panel.ZIndex="-1"/>
+                        <TextBlock 
+                            Grid.Row="0" 
+                            Style="{StaticResource HeadingText2}"
+                            FontSize="20"
+                            Text="Đang hoạt động" 
+                            HorizontalAlignment="Center"/>
+                        <Border
+                            Grid.Row="1"
+                            CornerRadius="4,4,0,0"
+                            Height="40"
+                            Background="{StaticResource Primary}"
+                            VerticalAlignment="Top" 
+                            Margin="20,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="1.2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock 
+                                    Grid.Column="0"
+                                    Text="Mã loại" 
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock
+                                    Grid.Column="1" 
+                                    HorizontalAlignment="Left" 
+                                    Margin="20,0,0,0" 
+                                    Text="Tên loại"
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock
+                                    Grid.Column="2" 
+                                    Text="Đơn vị" 
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock 
+                                    Grid.Column="3" 
+                                    Text="Lợi nhuận" 
+                                    Style="{StaticResource TextHeader}" />
+                            </Grid>
+                        </Border>
+                        <Border
+                            Grid.Row="2"
+                            BorderBrush="{DynamicResource Light}"
+                            CornerRadius="4,0,4,4"
+                            BorderThickness="2,0,2,2" 
+                            Margin="20,0,20,20">
+                            <ScrollViewer 
+                                Style="{StaticResource FavsScrollViewer}"
+                                VerticalScrollBarVisibility="Auto" 
+                                HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel 
+                                    x:Name="stkActive_InactiveTab"/>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                    <StackPanel 
+                        Grid.Column="1" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                        <Button 
+                            Style="{StaticResource PaginationButton}"
+                            Command="{Binding InactivateCommand}"
+                            CommandParameter="{Binding ElementName=wdGoodsType}"
+                            ToolTip="Ngừng hoạt động"
+                            Width="60"
+                            Height="40">
+                            <materialDesign:PackIcon 
+                                Kind="ArrowRight"
+                                Foreground="{StaticResource Primary}"
+                                Width="34" 
+                                Height="34"/>
+                        </Button>
+                        <Button 
+                            Style="{StaticResource PaginationButton}"
+                            Command="{Binding ActivateCommand}"
+                            CommandParameter="{Binding ElementName=wdGoodsType}"
+                            ToolTip="Hoạt động"
+                            Width="60"
+                            Height="40" 
+                            Margin="0,20,0,0">
+                            <materialDesign:PackIcon 
+                                Kind="ArrowLeft"
+                                Foreground="{StaticResource Primary}"
+                                Width="34" 
+                                Height="34"/>
+                        </Button>
+                    </StackPanel>
+                    <Grid 
+                        Grid.Column="2"
+                        Style="{StaticResource DropShadow}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Rectangle 
+                            Fill="{DynamicResource White}" 
+                            RadiusY="4" 
+                            RadiusX="4"
+                            Grid.RowSpan="4"
+                            Panel.ZIndex="-1"/>
+                        <TextBlock 
+                            Grid.Row="0" 
+                            Style="{StaticResource HeadingText2}"
+                            FontSize="20"
+                            Text="Ngừng hoạt động" 
+                            HorizontalAlignment="Center"/>
+                        <Border
+                            Grid.Row="1"
+                            CornerRadius="4,4,0,0"
+                            Height="40"
+                            Background="{StaticResource Primary}"
+                            VerticalAlignment="Top" 
+                            Margin="20,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="1.2*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock 
+                                    Grid.Column="0"
+                                    Text="Mã loại" 
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock
+                                    Grid.Column="1" 
+                                    HorizontalAlignment="Left" 
+                                    Margin="20,0,0,0" 
+                                    Text="Tên loại"
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock
+                                    Grid.Column="2" 
+                                    Text="Đơn vị" 
+                                    Style="{StaticResource TextHeader}" />
+                                <TextBlock 
+                                    Grid.Column="3" 
+                                    Text="Lợi nhuận" 
+                                    Style="{StaticResource TextHeader}" />
+                            </Grid>
+                        </Border>
+                        <Border
+                            Grid.Row="2"
+                            BorderBrush="{DynamicResource Light}"
+                            CornerRadius="4,0,4,4"
+                            BorderThickness="2,0,2,2" 
+                            Margin="20,0,20,20">
+                            <ScrollViewer 
+                                Style="{StaticResource FavsScrollViewer}"
+                                VerticalScrollBarVisibility="Auto" 
+                                HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel 
+                                    x:Name="stkInactive_InactiveTab" />
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
