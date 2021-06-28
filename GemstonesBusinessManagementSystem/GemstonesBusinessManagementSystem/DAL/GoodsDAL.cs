@@ -151,13 +151,17 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 DataTable dt = new DataTable();
                 dt.Load(dataReader);
-
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
+                    byte[] imgArr = null;
+                    if (!string.IsNullOrEmpty(dt.Rows[i].ItemArray[5].ToString()))
+                    {
+                        imgArr = Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString());
+                    }
                     Goods goods = new Goods(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                         dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()),
-                        int.Parse(dt.Rows[i].ItemArray[3].ToString()), int.Parse(dt.Rows[i].ItemArray[4].ToString()),
-                        Convert.FromBase64String(dt.Rows[i].ItemArray[5].ToString()), bool.Parse(dt.Rows[i].ItemArray[6].ToString()));
+                        int.Parse(dt.Rows[i].ItemArray[3].ToString()), int.Parse(dt.Rows[i].ItemArray[4].ToString()), imgArr,
+                        bool.Parse(dt.Rows[i].ItemArray[6].ToString()));
                     goodsList.Add(goods);
                 }
             }
@@ -176,13 +180,13 @@ namespace GemstonesBusinessManagementSystem.DAL
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 MySqlDataReader reader = command.ExecuteReader();
                 reader.Read();
-                byte[] imageArr = null ;
+                byte[] imageArr = null;
                 if (!reader.IsDBNull(5))
                 {
                     imageArr = Convert.FromBase64String(reader.GetString(5));
                 }
                 Goods res = new Goods(int.Parse(idGoods), reader.GetString(1), long.Parse(reader.GetString(2)), int.Parse(reader.GetString(3)),
-                    int.Parse(reader.GetString(4)), imageArr , bool.Parse(reader.GetString(6)));
+                    int.Parse(reader.GetString(4)), imageArr, bool.Parse(reader.GetString(6)));
                 return res;
             }
             catch

@@ -34,9 +34,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public bool isEditingMembership = false;
         private MembershipControl membershipControl;
         private string oldMembership;
+        private string oldTarget;
         private PickCustomerWindow pickCustomerWindow;
         private CustomerControl customerControl;
-        Binding newBinding;
+        private PickCustomerControl pickedItem;
+        Binding newBindingName;
+        Binding newBindingTarget;
         private string name;
         private string phoneNumber;
         private string idNumber;
@@ -107,8 +110,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             PickCustomerCommand = new RelayCommand<PickCustomerControl>(p => true, p => PickCustomer(p));
             ClosingWdCommand = new RelayCommand<PickCustomerWindow>((p) => true, (p) => CloseWindow(p));
             FindPickCustomerCommand = new RelayCommand<PickCustomerWindow>(p => true, p => FindPickCustomer(p));
-            GoToNextPageCommandCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToNextPagePickCustomer(p, ++currentPage));
-            GoToPreviousPageCommandCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToPreviousPagePickCustomer(p, --currentPage));
+            GoToNextPageCommandPickCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToNextPagePickCustomer(p, ++currentPage));
+            GoToPreviousPageCommandPickCus = new RelayCommand<PickCustomerWindow>(p => true, p => GoToPreviousPagePickCustomer(p, --currentPage));
             //Grid Customer to mainWindow
             LoadCustomerCommand = new RelayCommand<MainWindow>(p => true, p => { Load(p); });
             GoToNextPageCommandCus = new RelayCommand<MainWindow>(p => true, p => GoToNextPage(p, ++currentPage));
@@ -156,6 +159,22 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void PickCustomer(PickCustomerControl pickCustomerControl)
         {
+            if (pickedItem != null)
+            {
+                pickedItem.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbName.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbPhoneNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbIdNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbAddress.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                pickedItem.txbRank.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+            }
+            pickCustomerControl.txbId.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbName.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbPhoneNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbIdNumber.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbAddress.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickCustomerControl.txbRank.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
+            pickedItem = pickCustomerControl;
             pickCustomerWindow.txbId.Text = pickCustomerControl.txbId.Text;
             pickCustomerWindow.txbName.Text = pickCustomerControl.txbName.Text;
             pickCustomerWindow.txbAddress.Text = pickCustomerControl.txbAddress.Text;
@@ -167,8 +186,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void LoadPickCustomerToView(PickCustomerWindow window, int currentPage)
         {
-            customerList = CustomerDAL.Instance.ConvertDBToList();
-            this.pickCustomerWindow = window;
+            this.pickCustomerWindow = window as PickCustomerWindow;
             this.pickCustomerWindow.stkCustomer.Children.Clear();
             int start = 0, end = 0;
             this.currentPage = currentPage;
@@ -211,7 +229,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void FindPickCustomer(PickCustomerWindow pickCustomerWindow)
         {
-            customerList = CustomerDAL.Instance.FindByName(pickCustomerWindow.txtSearchCustomer.Text);
+            customerList = CustomerDAL.Instance.FindByName(pickCustomerWindow.txtSearchCustomer.Text.ToLower());
             currentPage = 0;
             LoadPickCustomerToView(pickCustomerWindow, currentPage);
         }
@@ -245,37 +263,53 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void ViewMembership(MembershipControl control)
         {
-            Binding binding = BindingOperations.GetBinding(addMembershipWindow.txtMembership, TextBox.TextProperty);
-            if (binding != null)
+            Binding bindingName = BindingOperations.GetBinding(addMembershipWindow.txtMembership, TextBox.TextProperty);
+            Binding bindingTarget = BindingOperations.GetBinding(addMembershipWindow.txtTarget, TextBox.TextProperty);
+            if (bindingName != null)
             {
-                newBinding = CloneBinding(binding as BindingBase, binding.Source) as Binding;
-
+                newBindingName = CloneBinding(bindingName as BindingBase, bindingName.Source) as Binding;
+            }
+            if (bindingTarget != null)
+            {
+                newBindingTarget = CloneBinding(bindingTarget as BindingBase, bindingTarget.Source,true ) as Binding;
             }
             BindingOperations.ClearBinding(addMembershipWindow.txtMembership, TextBox.TextProperty);
+            BindingOperations.ClearBinding(addMembershipWindow.txtTarget, TextBox.TextProperty);
 
             oldMembership = control.txbMembership.Text;
+            oldTarget = control.txbTarget.Text;
             membershipControl = control;
             isEditingMembership = true;
             addMembershipWindow.txbTitle.Text = "Sửa hạng thành viên";
             addMembershipWindow.txtId.Text = control.txbId.Text;
             addMembershipWindow.btnSave.Content = "Cập nhật";
+            addMembershipWindow.btnSave.ToolTip = "Cập nhật hạng thành viên";
 
             addMembershipWindow.txtMembership.Text = control.txbMembership.Text;
             addMembershipWindow.txtMembership.SelectionStart = control.txbMembership.Text.Length;
 
             addMembershipWindow.txtTarget.Text = control.txbTarget.Text;
-            addMembershipWindow.txtTarget.SelectionLength = control.txbTarget.Text.Length;
+            addMembershipWindow.txtTarget.SelectionStart = control.txbTarget.Text.Length;
+            addMembershipWindow.txtTarget.IsEnabled = true;
+            if (control.txbId.Text == "TV0001")
+                addMembershipWindow.txtTarget.IsEnabled = false;
         }
         void ClearView(AddMembershipWindow window)
         {
-            if (newBinding != null)
+            if (newBindingName != null)
             {
-                window.txtMembership.SetBinding(TextBox.TextProperty, newBinding);
+                window.txtMembership.SetBinding(TextBox.TextProperty, newBindingName);
+            }
+            if (newBindingTarget != null)
+            {
+                window.txtTarget.SetBinding(TextBox.TextProperty, newBindingTarget);
             }
             isEditingMembership = false;
             window.txtId.Text = AddPrefix("TV", (MembershipsTypeDAL.Instance.GetMaxId() + 1));
             window.txtTarget.Text = null;
             window.txtMembership.Text = null;
+            window.txbTitle.Text = "Thêm hạng thành viên";
+            window.btnSave.Content = "Lưu";
         }
         void OpenMembershipWindow(MainWindow mainWindow)
         {
@@ -360,6 +394,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addCustomerWindow.btnSave.ToolTip = "Cập nhật thông tin khách hàng";
             addCustomerWindow.Title = "Cập nhật thông tin khách hàng";
             addCustomerWindow.btnSave.Content = "Cập nhật";
+            addCustomerWindow.btnSave.Content = "Cập nhật khách hàng";
             addCustomerWindow.ShowDialog();
         }
 
@@ -377,11 +412,23 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.txtTarget.Focus();
                 return;
             }
-            if (window.txtMembership.Text != oldMembership && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
+            if (!string.IsNullOrEmpty(oldMembership))
             {
-                CustomMessageBox.Show("Hạng thành viên đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                window.txtMembership.Focus();
-                return;
+                if (window.txtMembership.Text.ToLower() != oldMembership.ToLower() && MembershipsTypeDAL.Instance.IsExisted(window.txtMembership.Text))
+                {
+                    CustomMessageBox.Show("Hạng thành viên đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    window.txtMembership.Focus();
+                    return;
+                }
+            }
+            if (!string.IsNullOrEmpty(oldTarget))
+            {
+                if (window.txtTarget.Text != oldTarget && MembershipsTypeDAL.Instance.IsExistTarget(double.Parse(window.txtTarget.Text).ToString()))
+                {
+                    CustomMessageBox.Show("Mục tiêu đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    window.txtTarget.Focus();
+                    return;
+                }
             }
 
             MembershipsType membership = new MembershipsType(ConvertToID(window.txtId.Text), window.txtMembership.Text,
@@ -415,13 +462,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
         public void Load(MainWindow mainWindow)  // load lại label khi Add khách hàng mới
         {
-            mainWindow.txbCountCustomer.Text = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
-            mainWindow.txbCountAllPrice.Text = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
             SetItemSource(mainWindow);
             LoadCustomerToView(mainWindow, 0);
         }
         public void LoadCustomerToView(MainWindow mainWindow, int currentPage)
         {
+            mainWindow.txbCountCustomer.Text = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
+            mainWindow.txbCountAllPrice.Text = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
             this.mainWindow = mainWindow;
             mainWindow.stkCustomer.Children.Clear();
             int start = 0, end = 0;
@@ -514,7 +561,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             if (CheckData(addCustomerWindow))// kiem tra du lieu dau vao
             {
                 Customer customer = new Customer(ConvertToID(addCustomerWindow.txtId.Text), addCustomerWindow.txtName.Text, (addCustomerWindow.txtPhoneNumber.Text), addCustomerWindow.txtAddress.Text,
-                    (addCustomerWindow.txtCMND.Text), 0, 0);
+                    (addCustomerWindow.txtCMND.Text), 0, 1);
 
                 if (isEditing)
                 {
@@ -539,7 +586,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     }
                     else
                     {
-                        LoadPickCustomerToView(pickCustomerWindow, 0);
+                        if (pickCustomerWindow != null)
+                            FindPickCustomer(pickCustomerWindow);
                         CustomMessageBox.Show("Thêm khách hàng thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     }
                 }
@@ -554,9 +602,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 FindCustomer(mainWindow);
                 mainWindow.cboSelectCustomerSort.SelectedIndex = indexSort;
                 mainWindow.cboSelectCustomerIdMembership.SelectedIndex = indexFilter;
-
-                mainWindow.txbCountAllPrice.Text = CustomerDAL.Instance.CountPrice().ToString();
-
                 addCustomerWindow.Close();
             }
             int start = 0, end = 0;
@@ -670,7 +715,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

@@ -90,6 +90,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         {
                             billServiceControl.txbStatus.Foreground = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#FF00329E");
                         }
+                        checkedItem = billServiceControl;
                     }
                 }
                 mainWindow.stkBillService.Children.Add(billServiceControl);
@@ -446,7 +447,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

@@ -138,6 +138,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             supplierControl = control;
             newWindow.Title = "Sửa thông tin nhà cung cấp";
             newWindow.btnSave.Content = "Cập nhật";
+            newWindow.btnSave.ToolTip = "Cập nhật nhà cung cấp";
             newWindow.ShowDialog();
         }
         void AddOrUpdate(AddSupplierWindow wdAddSupplier)
@@ -235,8 +236,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 control.txbName.Text = dt.Rows[i].ItemArray[1].ToString();
                 control.txbAddress.Text = dt.Rows[i].ItemArray[2].ToString().ToString();
                 control.txbPhoneNumber.Text = dt.Rows[i].ItemArray[3].ToString();
-                control.txbNumOfReceipts.Text = StockReceiptDAL.Instance.NumOfReceiptsBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString();
-                control.txbTotal.Text = StockReceiptDAL.Instance.SumMoneyBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString();
+                control.txbNumOfReceipts.Text = SeparateThousands(StockReceiptDAL.Instance.NumOfReceiptsBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString());
+                control.txbTotal.Text = SeparateThousands(StockReceiptDAL.Instance.SumMoneyBySupplier(dt.Rows[i].ItemArray[0].ToString()).ToString());
                 ListSupplierToView.Add(control);
             }
             Sort(main);
@@ -405,7 +406,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

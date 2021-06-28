@@ -17,7 +17,8 @@
     Background="{StaticResource White}" 
     DataContext="{StaticResource EmployeeVM}"
     WindowStartupLocation="CenterScreen" 
-    ResizeMode="CanMinimize">
+    ResizeMode="CanMinimize"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <Grid>
         <Grid  
             x:Name="grdSelectImage"
@@ -28,7 +29,7 @@
             HorizontalAlignment="Left">
             <Image
                 x:Name="imgAvatar"
-                Source="/Resources/Images/employee.jpg"/>
+                Source="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/employee.jpg"/>
             <Button 
                 x:Name="btnSelectImage"
                 Style="{StaticResource PrimaryButton}"
@@ -62,12 +63,14 @@
                     Height="40"
                     RadiusY="4"
                     RadiusX="4"
+                    Fill="{StaticResource Gray3}"
                     Stroke="{StaticResource Gray2}" 
                     HorizontalAlignment="Right"/>
                 <TextBox 
                     x:Name="txtId"
                     Style="{StaticResource TextBox}"
                     materialDesign:HintAssist.Hint="Mã tự động"
+                    Focusable="False"
                     IsReadOnly="True" 
                     IsTabStop="False"/>
             </Grid>

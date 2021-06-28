@@ -17,7 +17,8 @@
     Title=""
     MinHeight="200"
     MaxWidth="470"
-    MinWidth="180">
+    MinWidth="180"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -50,7 +51,7 @@
         <Grid 
             Grid.Row="1"
             Background="{StaticResource White}"
-            MinHeight="49">
+            MinHeight="60">
             <DockPanel 
                 Margin="5,0">
                 <Button

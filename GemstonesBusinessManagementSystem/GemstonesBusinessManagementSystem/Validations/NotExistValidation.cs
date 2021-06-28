@@ -26,7 +26,7 @@ namespace GemstonesBusinessManagementSystem.Validations
             {
                 return new ValidationResult(false, this.ErrorMessageNull);
             }
-            if (!AccountDAL.Instance.IsExistUserName(value.ToString()))
+            if (!AccountDAL.Instance.IsExistUsername(value.ToString()))
             {
                 result = new ValidationResult(false, this.ErrorMessage);
             }

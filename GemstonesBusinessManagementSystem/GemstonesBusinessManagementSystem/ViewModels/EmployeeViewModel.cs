@@ -260,15 +260,18 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 return;
             }
             #endregion
-            if (window.txtPosition.Text != oldPosition && EmployeePositionDAL.Instance.IsExisted(window.txtPosition.Text))
+            if(!string.IsNullOrEmpty(oldPosition))
             {
-                CustomMessageBox.Show("Chức vụ đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                window.txtPosition.Focus();
-                return;
+                if (window.txtPosition.Text.ToLower() != oldPosition.ToLower() && EmployeePositionDAL.Instance.IsExisted(window.txtPosition.Text))
+                {
+                    CustomMessageBox.Show("Chức vụ đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    window.txtPosition.Focus();
+                    return;
+                }
             }
             if (string.Compare(window.txtStandardWorkDays.Text, "30") > 0)
             {
-                CustomMessageBox.Show("Số ngày công chuẩn không >30!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("Số ngày công chuẩn không > 30!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtStandardWorkDays.Focus();
                 return;
             }
@@ -362,11 +365,12 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
+                addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/employee.jpg"));
             }
             addEmployeeWindow.btnSave.ToolTip = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.Title = "Cập nhật thông tin nhân viên";
             addEmployeeWindow.btnSave.Content = "Cập nhật";
+            addEmployeeWindow.btnSave.ToolTip = "Cập nhật nhân viên";
             addEmployeeWindow.ShowDialog();
         }
         void HandleDelete(EmployeeControl employeeControl)
@@ -424,11 +428,41 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                DateTime dateTime = new DateTime();
-                if (!DateTime.TryParse(window.dpBirthDate.Text, out dateTime))
+                DateTime dob = new DateTime();
+                bool check = DateTime.TryParse(window.dpBirthDate.Text, out dob);
+                if (!check)
                 {
-                    CustomMessageBox.Show("Vui lòng nhập lại ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày sinh vì ngày sinh không hợp lệ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     window.dpBirthDate.Focus();
+                    return;
+                }
+            }
+            if (window.dpWorkDate.Text == "")
+            {
+                CustomMessageBox.Show("Vui lòng nhập ngày vào làm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                window.dpWorkDate.Focus();
+                return;
+            }
+            else
+            {
+                DateTime startDate = new DateTime();
+                DateTime DOB = DateTime.Parse(window.dpBirthDate.Text);
+                if (!DateTime.TryParse(window.dpWorkDate.Text, out startDate))
+                {
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày vào làm vì ngày vào làm không hợp lệ!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    window.dpWorkDate.Focus();
+                    return;
+                }
+                if (CalculateAge(DOB, startDate) < 18)
+                {
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày sinh vì chưa đủ 18 tuổi!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    window.dpBirthDate.Focus();
+                    return;
+                }
+                if (startDate < DOB)
+                {
+                    CustomMessageBox.Show("Vui lòng nhập lại ngày vào làm lớn hơn ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                    window.dpWorkDate.Focus();
                     return;
                 }
             }
@@ -443,28 +477,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 CustomMessageBox.Show("Vui lòng nhập số điện thoại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 window.txtPhoneNumber.Focus();
                 return;
-            }
-            if (window.dpWorkDate.Text == "")
-            {
-                CustomMessageBox.Show("Vui lòng nhập ngày vào làm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                window.dpWorkDate.Focus();
-                return;
-            }
-            else
-            {
-                DateTime dateTime = new DateTime();
-                if (!DateTime.TryParse(window.dpWorkDate.Text, out dateTime))
-                {
-                    CustomMessageBox.Show("Vui lòng nhập lại ngày vào làm!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                    window.dpWorkDate.Focus();
-                    return;
-                }
-                if (dateTime < DateTime.Parse(window.dpBirthDate.Text))
-                {
-                    CustomMessageBox.Show("Vui lòng nhập lại ngày vào làm lớn hơn ngày sinh!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                    window.dpWorkDate.Focus();
-                    return;
-                }
             }
             if (window.rdoMale.IsChecked.Value == true)
                 gender = "Nam";
@@ -709,7 +721,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -722,7 +733,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addEmployeeWindow.txtAddress.Text = null;
             addEmployeeWindow.txtPhoneNumber.Text = null;
             addEmployeeWindow.cboPosition.SelectedIndex = -1;
-            addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("/Resources/Images/employee.jpg", UriKind.Relative));
+            addEmployeeWindow.imgAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/employee.jpg"));
             addEmployeeWindow.ShowDialog();
         }
         public void LoadEmployeeList(MainWindow main, int curPage)

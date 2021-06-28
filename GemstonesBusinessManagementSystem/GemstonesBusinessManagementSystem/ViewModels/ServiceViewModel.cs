@@ -81,6 +81,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             addService.cboStatus.SelectedIndex = uCService.txbStatus.Text == "Đang hoạt động" ? 1 : 0; // kiểm tra isActived
             addService.Title = "Sửa thông tin dịch vụ";
             addService.btnSave.Content = "Cập nhật";
+            addService.btnSave.ToolTip = "Cập nhật dịch vụ";
             addService.ShowDialog();
         }
         public void AddService(AddServiceWindow addServiceWindow)
@@ -101,7 +102,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             ServiceControl uCService = new ServiceControl();
                             uCService.txbSerial.Text = AddPrefix("DV", service.IdService);
                             uCService.txbName.Text = service.Name;
-                            uCService.txbPrice.Text = service.Price.ToString();
+                            uCService.txbPrice.Text = SeparateThousands(service.Price.ToString());
                             uCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                             if (mainWindow.cboSelectFilter.SelectedIndex == service.IsActived || mainWindow.cboSelectFilter.SelectedIndex == -1) // trùng trạng thái với filter thì thêm vào stk
                             {
@@ -132,7 +133,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             CustomMessageBox.Show("Cập nhật dịch vụ thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                             addServiceWindow.Close();
                             selectedUCService.txbName.Text = service.Name;
-                            selectedUCService.txbPrice.Text = service.Price.ToString();
+                            selectedUCService.txbPrice.Text = SeparateThousands(service.Price.ToString());
                             selectedUCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                             if (service.IsActived != mainWindow.cboSelectFilter.SelectedIndex && mainWindow.cboSelectFilter.SelectedIndex != -1) // kiểm tra trạng thái để remove uc ra khỏi stk 
                             {
@@ -342,7 +343,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                MessageBox.Show("Có lỗi khi lưu file!");
             }
 
         }

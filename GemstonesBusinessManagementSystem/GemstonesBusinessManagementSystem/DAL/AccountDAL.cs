@@ -153,7 +153,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "select * from account where username  = '" + username + "'";
+                string query = string.Format("select * from account where username like binary '{0}'", username);
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -188,34 +188,6 @@ namespace GemstonesBusinessManagementSystem.DAL
                 cmd.Parameters.AddWithValue("@password", password);
                 cmd.ExecuteNonQuery();
                 return true;
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                CloseConnection();
-            }
-        }
-        public bool IsExistUserName(string username)
-        {
-            try
-            {
-                OpenConnection();
-                string queryString = "select * from Account where username = '" + username + "'";
-                MySqlCommand command = new MySqlCommand(queryString, conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                if (dataTable.Rows.Count > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
             }
             catch
             {

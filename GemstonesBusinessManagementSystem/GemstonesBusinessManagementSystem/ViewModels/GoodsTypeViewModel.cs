@@ -63,13 +63,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 wdGoodsType.txtProfitPercentage.Focus();
                 return;
             }
-
-            if ((!isUpdate || wdGoodsType.txtName.Text != oldType) && GoodsTypeDAL.Instance.IsExisted(wdGoodsType.txtName.Text))
+            if ((!isUpdate || wdGoodsType.txtName.Text.ToLower() != oldType.ToLower()) && GoodsTypeDAL.Instance.IsExisted(wdGoodsType.txtName.Text))
             {
                 CustomMessageBox.Show("Loại sản phẩm đã tồn tại!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 wdGoodsType.txtName.Focus();
                 return;
             }
+
             GoodsType type = new GoodsType(ConvertToID(wdGoodsType.txtId.Text), wdGoodsType.txtName.Text,
                 int.Parse(wdGoodsType.txtProfitPercentage.Text) / 100.0, wdGoodsType.txtUnit.Text, true);
             GoodsTypeDAL.Instance.InsertOrUpdate(type, isUpdate);
@@ -107,6 +107,13 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             this.wdGoodsType.txtProfitPercentage.Text = null;
             this.wdGoodsType.txtUnit.Text = null;
             isUpdate = false;
+            if (goodsTypeControl != null) // dua lai mau xam
+            {
+                goodsTypeControl.txbId.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbName.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbProfitPercentage.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+                goodsTypeControl.txbUnit.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
+            }
         }
         void Inactivate(GoodsTypeWindow wdGoodsType)
         {
@@ -162,7 +169,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 goodsTypeControl.txbUnit.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF4F4F4F");
             }
             // chuyen sang mau duoc chon
-            control.txbId.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");   
+            control.txbId.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");
             control.txbName.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");
             control.txbProfitPercentage.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");
             control.txbUnit.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF00329E");
@@ -180,6 +187,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 oldType = goodsTypeControl.txbName.Text;
                 this.wdGoodsType.txbTitle.Text = "Sửa thông tin";
                 this.wdGoodsType.btnSave.Content = "Cập nhật";
+                this.wdGoodsType.btnSave.ToolTip = "Cập nhật loại sản phẩm";
                 this.wdGoodsType.txtId.Text = control.txbId.Text;
                 this.wdGoodsType.txtName.Text = control.txbName.Text;
                 this.wdGoodsType.txtProfitPercentage.Text = control.txbProfitPercentage.Text.Remove(control.txbProfitPercentage.Text.Length - 1, 1);
@@ -192,7 +200,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 this.goodsTypeControl = control;
             }
 
-          
+
         }
         void SelectedTabItem(GoodsTypeWindow wdGoodsType)
         {
@@ -200,6 +208,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 isActiveTab = true;
                 LoadActiveTab(wdGoodsType);
+                Cancel(wdGoodsType);
             }
             else
             {

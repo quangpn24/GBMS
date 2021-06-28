@@ -17,7 +17,8 @@
     DataContext="{StaticResource GoodsTypeVM}"
     x:Name="wdGoodsType"
     Background="#F7F8FC"
-    Width="1200">
+    Width="1200"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}"
@@ -152,12 +153,14 @@
                                     Height="40"
                                     RadiusY="4"
                                     RadiusX="4" 
+                                    Fill="{StaticResource Gray3}"
                                     HorizontalAlignment="Right"
                                     Stroke="{StaticResource Gray2}"/>
                                 <TextBox 
                                     x:Name="txtId"
                                     Style="{StaticResource TextBox}"
                                     IsReadOnly="True"
+                                    Focusable="False"
                                     IsTabStop="False"
                                     materialDesign:HintAssist.Hint="Mã tự động"
                                     Width="200" 

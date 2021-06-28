@@ -573,9 +573,10 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 DataTable dt = new DataTable();
                 OpenConnection();
-                string query = "Select idGoods, sum(quantity) as quantity from BillInfo " +
+                string query = "Select BillInfo.idGoods, sum(BillInfo.quantity) as quantity from BillInfo Join Goods " +
+                    "on Goods.idGoods=BillInfo.idGoods where Goods.isDeleted=0 " +
                     "group by idGoods " +
-                    "order by quantity DESC " +
+                    "order by quantity DESC, price DESC " +
                     "limit 10";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);

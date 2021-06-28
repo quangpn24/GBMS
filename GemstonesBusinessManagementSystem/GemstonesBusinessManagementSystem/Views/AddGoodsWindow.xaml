@@ -16,7 +16,8 @@
     Width="700" 
     DataContext="{StaticResource GoodsVM}"
     WindowStartupLocation="CenterScreen"
-    ResizeMode="CanMinimize">
+    ResizeMode="CanMinimize"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <Grid>
         <Grid
             x:Name="grdSelectImg"
@@ -27,7 +28,7 @@
             HorizontalAlignment="Left">
             <Image
                 x:Name="imgGoods"
-                Source="/Resources/Images/goods.png"/>
+                Source="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/goods.png"/>
             <Button 
                 x:Name="btnSelectImage"
                 Style="{StaticResource PrimaryButton}"
@@ -61,10 +62,12 @@
                     RadiusY="4"
                     RadiusX="4"
                     HorizontalAlignment="Right"
+                    Fill="{StaticResource Gray3}"
                     Stroke="{StaticResource Gray2}"/>
                 <TextBox 
                     x:Name="txtIdGoods"
                     Style="{StaticResource TextBox}"
+                    Focusable="False"
                     IsReadOnly="True"
                     IsTabStop="False"
                     Cursor="Arrow"

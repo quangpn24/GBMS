@@ -17,7 +17,8 @@
     Width="500" 
     Background="{StaticResource White}" 
     WindowStartupLocation="CenterScreen" 
-    ResizeMode="CanMinimize">
+    ResizeMode="CanMinimize"
+    Icon="pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/GBMS.png">
     <Grid>
         <StackPanel
             Margin="30,30,30,0"
@@ -34,13 +35,15 @@
                     Height="40"
                     RadiusY="4"
                     RadiusX="4"
+                    Fill="{StaticResource Gray3}"
                     Stroke="{StaticResource Gray2}" 
                     HorizontalAlignment="Right"/>
                 <TextBox 
                     x:Name="txtId"
                     materialDesign:HintAssist.Hint="Mã tự động"
                     Style="{StaticResource TextBox}"
-                    IsReadOnly="True" 
+                    IsReadOnly="False"
+                    Focusable="True"
                     IsTabStop="False"/>
             </Grid>
             <Grid 

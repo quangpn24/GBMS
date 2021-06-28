@@ -30,7 +30,7 @@ namespace GemstonesBusinessManagementSystem.Validations
             switch (ElementName)
             {
                 case "UserName":
-                    if (AccountDAL.Instance.IsExistUserName(value.ToString()))
+                    if (AccountDAL.Instance.IsExistUsername(value.ToString()))
                     {
                         result = new ValidationResult(false, this.ErrorMessage);
                     }
@@ -67,6 +67,12 @@ namespace GemstonesBusinessManagementSystem.Validations
                     break;
                 case "StandardDays":
                     if (string.Compare(value.ToString(), "30") > 0 || string.Compare(value.ToString(), "1") < 0)
+                    {
+                        result = new ValidationResult(false, this.ErrorMessage);
+                    }
+                    break;
+                case "Target":
+                    if (MembershipsTypeDAL.Instance.IsExistTarget(double.Parse(value.ToString()).ToString()))
                     {
                         result = new ValidationResult(false, this.ErrorMessage);
                     }

@@ -66,12 +66,17 @@ namespace GemstonesBusinessManagementSystem.DAL
                     {
                         idAccount = int.Parse(dt.Rows[i].ItemArray[8].ToString());
                     }
+                    byte[] imgArr = null;
+                    if (!string.IsNullOrEmpty(dt.Rows[i].ItemArray[9].ToString()))
+                    {
+                        imgArr = Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString());
+                    }
                     Employee employee = new Employee(int.Parse(dt.Rows[i].ItemArray[0].ToString()),
                         dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(),
                         dt.Rows[i].ItemArray[3].ToString(), dt.Rows[i].ItemArray[4].ToString(),
                         DateTime.Parse(dt.Rows[i].ItemArray[5].ToString()),
                         int.Parse(dt.Rows[i].ItemArray[6].ToString()), DateTime.Parse(dt.Rows[i].ItemArray[7].ToString()),
-                        idAccount, Convert.FromBase64String(dt.Rows[i].ItemArray[9].ToString()));
+                        idAccount, imgArr);
                     employees.Add(employee);
                 }
                 return employees;

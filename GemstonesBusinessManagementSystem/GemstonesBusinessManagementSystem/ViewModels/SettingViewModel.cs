@@ -396,7 +396,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.grdSelectImage.Background = imageBrush;            }
             else
             {
-                imageBrush.ImageSource = new BitmapImage(new Uri("/Resources/Images/avatar.jpg", UriKind.Relative));
+                imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/avatar.jpg"));
                 window.grdSelectImage.Background = imageBrush;
             }
             if (window.grdSelectImage.Children.Count > 1)
@@ -460,7 +460,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 window.pwbNewPassword.Focus();
                 return;
             }
-            if(AccountDAL.Instance.UpdatePasswordByUsername("admin", MD5Hash(window.pwbNewPassword.Password)))
+            if(AccountDAL.Instance.UpdatePasswordByUsername(CurrentAccount.IdAccount.ToString(), MD5Hash(window.pwbNewPassword.Password)))
             {
                 CustomMessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }

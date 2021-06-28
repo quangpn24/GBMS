@@ -241,7 +241,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             GoodsTypeWindow newWindow = new GoodsTypeWindow();
             newWindow.txtName.Text = null;
             newWindow.txtUnit.Text = null;
-            newWindow.txtUnit.Text = null;
+            newWindow.txtProfitPercentage.Text = null;
             newWindow.ShowDialog();
             SetItemSourceGoodsType(main);
             int indexSort = main.cboSortGoods.SelectedIndex;
@@ -284,13 +284,14 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             else
             {
-                addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("/Resources/Images/goods.png", UriKind.Relative));
+                addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/goods.png"));
             }
             addGoodsWd.txtImportPrice.Text = control.txbImportPrice.Text;
             addGoodsWd.txtImportPrice.SelectionStart = addGoodsWd.txtImportPrice.Text.Length;
             addGoodsWd.txtImportPrice.SelectionLength = 0;
             addGoodsWd.Title = "Cập nhật thông tin sản phẩm";
             addGoodsWd.btnSave.Content = "Cập nhật";
+            addGoodsWd.btnSave.ToolTip = "Cập nhật sản phẩm";
             addGoodsWd.ShowDialog();
         }
         void OpenImportGoodsWindow(MainWindow main)
@@ -304,7 +305,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             AddGoodsWindow addGoodsWd = new AddGoodsWindow();
             addGoodsWd.txtName.Text = null;
             addGoodsWd.txtImportPrice.Text = null;
-            addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("/Resources/Images/goods.png", UriKind.Relative));
+            addGoodsWd.imgGoods.Source = new BitmapImage(new Uri("pack://application:,,,/GemstonesBusinessManagementSystem;component/Resources/Images/goods.png"));
             int idMax = GoodsDAL.Instance.GetMaxId();
             if (idMax >= 0)
             {
@@ -448,7 +449,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             }
             catch
             {
-                CustomMessageBox.Show("Có lỗi khi lưu file!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public void SelectImage(Image parameter)

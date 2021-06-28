@@ -155,7 +155,6 @@
     <Compile Include="CurrentAccount.cs" />
     <Compile Include="CustomMessageBox.cs" />
     <Compile Include="DAL\AccountDAL.cs" />
-    <Compile Include="DAL\AuthorizationsDAL.cs" />
     <Compile Include="DAL\BillInfoDAL.cs" />
     <Compile Include="DAL\BillServiceDAL.cs" />
     <Compile Include="DAL\BillServiceInfoDAL.cs" />
@@ -173,7 +172,6 @@
     <Compile Include="DAL\PositionDetailDAL.cs" />
     <Compile Include="InverseAndBooleansToBooleanConverter.cs" />
     <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\Authorizations.cs" />
     <Compile Include="Models\BillInfo.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Bill.cs" />
@@ -639,6 +637,9 @@
     <Resource Include="Resources\Images\info.png" />
     <Resource Include="Resources\Images\succes.png" />
     <Resource Include="Resources\Images\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\GBMS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />

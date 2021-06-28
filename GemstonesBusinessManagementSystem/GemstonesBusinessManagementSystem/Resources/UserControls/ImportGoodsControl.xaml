@@ -69,7 +69,12 @@
                     <i:InvokeCommandAction Command="{Binding ChangeQuantityCommand}"
                                            CommandParameter="{Binding ElementName=ucImportGoods}"/>
                 </i:EventTrigger>
+                <i:EventTrigger EventName="KeyUp">
+                    <i:InvokeCommandAction Command="{Binding ChangeQuantityCommand}"
+                                           CommandParameter="{Binding ElementName=ucImportGoods}"/>
+                </i:EventTrigger>
             </i:Interaction.Triggers>
+            
         </local:NumericSpinner>
         <TextBlock 
             x:Name="txbTotalPrice"

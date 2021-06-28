@@ -165,7 +165,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
             if (isSuccess)
             {
-                var result = CustomMessageBox.Show("Thanh toán thành công! Bạn có muốn in hóa đơn?",
+                CustomMessageBox.Show("Thanh toán thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                var result = CustomMessageBox.Show("Bạn có muốn in hóa đơn?",
                     "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
@@ -342,7 +343,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                     control.txbQuantity.Text = saleGoodsList[i].Quantity.ToString();
                     control.txbId.Text = saleGoodsList[i].IdGoods.ToString();
-                    control.imgGood.Source = Converter.Instance.ConvertByteToBitmapImage(saleGoodsList[i].ImageFile);
+                    if (saleGoodsList[i].ImageFile != null)
+                    {
+                        control.imgGood.Source = Converter.Instance.ConvertByteToBitmapImage(saleGoodsList[i].ImageFile);
+                    }
                     control.txbName.Text = saleGoodsList[i].Name;
                     GoodsType type = GoodsTypeDAL.Instance.GetById(saleGoodsList[i].IdGoodsType);
                     double profitPercentage = type.ProfitPercentage;

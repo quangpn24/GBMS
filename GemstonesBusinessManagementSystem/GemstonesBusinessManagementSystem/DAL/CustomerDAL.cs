@@ -302,7 +302,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 CloseConnection();
             }
         }
-        public int CountPrice()  // tinh tong doanh thu cua tat ca khach hang
+        public long CountPrice()  // tinh tong doanh thu cua tat ca khach hang
         {
             try
             {
@@ -315,7 +315,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 adapter.Fill(dataTable);
                 if (dataTable.Rows.Count == 1)
                 {
-                    return int.Parse(dataTable.Rows[0].ItemArray[0].ToString());
+                    return long.Parse(dataTable.Rows[0].ItemArray[0].ToString());
                 }
                 else
                 {
