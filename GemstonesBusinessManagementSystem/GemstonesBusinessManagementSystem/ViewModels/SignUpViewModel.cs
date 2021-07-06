@@ -191,7 +191,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             int idAccount = AccountDAL.Instance.GetNewID();
             if (idAccount != -1)
             {
-                Account newAccount = new Account(idAccount, parameter.txtUsername.Text.ToString(), password, 1);
+                Account newAccount = new Account(idAccount, parameter.txtUsername.Text.ToString(), password);
                 isSignUp = AccountDAL.Instance.AddintoDB(newAccount);
                 if (isSignUp && EmployeeDAL.Instance.UpdateIdAccount(idAccount, selectedEmployee.IdEmployee))
                 {

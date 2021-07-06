@@ -65,7 +65,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void UpdateMembership(Customer customer, long paidMoney)
         {
-            var totalSpending = customer.TotalPrice + paidMoney;
+            var totalSpending = customer.TotalSpending + paidMoney;
             CustomerDAL.Instance.UpdateTotalSpending(customer.IdCustomer, totalSpending);
             List<KeyValuePair<long, int>> membershipList = MembershipsTypeDAL.Instance.GetSortedList();
             foreach (var mem in membershipList)
@@ -86,7 +86,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 BillInfoDAL.Instance.Delete(idBill);
                 BillDAL.Instance.Delete(idBill);
                 Customer customer = CustomerDAL.Instance.FindById(control.txbIdCustomer.Text);
-                customer.TotalPrice -= ConvertToNumber(control.txbPrice.Text);
+                customer.TotalSpending -= ConvertToNumber(control.txbPrice.Text);
                 UpdateMembership(customer, 0);
                 if (control == checkedItem)
                 {

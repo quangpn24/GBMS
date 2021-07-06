@@ -103,8 +103,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             uCService.txbSerial.Text = AddPrefix("DV", service.IdService);
                             uCService.txbName.Text = service.Name;
                             uCService.txbPrice.Text = SeparateThousands(service.Price.ToString());
-                            uCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
-                            if (mainWindow.cboSelectFilter.SelectedIndex == service.IsActived || mainWindow.cboSelectFilter.SelectedIndex == -1) // trùng trạng thái với filter thì thêm vào stk
+                            uCService.txbStatus.Text = service.IsActive == 1 ? "Đang hoạt động" : "Dừng hoạt động";
+                            if (mainWindow.cboSelectFilter.SelectedIndex == service.IsActive || mainWindow.cboSelectFilter.SelectedIndex == -1) // trùng trạng thái với filter thì thêm vào stk
                             {
                                 services.Add(service);
                                 if (currentPage == (services.Count - 1) / 10)
@@ -134,8 +134,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                             addServiceWindow.Close();
                             selectedUCService.txbName.Text = service.Name;
                             selectedUCService.txbPrice.Text = SeparateThousands(service.Price.ToString());
-                            selectedUCService.txbStatus.Text = service.IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
-                            if (service.IsActived != mainWindow.cboSelectFilter.SelectedIndex && mainWindow.cboSelectFilter.SelectedIndex != -1) // kiểm tra trạng thái để remove uc ra khỏi stk 
+                            selectedUCService.txbStatus.Text = service.IsActive == 1 ? "Đang hoạt động" : "Dừng hoạt động";
+                            if (service.IsActive != mainWindow.cboSelectFilter.SelectedIndex && mainWindow.cboSelectFilter.SelectedIndex != -1) // kiểm tra trạng thái để remove uc ra khỏi stk 
                             {
                                 mainWindow.stkService.Children.Remove(selectedUCService);
                                 services.RemoveAll(x => x.IdService == service.IdService);
@@ -214,7 +214,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 uCService.txbSerial.Text = AddPrefix("DV", services[i].IdService);
                 uCService.txbName.Text = services[i].Name;
                 uCService.txbPrice.Text = SeparateThousands(services[i].Price.ToString());
-                uCService.txbStatus.Text = services[i].IsActived == 1 ? "Đang hoạt động" : "Dừng hoạt động";
+                uCService.txbStatus.Text = services[i].IsActive == 1 ? "Đang hoạt động" : "Dừng hoạt động";
                 mainWindow.stkService.Children.Add(uCService);
             }
 
@@ -333,7 +333,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         ws.Cells[rowIndex, colIndex++].Value = i + 1;
                         ws.Cells[rowIndex, colIndex++].Value = service.Name;
                         ws.Cells[rowIndex, colIndex++].Value = service.Price;
-                        ws.Cells[rowIndex, colIndex++].Value = (service.IsActived == 1) ? "Đang hoạt động" : "Dừng hoạt động";
+                        ws.Cells[rowIndex, colIndex++].Value = (service.IsActive == 1) ? "Đang hoạt động" : "Dừng hoạt động";
                     }
                     //Lưu file lại
                     Byte[] bin = p.GetAsByteArray();
@@ -380,7 +380,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             services = ServiceDAL.Instance.FindByName(mainWindow.txtSearchService.Text);
             if (mainWindow.cboSelectFilter.SelectedIndex != 2)
             {
-                services.RemoveAll(x => x.IsActived != mainWindow.cboSelectFilter.SelectedIndex);
+                services.RemoveAll(x => x.IsActive != mainWindow.cboSelectFilter.SelectedIndex);
             }
             if (mainWindow.cboSelectSort.SelectedIndex >= 0)
             {

@@ -201,20 +201,20 @@ namespace GemstonesBusinessManagementSystem.DAL
                 string queryString = "";
                 if (!isUpdating)
                 {
-                    queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber,totalPrice, idMembership, address)" +
-                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalPrice, @idMembership  , @address);";
+                    queryString = "insert into customer(idCustomer, customerName, phoneNumber, idNumber,totalSpending, idMembership, address)" +
+                    "values(@idCustomer, @customerName, @phoneNumber, @idNumber,@totalSpending, @idMembership  , @address);";
                 }
                 else
                 {
                     queryString = "update Customer set customerName = @customerName, phoneNumber=@phoneNumber, idNumber=@idNumber," +
-                        "totalPrice=@totalPrice, address=@address,idMembership=@idMembership where idCustomer = @idCustomer";
+                        "totalSpending=@totalSpending, address=@address,idMembership=@idMembership where idCustomer = @idCustomer";
                 }
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idCustomer", customer.IdCustomer);
                 command.Parameters.AddWithValue("@customerName", customer.CustomerName);
                 command.Parameters.AddWithValue("@phoneNumber", customer.PhoneNumber);
                 command.Parameters.AddWithValue("@idNumber", customer.IdNumber);
-                command.Parameters.AddWithValue("@totalPrice", customer.TotalPrice);
+                command.Parameters.AddWithValue("@totalSpending", customer.TotalSpending);
                 command.Parameters.AddWithValue("@idMembership", customer.IdMembership);
                 command.Parameters.AddWithValue("@address", customer.Address);
                 int rs = command.ExecuteNonQuery();
@@ -241,7 +241,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = string.Format("update Customer set totalPrice = {0} " +
+                string query = string.Format("update Customer set totalSpending = {0} " +
                     "where idCustomer = {1}", spending, idCustomer);
                 MySqlCommand command = new MySqlCommand(query, conn);
 
@@ -307,7 +307,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "select SUM(totalPrice) from gemstonesbusinessmanagementsystem.customer";
+                string queryString = "select SUM(totalSpending) from gemstonesbusinessmanagementsystem.customer";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
                 MySqlDataAdapter adapter = new MySqlDataAdapter(command);

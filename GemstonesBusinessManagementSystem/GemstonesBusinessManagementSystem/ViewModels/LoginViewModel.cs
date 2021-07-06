@@ -82,7 +82,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 if (account.Username == username && account.Password == password)
                 {
                     isLogin = true;
-                    acc = new Account(account.IdAccount, account.Username, account.Password, account.Type);
+                    acc = new Account(account.IdAccount, account.Username, account.Password);
                     break;
                 }
             }
@@ -90,7 +90,6 @@ namespace GemstonesBusinessManagementSystem.ViewModels
             {
                 MainWindow main = new MainWindow();
                 CurrentAccount.IdAccount = acc.IdAccount;
-                CurrentAccount.Type = acc.Type;
                 Employee employee = EmployeeDAL.Instance.GetByIdAccount(acc.IdAccount.ToString());
                 CurrentAccount.IdEmployee = employee.IdEmployee;
                 CurrentAccount.Name = employee.Name;

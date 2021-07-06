@@ -63,7 +63,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             }
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                Account acc = new Account(int.Parse(dt.Rows[i].ItemArray[0].ToString()), dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString(), int.Parse(dt.Rows[i].ItemArray[3].ToString()));
+                Account acc = new Account(int.Parse(dt.Rows[i].ItemArray[0].ToString()), dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[2].ToString());
                 accounts.Add(acc);
             }
             return accounts;
@@ -73,12 +73,11 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string query = "insert into account(idAccount, username, password, type) values(@idAccount, @username, @password, @type)";
+                string query = "insert into account(idAccount, username, password) values(@idAccount, @username, @password)";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@idAccount", account.IdAccount.ToString());
                 cmd.Parameters.AddWithValue("@username", account.Username);
                 cmd.Parameters.AddWithValue("@password", account.Password);
-                cmd.Parameters.AddWithValue("@type", account.Type.ToString());
                 int rs = cmd.ExecuteNonQuery();
                 return rs == 1;
             }
