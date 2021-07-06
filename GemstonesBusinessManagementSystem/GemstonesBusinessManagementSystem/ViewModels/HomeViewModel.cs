@@ -229,6 +229,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     break;
                 //cài đặt
                 case 6:
+                    RoleViewModel roleViewModel = window.grdSetting.DataContext as RoleViewModel;
+                    roleViewModel.positionList = EmployeePositionDAL.Instance.GetList();
+                    roleViewModel.LoadEmployeePosition(window);
                     window.txbTabName.Text = "Cài đặt";
                     window.grdSetting.Visibility = Visibility.Visible;
                     window.btnSetting.Foreground = (Brush)new BrushConverter().ConvertFrom(foreFocus);
