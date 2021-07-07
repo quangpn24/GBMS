@@ -67,7 +67,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                 {
                     revenues[i] = 0;
                 }
-                string query = string.Format("select quarter(receiptDate) as quarter,  sum(total) from StockReceipt where year(receiptDate) = {0} "
+                string query = string.Format("select quarter(receiptDate) as quarter,  sum(totalPaidMoney) from StockReceipt where year(receiptDate) = {0} "
                      + " group by quarter order by quarter ", year);
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -132,7 +132,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     revenues[i] = 0;
                 }
                 OpenConnection();
-                string query = string.Format("select month(receiptDate) as month,  sum(total) from StockReceipt where year(receiptDate) = {0} "
+                string query = string.Format("select month(receiptDate) as month,  sum(totalPaidMoney) from StockReceipt where year(receiptDate) = {0} "
                     + " group by month order by month ", year);
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -197,7 +197,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     revenues[i] = 0;
                 }
                 OpenConnection();
-                string query = string.Format("select day(receiptDate) as date, sum(total) from StockReceipt where month(receiptDate) = {0} "
+                string query = string.Format("select day(receiptDate) as date, sum(totalPaidMoney) from StockReceipt where month(receiptDate) = {0} "
                     + " and year(receiptDate) = {1} group by date order by date", month, year);
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -347,7 +347,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 OpenConnection();
                 long todaySpend = 0;
-                string query = string.Format("Select sum(total) from StockReceipt where date(receiptDate) = '{0}' ", DateTime.Now.Date.ToString("yyyyy-MM-dd"));
+                string query = string.Format("Select sum(totalPaidMoney) from StockReceipt where date(receiptDate) = '{0}' ", DateTime.Now.Date.ToString("yyyyy-MM-dd"));
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 reader.Read();
