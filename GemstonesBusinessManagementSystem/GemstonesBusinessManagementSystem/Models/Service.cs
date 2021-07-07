@@ -24,21 +24,21 @@ namespace GemstonesBusinessManagementSystem.Models
 
         public int IsDeleted { get => isDeleted; set => isDeleted = value; }
 
-        private int isActived;
+        private int isActive;
 
-        public int IsActived { get => isActived; set => isActived = value; }
+        public int IsActive { get => isActive; set => isActive = value; }
 
         public Service()
         {
 
         }
-        public Service(int idService, string name, long price, int isActived, int isDeleted)
+        public Service(int idService, string name, long price, int isActive, int isDeleted)
         {
             this.idService = idService;
             this.name = name;
             this.price = price;
             this.isDeleted = isDeleted;
-            this.isActived = isActived;
+            this.isActive = isActive;
         }
     }
 }

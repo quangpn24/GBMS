@@ -51,7 +51,6 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-
                 string queryStr = "select * from Employee where isDeleted = false and idEmployee != 0";
                 MySqlCommand cmd = new MySqlCommand(queryStr, conn);
                 MySqlDataReader dataReader = cmd.ExecuteReader();

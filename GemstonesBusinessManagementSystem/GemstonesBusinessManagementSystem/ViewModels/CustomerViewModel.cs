@@ -201,7 +201,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 ucCustomer.txbPhoneNumber.Text = customerList[i].PhoneNumber.ToString();
                 ucCustomer.txbIdNumber.Text = customerList[i].IdNumber.ToString();
                 ucCustomer.txbAddress.Text = customerList[i].Address.ToString();
-                ucCustomer.txbSpending.Text = SeparateThousands(customerList[i].TotalPrice.ToString());
+                ucCustomer.txbSpending.Text = SeparateThousands(customerList[i].TotalSpending.ToString());
                 ucCustomer.txbRank.Text = membershipsType.Membership;
                 pickCustomerWindow.stkCustomer.Children.Add(ucCustomer);
             }
@@ -326,7 +326,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         void UpdateMembership(Customer customer, long paidMoney)
         {
-            var totalSpending = customer.TotalPrice + paidMoney;
+            var totalSpending = customer.TotalSpending + paidMoney;
             CustomerDAL.Instance.UpdateTotalSpending(customer.IdCustomer, totalSpending);
             List<KeyValuePair<long, int>> membershipList = MembershipsTypeDAL.Instance.GetSortedList();
             foreach (var mem in membershipList)
@@ -467,8 +467,8 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         }
         public void LoadCustomerToView(MainWindow mainWindow, int currentPage)
         {
-            mainWindow.txbCountCustomer.Text = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
-            mainWindow.txbCountAllPrice.Text = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
+            mainWindow.txbCustomerQuantity.Text = SeparateThousands(CustomerDAL.Instance.LoadData().Rows.Count.ToString());
+            mainWindow.txbTotalRevenue.Text = SeparateThousands(CustomerDAL.Instance.CountPrice().ToString());
             this.mainWindow = mainWindow;
             mainWindow.stkCustomer.Children.Clear();
             int start = 0, end = 0;
@@ -482,7 +482,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 ucCustomer.txbName.Text = customerList[i].CustomerName;
                 ucCustomer.txbPhone.Text = customerList[i].PhoneNumber.ToString();
                 ucCustomer.txbAddress.Text = customerList[i].Address.ToString();
-                ucCustomer.txbAllPrice.Text = SeparateThousands(customerList[i].TotalPrice.ToString());
+                ucCustomer.txbAllPrice.Text = SeparateThousands(customerList[i].TotalSpending.ToString());
                 ucCustomer.txbLevelCus.Text = MembershipsTypeDAL.Instance.GetById(customerList[i].IdMembership).Membership;
                 mainWindow.stkCustomer.Children.Add(ucCustomer);
             }
@@ -565,7 +565,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
 
                 if (isEditing)
                 {
-                    customer.TotalPrice = ConvertToNumber(customerControl.txbAllPrice.Text);
+                    customer.TotalSpending = ConvertToNumber(customerControl.txbAllPrice.Text);
                 }
                 else
                 {
@@ -574,9 +574,9 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                     control.txbName.Text = customer.CustomerName.ToString();
                     control.txbPhone.Text = customer.PhoneNumber.ToString();
                     control.txbAddress.Text = customer.Address.ToString();
-                    control.txbAllPrice.Text = SeparateThousands(customer.TotalPrice.ToString());
+                    control.txbAllPrice.Text = SeparateThousands(customer.TotalSpending.ToString());
                     control.txbLevelCus.Text = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
-                    mainWindow.txbCountCustomer.Text = SeparateThousands((int.Parse(mainWindow.txbCountCustomer.Text.ToString()) + 1).ToString());
+                    mainWindow.txbCustomerQuantity.Text = SeparateThousands((int.Parse(mainWindow.txbCustomerQuantity.Text.ToString()) + 1).ToString());
                 }
                 if (CustomerDAL.Instance.AddOrUpdate(customer, isEditing))
                 {
@@ -705,7 +705,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                         ws.Cells[rowIndex, colIndex++].Value = customer.PhoneNumber;
                         ws.Cells[rowIndex, colIndex++].Value = customer.IdCustomer;
                         ws.Cells[rowIndex, colIndex++].Value = MembershipsTypeDAL.Instance.GetById(customer.IdMembership).Membership;
-                        ws.Cells[rowIndex, colIndex++].Value = customer.TotalPrice;
+                        ws.Cells[rowIndex, colIndex++].Value = customer.TotalSpending;
                     }
                     //Lưu file lại
                     Byte[] bin = p.GetAsByteArray();
@@ -725,10 +725,10 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 case -1:
                     return;
                 case 0:
-                    customerList = customerList.OrderByDescending(x => x.TotalPrice).ToList();
+                    customerList = customerList.OrderByDescending(x => x.TotalSpending).ToList();
                     break;
                 case 1:
-                    customerList = customerList.OrderBy(x => x.TotalPrice).ToList();
+                    customerList = customerList.OrderBy(x => x.TotalSpending).ToList();
                     break;
             }
             LoadCustomerToView(mainWindow, currentPage);

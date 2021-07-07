@@ -535,6 +535,7 @@
                     </Grid>
 
                     <Button 
+                        x:Name="btnSettingPersonal"
                         DataContext="{StaticResource SettingVM}"
                         ToolTip="Thay đổi thông tin"
                         Style="{StaticResource TransperantButton}"
@@ -599,6 +600,7 @@
                                 FontSize="20" 
                                 Margin="20,0,0,0"/>
                             <TextBlock 
+                                x:Name="txbTodayRevenue"
                                 Grid.Row="1"
                                 Text="{Binding TodayRevenue}"
                                 HorizontalAlignment="Left"
@@ -664,6 +666,7 @@
                                 FontSize="20" 
                                 Margin="20,0,0,0"/>
                             <TextBlock 
+                                x:Name="txbTodaySpend"
                                 Grid.Row="1"
                                 Text="{Binding TodaySpend}"
                                 HorizontalAlignment="Left"
@@ -696,6 +699,7 @@
                                 FontSize="20" 
                                 Margin="20,0,0,0"/>
                             <TextBlock 
+                                x:Name="txbTodayBillQuantity"
                                 Grid.Row="1"
                                 Text="{Binding TodayBillQuantity}"
                                 HorizontalAlignment="Left"
@@ -799,6 +803,7 @@
                             </ComboBox>
                         </StackPanel>
                         <lvc:CartesianChart 
+                            x:Name="lvcCartesianChart"
                             Height="440"
                             LegendLocation="Top"
                             Series="{Binding SeriesCollection}"
@@ -2718,6 +2723,7 @@
                         Margin="0,0,20,0"
                         Orientation="Horizontal" >
                         <Button 
+                            x:Name="btnExportExcel"
                             Content="Xuất excel"
                             ToolTip="Xuất danh sách phiếu nhập kho"
                             Style="{StaticResource PrimaryButton}"
@@ -2726,6 +2732,7 @@
                             Margin="0,0,20,0" 
                             Width="160"/>
                         <Button 
+                            x:Name="btnHandleImport"
                             Content="Nhập kho"
                             ToolTip="Nhập kho"
                             Style="{StaticResource GreenButton}"
@@ -2944,6 +2951,7 @@
                         </StackPanel>
                     </Grid>
                     <Grid
+                        x:Name="grdReceiptDetail"
                         Grid.Column="1"
                         Style="{StaticResource DropShadow}"
                         Margin="0,0,20,20">
@@ -4044,8 +4052,8 @@
                                                                CommandParameter="{Binding ElementName=wdMain}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                                <ComboBoxItem Content="Từ cao xuống" />
-                                <ComboBoxItem Content="Từ thấp lên" />
+                                <ComboBoxItem Content="Giảm dần" />
+                                <ComboBoxItem Content="Tăng dần" />
                             </ComboBox>
                         </Grid>
                         <Grid
@@ -4078,7 +4086,7 @@
                                 VerticalAlignment="Bottom" 
                                 Margin="20,0"/>
                             <TextBlock
-                                x:Name="txbCountCustomer"
+                                x:Name="txbCustomerQuantity"
                                 Grid.Row="1"
                                 Style="{StaticResource Text}"
                                 MaxWidth="200"
@@ -4117,7 +4125,7 @@
                                 VerticalAlignment="Bottom" 
                                 Margin="20,0"/>
                             <TextBlock
-                                x:Name="txbCountAllPrice"
+                                x:Name="txbTotalRevenue"
                                 Grid.Row="1"
                                 Style="{StaticResource Text}"
                                 Height="Auto"

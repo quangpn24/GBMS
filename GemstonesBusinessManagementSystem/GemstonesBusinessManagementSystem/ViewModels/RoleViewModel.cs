@@ -21,7 +21,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
         public ICommand UpdatePermissionCommand { get; set; }
         public ICommand CheckAllCommand { get; set; }
 
-        private List<EmployeePosition> positionList = EmployeePositionDAL.Instance.GetList();
+        public List<EmployeePosition> positionList = EmployeePositionDAL.Instance.GetList();
         private MainWindow mainWindow;
         private int selectedPosition = -1;
 
@@ -176,7 +176,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                 mainWindow.stkPermission.Children.Add(permissionControl);
             }
         }
-        void LoadEmployeePosition(MainWindow window)
+        public void LoadEmployeePosition(MainWindow window)
         {
             this.mainWindow = window;
             mainWindow.stkPosition.Children.Clear();

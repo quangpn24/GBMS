@@ -53,7 +53,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT * FROM Service WHERE isActived=1 ;";
+                string queryString = @"SELECT * FROM Service WHERE isActive=1 ;";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
@@ -75,7 +75,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()), 0,
                     0);
                 if (dt.Rows[i].ItemArray[3].ToString() == "True")
-                    service.IsActived = 1;
+                    service.IsActive = 1;
                 if (dt.Rows[i].ItemArray[4].ToString() == "True")
                     service.IsDeleted = 1;
                 services.Add(service);
@@ -89,7 +89,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = @"SELECT * FROM Service WHERE isActived=1 and name LIKE  ""%" + name + "%\";";
+                string queryString = @"SELECT * FROM Service WHERE isActive=1 and name LIKE  ""%" + name + "%\";";
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();
@@ -111,7 +111,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()), 0,
                     0);
                 if (dt.Rows[i].ItemArray[3].ToString() == "True")
-                    service.IsActived = 1;
+                    service.IsActive = 1;
                 if (dt.Rows[i].ItemArray[4].ToString() == "True")
                     service.IsDeleted = 1;
                 services.Add(service);
@@ -147,7 +147,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()), 0,
                     0);
                 if (dt.Rows[i].ItemArray[3].ToString() == "True")
-                    service.IsActived = 1;
+                    service.IsActive = 1;
                 if (dt.Rows[i].ItemArray[4].ToString() == "True")
                     service.IsDeleted = 1;
                 services.Add(service);
@@ -182,7 +182,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     dt.Rows[i].ItemArray[1].ToString(), long.Parse(dt.Rows[i].ItemArray[2].ToString()),
                     0, 0);
                 if (dt.Rows[i].ItemArray[3].ToString() == "True")
-                    service.IsActived = 1;
+                    service.IsActive = 1;
                 if (dt.Rows[i].ItemArray[4].ToString() == "True")
                     service.IsDeleted = 1;
                 services.Add(service);
@@ -205,7 +205,7 @@ namespace GemstonesBusinessManagementSystem.DAL
                     dt.Rows[0].ItemArray[1].ToString(), long.Parse(dt.Rows[0].ItemArray[2].ToString()),
                     0, 0);
                 if (dt.Rows[0].ItemArray[3].ToString() == "True")
-                    service.IsActived = 1;
+                    service.IsActive = 1;
                 if (dt.Rows[0].ItemArray[4].ToString() == "True")
                     service.IsDeleted = 1;
                 return service;
@@ -224,13 +224,13 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "insert into Service(idService, name, price,isActived,isDeleted) values(@idService, @name, @price,@isActived,@isDeleted);";
+                string queryString = "insert into Service(idService, name, price,isActive,isDeleted) values(@idService, @name, @price,@isActive,@isDeleted);";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idService", service.IdService.ToString());
                 command.Parameters.AddWithValue("@name", service.Name.ToString());
                 command.Parameters.AddWithValue("@price", service.Price.ToString());
                 command.Parameters.AddWithValue("@isDeleted", "0");
-                command.Parameters.AddWithValue("@isActived", service.IsActived.ToString());
+                command.Parameters.AddWithValue("@isActive", service.IsActive.ToString());
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -295,7 +295,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = "UPDATE Service SET isDeleted = 1,isActived=0 WHERE idService = @idService; ";
+                string queryString = "UPDATE Service SET isDeleted = 1,isActive=0 WHERE idService = @idService; ";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@idService", idService);
                 command.ExecuteNonQuery();
@@ -316,14 +316,14 @@ namespace GemstonesBusinessManagementSystem.DAL
             {
                 OpenConnection();
                 string queryString = "UPDATE Service " +
-                                        "SET name = @name, price=@price,isDeleted=@isDeleted, isActived=@isActived  where idService = @idService; ";
+                                        "SET name = @name, price=@price,isDeleted=@isDeleted, isActive=@isActive  where idService = @idService; ";
                 MySqlCommand command = new MySqlCommand(queryString, conn);
 
                 command.Parameters.AddWithValue("@idService", service.IdService.ToString());
                 command.Parameters.AddWithValue("@name", service.Name.ToString());
                 command.Parameters.AddWithValue("@price", service.Price.ToString());
                 command.Parameters.AddWithValue("@isDeleted", service.IsDeleted.ToString());
-                command.Parameters.AddWithValue("@isActived", service.IsActived.ToString());
+                command.Parameters.AddWithValue("@isActive", service.IsActive.ToString());
                 command.ExecuteNonQuery();
                 return true;
             }

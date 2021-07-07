@@ -250,7 +250,7 @@
             </Button.IsEnabled>
         </Button>
         <Button
-            x:Name="btnLogin" 
+            x:Name="btnCancel"
             Style="{StaticResource MaterialDesignOutlinedButton}"
             Command="{Binding OpenLoginWindowCommand}"
             CommandParameter="{Binding ElementName=wdSignUp}"

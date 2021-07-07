@@ -123,7 +123,7 @@ namespace GemstonesBusinessManagementSystem.DAL
             try
             {
                 OpenConnection();
-                string queryString = string.Format("select 8 from GoodsType where name = '{0}'", typeName);
+                string queryString = string.Format("select * from GoodsType where name = '{0}'", typeName);
 
                 MySqlCommand command = new MySqlCommand(queryString, conn);
                 command.ExecuteNonQuery();

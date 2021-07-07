@@ -232,7 +232,7 @@ namespace GemstonesBusinessManagementSystem.ViewModels
                                 tips = double.Parse(temp.txtTips.Text);
                             BillServiceInfo billServiceInfo = new BillServiceInfo(ConvertToID(mainWindow.txbIdBillService.Text), ConvertToID(temp.txbSerial.Text), double.Parse(temp.txbPrice.Text), tips, Convert.ToInt32(temp.nmsQuantity.Value), paidMoney, 0, DateTime.Now);
                             BillServiceInfoDAL.Instance.Insert(billServiceInfo);
-                            customer.TotalPrice += Convert.ToInt64(billService.TotalPaidMoney);
+                            customer.TotalSpending += Convert.ToInt64(billService.TotalPaidMoney);
                             //UpdateMembership(customer);
                             //CustomerDAL.Instance.AddOrUpdate(customer, true);
                         }
